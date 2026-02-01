@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Brayton Calculator</title>
+
+  <!-- 1️⃣ IMPORT CSS (opzionale ma consigliato) -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+  <h1>Calcolo ciclo Brayton</h1>
+
+  <!-- 2️⃣ INPUT -->
+  <label>T1 [K]</label><br>
+  <input id="T1" type="number"><br><br>
+
+  <label>Rapporto di compressione β</label><br>
+  <input id="beta" type="number"><br><br>
+
+  <button onclick="calcola()">Calcola</button>
+
+  <p id="output"></p>
+
+  <!-- 3️⃣ IMPORT JAVASCRIPT -->
+  <script src="../js/brayton.js"></script>
+
+</body>
+</html>
