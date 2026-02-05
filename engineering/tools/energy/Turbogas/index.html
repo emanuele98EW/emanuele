@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Turbogas – Cervello Online</title>
+  <link rel="stylesheet" href="../../../../css/style.css">
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-logo">
+      <img src="../../../../assets/logo.png" alt="Cervello Online">
+    </div>
+
+    <nav class="menu">
+
+      <a href="../../../../index.html" class="menu-link">
+        <span class="icon">🏠</span>
+        <span class="text">Home</span>
+      </a>
+
+      <a href="../../../../finanza/index.html" class="menu-link">
+        <span class="icon">📊</span>
+        <span class="text">Finanza</span>
+      </a>
+
+      <div class="menu-group open">
+        <button class="menu-toggle">
+          <span class="icon">⚙️</span>
+          <span class="text">Ingegneria</span>
+          <span class="arrow">▶</span>
+        </button>
+
+        <div class="menu-content">
+
+          <div class="menu-group open">
+            <button class="menu-toggle">
+              <span class="icon">🔧</span>
+              <span class="text">Tool ingegneristici</span>
+              <span class="arrow">▶</span>
+            </button>
+
+            <div class="menu-content">
+              <a href="../index.html" class="menu-link">
+                <span class="icon">🔥</span>
+                <span class="text">Sistemi energetici</span>
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="background-logo"></div>
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <img src="../../../../assets/logo.png" class="topbar-logo">
+        <h1>Turbogas</h1>
+        <span id="clock" class="digital-clock"></span>
+      </div>
+    </header>
+
+    <!-- SPIEGAZIONE -->
+    <section class="card engineering">
+
+      <h3>Cos’è un impianto Turbogas</h3>
+
+      <p>
+        Un impianto <strong>turbogas</strong> è un sistema di produzione di energia
+        basato sulla combustione di un gas (tipicamente gas naturale) e sull’espansione
+        dei gas caldi in una turbina.
+      </p>
+
+      <p>
+        Il comportamento termodinamico dell’impianto è descritto dal
+        <strong>ciclo Brayton</strong>, composto da:
+      </p>
+
+      <ul>
+        <li>Compressione dell’aria</li>
+        <li>Combustione a pressione quasi costante</li>
+        <li>Espansione in turbina</li>
+        <li>Scarico dei gas</li>
+      </ul>
+
+    </section>
+
+    <!-- CICLO TERMODINAMICO -->
+    <section class="card engineering">
+
+      <h3>Ciclo termodinamico (Brayton)</h3>
+
+      <canvas id="tsDiagram" height="200"></canvas>
+
+      <p style="margin-top:12px">
+        Diagramma qualitativo Temperatura–Entropia (T–s) del ciclo Brayton ideale.
+      </p>
+
+    </section>
+
+    <!-- SCHEMA IMPIANTO -->
+    <section class="card engineering">
+
+      <h3>Schema dell’impianto</h3>
+
+      <img
+        src="schema-turbogas.png"
+        alt="Schema impianto turbogas"
+        style="width:100%;max-width:700px;opacity:0.9"
+      >
+
+      <p style="margin-top:12px">
+        Compressore → Camera di combustione → Turbina → Generatore
+      </p>
+
+    </section>
+
+    <!-- TOOL -->
+    <section class="cards">
+
+      <a class="card engineering" href="../brayton.html">
+        <h3>🧮 Tool per Turbogas</h3>
+        <p>Calcolo del ciclo Brayton, rendimenti e stati</p>
+      </a>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../../../../js/main.js"></script>
+
+<script>
+const ctx = document.getElementById("tsDiagram");
+
+new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: ["1", "2", "3", "4", "1"],
+    datasets: [{
+      data: [300, 600, 1400, 800, 300],
+      borderWidth: 3,
+      tension: 0.2
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { title: { display: true, text: "Entropia" } },
+      y: { title: { display: true, text: "Temperatura" } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

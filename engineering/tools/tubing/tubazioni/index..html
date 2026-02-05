@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Tubazioni – Cervello Online</title>
+  <link rel="stylesheet" href="../../../../css/style.css">
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-logo">
+      <img src="../../../../assets/logo.png" alt="Cervello Online">
+    </div>
+
+    <nav class="menu">
+
+      <!-- HOME -->
+      <a href="../../../../index.html" class="menu-link">
+        <span class="icon">🏠</span>
+        <span class="text">Home</span>
+      </a>
+
+      <!-- FINANZA -->
+      <a href="../../../../finanza/index.html" class="menu-link">
+        <span class="icon">📊</span>
+        <span class="text">Finanza</span>
+      </a>
+
+      <!-- INGEGNERIA -->
+      <div class="menu-group open">
+
+        <button class="menu-toggle">
+          <span class="icon">⚙️</span>
+          <span class="text">Ingegneria</span>
+          <span class="arrow">▶</span>
+        </button>
+
+        <div class="menu-content">
+
+          <!-- TOOL INGEGNERISTICI -->
+          <div class="menu-group open">
+
+            <button class="menu-toggle">
+              <span class="icon">🔧</span>
+              <span class="text">Tool ingegneristici</span>
+              <span class="arrow">▶</span>
+            </button>
+
+            <div class="menu-content">
+
+              <a href="../index.html" class="menu-link">
+                <span class="icon">🧪</span>
+                <span class="text">Tubing</span>
+              </a>
+
+              <a href="../../energy/index.html" class="menu-link">
+                <span class="icon">🔥</span>
+                <span class="text">Sistemi energetici</span>
+              </a>
+
+              <a href="../../stress/index.html" class="menu-link">
+                <span class="icon">📐</span>
+                <span class="text">Stress analysis</span>
+              </a>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- LOGO BACKGROUND -->
+    <div class="background-logo"></div>
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <img src="../../../../assets/logo.png" class="topbar-logo" alt="logo">
+        <h1>Tubazioni</h1>
+        <span id="clock" class="digital-clock"></span>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <section class="content">
+
+      <h2>📐 Dati dimensionali tubazioni</h2>
+      <p>
+        Seleziona il <strong>DN</strong> e la <strong>Schedule</strong> per visualizzare
+        diametro esterno, diametro interno, spessore e peso lineare secondo ASME B36.10 / B36.19.
+      </p>
+
+      <!-- TOOL -->
+      <div class="tool-box">
+
+        <div class="tool-row">
+          <label for="dnSelect">DN</label>
+          <select id="dnSelect"></select>
+
+          <label for="schSelect">Schedule</label>
+          <select id="schSelect"></select>
+        </div>
+
+        <div class="pipe-result">
+
+          <!-- IMMAGINE / SCHEMA -->
+          <div class="pipe-diagram">
+            <canvas id="pipeCanvas" width="400" height="250"></canvas>
+          </div>
+
+          <!-- DATI -->
+          <div class="pipe-data">
+            <p><strong>Diametro esterno (OD):</strong> <span id="od">–</span> mm</p>
+            <p><strong>Diametro interno (ID):</strong> <span id="id">–</span> mm</p>
+            <p><strong>Spessore:</strong> <span id="thk">–</span> mm</p>
+            <p><strong>Peso:</strong> <span id="kgm">–</span> kg/m</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script src="../../../../js/main.js"></script>
+<script src="../pipe-data.js"></script>
+<script src="pipe-tool.js"></script>
+
+</body>
+</html>
