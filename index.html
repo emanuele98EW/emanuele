@@ -14,20 +14,48 @@
   <aside class="sidebar">
 
     <div class="sidebar-logo">
-      <img src="assets/logo.png">
+      <img src="assets/logo.png" alt="Cervello Online">
     </div>
 
     <nav class="menu">
 
-      <a href="index.html" class="menu-link">
+      <!-- HOME -->
+      <a href="index.html" class="menu-link active">
         <span class="icon">🏠</span>
         <span class="text">Home</span>
       </a>
 
-      <a href="finanza/index.html" class="menu-link">
-        <span class="icon">📊</span>
-        <span class="text">Finanza</span>
-      </a>
+      <!-- FINANZA -->
+      <div class="menu-group">
+
+        <button class="menu-toggle">
+          <span class="icon">📊</span>
+          <span class="text">Finanza</span>
+          <span class="arrow">▶</span>
+        </button>
+
+        <div class="menu-content">
+          <a href="finanza/index.html" class="menu-link">
+            <span class="icon">📈</span>
+            <span class="text">Panoramica</span>
+          </a>
+
+          <a href="finanza/mercati/index.html" class="menu-link">
+            <span class="icon">🌍</span>
+            <span class="text">Mercati</span>
+          </a>
+
+          <a href="finanza/portfolio/index.html" class="menu-link">
+            <span class="icon">💼</span>
+            <span class="text">Portfolio</span>
+          </a>
+
+          <a href="finanza/simulazioni/index.html" class="menu-link">
+            <span class="icon">🧮</span>
+            <span class="text">Simulazioni</span>
+          </a>
+        </div>
+      </div>
 
       <!-- INGEGNERIA -->
       <div class="menu-group">
@@ -53,6 +81,11 @@
                 <span class="icon">🔥</span>
                 <span class="text">Brayton</span>
               </a>
+
+              <a href="engineering/tools/tubing/index.html" class="menu-link">
+                <span class="icon">🧪</span>
+                <span class="text">Tubing</span>
+              </a>
             </div>
 
           </div>
@@ -66,21 +99,17 @@
   <!-- MAIN -->
   <main class="main">
 
-    <!-- LOGO BACKGROUND -->
     <div class="background-logo"></div>
 
-    <!-- TOPBAR -->
     <header class="topbar">
       <div class="topbar-left">
-        <img src="assets/logo.png" class="topbar-logo">
+        <img src="assets/logo.png" class="topbar-logo" alt="logo">
         <h1>Home</h1>
         <span id="clock" class="digital-clock"></span>
       </div>
     </header>
 
-    <!-- CARDS -->
     <section class="cards">
-
       <a class="card finance" href="finanza/index.html">
         <h3>📊 Finanza</h3>
         <p>Analisi, investimenti, simulazioni</p>
@@ -90,7 +119,6 @@
         <h3>⚙️ Ingegneria</h3>
         <p>Tool tecnici e sistemi</p>
       </a>
-
     </section>
 
   </main>
@@ -100,4 +128,3 @@
 <script src="js/main.js"></script>
 </body>
 </html>
-
