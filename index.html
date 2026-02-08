@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cervello Online</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="assets/logo.png" alt="Cervello Online">
+    </div>
+    <nav class="menu">
+      <a href="index.html" class="menu-link active">
+        <span class="icon">🏠</span>
+        <span class="text">Home</span>
+      </a>
+      <div class="menu-group">
+        <button class="menu-toggle">
+          <span class="icon">📊</span>
+          <span class="text">Finanza</span>
+          <span class="arrow">▶</span>
+        </button>
+        <div class="menu-content">
+          <a href="finanza/index.html" class="menu-link finance">
+            <span class="icon">📈</span>
+            <span class="text">Interesse Composto</span>
+          </a>
+          <a href="finanza/interesse/index.html" class="menu-link finance">
+            <span class="icon">💼</span>
+            <span class="text">Portafoglio</span>
+          </a>
+          <a href="finanza/mutuo/index.html" class="menu-link finance">
+            <span class="icon">🏦</span>
+            <span class="text">Mutui</span>
+          </a>
+        </div>
+      </div>
+      <div class="menu-group">
+        <button class="menu-toggle">
+          <span class="icon">🛠</span>
+          <span class="text">Ingegneria</span>
+          <span class="arrow">▶</span>
+        </button>
+        <div class="menu-content">
+          </a>
+          <a href="engineering/appunti/index.html" class="menu-link engineering">
+            <span class="icon">📝</span>
+            <span class="text">Appunti</span>
+            <span class="arrow">▶</span>
+            </button>
+          </a>
+          <a href="engineering/tools/index.html" class="menu-link engineering">
+            <span class="icon">🔧</span>
+            <span class="text">Tools</span>
+          </a>
+          <a href="engineering/tools/energy/index.html" class="menu-link engineering">
+            <span class="icon">🔥</span>
+            <span class="text">Energy</span>
+          </a>
+          <a href="engineering/tools/energy/Turbogas/index.html" class="menu-link engineering">
+            <span class="icon">⚙</span>
+            <span class="text">Turbogas</span>
+          </a>
+          <a href="engineering/tools/stress/index.html" class="menu-link engineering">
+            <span class="icon">📐</span>
+            <span class="text">Stress</span>
+          </a>
+          <a href="engineering/tools/tubing/index.html" class="menu-link engineering">
+            <span class="icon">🧪</span>
+            <span class="text">Tubing</span>
+          </a>
+          <a href="engineering/tools/tubing/flange/index.html" class="menu-link engineering">
+            <span class="icon">⭕</span>
+            <span class="text">Flange</span>
+          </a>
+          <a href="engineering/tools/tubing/tubazioni/index.html" class="menu-link engineering">
+            <span class="icon">🛠️</span>
+            <span class="text">Tubazioni</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- LOGO BACKGROUND -->
+    <div class="background-logo"></div>
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <img src="assets/logo.png" class="topbar-logo" alt="">
+        <h1>Home</h1>
+        <span id="clock" class="digital-clock"></span>
+      </div>
+    </header>
+
+    <!-- CARDS -->
+    <section class="cards">
+
+      <a class="card finance" href="finanza/index.html">
+        <h3>📊 Finanza</h3>
+        <p>Analisi, investimenti, simulazioni</p>
+      </a>
+
+      <a class="card engineering" href="engineering/index.html">
+        <h3>⚙️ Ingegneria</h3>
+        <p>Tool tecnici e sistemi</p>
+      </a>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
+

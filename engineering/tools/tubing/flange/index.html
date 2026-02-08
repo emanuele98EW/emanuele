@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cervello Online - Flange</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Stile tabella flange */
+    .content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .content th, .content td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    .content th {
+      background-color: #0077cc;
+      color: #fff;
+    }
+    .content tbody tr:hover {
+      background-color: #e0f0ff;
+    }
+
+    @media (max-width: 768px) {
+      .content table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      th {
+        position: sticky;
+        top: 0;
+      }
+      td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+      }
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        font-weight: bold;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="../../../../assets/logo.png" alt="Cervello Online">
+    </div>
+    <nav class="menu">
+      <a href="../../../../index.html" class="menu-link">
+        <span class="icon">🏠</span>
+        <span class="text">Home</span>
+      </a>
+      <div class="menu-group">
+        <button class="menu-toggle">
+          <span class="icon">📊</span>
+          <span class="text">Finanza</span>
+          <span class="arrow">▶</span>
+        </button>
+        <div class="menu-content">
+          <a href="../../../../finanza/index.html" class="menu-link finance">
+            <span class="icon">📈</span>
+            <span class="text">Panoramica</span>
+          </a>
+          <a href="../../../../finanza/interesse/index.html" class="menu-link finance">
+            <span class="icon">💰</span>
+            <span class="text">Interesse composto</span>
+          </a>
+        </div>
+      </div>
+      <div class="menu-group open">
+        <button class="menu-toggle">
+          <span class="icon">🛠</span>
+          <span class="text">Ingegneria</span>
+          <span class="arrow">▶</span>
+        </button>
+        <div class="menu-content">
+          <a href="../../../index.html" class="menu-link engineering">
+            <span class="icon">📚</span>
+            <span class="text">Panoramica</span>
+          </a>
+          <a href="../../../appunti/index.html" class="menu-link engineering">
+            <span class="icon">📝</span>
+            <span class="text">Appunti</span>
+          </a>
+          <a href="../../index.html" class="menu-link engineering">
+            <span class="icon">🔧</span>
+            <span class="text">Tools</span>
+          </a>
+          <a href="../../energy/index.html" class="menu-link engineering">
+            <span class="icon">🔥</span>
+            <span class="text">Energy</span>
+          </a>
+          <a href="../../energy/Turbogas/index.html" class="menu-link engineering">
+            <span class="icon">⚙</span>
+            <span class="text">Turbogas</span>
+          </a>
+          <a href="../../stress/index.html" class="menu-link engineering">
+            <span class="icon">📐</span>
+            <span class="text">Stress</span>
+          </a>
+          <a href="../index.html" class="menu-link engineering">
+            <span class="icon">🧪</span>
+            <span class="text">Tubing</span>
+          </a>
+          <a href="index.html" class="menu-link engineering active">
+            <span class="icon">⭕</span>
+            <span class="text">Flange</span>
+          </a>
+          <a href="../tubazioni/index.html" class="menu-link engineering">
+            <span class="icon">🛠️</span>
+            <span class="text">Tubazioni</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <img src="../assets/logo.png" class="topbar-logo" alt="">
+        <h1>Flange</h1>
+        <span id="clock" class="digital-clock"></span>
+      </div>
+    </header>

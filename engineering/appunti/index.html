@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Appunti tecnici – Cervello Online</title>
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="../../assets/logo.png" alt="Cervello Online">
+    </div>
+    <nav class="menu">
+      <a href="../../index.html" class="menu-link">
+        <span class="icon">🏠</span>
+        <span class="text">Home</span>
+      </a>
+      <div class="menu-group">
+        <button class="menu-toggle">
+          <span class="icon">📊</span>
+          <span class="text">Finanza</span>
+          <span class="arrow">▶</span>
+        </button>
+        <div class="menu-content">
+          <a href="../../finanza/index.html" class="menu-link finance">
+            <span class="icon">📈</span>
+            <span class="text">Panoramica</span>
+          </a>
+          <a href="../../finanza/interesse/index.html" class="menu-link finance">
+            <span class="icon">💰</span>
+            <span class="text">Interesse composto</span>
+          </a>
+        </div>
+      </div>
+      <div class="menu-group open">
+        <button class="menu-toggle">
+          <span class="icon">🛠</span>
+          <span class="text">Ingegneria</span>
+          <span class="arrow">▶</span>
+        </button>
+        <div class="menu-content">
+          <a href="../index.html" class="menu-link engineering">
+            <span class="icon">📚</span>
+            <span class="text">Panoramica</span>
+          </a>
+          <a href="index.html" class="menu-link engineering active">
+            <span class="icon">📝</span>
+            <span class="text">Appunti</span>
+          </a>
+          <a href="../tools/index.html" class="menu-link engineering">
+            <span class="icon">🔧</span>
+            <span class="text">Tools</span>
+          </a>
+          <a href="../tools/energy/index.html" class="menu-link engineering">
+            <span class="icon">🔥</span>
+            <span class="text">Energy</span>
+          </a>
+          <a href="../tools/energy/Turbogas/index.html" class="menu-link engineering">
+            <span class="icon">⚙</span>
+            <span class="text">Turbogas</span>
+          </a>
+          <a href="../tools/stress/index.html" class="menu-link engineering">
+            <span class="icon">📐</span>
+            <span class="text">Stress</span>
+          </a>
+          <a href="../tools/tubing/index.html" class="menu-link engineering">
+            <span class="icon">🧪</span>
+            <span class="text">Tubing</span>
+          </a>
+          <a href="../tools/tubing/flange/index.html" class="menu-link engineering">
+            <span class="icon">⭕</span>
+            <span class="text">Flange</span>
+          </a>
+          <a href="../tools/tubing/tubazioni/index.html" class="menu-link engineering">
+            <span class="icon">🛠️</span>
+            <span class="text">Tubazioni</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- LOGO BACKGROUND -->
+    <div class="background-logo"></div>
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <img src="../../assets/logo.png" class="topbar-logo" alt="logo">
+        <h1>Appunti tecnici</h1>
+        <span id="clock" class="digital-clock"></span>
+      </div>
+    </header>
+
+    <!-- INTRO -->
+    <section style="margin-bottom: 30px; max-width: 900px;">
+      <p>
+        Raccolta strutturata di appunti ingegneristici personali:
+        formule, schemi, spiegazioni, riferimenti normativi e concetti chiave.
+      </p>
+    </section>
+
+    <!-- CARDS -->
+    <section class="cards">
+
+      <a class="card engineering" href="sistemi-energetici/index.html">
+        <h3>🔥 Sistemi energetici</h3>
+        <p>Cicli, impianti, configurazioni e confronto tecnologico</p>
+      </a>
+
+      <a class="card engineering" href="termodinamica/index.html">
+        <h3>🌡️ Termodinamica</h3>
+        <p>Primo e secondo principio, gas reali, exergia</p>
+      </a>
+
+      <a class="card engineering" href="fluidodinamica/index.html">
+        <h3>💨 Fluidodinamica</h3>
+        <p>Perdite di carico, moto dei fluidi, Reynolds</p>
+      </a>
+
+      <a class="card engineering" href="../tools/tubing/index.html">
+        <h3>🧪 Tubing</h3>
+        <p>Normative, componenti, criteri di progettazione</p>
+      </a>
+
+      <a class="card engineering" href="../tools/stress/index.html">
+        <h3>📐 Stress analysis</h3>
+        <p>Tensioni, verifiche, criteri di resistenza</p>
+      </a>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>
+
