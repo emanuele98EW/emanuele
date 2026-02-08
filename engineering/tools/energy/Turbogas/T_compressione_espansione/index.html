@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>T–s Compressione ed Espansione – Turbogas</title>
+  <link rel="stylesheet" href="../../../../../css/style.css">
+
+  <!-- MathJax -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="../../../../../assets/logo.png">
+    </div>
+    <nav class="menu">
+      <a href="../../../../../index.html" class="menu-link">🏠 Home</a>
+      <a href="../../../../index.html" class="menu-link engineering">📚 Ingegneria</a>
+      <a href="../../index.html" class="menu-link engineering">🔧 Tools</a>
+      <a href="../index.html" class="menu-link engineering active">⚙ Turbogas</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1>Diagrammi T–s – Turbogas</h1>
+      </div>
+    </header>
+
+    <section class="cards" style="grid-template-columns: 1fr 1fr;">
+
+      <!-- COMPRESSIONE INPUT -->
+      <div class="card engineering">
+        <h3>Compressione</h3>
+
+        <div class="inline-input">T1 = <input id="T1" type="number" value="288"> K</div>
+        <div class="inline-input">β = <input id="betaC" type="number" value="12"></div>
+        <div class="inline-input">k = <input id="kC" type="number" value="1.4" step="0.01"></div>
+
+        <p>\[
+          T_2 = T_1 \cdot \beta^{\frac{k-1}{k}} \hspace{1cm} \beta=\frac{p_2}{p_1}
+        \]</p>
+
+        <button onclick="calcCompressione()">Calcola</button>
+        <p id="outC"></p>
+      </div>
+
+      <!-- GRAFICO COMPRESSIONE -->
+      <div class="card engineering">
+        <h3>📈 Ts Compressione</h3>
+        <canvas id="tsC" width="420" height="360"></canvas>
+      </div>
+
+      <!-- ESPANSIONE INPUT -->
+      <div class="card engineering">
+        <h3>Espansione</h3>
+
+        <div class="inline-input">T3 = <input id="T3" type="number" value="1400"> K</div>
+        <div class="inline-input">β = <input id="betaE" type="number" value="12"></div>
+        <div class="inline-input">k = <input id="kE" type="number" value="1.33" step="0.01"></div>
+
+        <p>\[
+          T_4 = T_3 \cdot \frac{1}{\beta^{\frac{k-1}{k}}} \hspace{1cm} \beta=\frac{p_3}{p_4}
+        \]</p>
+
+        <button onclick="calcEspansione()">Calcola</button>
+        <p id="outE"></p>
+      </div>
+
+      <!-- GRAFICO ESPANSIONE -->
+      <div class="card engineering">
+        <h3>📈 T–s Espansione</h3>
+        <canvas id="tsE" width="420" height="360"></canvas>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<script>
+function calcCompressione(){
+  const T1 = +document.getElementById("T1").value;
+  const beta = +betaC.value;
+  const k = +kC.value;
+  const T2 = T1 * Math.pow(beta,(k-1)/k);
+  outC.innerHTML = `T2 = <strong>${T2.toFixed(1)} K</strong>`;
+  drawComp(T1,T2);
+}
+
+function calcEspansione(){
+  const T3 = +document.getElementById("T3").value;
+  const beta = +betaE.value;
+  const k = +kE.value;
+  const T4 = T3 *1/Math.pow(beta,(k-1)/k);
+  outE.innerHTML = `T4 = <strong>${T4.toFixed(1)} K</strong>`;
+  drawExp(T3,T4);
+}
+
+function drawComp(T1,T2){
+  drawTS(tsC,T1,T2,"p1","p2","#1e88e5");
+}
+
+function drawExp(T3,T4){
+  drawTS(tsE,T3,T4,"p3","p4","#43a047");
+}
+
+function drawTS(canvas, Tin, Tout, p1, p2, color) {
+  const ctx = canvas.getContext("2d");
+  const w = canvas.width;
+  const h = canvas.height;
+  const padding = 50;
+
+  ctx.clearRect(0, 0, w, h);
+
+  // --- ASSI ---
+  ctx.strokeStyle = "#444";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(padding, padding); ctx.lineTo(padding, h - padding); // Asse T
+  ctx.moveTo(padding, h - padding); ctx.lineTo(w - padding, h - padding); // Asse s
+  ctx.stroke();
+
+  ctx.font = "italic 13px sans-serif";
+  ctx.fillStyle = "#666";
+  ctx.fillText("s", w - 40, h - padding + 5);
+  ctx.fillText("T", padding - 20, padding);
+
+  // --- SCALA ---
+  const sCenter = w / 2;
+  const yScale = (h - 2 * padding) / 1400; 
+  const yIn = (h - padding) - Tin * yScale;
+  const yOut = (h - padding) - Tout * yScale;
+
+  // --- ISOBARE STILIZZATE ---
+  ctx.setLineDash([4, 4]);
+  ctx.strokeStyle = "#ddd";
+  [yIn, yOut].forEach(y => {
+    ctx.beginPath();
+    ctx.moveTo(padding, y + 25);
+    ctx.quadraticCurveTo(sCenter, y, w - padding, y - 25);
+    ctx.stroke();
+  });
+  ctx.setLineDash([]);
+
+  // --- TRASFORMAZIONE ---
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 4;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(sCenter, yIn);
+  ctx.lineTo(sCenter, yOut);
+  ctx.stroke();
+
+  // --- FRECCIA DIREZIONALE (CORRETTA) ---
+  // Se Tout > Tin (Compressione), punta verso l'alto.
+  // Se Tout < Tin (Espansione), punta verso il basso.
+  const midY = (yIn + yOut) / 2;
+  const arrowSize = 7;
+  const dir = yOut < yIn ? -1 : 1; // In coordinate Canvas, y diminuisce andando verso l'alto
+
+  ctx.beginPath();
+  ctx.moveTo(sCenter - arrowSize, midY - (arrowSize * dir));
+  ctx.lineTo(sCenter, midY);
+  ctx.lineTo(sCenter + arrowSize, midY - (arrowSize * dir));
+  ctx.stroke();
+
+  // --- STATI (Etichette dinamiche 1,2 o 3,4) ---
+  const labelIn = p1 === "p1" ? "1" : "3";
+  const labelOut = p2 === "p2" ? "2" : "4";
+
+  stato(ctx, labelIn, p1, sCenter, yIn, color);
+  stato(ctx, labelOut, p2, sCenter, yOut, color);
+}
+
+function stato(ctx, n, p, x, y, color) {
+  ctx.fillStyle = "white";
+  ctx.beginPath();
+  ctx.arc(x, y, 5, 0, 2 * Math.PI);
+  ctx.fill();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.fillStyle = "#333";
+  ctx.font = "bold 13px sans-serif";
+  ctx.fillText(`${n} (${p})`, x + 12, y + 5);
+}
+
+function stato(ctx, label, p, x, y, color) {
+  ctx.fillStyle = "white";
+  ctx.shadowBlur = 4;
+  ctx.shadowColor = "rgba(0,0,0,0.3)";
+  ctx.beginPath();
+  ctx.arc(x, y, 6, 0, 2 * Math.PI);
+  ctx.fill();
+  
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "#333";
+  ctx.font = "bold 12px sans-serif";
+  ctx.fillText(`${label} [${p}]`, x + 12, y + 4);
+}
+
+function stato(ctx,n,p,x,y){
+  ctx.beginPath();
+  ctx.arc(x,y,4,0,2*Math.PI);
+  ctx.fill();
+  ctx.fillText(`${n} (${p})`,x+6,y-6);
+}
+</script>
+
+<style>
+.inline-input{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-bottom:8px;
+}
+.inline-input input{
+  width:80px;
+}
+</style>
+
+</body>
+</html>

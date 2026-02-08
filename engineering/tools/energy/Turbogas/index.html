@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Turbogas – Cervello Online</title>
+  <link rel="stylesheet" href="../../../../css/style.css">
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="../../../../assets/logo.png" alt="Cervello Online">
+    </div>
+
+    <nav class="menu">
+      <a href="../../../../index.html" class="menu-link">
+        <span class="icon">🏠</span>
+        <span class="text">Home</span>
+      </a>
+
+      <div class="menu-group">
+        <button class="menu-toggle">
+          <span class="icon">📊</span>
+          <span class="text">Finanza</span>
+          <span class="arrow">▶</span>
+        </button>
+        <div class="menu-content">
+          <a href="../../../../finanza/index.html" class="menu-link finance">📈 Panoramica</a>
+          <a href="../../../../finanza/interesse/index.html" class="menu-link finance">💰 Interesse composto</a>
+        </div>
+      </div>
+
+      <div class="menu-group open">
+        <button class="menu-toggle">
+          <span class="icon">🛠</span>
+          <span class="text">Ingegneria</span>
+          <span class="arrow">▶</span>
+        </button>
+        <div class="menu-content">
+          <a href="../../../../engineering/index.html" class="menu-link engineering">📚 Panoramica</a>
+          <a href="../../../../engineering/appunti/index.html" class="menu-link engineering">📝 Appunti</a>
+          <a href="../../index.html" class="menu-link engineering">🔧 Tools</a>
+          <a href="../index.html" class="menu-link engineering">🔥 Energy</a>
+          <a href="index.html" class="menu-link engineering active">⚙ Turbogas</a>
+          <a href="../../stress/index.html" class="menu-link engineering">📐 Stress</a>
+          <a href="../../tubing/index.html" class="menu-link engineering">🧪 Tubing</a>
+          <a href="../../tubing/flange/index.html" class="menu-link engineering">⭕ Flange</a>
+          <a href="../../tubing/tubazioni/index.html" class="menu-link engineering">🛠️ Tubazioni</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="background-logo"></div>
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <img src="../../../../assets/logo.png" class="topbar-logo" alt="">
+        <h1>Turbogas</h1>
+        <span id="clock" class="digital-clock"></span>
+      </div>
+    </header>
+
+    <!-- TOOL CARDS -->
+    <section class="cards">
+
+      <a class="card engineering" href="T_compressione_espansione/index.html">
+        <h3> 🌡️Temperatura Compressione ed Espansione</h3>
+        <p>Temperatura Post Compressore e Turbina</p>
+      </a>
+
+      <a class="card engineering" href="compressione/index.html">
+        <h3>🌬 Compressore</h3>
+        <p>Compressione politropica, efficienza isentropica</p>
+      </a>
+
+      <a class="card engineering" href="turbina/index.html">
+        <h3>🔥 Turbina</h3>
+        <p>Espansione, potenza utile e rendimento</p>
+      </a>
+
+      <a class="card engineering" href="recupero/index.html">
+        <h3>♻ Recupero termico</h3>
+        <p>HRSG, efficienza globale e cogenerazione</p>
+      </a>
+
+      <a class="card engineering" href="confronto/index.html">
+        <h3>📊 Confronto cicli</h3>
+        <p>Brayton semplice vs rigenerato vs combinato</p>
+      </a>
+
+    </section>
+
+  </main>
+</div>
+
+<script src="../../../../js/main.js"></script>
+
+</body>
+</html>
