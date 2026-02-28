@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,123 +10,75 @@
 
 <body>
 
-<div class="layout">
+  <div class="layout">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <img src="../../assets/logo.png" alt="Cervello Online">
-    </div>
-    <nav class="menu">
-      <a href="../../index.html" class="menu-link">
-        <span class="icon">🏠</span>
-        <span class="text">Home</span>
-      </a>
-      <div class="menu-group">
-        <button class="menu-toggle">
-          <span class="icon">📊</span>
-          <span class="text">Finanza</span>
-          <span class="arrow">▶</span>
-        </button>
-        <div class="menu-content">
-          <a href="../../finanza/index.html" class="menu-link finance">
-            <span class="icon">📈</span>
-            <span class="text">Panoramica</span>
-          </a>
-          <a href="../../finanza/interesse/index.html" class="menu-link finance">
-            <span class="icon">💰</span>
-            <span class="text">Interesse composto</span>
-          </a>
-        </div>
+    <!-- TOP NAVBAR -->
+    <header class="navbar">
+      <div class="navbar-logo">
+        <img src="../../assets/logo.png" alt="Logo">
+        <h1>Emanuele Zanella</h1>
       </div>
-      <div class="menu-group open">
-        <button class="menu-toggle">
-          <span class="icon">🛠</span>
-          <span class="text">Ingegneria</span>
-          <span class="arrow">▶</span>
-        </button>
-        <div class="menu-content">
-          <a href="../index.html" class="menu-link engineering">
-            <span class="icon">📚</span>
-            <span class="text">Panoramica</span>
-          </a>
-          <a href="../appunti/index.html" class="menu-link engineering">
-            <span class="icon">📝</span>
-            <span class="text">Appunti</span>
-          </a>
-          <a href="index.html" class="menu-link engineering active">
-            <span class="icon">🔧</span>
-            <span class="text">Tools</span>
-          </a>
-          <a href="energy/index.html" class="menu-link engineering">
-            <span class="icon">🔥</span>
-            <span class="text">Energy</span>
-          </a>
-          <a href="energy/Turbogas/index.html" class="menu-link engineering">
-            <span class="icon">⚙</span>
-            <span class="text">Turbogas</span>
-          </a>
-          <a href="stress/index.html" class="menu-link engineering">
-            <span class="icon">📐</span>
-            <span class="text">Stress</span>
-          </a>
-          <a href="tubing/index.html" class="menu-link engineering">
-            <span class="icon">🧪</span>
-            <span class="text">Tubing</span>
-          </a>
-          <a href="tubing/flange/index.html" class="menu-link engineering">
-            <span class="icon">⭕</span>
-            <span class="text">Flange</span>
-          </a>
-          <a href="tubing/tubazioni/index.html" class="menu-link engineering">
-            <span class="icon">🛠️</span>
-            <span class="text">Tubazioni</span>
-          </a>
+
+      <nav class="menu">
+        <a href="../../index.html" class="menu-link">Home</a>
+
+        <div class="menu-group">
+          <button class="menu-toggle">
+            Finanza <span class="arrow">▼</span>
+          </button>
+          <div class="menu-content">
+            <a href="../../finanza/interesse/index.html" class="menu-link finance">Interesse Composto</a>
+            <a href="../../finanza/mutuo/index.html" class="menu-link finance">Mutui</a>
+          </div>
         </div>
-      </div>
-    </nav>
-  </aside>
 
+        <div class="menu-group">
+          <button class="menu-toggle">
+            Ingegneria <span class="arrow">▼</span>
+          </button>
+          <div class="menu-content">
+            <a href="../appunti/index.html" class="menu-link engineering">Appunti</a>
+            <a href="index.html" class="menu-link engineering active">Tools</a>
+          </div>
+        </div>
 
-  <!-- MAIN -->
-  <main class="main">
+        <a href="../../personale/index.html" class="menu-link personal">Personale</a>
 
-    <!-- LOGO BACKGROUND -->
-    <div class="background-logo"></div>
-
-    <!-- TOPBAR -->
-    <header class="topbar">
-      <div class="topbar-left">
-        <img src="../../assets/logo.png" class="topbar-logo" alt="logo">
-        <h1>Tool ingegneristici</h1>
         <span id="clock" class="digital-clock"></span>
-      </div>
+      </nav>
     </header>
 
-    <!-- CARDS -->
-    <section class="cards">
+    <!-- MAIN CONTENT -->
+    <main class="main">
 
-      <a class="card engineering" href="energy/index.html">
-        <h3>🔥 Sistemi energetici</h3>
-        <p>Cicli termodinamici, rendimenti, diagrammi</p>
-      </a>
+      <!-- 3D CENTRAL LOGO -->
+      <div class="hero-logo-container" id="hero-container">
+        <img src="../../assets/logo.png" alt="Central Core" class="hero-logo" id="hero-logo">
+      </div>
 
-      <a class="card engineering" href="tubing/index.html">
-        <h3>🧪 Tubing</h3>
-        <p>Linee, perdite di carico, diametri</p>
-      </a>
+      <!-- CARDS (Floating below the logo) -->
+      <section class="cards">
+        <a class="card engineering" href="energy/index.html">
+          <h3>🔥 Sistemi energetici</h3>
+          <p>Cicli termodinamici, rendimenti, diagrammi</p>
+        </a>
 
-      <a class="card engineering" href="stress/index.html">
-        <h3>📐 Stress analysis</h3>
-        <p>Tensioni, verifiche e criteri</p>
-      </a>
+        <a class="card engineering" href="tubing/index.html">
+          <h3>🧪 Tubing</h3>
+          <p>Linee, perdite di carico, diametri</p>
+        </a>
 
-    </section>
+        <a class="card engineering" href="stress/index.html">
+          <h3>📐 Stress analysis</h3>
+          <p>Tensioni, verifiche e criteri</p>
+        </a>
+      </section>
 
-  </main>
+    </main>
 
-</div>
+  </div>
 
-<script src="../../js/main.js"></script>
+  <script src="../../js/main.js"></script>
 </body>
+
 </html>

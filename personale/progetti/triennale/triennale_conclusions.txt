@@ -1,0 +1,381 @@
+ 
+2.4 Codice numerico  18 
+ 
+2.4 Codice numerico  
+ 
+Si implementa un codice in ambiente Matlab per la valutazione del numero di Nusselt. Si 
+vuole ottenere il valore del numero di Nusselt sul contorno superiore del canale poroso e 
+lo si vuole graficare in funzione di 𝑧̃ (ovvero del tempo). Il numero di Nusse lt a distanza 
+sufficientemente elevata dall’ingresso termico raggiunge un valore stabile.  
+Il problema definito dall’ Eq. (2.1 8) è un problema 3D nello spazio. In particolare, il 
+problema è parabolico nella direzione z (non nel tempo). Per risolvere questo tipo di 
+problemi, si può selezionare il modello ‘transient’ (ovvero si risolve un problema non 
+stazionario), disegnando un dominio circolare nel piano (x, y) (che descrive la sezione 
+del canale) e usando il tempo (la direzione di evoluzione) al posto della  coordinata z.  
+ 
+Nella prima riga di codice si definisce la tipologia di modello che descriva il problema 
+da risolvere:  
+ 
+forchh_model  = createpde( 'thermal' ,'transient' ); 
+ 
+Mediante questa linea di codice si definisce il modello: la tipologia di problema che si 
+vuole risolvere (problema di scambio termico) e la dipendenza dal tempo (problema non 
+stazionario).  
+ 
+Di seguito si procede nel definire la geometria circolare del can ale poroso:  
+ 
+C1=[1,0,0,1];  
+ns=char('Cerchio' ); 
+g=decsg(C1', 'Cerchio' ,ns'); 
+geometryFromEdges(forchh_model,g);  
+ 
+ 
+Si è definita la geometria con il comando decsg . Per funzionare  questo comando,  si 
+devono associare una serie di informazioni. La prima è la gd (Geometry description 
+matrix) , presente nella prima riga . Il primo elemento contiene il numero 1 e identifica il  
+ 
+ 
+ 
+ 
+2.4 Codice numerico  19 
+ 
+ 
+cerchio come geometria. I due numeri successivi contengono le coordinate orizzontali e 
+verticali, x e y del centro del cerchio. L’ultimo elemento è il raggio del cerchio. Con la 
+seconda riga viene definita la ns, opzione necessaria per dare un nome agli el ementi 
+geometrici che definiscono il dominio.  
+La matrice gd deve essere una matrice n x 1 (a colonna singola) mentre C1 è una matrice 
+1 x n quindi essa va trasposta. La trasposta della matrice viene effettuata con l’apice alla 
+matrice finale che definisce il dominio. Il comando geometryFromEdges  permette di 
+includere la geometria definita dal comando decsg  all’interno del modello.  
+In figura  2.4 è possibile osservare la geometria descritta. Si tenga presente che in questa 
+spiegazione dello script non vengono menzionate le righe per ottenere le figure, escluso 
+il grafico del numero di Nusselt.  
+ 
+ 
+ 
+  
+ 
+ 
+ 
+Figura 2.4: Geometria circolare nel piano (x,y)  
+ 
+ 
+ 
+ 
+Il passo seguente è la definizione delle condizioni al contorno termiche di Dirichlet:  
+ 
+ 
+thermalBC(forchh_model, 'Edge',1,'Temperature' ,1); 
+thermalBC(forchh_model, 'Edge',2,'Temperature' ,1); 
+thermalBC(forchh_model, 'Edge',3,'Temperature' ,1); 
+thermalBC(forchh_model, 'Edge',4,'Temperature' ,1); 
+ 
+ 
+Le condizioni al contorno vengono inserite nel modello mediante il comando thermalBC . 
+Il comando ha come primo elemento, fra parentesi tonde, il modello stesso. Il secondo 
+elemento rappresenta in quale modo si vogliono distinguere i contorni. Si è utilizzata 
+l’opzione Edge  che richiede, come terzo elemento, il numero identificativo del co ntorno 
+su cui è imposta la condizione. Dalla figura 2.4 è possibile osservare come il software di 
+calcolo identifica i contorni. Con l’opzione “Temperature” si impone la condizione di 
+Dirichlet e si inserisce il valore della temperatura costante in tutto i l contorno.  
+ 
+ 
+Con le righe seguenti si inserisce all’interno del codice l’equazione della velocità 
+adimensionale Eq. (2. 9) e si definisce l’equazione di bilancio Eq. (2.1 8):   
+ 
+vel=@(region,state)(1+region.y -region.y);  
+thermalProperties(forchh_model, 'ThermalConductivity' ,1,'MassDensity' ,1
+,'SpecificHeat' ,vel); 
+ 
+Dove region e state  indica no che la funzione è definita nello spazio e nel tempo.  Bisogna 
+sempre dare  una dipendenza spaziale alla funzione per questo si è sommata e sottratta la 
+coordinata y nella definizione dell’equazione della velocità. Il comando 
+“themalProperties” permette di assegnare le proprietà del materiale come conduttività 
+termica, densità di  massa e calore specifico. Per inserire in modo corretto le equazioni nel 
+codice, è necessario definire in modo opportuno il coefficiente che moltiplica il termine 
+non stazionario inserendovi la definizione di 𝑢̅𝑧. Si sarebbe potuto anche non scrivere 
+l’equazione della velocità , assegnare il valore uno al calore specifico essendo piatto il 
+profilo di velocità e quindi unitaria la velocità adimensionale.  
+ 2.4 Codice numerico  20 
+ 
+ 
+ 
+ 
+Ora si definisce la mesh, definire una mesh consiste nel discretizzare il dominio in tanti 
+piccoli sottodomini su cui si vuole risolvere il problema. Impostare una mesh più fitta 
+permette di avere una soluzione più precisa ma ciò lo si paga con un costo computazionale 
+maggiore.  
+ 
+generateMesh(forchh_model, 'Hmin',0.001,'Hmax',0.03); 
+ 
+ 
+Il comando “generateMesh ” permette di disegnare una mesh triangolare non strutturata 
+sul modello . È possibile controllare la dimensione minima e massima del lato degli 
+elementi triangolari che  costituiscono la mesh. Con l’opzione "Hmin” si limita il valore 
+minimo mentre con l’opzione “Hmax” si limita il valore massimo.  
+ 
+ 
+ 
+ 2.4 Codice numerico  21 
+Figura 2.5: Mesh triangolare non strutturata  
+ 
+ 
+ 
+Essendo il problema parabolico  è necessario definire una condizione iniziale Eq. (2. 20). 
+Con le righe seguenti alla condizione iniziale si va a risolvere il campo di temperatura 
+utile a determinare il numero di Nusselt.  
+ 
+thermalIC(forchh_model,0);   
+  
+risultati=solve(forchh_model,tlist);  
+solT=risultati.Temperature;  
+Per impostare la condizione iniziale è stato utilizzato il comando thermalIC . Il comando 
+richiede come primo elemento il modello che si sta descrivendo e successivamente la 
+condizione iniziale stessa . Si è assunto che la temperatura del fluido che entra ne l canale 
+fosse uniforme e costante, quindi la condizione iniziale in questo caso è una costante. Ma 
+la condizione può essere anche posta come una distribuzione di temperatura. Per risolvere 
+il pro blema si è utilizzato il comando solve  che richiede, come secondo elemento dato 
+che il primo è il modello in cui è descritto il problema, un vettore con tutti gli istanti di 
+tempo su cui risolvere il problema. Si è s celto come istante iniziale 𝑡0 =0 , un passo tra 
+due ista nti successivi di ∆𝑡=0.01 e come istante finale 𝑡𝑓 = 1.5. Così si ottiene  la 
+soluzione del campo di temperatura che è possibile associarla ad una variabile il cui  nome 
+è risultati . L’ultima linea di questo tratto di codice serve ad ottenere il campo risolto sui 
+nodi della me sh. 
+ 
+Scritte le righe per descrivere il problema e determina re il campo di temperatura si passa 
+alla parte di codice che permette di determinare il numero di Nusselt . 
+yn=0:0.01:1;  
+xn=zeros(1,length(yn));  
+xnmax=0;  
+ynmax=1;  
+[gradTx,gradTy]=evaluateTemperatureGradient(risultati,xnmax,ynmax,1:le
+ngth(tlist));  
+T1=interpolateTemperature(risultati,xnmax,ynmax,1:length(tlist));  
+Tn=interpolateTemperature(risultati,xn,yn,1:length(tlist));  
+ 
+for i=1:1:length(tlist)  
+     Tb(i)=2*trapz(yn ,(yn'.*Tn(:,i)));  
+end 
+  
+Nu=2*gradTy./(T1 -Tb); 
+ 2.4 Codice numerico  22 
+ 
+ 
+ 
+ 
+Osservando l’equazione del numero di Nus selt Eq. (2. 24) si nota come  sia necessario  
+inserire all’interno del codice la definizione della temperatura  di bulk  oltre che valutare  
+il campo di temperatura e il gradiente di temperatura sul contorno . Per valutare il 
+gradiente di temperatura si è utilizzato il comando evaluateTemperatureGradient  i cui 
+elementi  sono il campo di temperatura , le coordinate  che definiscono  la linea  (0,1,z)  su 
+cui si vuole valutare il gradiente e gli istanti di tempo da considerare dato che i risultati 
+dipendono dal tempo. Mediante il comando interpolateTemperature  si interpola il campo  
+di temperatura su  una linea a piacere, gli elementi che richiede sono gli stessi  della 
+valutazione del gradiente.   
+Vengono richieste due interpolazioni della temperatura . La prima , 𝑇1 in un punto preciso  
+del dominio bidimensionale  definito dalle coordinate (𝑥𝑚𝑎𝑥,𝑦𝑚𝑎𝑥). Ques to vettore viene 
+inserito al denominatore della definizione del numero di Nusselt.  La seconda 𝑇𝑛 da 
+inserire nella definizione della temperatura di bulk. Le coordinate in cui si interpola  il 
+campo di temperatura  per il vettore  𝑇𝑛 sono definite dai vettori yn e xn.  Questi due vettori 
+definiscono la linea  nello spazio bidimensionale ( x,y) all’ascissa  zero e all ’ordinata 
+variabile da zero a uno. Ciò è stato fatto per effettuare l’integrale definito presente nella 
+definizione della temperatura di bulk Eq. (2. 25). 
+Ogni i-esimo punto del dominio , per il compilatore, è definito da una coppia di valori 
+(𝑥𝑖,𝑦𝑖) che sono le coordinate cartesiane . Si sono definiti quindi due vettori: uno per la 
+coordin ata orizzontale e uno per quella verticale.  Con la prima riga si è definito il vettore 
+che contiene i valori della coordinata y  nella forma (elemento iniziale: passo: elemento 
+finale) . Mentre  il vettore della coordinata x è stato scritto come un vettore di zeri  dove il 
+numero elementi è definito  dal numero  di valori presenti  nel vettore yn  (lenght (yn))  dato 
+che i  due vettori devono avere lo stesso numero di elementi . 
+ 
+I valori della  temperatur a di bulk vengono ricavati  mediante un  ciclo for dat a l’evoluzione 
+nel tempo del campo di temperatura . Inoltre,  si è utilizzato il comando trapz  per valutare 
+l’inte grale  del campo  di temperatura  sulla linea . Il primo termine dentro parentesi tonda  
+è il percorso su cui si integra mentre il secondo elemento e il campo da integrare.   
+  23 2.4 Codice numerico  
+ 
+ 
+ 
+Il campo di temperatura è una matrice di elementi allora si sono usati i “:” per indicare 
+quale fra righe e colonne dovrà essere la direzione su cui trapz deve operare . 
+ 
+Infine , si sono scritte le linee di codice utili ad ottenere l’output dello script ovvero il 
+grafico del  numero di Nu sselt in funzione di 𝑧̃ (ovvero del tempo).  
+ 
+figure('Name','Numero di Nusselt' ) 
+plot(tlist,Nu)  
+xlabel('z') 
+ylabel('Nu') 
+ 
+Il comando figure  permette di aprire una finestra  in cui collocare il  grafico. Con il 
+comando pl ot si ottiene l’andamento del numero di Nusselt al variare del tempo . Gli 
+elementi del comando sono gli istanti di tempo e il valore della funzione  da graficare.  
+Mediante i comandi xlabel e ylabe l si è definito  il nome degli assi  nel grafico che viene 
+ottenuto.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 2.4 Codice numerico  24 
+ 
+Discussione dei risultati  
+ 
+ 
+Il numero di Nusselt locale è utilizzato per mostrare il flusso di calore lungo una parete 
+esso fornisce un’indicazione di quanto calore un fluido trasferisce ad una superficie. Nello 
+sviluppo del flusso all’interno dei tubi il numero di Nusselt cambia lungo la direzione 
+assiale.  Infatti, da come è possibile osservare dall’Eq.(2.2 6) esso è dipendente dalla 
+derivata della temperatura nella direzione radiale alla parete del canale. Quindi  più il 
+fluido risale lungo il tubo, più la derivata diminuisce e la temperatura media aumenta. 
+Dopo che il flusso è completamente sviluppato, il numero di Nusselt rimane costante 
+lungo la direzione assiale.  
+ 
+ 
+ 
+Come detto il numero di Nusselt locale è cost ante in tutta la regione completamente 
+sviluppata, tuttavia il suo valore dipende dalla struttura del flusso, dalla geometria e da lle 
+condizioni  termiche della superficie.  Per flusso laminare in un tubo circolare  privo di 
+matrice porosa  con temperatura alle pareti uniforme il valore del numero di Nusselt è pari 
+al valore : 
+ 
+ 𝑁𝑢=3.656 (3.1) 
+ 
+Tale valore è quello riportato nella letteratura scientifica ed è possibile verificarlo dal 
+Shah, Ramesh K., and A. L. London.  Laminar flow forced convection heat transfer and 
+flow friction in straight and curved ducts -a summary of analytical solutions  [3]. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+3. Discussione dei risultati  26 
+ 
+ 
+Eseguendo il codice  descritto nel capitolo precedente è possibile ottenere il seguente 
+grafico del numero di Nusselt in funzione della coordinata 𝑧̃ (ovvero del tempo) nel caso 
+di un canale poroso a sezione circolare.  
+ 
+ 
+Dunque, il valore del numero di Nusselt in un canale poroso a sezione circolare con 
+temperatura alle pareti uniforme, a distanza sufficientemente elevata dall’ingresso 
+termico raggiunge il valore stabile:  
+ 
+ 
+ 𝑁𝑢=5.78 (3.2) 
+ 
+ 
+Tale valore è il dato riportato dalla letteratura scientifica, com’è possibile verificare dal 
+D. A. Nield, A. Bejan – Convection in Porous Media  [1].  Figure 3.1: grafico del numero di Nusselt in funzione di  𝑧̃ (ovvero del tempo)  
+
+ 
+3. Discussione dei risultati  27 
+ 
+ 
+Il valore ottenuto mediante l’utilizzo del codice Matlab  è pari a 5.78 3, quindi 
+considerando tre cifre significative si può ritenere tale valore coincidente con quello 
+riportato della letteratura scientifica.  
+Il risultato evidenzia che il valore del numero di Nusselt è maggiore  per canali riempiti 
+di materiale poroso rispetto a canali privi di matrice porosa. Si ha dunque un trasferimento 
+del calore maggiore quando  si ha un materiale poroso a scapito di una pressione inferiore, 
+che dipende dalla permeabilità della matrice porosa.                                             
+La causa è dovuta al profilo di velocità più uniforme  e al più alto rapporto 
+superficie/volume che si ha con i mezzi porosi  che comportano  un campo di temperatura 
+più uniforme attraverso il canale. Ciò comporta un minor valore della differenza di 
+tempe ratura 𝑇𝑤−𝑇𝑏 e quindi un  aumento del numero di Nusselt.   
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Conclusioni  
+ 
+Sia il modello di Darcy che il modello di Darcy – Forchheimer condividono la 
+caratteristica di avere un moto a pistone. Dunque, per questi due modelli di moto si ottiene  
+lo stesso numero di Nusselt. Il numero di un Nusselt in un condotto circolare contenente 
+una matrice porosa risulta essere maggiore rispetto ad uno stesso condotto privo di 
+matrice porosa. Quindi il coefficiente di calore convettivo è maggiore per sistemi riempiti 
+con materiale poroso a causa dell’alta conducibilità termica della matrice porosa rispetto 
+alla conducibilità termica del fluido. Per quanto riguarda le possibili applicazioni dei 
+mezzi porosi non è sempre necessario riempire completamente  il mezzo poroso. Un 
+riempimento parziale ha il vantaggio di ridurre la caduta di pressione rispetto ad un 
+sistema completamente riempito da  un mezzo poroso.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Bibliografia  
+ 
+[1] Donald A. Nield , Adrian Bejan (2017): Convection in porous media, Fifth edition , 
+Springer.  
+[2] A. Bejan (2013): Convection Heat Transfer, Fourth edition, Wiley  
+[3] Shah, Ramesh K., and Alexander Louis London.  Laminar flow forced convection 
+heat transfer and flow friction in strai ght and curved ducts -a summary of analytical 
+solutions. No. TR -75. Stanford Univ CA Dept of Mechanical Engineering, 1971. 
+78-152 
+[4] Dispense del corso tenuto dal Prof. Michele Celli: Laboratorio Computazionale di 
+Termofluidodinamica del CdL Ingegneria Energet ica - Alma Mater Studiorum, 
+Università di Bologna  
+[5] Dispense del corso tenuto dal Prof. Antonio Barletta: Termofluidodinamica del CdL 
+Ingegneria Energetica Magistrale -  Alma Mater Studiorum, Università di Bologna  
+[6] Kambiz  Vafai , S. J. Kim (1989): Forced con vection in a channel filled with a porous 
+medium: an exact solution , Journal of heat transfer  
+[7] C. Beckermann, R Viskanta (1986): Forced convection boundary layer flow and heat 
+transfer along a flat plate embedded in a porous medium, Journal of heat transfer  Vol. 
+30, pp.1547 -1551  
+ 

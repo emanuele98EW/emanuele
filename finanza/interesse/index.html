@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,158 +10,118 @@
 
 <body>
 
-<div class="layout">
+  <div class="layout">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <img src="../../assets/logo.png" alt="Cervello Online">
-    </div>
-    <nav class="menu">
-      <a href="../../index.html" class="menu-link">
-        <span class="icon">🏠</span>
-        <span class="text">Home</span>
-      </a>
-      <div class="menu-group open">
-        <button class="menu-toggle">
-          <span class="icon">📊</span>
-          <span class="text">Finanza</span>
-          <span class="arrow">▶</span>
-        </button>
-        <div class="menu-content">
-          <a href="../index.html" class="menu-link finance">
-            <span class="icon">📈</span>
-            <span class="text">Panoramica</span>
-          </a>
-          <a href="index.html" class="menu-link finance active">
-            <span class="icon">💰</span>
-            <span class="text">Interesse composto</span>
-          </a>
-        </div>
+    <!-- TOP NAVBAR -->
+    <header class="navbar">
+      <div class="navbar-logo">
+        <img src="../../assets/logo.png" alt="Logo">
+        <h1>Emanuele Zanella</h1>
       </div>
-      <div class="menu-group">
-        <button class="menu-toggle">
-          <span class="icon">🛠</span>
-          <span class="text">Ingegneria</span>
-          <span class="arrow">▶</span>
-        </button>
-        <div class="menu-content">
-          <a href="../../engineering/index.html" class="menu-link engineering">
-            <span class="icon">📚</span>
-            <span class="text">Panoramica</span>
-          </a>
-          <a href="../../engineering/appunti/index.html" class="menu-link engineering">
-            <span class="icon">📝</span>
-            <span class="text">Appunti</span>
-          </a>
-          <a href="../../engineering/tools/index.html" class="menu-link engineering">
-            <span class="icon">🔧</span>
-            <span class="text">Tools</span>
-          </a>
-          <a href="../../engineering/tools/energy/index.html" class="menu-link engineering">
-            <span class="icon">🔥</span>
-            <span class="text">Energy</span>
-          </a>
-          <a href="../../engineering/tools/energy/Turbogas/index.html" class="menu-link engineering">
-            <span class="icon">⚙</span>
-            <span class="text">Turbogas</span>
-          </a>
-          <a href="../../engineering/tools/stress/index.html" class="menu-link engineering">
-            <span class="icon">📐</span>
-            <span class="text">Stress</span>
-          </a>
-          <a href="../../engineering/tools/tubing/index.html" class="menu-link engineering">
-            <span class="icon">🧪</span>
-            <span class="text">Tubing</span>
-          </a>
-          <a href="../../engineering/tools/tubing/flange/index.html" class="menu-link engineering">
-            <span class="icon">⭕</span>
-            <span class="text">Flange</span>
-          </a>
-          <a href="../../engineering/tools/tubing/tubazioni/index.html" class="menu-link engineering">
-            <span class="icon">🛠️</span>
-            <span class="text">Tubazioni</span>
-          </a>
+
+      <nav class="menu">
+        <a href="../../index.html" class="menu-link">Home</a>
+
+        <div class="menu-group">
+          <button class="menu-toggle">
+            Finanza <span class="arrow">▼</span>
+          </button>
+          <div class="menu-content">
+            <a href="../index.html" class="menu-link finance">Panoramica</a>
+            <a href="index.html" class="menu-link finance active">Interesse Composto</a>
+          </div>
         </div>
-      </div>
-    </nav>
-  </aside>
 
-  <!-- MAIN -->
-  <main class="main">
+        <div class="menu-group">
+          <button class="menu-toggle">
+            Ingegneria <span class="arrow">▼</span>
+          </button>
+          <div class="menu-content">
+            <a href="../../engineering/appunti/index.html" class="menu-link engineering">Appunti</a>
+            <a href="../../engineering/tools/index.html" class="menu-link engineering">Tools</a>
+          </div>
+        </div>
 
-    <div class="background-logo"></div>
-
-    <header class="topbar">
-      <div class="topbar-left">
-        <img src="../../assets/logo.png" class="topbar-logo" alt="">
-        <h1>📈 Interesse composto</h1>
+        
+        <a href="../../personale/index.html" class="menu-link personal">Personale</a>
         <span id="clock" class="digital-clock"></span>
-      </div>
+      </nav>
     </header>
 
-    <!-- CONTENUTO -->
-    <section class="card finance">
+    <!-- MAIN CONTENT -->
+    <main class="main">
 
-      <h3>Parametri di calcolo</h3>
+      <h2 style="color: #0ff; text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">📈
+        Interesse composto</h2>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:16px">
+      <!-- CONTENUTO INPUT -->
+      <section class="card finance" style="max-width: 800px; width: 100%; margin-bottom: 30px;">
+        <h3 style="margin-bottom: 20px;">Parametri di calcolo</h3>
 
-        <label>
-          Capitale iniziale (€)
-          <input id="capitale" type="number" value="10000">
-        </label>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+          <label style="display: flex; flex-direction: column; gap: 8px; color: #a5f3fc;">
+            Capitale iniziale (€)
+            <input id="capitale" type="number" value="10000"
+              style="padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid #0ff; color: #0ff; border-radius: 4px; font-family: 'Orbitron', sans-serif;">
+          </label>
 
-        <label>
-          Versamento annuo (€)
-          <input id="versamento" type="number" value="0">
-        </label>
+          <label style="display: flex; flex-direction: column; gap: 8px; color: #a5f3fc;">
+            Versamento annuo (€)
+            <input id="versamento" type="number" value="0"
+              style="padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid #0ff; color: #0ff; border-radius: 4px; font-family: 'Orbitron', sans-serif;">
+          </label>
 
-        <label>
-          Tasso annuo (%)
-          <input id="tasso" type="number" step="0.1" value="5">
-        </label>
+          <label style="display: flex; flex-direction: column; gap: 8px; color: #a5f3fc;">
+            Tasso annuo (%)
+            <input id="tasso" type="number" step="0.1" value="5"
+              style="padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid #0ff; color: #0ff; border-radius: 4px; font-family: 'Orbitron', sans-serif;">
+          </label>
 
-        <label>
-          Anni
-          <input id="anni" type="number" value="20">
-        </label>
+          <label style="display: flex; flex-direction: column; gap: 8px; color: #a5f3fc;">
+            Anni
+            <input id="anni" type="number" value="20"
+              style="padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid #0ff; color: #0ff; border-radius: 4px; font-family: 'Orbitron', sans-serif;">
+          </label>
+        </div>
 
-      </div>
+        <button onclick="calcola()"
+          style="margin-top:20px; padding: 12px 24px; background: rgba(0, 255, 255, 0.1); border: 1px solid #0ff; color: #0ff; border-radius: 4px; cursor: pointer; font-weight: bold; font-family: 'Orbitron', sans-serif; transition: all 0.3s;"
+          onmouseover="this.style.background='rgba(0, 255, 255, 0.3)'; this.style.boxShadow='0 0 15px rgba(0, 255, 255, 0.5)';"
+          onmouseout="this.style.background='rgba(0, 255, 255, 0.1)'; this.style.boxShadow='none';">
+          Calcola
+        </button>
 
-      <button onclick="calcola()" style="margin-top:20px">
-        Calcola
-      </button>
+      </section>
 
-    </section>
+      <!-- RISULTATI (Cards container) -->
+      <section class="cards" style="margin-bottom: 30px;">
+        <div class="card finance" style="padding: 20px;">
+          <h3 style="font-size: 1.2rem;">Capitale finale</h3>
+          <p id="finale" style="font-size: 1.8rem; color: #fff; text-shadow: 0 0 15px rgba(37, 99, 235, 0.8);">—</p>
+        </div>
 
-    <!-- RISULTATI -->
-    <section class="cards">
+        <div class="card finance" style="padding: 20px;">
+          <h3 style="font-size: 1.2rem;">Interessi maturati</h3>
+          <p id="interessi" style="font-size: 1.8rem; color: #fff; text-shadow: 0 0 15px rgba(37, 99, 235, 0.8);">—</p>
+        </div>
+      </section>
 
-      <div class="card finance">
-        <h3>Capitale finale</h3>
-        <p id="finale">—</p>
-      </div>
+      <!-- GRAFICO -->
+      <section class="card finance" style="max-width: 800px; width: 100%;">
+        <h3>Andamento nel tempo</h3>
+        <div
+          style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 10px; border: 1px solid rgba(0, 255, 255, 0.1);">
+          <canvas id="grafico" height="100"></canvas>
+        </div>
+      </section>
 
-      <div class="card finance">
-        <h3>Interessi maturati</h3>
-        <p id="interessi">—</p>
-      </div>
+    </main>
 
-    </section>
+  </div>
 
-    <!-- GRAFICO -->
-    <section class="card finance">
-      <h3>Andamento nel tempo</h3>
-      <canvas id="grafico" height="100"></canvas>
-    </section>
-
-  </main>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="script.js"></script>
-<script src="../../js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+  <script src="../../js/main.js"></script>
 </body>
+
 </html>

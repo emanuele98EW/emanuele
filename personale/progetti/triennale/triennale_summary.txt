@@ -1,0 +1,540 @@
+ 
+ 
+ALMA MATER STUDIORUM  
+UNIVERSITÀ DI BOLOGNA  
+ 
+ 
+ 
+ 
+ 
+DIPARTIMENTO DI INGEGNERIA INDUSTRIALE  
+Corso di Laurea Triennale  in Ingegneria Energetica  
+ 
+ 
+ 
+ 
+Tesi di laurea  
+in  
+FISICA TECNICA  
+ 
+ 
+ 
+Analisi numerica del numero di Nusselt in un canale poroso a sezione 
+circolare: modello di Forchheimer  
+ 
+ 
+ 
+ 
+ 
+    Candidato:   
+Emanuele Zanella                                                                       
+ 
+                                                          Relatore:  
+                                                                                       Prof. Michele Celli  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Anno Accademico 20 19/2020 
+II Appello di laurea
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+                                                                                                                                     
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Abstract  
+ 
+In questo lavoro di tesi si ha lo scopo di determinare il valore del numero di Nusselt sul contorno 
+superiore di un canale poroso a sezione circolare , soggetto a convezione forzata. Viene 
+utilizzato il modello di Forchheimer come  modello di moto. Mentre ai contorni sono applicate 
+condizioni di Dirichlet. Per fare questo, si è scritto un codice in ambiente Matlab, che permette 
+di ottenere un grafico del numero di Nusselt in funzione della coordinata z, parallela all’asse 
+del canale . All’interno della tesi vengono affrontate, nel primo capitolo di introduzione, quelle 
+che sono le informazioni teoriche per comprendere i mezzi porosi e il codice numerico. Quindi 
+la porosità, il concetto di volume elementare rappresentativo, la relazion e di Dupuit - 
+Forchheimer e le equazioni della quantità di moto. In questo primo capitolo si pone risalto ai 
+regimi di validità del modello di Darcy e il modello di Darcy – Forchheimer. Nel secondo 
+capitolo si affronta il problema d’interesse. Viene enunci ato il problema . Si ricava la velocità 
+adimensionale necessaria per il corretto funzionamento del codice . Essa  risulta essere pari a d 
+uno, essendo il moto a pistone. Successivamente  si adimensionalizza l’equazione della 
+temperatura, l’equazione che si ricava è un’equazione parabolica. Si adimensionalizzano anche 
+le condizioni al contorno e iniziali. E infine  il numero di Nusselt e la temperatura di Bulk. 
+Ottenute tutte le informazioni d a inserire nel codice, nell’ultimo paragrafo del secondo capitolo 
+si analizza il codice numerico e si descrivono i  comandi utilizzati. Nel terzo capitolo si 
+analizzano i risultati ottenuti. Si mostra il grafico del numero di Nusselt : si ottiene che mentre 
+all’ingresso termico il numero di Nusselt è molto elevato a distanza sufficientemente elevata 
+dall’ingresso termico raggiunge un valore stabile pari a circa 5.78. Nella configurazione di 
+canale circolare senza matrice porosa, con condizioni al contorno di Dirichlet il numero di 
+Nusselt risulta essere 3.656 nella regione completamente sviluppata. Quindi l’inserimento di 
+un mezzo poroso in un canale saturato da un fluido comporta un aumento del trasferimento del 
+calore. Il motivo di questo aumento di Nusselt è dovuto al fatto che si ha un profilo di velocità 
+più uniforme  e al più alto rapporto superficie/volume che si ha con i mezzi porosi . Questo 
+provoca una distribuzione di temperatura più uniforme attraverso il canale, che dà luogo a d un 
+minor valore della differenza di temperatura (Tw -Tb). Perciò si ha un aumento considerevole 
+del numero di Nusselt.  
+ 
+ 
+Indice  
+ 
+1. Introduzione   
+1.1   Introduzione ............................................................................  1 
+1.2   Modello di Darcy.....................................................................  1 
+1.3   Concetto di REV..................................................................... . 2 
+1.4   Porosità e relazione di Dupuit – Forchheimer........................  3 
+1.5   Equazioni della quantità di moto ............................................  4 
+        1.5.1 Legge di Darcy..............................................................  5 
+        1.5.2 Estensione di Forchheimer........................................... .. 6 
+1.6    Procedura di adimensionalizzazione.......................................  7 
+ 
+2. Convezione forzata: regione di ingresso termico in un canale 
+poroso a sezione circolare   
+  2.1    Profilo di velocità: flusso di Darcy – Forchheimer............... .. 8 
+  2.2    Campo di temperatura.......................................................... .. 12 
+  2.3    Numero di Nusselt............................................................... .. 15 
+  2.4    Codice numerico.......................................................... ........ .. 18 
+ 
+3. Discussione dei risultati  25 
+4. Conclusioni  28 
+ 
+Bibliografia  29 
+ 
+ 
+ 
+Introduzione  
+ 
+ 
+1.1 Introduzione  
+ 
+Per mezzo poroso si intende un materiale costituito da una matrice solida, assunta 
+indeformabile in questa trattazione, contenente dei vuoti interconnessi, chiamati pori. 
+L’interconnessione del vuoto permette  il flusso di uno  o più fluidi attraverso il mat eriale. 
+Nella situazione più semplice  di flusso monofase, il vuoto è saturato da un unico fluido. 
+Nel caso di flusso bifase  si ha un liquido (acqua) e un gas (aria secca)  che condividono lo 
+spazio vuoto. In natura sono presenti una gran quantità di materia li porosi tra  i quali  
+ricordiamo : la sabbia, il suolo  e la neve. I nostri stessi tessuti biologici (ossa e polmoni) 
+sono mezzi porosi. L’uomo stesso come agente modellatore del proprio ambiente ha dato 
+vita ad altri materiali porosi artificiali. Tra i quali i mattoni, i vestiti, la ceramica o le 
+schiume metall iche. L’interesse per il trasferimento di calore attraverso mezzi porosi è 
+dovuto alle numerose  applicazioni presenti , tra cui : ingegneria geotermica,  lavorazione 
+della ceramica, processi di filtrazione , ingegneria dell'isolamento termico, movimenti 
+dell'a cqua in serbatoi geotermici, condotte termiche,  deposito di rifiuti nucleari, e 
+recupero di giacimenti petroliferi.  Un’applicazione di elevato interesse energetico è 
+l’isolamento termico . Nei materiali isolanti ci sono delle celle aperte che sono riempite di 
+aria e in certe condizioni l’aria all’interno di queste celle tende a muoversi e tende a 
+generare dei moti convettivi. La descrizione di questi moti convettivi viene descritta dalla 
+termofluidodinamica dei mezzi porosi.  
+ 
+1.2 Modello di Darcy  
+Il modello  più antico, più semplice e più ampiamente utilizzato  che descrive  il flusso di 
+fluido in mezzi porosi prende il nome da Darcy . Uno scienziato francese con un forte 
+interesse professionale per l'idraulica.  Durante la sua vita è stato ingegnere civile nella  
+città di Digione in Francia.  
+ 
+ 
+ 
+ 
+ 
+1.1 Concetto di REV  2 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+Ha progettato e costruito un sistema di distribuzione dell'acqua pressurizzata a Digione.  
+Darcy condusse, a lcuni anni prima della sua morte, un esperimento per studiare il flusso 
+dell’acqua attraverso le sabbie. I risultati dell’esperimento sono oggi  riassunti  nella legge 
+di Darcy . La sua pubblicazione The Public Fountains of the City of Dijon  contiene 
+un’appendice  scritta nel 1856 intitolata Determination of the Laws of Water Flow 
+Through Sand , dove viene formulata la sua legge.  
+ 
+1.3 Concetto di REV  
+Il moto del fluido in un mezzo poroso può essere descritto a livello microscopico 
+mediante l’eq uazione di Navier -Stokes. Si introduce il concetto  di volume elementare 
+rappresentativo (REV , Representative Elementary Volume ) nello studio dei mezzi porosi . 
+Si considerano i valori medi di ogni grandezza fisica microscopica e li si assegna al REV 
+passand o così da una descrizione microscopica a quella macroscopica. La scala 
+dimensionale del REV è molto più grande della scala dei pori, ma considerevolmente più 
+piccola della scala dimensionale del dominio di flusso macroscopico. Pertanto, si 
+definisce REV  come il volume più piccolo su cui può essere effettuata una misurazione 
+che risulti indipendente dall e dimension i del campione . Il vantaggio che comporta 
+l’utilizzo  del volume elementare rappresentativo è che permette di considerare  il mezzo 
+poroso come un  sistema continuo, le cui proprietà fisiche sono funzioni continue.   
+Figura 1.1: Henry Darcy (1803 -1858)  [5] 
+ 
+1.4 Porosità e relazione di Dupuit - Forchheimer  3 
+ 
+1.4 Porosità e relazione di Dupuit - Forchheimer  
+Riferendosi alla figura  (1.2), si considera un volume rappresentativo 𝑉, piccolo su scala 
+macroscopica anche se grande rispetto alle dimensioni del singolo grano. Tale volume è 
+il volume elementare rappresentativo (REV).  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Se 𝑉𝑓 è la parte vuota di 𝑉, si definisce porosità, il rapporto:  
+ 
+                                                        
+ 𝜑=𝑉𝑓
+𝑉 (1.1) 
+ 
+La porosità 𝜑 di un mezzo poroso è definita come la frazione del volume complessivo  
+del mezzo , che è occupata dallo spazio vuoto. Quindi 1−𝜑 è la frazione che è occupata 
+dal solido.  La porosità è una quantità strettamente minore dell’unità .  
+Lo studio della convezione in un mezzo poroso è basato sul presupposto che un mezzo 
+poroso saturo di un fluido , possa essere assunto come continuo. Questo sta a significare 
+che, nel volume  rappresentativo  𝑉 del sistema, il numero di pori è molto elevato. Perciò 
+si può definire un campo di velocità del fluido locale come valore medio della velocità 
+locale del fluido  𝑢⃗ ∗.  
+ 
+ 
+ 
+Figura 1.1: flusso in un mezzo poroso e volume  elementare  rappresentativo V   [5] 
+ 
+1.5 Equazioni della quantità di moto  4 
+ 
+ 
+Ci sono due possibili valori medi di 𝑢⃗ ∗ solitamente introdotti: la velocità intrinseca , così 
+definita :                                 
+ 𝑈⃗⃗ =1
+𝑉𝑓∫𝑢⃗ ∗
+𝑉𝑓 𝑑𝑉 (1.2)  
+e la velocità di infiltrazione  (meglio nota come velocità di Darcy ), definita come:  
+ 
+ 𝑢⃗ =1
+𝑉∫𝑢⃗ ∗
+𝑉 𝑑𝑉 (1.3)  
+ 
+La velocità intrinseca è definita come media eseguita nella parte vuota 𝑉𝑓 del volume 
+rappresentativo 𝑉. Poiché  𝑢⃗ ∗=0 nella parte di 𝑉 non compresa in 𝑉𝑓, i due integrali sui 
+lati di destra delle Eq. ( 1.2) e ( 1.3) sono uguali. Perciò , si può stabilire una relazione molto 
+semplice tra  𝑈⃗⃗  ed  𝑢⃗ :  
+ 𝑢⃗ =𝜑𝑈⃗⃗  (1.4)  
+ 
+Tale equazione è nota come relazione di  Dupuit -Forchheimer.  
+ 
+1.5 Equazioni della quantità di moto  
+Il flusso di un fluido attraverso un mezzo privo di porosità è descritto dalle equazioni di 
+Navier -Stokes. I problemi più semplici di fluidodinamica sono quelli di moto laminare e 
+stazionario di un fluido Newtoniano con viscosità e densità costante. Ma a nche in questi 
+casi è complesso trovare la soluzione analitica. Ci sono tuttavia dei casi in cui a causa di 
+determinate condizioni iniziali e al contorno e considerando un’unica componente non 
+nulla della velocità è possibile ricavare una soluzione analitica . Un esempio di tali 
+soluzioni è la legge di Hagen -Poiseuille  che mette in relazione per un condotto circolare, 
+sotto determinate ipotesi, la caduta di pressione attraverso il condotto con la portata. È 
+chiaro che la legge di Poiseuille non sia valida per un mezzo poroso, dunque sono presenti 
+altri modelli, che a breve saranno descritti, validi per i mezzi porosi. Ma è altrettanto 
+evidente che il “motore” del moto del fluido in un mezzo poroso rimane il gradiente di 
+pressione. I n assenza di gradiente di pre ssione, non si ha moto  in condizioni idrostatiche . 
+ 
+1.5 Equazioni della quantità di moto  5 
+ 
+1.5.1 Legge di Darcy  
+La più semplice equazione, che permette di descrivere il flusso di un fluido attraverso un 
+mezzo poroso, è la legge di Darcy  (1856).  Essa evidenzia una relazione proporzionale tra 
+la velocità di infiltrazione nel mezzo poroso e il gradiente di pressione nella direzione del 
+flusso. Nell’ipotesi di trascurare gli effetti gravitazionali e in condizioni di isotropia 
+l’equazione può essere scritta come:  
+ 
+ ∇⃗⃗ 𝑝=−𝜇
+𝐾 𝑢⃗  (1.5)  
+ 
+dove:  
+𝜇 = viscosità  dinamica del fluido  [Pa∙s ] 
+𝐾 = permeabilità del mezzo  [ m2 ] oppure il Darcy  [𝑑]  1𝑑 ≅10−12  m2 
+𝑢⃗  = velocità di infiltrazione [m
+s] 
+∇⃗⃗ 𝑝 = gradiente di pressione del fluido [ Pa
+m ] 
+ 
+Il gradiente di pressione è il parametro che quantifica la forza motrice che permette al 
+fluido di attraversare il mezzo poroso. Il segno meno indica che il moto del fluido  avviene 
+nella direzione che va dalla pressione più alta a quella più bassa . Molti m ezzi porosi sono 
+anisotropi, in tali mezzi le proprietà fisiche dipendono dalla direzione in cui le stesse 
+vengono analizzate. In particolare, in un mezzo poroso soggetto ad una forte anisotropia 
+la permeabilità del fluido varia in funzione della direzione  nella quale viene valutato il 
+flusso di fluido. In tale caso la permeabilità è un tensore  𝐾𝑖j e l’equazione  (1.5) diventa 
+un’equazione matriciale. Un mezzo poroso può essere visto  come una rete di condotti 
+microscopici in cui scorre il fluido. La legge di Darcy (1.5) si riferisce al caso di flusso 
+laminare nel mezzo poroso, per cui la permeabilità K è considerata come una proprietà 
+del mezzo in funzione del numero di pori per unità di area presenti in una sezione 
+trasversale al flusso del fluido, sulla f orma dei pori e sulla loro dimensione.   La legge  di  
+Darcy (1. 5) è lineare nella velocità di infiltrazione 𝑢⃗ . Vale quando 𝑢⃗  è sufficientemente 
+piccola.  
+ 
+1.5 Equazioni della quantità di moto  6 
+ 
+1.5.2 Equazione di Darcy - Forchheimer  
+In molti sistemi pratici, il mezzo poroso  ha un'elevata permeabilità ed è delimitato da un a 
+parete impermeabile  rendendo inapplicabile la legge di Darcy. Questo ha portato  
+all'inclusione dell'inerzia e degli effetti delle pareti  nei più recenti studi sul f lusso di fluidi 
+attraverso mezzi porosi. Gli effetti  di inerzia  possono  essere inclus i nell'equazione della 
+quantità di moto attraverso l’equazione di Darcy -Forchheimer  (1901), dove si trova la 
+legge di Darcy  modificat a dall'aggiunta di un termine  proporzionale al  quadrat o della  
+velocità : 
+ ∇⃗⃗ 𝑝=−𝜇
+𝐾 𝑢⃗ −𝜌𝐶𝑓
+√𝐾|𝑢⃗ |𝑢⃗  (1.6)  
+ 
+dove:  
+𝜇 = viscosità  dinamica del fluido  [Pa∙s ] 
+𝐾 = permeabilità del mezzo  [ m2 ] o [Darcy] 
+𝑢⃗  = velocità di infiltrazione [m
+s] 
+∇⃗⃗ 𝑝 = gradiente di pressione del fluido [ Pa
+m ] 
+𝜌 = densità di massa del fluido [kg
+m3] 
+𝐶𝑓 = coefficiente di trascinamento  [#] 
+ 
+Va notato che  l’estensione di Forchheimer  (1.6)  è valida sia  per flusso  laminare,  nel 
+regime di  transizione e  per flusso turbolento. A basse velocità  (𝐶𝑓→0 ), l’estensione di 
+Forchheimer  diventa la legge di Darcy, e il termine lineare domina . Nel  regime di 
+transizione e turbolenza, gli effetti di inerzia (cioè separazione  di vena ed effetti inerziali ) 
+che sono proporzionali  al quadrato della velocità , diventano importanti.  Per determinare 
+quando la legge di Darcy (1.5) deve essere abbandonata a favore del modello di Darcy -
+Forchheimer (1.6) viene utilizzato il numero di Reynolds basato sulla permeabilità : 
+ 
+ 
+𝑅𝑒𝑘=𝜌|𝑢⃗ |√𝐾
+𝜇 (1.7)  
+ 
+ 
+1.5 Equazioni della quantità di moto  7 
+ 
+ 
+La legge di Darcy perde gradualmente la sua validità quando 𝑅𝑒𝑘≅102 o maggiore . 
+Nell’equazione  (1.7)  𝑢⃗  è la velocità di infiltrazione nel mezzo poroso saturo di fluido.  
+Una caratteristica comune della legge di Darcy e dell'estensione di Forchheimer è che si 
+riferiscono a un solido compatto con un fluido che scorre in pori molto piccoli. In effetti, 
+questa è una circostanza molto lontana dall'essere un fluido che scorre liberamente.  Se la 
+porosità 𝜑 del mezzo poroso si avvicina all’unità, ovvero la parte solida è quasi assente, 
+i modelli di Darcy e di Darcy -Forchheimer descrivono in modo approssimativo il moto 
+del fluido. Il modello che invece viene utilizzato in questa condizione è il modello di 
+Brinkman . 
+ 
+1.6 Procedura di adimensionalizzazione  
+Le equazioni di bilancio locale che vengono utilizzate per descrivere il moto del fluido 
+nel mezzo poroso vengono adimensionalizzate . Tale procedura porta l’introduzione di 
+alcuni numeri adimensionali definiti  come combinazione di parametri termofisici  e 
+geometrici del materiale oggetto di studio. La risoluzione di un problema adimensionale 
+comporta il grande vantaggio di ottenere una soluzione indipendente dalle dimensioni 
+dell’oggetto di studio. Quindi nel ri solvere un unico problema si vanno a risolvere una 
+intera classe di problemi.  
+ 
+Si consideri una grandezza generica  𝑥. Il procedimento  di adimensionalizzazione  consiste 
+nel normalizzare tale grandezza rispetto ad una valore  di riferimento 𝑥0 della stessa 
+grandezza 𝑥 considerata .  
+ 
+ 𝑥̅=𝑥
+𝑥0⟶ 𝑥=𝑥0 𝑥̅ (1.8)  
+ 
+𝑥 = grandezza generica (es. temperatura, velocità, pressione)  
+𝑥0 = valore di riferimento  
+𝑥̅ = grandezza stessa adimensionalizzata  
+ 
+Convezione forzata: regione di ingresso termico in 
+un canale poroso a sezione circolare  
+ 
+Si considera il fenomeno di scambio termico stazionario caratterizzato da un fluido che 
+scorre in convezione forzata all’interno di un canale poroso a sezione circolare 
+infinitamente esteso in direzione z (la direzione s econdo cui è allineato l’asse del canale), 
+Fig. 2.1. Si è studiata la cosiddetta regione di ingresso termico ovvero la regione in cui il 
+profilo di temperatura cambia nella direzione del moto. La dimensione di questa regione 
+di ingresso dipende da vari fat tori. 
+ 
+ 
+2.1 Profilo di velocità: flusso di Darcy -Forchheimer  
+ 
+Si parte studiando il campo di velocità per trovare il campo di velocità analiticamente da 
+cui si otterrà una velocità di riferimento con cui adimensionalizzare il campo stesso. Si 
+assuma che il moto sia stazionario e completamente sviluppato e diretto lun go l’asse z. 
+Date le assunzioni, il pr ofilo di vel ocità  non dipende rà dalla coordinata z né dal tempo t, 
+i.e. 𝑢⃗ = (0, 0, 𝑢𝑧(𝑟,𝜃)). 
+ 
+ 
+ 
+Figura 2.1: Canale poroso a sezione circolare: sezione longitudinale e sezione  trasversale  [4] 
+ 
+2.1 Profilo di velocità: flusso di Darcy - Forchheimer  9 
+ 
+Data la simmetria del problema, il pro filo di velocit à non dipender à neanche dalla 
+coordinata angolare 𝜃 quindi 𝑢⃗  = (0, 0, 𝑢𝑧(𝑟)). L'equazione di bilancio della quantit à di 
+moto, la legge di Darcy -Forchheime r, si sempli ficherà, nelle tre componenti,  come segue : 
+ 
+ 𝜕𝑃
+𝜕𝑟=0  
+ 𝜕𝑃
+𝜕𝜃=0              (2.1)  
+ 𝜇
+𝐾(1+𝜌𝐶𝑓√𝐾 
+𝜇𝑢𝑧)𝑢𝑧=−𝑑𝑃
+𝑑𝑧  
+ 
+Si è potuto scrivere la derivata della pressione in direzione  z come derivata ordinaria 
+perch é le altre due componenti del gradiente di pressione sono nulle. Il canale ha sezione 
+circolare  e con  raggio R. Si assuma che, alle pareti, si possano imporre condizioni 
+idrodinamiche di impermeabili tà come mostrato in  Fig. 2 .1, ovvero : 
+ 
+ 
+                          
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+La componente z dell’equazione della quantità di moto, Eq. (2.1) può essere riscritta 
+come:  
+ 
+ 
+  𝑟=𝑅:    𝑢𝑟=0   𝐷𝑖𝑟𝑖𝑐ℎ𝑙𝑒𝑡   (2.2)  
+ 𝜌𝐶𝑓
+√𝐾|𝑢(𝑦)|𝑢(𝑦)+ 𝜇
+𝐾|𝑢(𝑦)|=−𝑑𝑃(𝑧)
+𝑑𝑧   (2.3)  
+Figura 2. 2:  flusso di Darcy Forchheimer canale poroso a sezione circolare  [4] 
+ 
+2.1 Profilo di velocità: flusso di Darcy - Forchheimer  10 
+ 
+Il membro sinistro dell’Eq. (2.3) dipende solo da lla y mentre il membro destro dipende 
+solo dalla coordinata z, ciò implica che:  
+ 
+  𝑑𝑃
+𝑑𝑧=𝑐𝑜𝑠𝑡𝑎𝑛𝑡𝑒               𝑢(𝑦) = 𝑐𝑜𝑠𝑡𝑎𝑛𝑡𝑒                                                  (2.4)                    
+   
+Quindi  il profilo di velocità è uniforme come per il modello Darcy. Ma è presente  
+un'interessante differenza tra l'analisi effettuata con la legge di Darcy e l'analisi basata 
+sulla legge di Darcy -Forchheimer. Nel primo caso è evidente la corrispondenza lineare  
+tra 𝑑𝑝/𝑑𝑧 ed i valori della velocità di infiltrazione uniforme 𝑢𝑧. Questo non è vero nel 
+caso del  modello  di Darcy -Forchheimer. Infatti, prendendo il valore assoluto dell'Eq. 
+(2.3), si determina  il profilo (piatto) di velocità 𝑢𝑧: 
+ 
+     𝜌𝐶𝑓
+√𝐾|𝑢𝑍|2+ 𝜇
+𝐾|𝑢𝑧|−|𝑑𝑃
+𝑑𝑧|=0 (2.5)  
+  
+  
+Il valore assoluto al termine del gradiente di pressione è stato inserito per permettere di 
+scegliere fra le due soluzioni di 𝑢𝑧. Si assume un gradiente di pressione negativo per 
+ottenere una velocità diretta nel verso positivo dell'asse z (e quindi una velocità positiva).  
+Applicando il valore assoluto a questo termine, è stato inserito un meno. Altrimenti  si 
+modifica la natura dell ’equazione. Il valore assoluto applicato a 𝑢𝑧 non porta ad un 
+cambiamento di segno perché, assumendo un dp/dz <0, la veloc ità dovrà essere positiva. 
+Di qui è possibile discernere fra le due soluzioni . 
+ 
+L’equazio ne quadratica ha le seguenti due soluzioni :  
+ 
+ 
+ 
+ 
+  
+|𝑢𝑧|=−𝜇 ±√𝜇2+4|𝑑𝑃𝑑𝑧⁄|𝐶𝑓𝐾32⁄𝜌
+2𝐶𝑓√𝐾𝜌         
+(2.6) 
+ 
+2.1 Profilo di velocità: flusso di Darcy - Forchheimer  11 
+ 
+ 
+Tuttavia, una di queste soluzioni non è accettabile poiché implicherebbe | 𝑢𝑧 |<0. 
+Pertanto, c'è solo una soluzione accettabile, vale a dire:  
+ 
+ 
+Ora noto il profilo (piatto) di velocità 𝑢𝑧, si procede nel ricavare la velocità media 𝑢𝑚: 
+ 
+ 
+Dato  che il profilo di velocità è piatto (plug flow o moto a pistone) la velocità media 
+coincide con la velocità.  
+ 
+E quindi  si ricava  la velocità adimensionale da inserire nel codice numerico : 
+ 
+  
+𝑢𝑧= 𝑢𝑚𝑢̅𝑧  → 𝑢̅𝑧= 𝑢𝑧
+𝑢𝑚=1        
+(2.9)  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+|𝑢𝑧|=−𝜇 −√𝜇2+4|𝑑𝑃𝑑𝑧⁄|𝐶𝑓𝐾32⁄𝜌
+2𝐶𝑓√𝐾𝜌         
+(2.7)  
+ 
+  
+ 
+  
+ 
+𝑢𝑚=1
+𝜋𝑅2∫∫𝑢𝑧2𝜋
+0𝑟  𝑑𝜃𝑑𝑟= 𝑅
+02
+𝑅2∫𝑢𝑧 𝑟  𝑑𝑟= 2
+𝑅2𝑢𝑧[𝑟2
+2]
+0𝑅
+= 𝑢𝑧𝑅
+0         
+(2.8)  

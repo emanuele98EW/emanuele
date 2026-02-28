@@ -40,15 +40,39 @@ function disegnaGrafico(dati) {
       datasets: [{
         label: "Capitale (€)",
         data: dati,
+        borderColor: "#0ff",
+        backgroundColor: "rgba(0, 255, 255, 0.1)",
         borderWidth: 3,
-        tension: 0.25
+        tension: 0.3,
+        pointBackgroundColor: "#050814",
+        pointBorderColor: "#0ff",
+        pointBorderWidth: 2,
+        fill: true
       }]
     },
     options: {
-      plugins: { legend: { display: false } },
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "rgba(2, 6, 23, 0.9)",
+          titleColor: "#0ff",
+          bodyColor: "#e0f7fa",
+          borderColor: "rgba(0, 255, 255, 0.3)",
+          borderWidth: 1
+        }
+      },
       scales: {
-        x: { title: { display: true, text: "Anni" } },
-        y: { title: { display: true, text: "€" } }
+        x: {
+          title: { display: true, text: "Anni", color: "#a5f3fc" },
+          grid: { color: "rgba(0, 255, 255, 0.1)" },
+          ticks: { color: "#94a3b8" }
+        },
+        y: {
+          title: { display: true, text: "€", color: "#a5f3fc" },
+          grid: { color: "rgba(0, 255, 255, 0.1)" },
+          ticks: { color: "#94a3b8" }
+        }
       }
     }
   });
