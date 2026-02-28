@@ -274,6 +274,7 @@ body::before {
 
 
 /* ========== CARDS ========== */
+
 .cards {
   display: flex;
   gap: 30px;

@@ -16,7 +16,7 @@
     <header class="navbar">
       <div class="navbar-logo">
         <img src="../assets/logo.png" alt="Logo">
-        <h1>Emanuele Zanella</h1>
+        <h1><a href="../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
       </div>
 
       <nav class="menu">
@@ -28,6 +28,7 @@
           </button>
           <div class="menu-content">
             <a href="interesse/index.html" class="menu-link finance">Interesse Composto</a>
+            <a href="portafoglio/index.html" class="menu-link finance">Portafoglio</a>
             <a href="mutuo/index.html" class="menu-link finance">Mutui</a>
           </div>
         </div>
@@ -42,7 +43,16 @@
           </div>
         </div>
 
-        <a href="../personale/index.html" class="menu-link personal">Personale</a>
+        <div class="menu-group">
+          <button class="menu-toggle">
+            Personale <span class="arrow">▼</span>
+          </button>
+          <div class="menu-content">
+            <a href="../personale/index.html" class="menu-link personal">Chi Sono</a>
+            <a href="../personale/accademico/index.html" class="menu-link personal">Percorso Accademico</a>
+            <a href="../personale/progetti/index.html" class="menu-link personal">Progetti Personali</a>
+          </div>
+        </div>
 
         <span id="clock" class="digital-clock"></span>
       </nav>
@@ -78,7 +88,325 @@
 
   </div>
 
+  <!-- CRYPTO WIDGET -->
+  <div id="crypto-widget"
+    style="position: absolute; top: 100px; left: 20px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 15px; box-shadow: 0 0 15px rgba(245, 158, 11, 0.1); backdrop-filter: blur(10px); z-index: 50; min-width: 150px; display: none;">
+    <h3
+      style="color: #f59e0b; font-size: 0.9rem; margin-bottom: 10px; border-bottom: 1px solid rgba(245, 158, 11, 0.2); padding-bottom: 5px; text-align: center;">
+      Crypto Live 📈</h3>
+    <div id="crypto-content"
+      style="font-size: 0.85rem; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px;">
+      <span style="text-align: center;">Caricamento...</span>
+    </div>
+  </div>
+
+  <!-- FEAR & GREED WIDGET -->
+  <div id="fear-widget"
+    style="position: absolute; top: 100px; right: 20px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 8px; padding: 15px; box-shadow: 0 0 15px rgba(139, 92, 246, 0.1); backdrop-filter: blur(10px); z-index: 50; width: 170px; display: none;">
+    <h3
+      style="color: #a78bfa; font-size: 0.9rem; margin-bottom: 10px; border-bottom: 1px solid rgba(139, 92, 246, 0.2); padding-bottom: 5px; text-align: center;">
+      Fear & Greed ⚖️</h3>
+    <div id="fear-content"
+      style="font-size: 0.85rem; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px; align-items: center;">
+      <span style="text-align: center;">Caricamento...</span>
+    </div>
+  </div>
+
+  <!-- MARKETS WIDGET -->
+  <div id="markets-widget"
+    style="position: absolute; top: 290px; left: 20px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 8px; padding: 15px; box-shadow: 0 0 15px rgba(14, 165, 233, 0.1); backdrop-filter: blur(10px); z-index: 50; width: 245px; display: none;">
+    <h3
+      style="color: #0ea5e9; font-size: 0.9rem; margin-bottom: 10px; border-bottom: 1px solid rgba(14, 165, 233, 0.2); padding-bottom: 5px; text-align: center;">
+      Materie Prime & Indici 🌍</h3>
+    <div id="markets-content"
+      style="font-size: 0.85rem; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px;">
+      <span style="text-align: center;">Caricamento...</span>
+    </div>
+  </div>
+  </div>
+
+  <!-- ETF WIDGET -->
+  <div id="etf-widget"
+    style="position: absolute; top: 290px; right: 20px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 8px; padding: 15px; box-shadow: 0 0 15px rgba(236, 72, 153, 0.1); backdrop-filter: blur(10px); z-index: 50; width: 245px; display: none;">
+    <h3
+      style="color: #ec4899; font-size: 0.9rem; margin-bottom: 10px; border-bottom: 1px solid rgba(236, 72, 153, 0.2); padding-bottom: 5px; text-align: center;">
+      ETF & Fondi 📈</h3>
+    <div id="etf-content" style="font-size: 0.85rem; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px;">
+      <span style="text-align: center;">Caricamento...</span>
+    </div>
+  </div>
+
   <script src="../js/main.js"></script>
+
+  <script>
+    if (window.innerWidth > 1024) {
+      fetchCrypto();
+      setInterval(fetchCrypto, 60000); // Aggiorna ogni minuto
+      fetchFearGreed();
+      setInterval(fetchFearGreed, 3600000); // Aggiorna ogni ora
+      fetchMarkets();
+      setInterval(fetchMarkets, 60000); // Aggiorna ogni minuto
+      fetchETFs();
+      setInterval(fetchETFs, 60000); // Aggiorna ogni minuto
+    }
+
+    async function fetchCrypto() {
+      // CoinGecko API: semplice, gratis, senza chiave
+      const url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=eur&include_24hr_change=true";
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        const btcPrice = data.bitcoin.eur.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const btcChange = data.bitcoin.eur_24h_change.toFixed(2);
+        const btcColor = btcChange >= 0 ? "#4ade80" : "#ef4444";
+        const btcSign = btcChange >= 0 ? "+" : "";
+
+        const ethPrice = data.ethereum.eur.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const ethChange = data.ethereum.eur_24h_change.toFixed(2);
+        const ethColor = ethChange >= 0 ? "#4ade80" : "#ef4444";
+        const ethSign = ethChange >= 0 ? "+" : "";
+
+        const htmlContent = `
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px; gap: 15px;">
+            <div style="display: flex; align-items: center; gap: 5px;">
+              <span style="font-size: 1.1rem;">₿</span>
+              <span style="font-weight: bold; color: #f59e0b;">BTC</span>
+            </div>
+            <div style="text-align: right;">
+              <div style="color: #e2e8f0; font-weight: bold;">€ ${btcPrice}</div>
+              <div style="color: ${btcColor}; font-size: 0.75rem;">${btcSign}${btcChange}%</div>
+            </div>
+          </div>
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 2px; gap: 15px;">
+            <div style="display: flex; align-items: center; gap: 5px;">
+              <span style="font-size: 1.1rem; color: #94a3b8;">⟠</span>
+              <span style="font-weight: bold; color: #94a3b8;">ETH</span>
+            </div>
+            <div style="text-align: right;">
+              <div style="color: #e2e8f0; font-weight: bold;">€ ${ethPrice}</div>
+              <div style="color: ${ethColor}; font-size: 0.75rem;">${ethSign}${ethChange}%</div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('crypto-content').innerHTML = htmlContent;
+        document.getElementById('crypto-widget').style.display = 'block';
+
+      } catch (error) {
+        console.error("Errore CoinGecko API: ", error);
+        document.getElementById('crypto-content').innerHTML = "<span style='color: #ef4444; text-align: center; display: block;'>Limite API (Ricarica tra 1 min)</span>";
+        document.getElementById('crypto-widget').style.display = 'block';
+      }
+    }
+
+    async function fetchFearGreed() {
+      // API Gratuita Alternative.me
+      const url = "https://api.alternative.me/fng/?limit=1";
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        const fng = data.data[0];
+        const value = parseInt(fng.value);
+        let statusStr = fng.value_classification; // Extreme Fear, Fear, Neutral, Greed, Extreme Greed
+
+        // Traduzione in Italiano e Colore
+        let color = "#cbd5e1";
+        if (value <= 25) { statusStr = "Paura Estrema"; color = "#ef4444"; }      // Rosso acceso
+        else if (value <= 45) { statusStr = "Paura"; color = "#f97316"; }         // Arancione
+        else if (value <= 55) { statusStr = "Neutrale"; color = "#eab308"; }      // Giallo
+        else if (value <= 75) { statusStr = "Avidità"; color = "#84cc16"; }       // Verde chiaro
+        else { statusStr = "Avidità Estrema"; color = "#22c55e"; }                // Verde acceso
+
+        // Barra indicatore visuale
+        const dotPosition = value + "%";
+
+        const htmlContent = `
+          <div style="font-size: 2.2rem; font-weight: bold; color: ${color}; line-height: 1;">
+            ${value}
+          </div>
+          <div style="font-weight: bold; color: ${color}; text-transform: uppercase; font-size: 0.75rem; text-align: center; margin-bottom: 5px;">
+            ${statusStr}
+          </div>
+          
+          <!-- Grafico a barra -->
+          <div style="width: 100%; height: 8px; background: linear-gradient(to right, #ef4444, #f97316, #eab308, #84cc16, #22c55e); border-radius: 4px; position: relative; margin-top: 5px;">
+             <!-- Indicatore "lancetta" -->
+             <div style="position: absolute; top: -3px; height: 14px; width: 4px; background: #fff; border-radius: 2px; box-shadow: 0 0 5px rgba(0,0,0,0.5); left: ${dotPosition}; transform: translateX(-50%);"></div>
+          </div>
+          <div style="width: 100%; display: flex; justify-content: space-between; font-size: 0.65rem; color: #64748b; margin-top: 2px;">
+             <span>0</span><span>100</span>
+          </div>
+        `;
+
+        document.getElementById('fear-content').innerHTML = htmlContent;
+        document.getElementById('fear-widget').style.display = 'block';
+
+      } catch (error) {
+        console.error("Errore Fear & Greed API: ", error);
+        document.getElementById('fear-content').innerHTML = "<span style='color: #ef4444;'>Dati non disponibili</span>";
+        document.getElementById('fear-widget').style.display = 'block';
+      }
+    }
+
+    async function fetchMarkets() {
+      const symbols = [
+        { id: 'GC=F', name: 'GOLD', currency: '$', icon: '🪙' },
+        { id: 'SI=F', name: 'SILVER', currency: '$', icon: '💿' },
+        { id: 'CL=F', name: 'USOIL', currency: '$', icon: '🛢️' },
+        { id: 'FTSEMIB.MI', name: 'FTSEMIB', currency: '€', icon: '🇮🇹' },
+        { id: '^FCHI', name: 'CAC40', currency: '€', icon: '🇫🇷' },
+        { id: '^NDX', name: 'NASDAQ 100', currency: '$', icon: '🇺🇸' },
+        { id: '^GSPC', name: 'S&P 500', currency: '$', icon: '🇺🇸' }
+      ];
+
+      try {
+        let htmlContent = '';
+
+        // Usiamo Promise.all ma catturiamo gli errori singolarmente per non far crollare l'intero widget
+        const responses = await Promise.all(symbols.map(sym =>
+          fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/' + sym.id)}`)
+            .then(res => {
+              if (!res.ok) throw new Error("Network error");
+              return res.json();
+            })
+            .then(json => {
+              if (!json.contents) throw new Error("No data in allorigins");
+              const parsed = JSON.parse(json.contents);
+              if (!parsed.chart || !parsed.chart.result) throw new Error("Invalid format");
+              const data = parsed.chart.result[0].meta;
+              return { sym, data, success: true };
+            }).catch(e => {
+              console.warn("Mercato non disponibile (limite API o proxy): " + sym.id);
+              return { sym, data: null, success: false };
+            })
+        ));
+
+        const successful = responses.filter(r => r.success);
+
+        if (successful.length === 0) throw new Error("Nessun dato recuperato per i mercati.");
+
+        successful.forEach(({ sym, data }, index) => {
+          const price = data.regularMarketPrice;
+          const prevClose = data.chartPreviousClose;
+
+          let changePct = 0;
+          if (prevClose && prevClose !== 0) {
+            changePct = ((price - prevClose) / prevClose) * 100;
+          }
+
+          const priceStr = price.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          const changeStr = changePct.toFixed(2);
+          const color = changePct >= 0 ? "#4ade80" : "#ef4444";
+          const sign = changePct >= 0 ? "+" : "";
+
+          // Se è l'ultimo elemento caricato
+          const isLast = (index === successful.length - 1);
+          const borderStyle = isLast ? "" : "border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;";
+
+          htmlContent += `
+            <div style="display: flex; justify-content: space-between; align-items: center; ${borderStyle} gap: 15px;">
+              <div style="display: flex; align-items: center; gap: 5px;">
+                <span style="font-size: 1.1rem;">${sym.icon}</span>
+                <span style="font-weight: bold; color: #0ea5e9;">${sym.name}</span>
+              </div>
+              <div style="text-align: right;">
+                <div style="color: #e2e8f0; font-weight: bold;">${sym.currency} ${priceStr}</div>
+                <div style="color: ${color}; font-size: 0.75rem;">${sign}${changeStr}%</div>
+              </div>
+            </div>
+          `;
+        });
+
+        document.getElementById('markets-content').innerHTML = htmlContent;
+        document.getElementById('markets-widget').style.display = 'block';
+
+      } catch (error) {
+        console.error("Errore Markets API: ", error);
+        document.getElementById('markets-content').innerHTML = "<span style='color: #ef4444;'>Dati non disponibili</span>";
+        document.getElementById('markets-widget').style.display = 'block';
+      }
+    }
+
+    async function fetchETFs() {
+      const symbols = [
+        { id: 'VWCE.DE', name: 'Vanguard All-World', currency: '€', icon: '<span style="display:inline-block; width:52px; text-align:center; color:#bf0d3e; font-family:serif; font-weight:bold; font-size:1.2rem;">V</span>' },
+        { id: 'EUNL.DE', name: 'iShares Core World', currency: '€', icon: '<span style="display:inline-block; width:52px; text-align:center; color:#000; background:#fff; padding:1px 0; border-radius:2px; font-size:0.75rem; font-weight:bold;">iShares</span>' },
+        { id: 'IS3S.DE', name: 'iShares Value', currency: '€', icon: '<span style="display:inline-block; width:52px; text-align:center; color:#000; background:#fff; padding:1px 0; border-radius:2px; font-size:0.75rem; font-weight:bold;">iShares</span>' },
+        { id: 'IS3R.DE', name: 'iShares Momentum', currency: '€', icon: '<span style="display:inline-block; width:52px; text-align:center; color:#000; background:#fff; padding:1px 0; border-radius:2px; font-size:0.75rem; font-weight:bold;">iShares</span>' },
+        { id: 'EIMI.MI', name: 'iShares Emerg. Mkts', currency: '€', icon: '<span style="display:inline-block; width:52px; text-align:center; color:#000; background:#fff; padding:1px 0; border-radius:2px; font-size:0.75rem; font-weight:bold;">iShares</span>' }
+      ];
+
+      try {
+        let htmlContent = '';
+
+        // Usiamo Promise.all ma catturiamo gli errori singolarmente
+        const responses = await Promise.all(symbols.map(sym =>
+          fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/' + sym.id)}`)
+            .then(res => {
+              if (!res.ok) throw new Error("Network error");
+              return res.json();
+            })
+            .then(json => {
+              if (!json.contents) throw new Error("No data in allorigins");
+              const parsed = JSON.parse(json.contents);
+              if (!parsed.chart || !parsed.chart.result) throw new Error("Invalid format");
+              const data = parsed.chart.result[0].meta;
+              return { sym, data, success: true };
+            }).catch(e => {
+              console.warn("ETF non disponibile (limite API o proxy): " + sym.id);
+              return { sym, data: null, success: false };
+            })
+        ));
+
+        const successful = responses.filter(r => r.success);
+
+        if (successful.length === 0) throw new Error("Nessun dato recuperato per gli ETF.");
+
+        successful.forEach(({ sym, data }, index) => {
+          const price = data.regularMarketPrice;
+          const prevClose = data.chartPreviousClose;
+
+          let changePct = 0;
+          if (prevClose && prevClose !== 0) {
+            changePct = ((price - prevClose) / prevClose) * 100;
+          }
+
+          const priceStr = price.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          const changeStr = changePct.toFixed(2);
+          const color = changePct >= 0 ? "#4ade80" : "#ef4444";
+          const sign = changePct >= 0 ? "+" : "";
+
+          // Se è l'ultimo elemento caricato
+          const isLast = (index === successful.length - 1);
+          const borderStyle = isLast ? "" : "border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;";
+
+          htmlContent += `
+            <div style="display: flex; justify-content: space-between; align-items: center; ${borderStyle} gap: 15px;">
+              <div style="display: flex; align-items: center; gap: 5px;">
+                ${sym.icon}
+                <span style="font-weight: bold; color: #ec4899; margin-left: 4px;">${sym.name}</span>
+              </div>
+              <div style="text-align: right;">
+                <div style="color: #e2e8f0; font-weight: bold;">${sym.currency} ${priceStr}</div>
+                <div style="color: ${color}; font-size: 0.75rem;">${sign}${changeStr}%</div>
+              </div>
+            </div>
+          `;
+        });
+
+        document.getElementById('etf-content').innerHTML = htmlContent;
+        document.getElementById('etf-widget').style.display = 'block';
+
+      } catch (error) {
+        console.error("Errore ETF API: ", error);
+        document.getElementById('etf-content').innerHTML = "<span style='color: #ef4444;'>Dati non disponibili</span>";
+        document.getElementById('etf-widget').style.display = 'block';
+      }
+    }
+  </script>
 </body>
 
 </html>

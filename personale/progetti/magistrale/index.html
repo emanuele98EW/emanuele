@@ -16,7 +16,7 @@
         <header class="navbar">
             <div class="navbar-logo">
                 <img src="../../../assets/logo.png" alt="Logo">
-                <h1>Emanuele Zanella</h1>
+                <h1><a href="../../../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
             </div>
 
             <nav class="menu">
@@ -77,6 +77,32 @@
                 <h2 style="color: #0ff; margin-bottom: 25px; font-size: 2rem; line-height: 1.3;">Progettazione e analisi
                     di impianti fotovoltaici in bassa tensione e autoconsumo collettivo</h2>
 
+                <div style="display: flex; gap: 15px; margin-bottom: 35px; flex-wrap: wrap;">
+                    <a href="Tesi magistrale.pdf" target="_blank"
+                        style="background: rgba(14, 165, 233, 0.1); color: #38bdf8; padding: 12px 20px; border-radius: 6px; text-decoration: none; border: 1px solid rgba(14, 165, 233, 0.4); font-weight: bold; display: flex; align-items: center; gap: 8px; transition: background 0.2s ease;">
+                        📄 Scarica la Tesi (PDF)
+                    </a>
+                    <a href="Presentazione ppt magistrale.pptx" target="_blank"
+                        style="background: rgba(245, 158, 11, 0.1); color: #fbbf24; padding: 12px 20px; border-radius: 6px; text-decoration: none; border: 1px solid rgba(245, 158, 11, 0.4); font-weight: bold; display: flex; align-items: center; gap: 8px; transition: background 0.2s ease;">
+                        📊 Scarica la Presentazione (PPTX)
+                    </a>
+                </div>
+
+                <!-- VIDEO SEZIONE -->
+                <div
+                    style="width: 100%; display: flex; justify-content: center; margin-bottom: 35px; position: relative;">
+                    <!-- Pedistallo Luminoso -->
+                    <div
+                        style="position: absolute; width: 280px; height: 280px; background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                    </div>
+
+                    <video autoplay loop muted playsinline
+                        style="height: 300px; max-width: 100%; border-radius: 8px; mix-blend-mode: multiply; filter: contrast(1.1) brightness(1.05); z-index: 2; position: relative;">
+                        <source src="assets/video.mp4" type="video/mp4">
+                        Il tuo browser non supporta il tag video.
+                    </video>
+                </div>
+
                 <h3 style="color: #a78bfa; margin-bottom: 15px;">Descrizione del Progetto</h3>
                 <p style="color: #cbd5e1; font-size: 1.05rem; line-height: 1.7; margin-bottom: 30px;">
                     L'elaborato di tesi tratta lo studio e il dimensionamento di configurazioni impiantistiche volte
@@ -113,6 +139,80 @@
                     <span
                         style="font-size: 0.9rem; color: #e2e8f0; background: rgba(51, 65, 85, 0.8); padding: 6px 12px; border-radius: 6px; border: 1px solid #475569;">Transizione
                         Energetica</span>
+                </div>
+
+                <!-- CONCLUSIONI E GRAFICI -->
+                <div class="card personal"
+                    style="max-width: 900px; width: 100%; text-align: left; padding: 40px; margin-top: 40px;">
+                    <h3 style="color: #a78bfa; margin-bottom: 15px;">Cos'è l'Autoconsumo Collettivo?</h3>
+                    <p style="color: #cbd5e1; font-size: 1.05rem; line-height: 1.7; margin-bottom: 30px;">
+                        L'<strong>Autoconsumo Collettivo (AUC)</strong> è un modello energetico che permette a più
+                        soggetti (es. condomini)
+                        trovantisi nello stesso edificio, di unire le forze per produrre, consumare e condividere
+                        virtualmente energia
+                        proveniente da un impianto rinnovabile comune, ad esempio fotovoltaico. L'energia condivisa
+                        viene incentivata
+                        dal GSE, trasformando i consumatori in <em>prosumer</em> e riducendo significativamente le
+                        bollette,
+                        promuovendo inoltre l'indipendenza energetica e la riduzione delle emissioni.
+                    </p>
+
+                    <h3 style="color: #a78bfa; margin-bottom: 25px;">Bilancio Energetico e Performance</h3>
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <img src="assets/PR_magistrale.png" alt="Performance Ratio Mensile"
+                            style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(139, 92, 246, 0.3);">
+                        <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 10px;">Andamento del Performance Ratio.
+                        </p>
+                    </div>
+
+                    <h3 style="color: #a78bfa; margin-bottom: 25px;">Convenienza Economica (Con e Senza Accumulo)</h3>
+                    <div style="display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 300px; text-align: center;">
+                            <img src="assets/ROI_senza_accumulo.png" alt="Ritorno Economico senza Accumulo"
+                                style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.3);">
+                            <p style="color: #fbbf24; font-size: 0.9rem; margin-top: 10px;">Flusso di cassa cumulato a
+                                20 anni <b>senza</b> sistemi di accumulo.</p>
+                        </div>
+                        <div style="flex: 1; min-width: 300px; text-align: center;">
+                            <img src="assets/ROI_con_accumulo.png" alt="Ritorno Economico con Accumulo"
+                                style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(14, 165, 233, 0.3);">
+                            <p style="color: #38bdf8; font-size: 0.9rem; margin-top: 10px;">Flusso di cassa cumulato a
+                                20 anni <b>con</b> sistemi di accumulo.</p>
+                        </div>
+                    </div>
+
+                    <h3 style="color: #a78bfa; margin-bottom: 15px;">Conclusioni e Risultati del Progetto</h3>
+                    <ul
+                        style="color: #cbd5e1; font-size: 1.05rem; line-height: 1.7; margin-left: 20px; list-style-type: disc;">
+                        <li><strong>Integrazione Condominiale:</strong> Per l'impianto condominiale nello schema AUC si
+                            è operata
+                            una scelta progettuale di moduli complanari al tetto (non inclinati ulteriormente) per
+                            <strong>massimizzare
+                                la potenza installata</strong> sulla superficie disponibile, ottenendo un
+                            <em>Performance Ratio (PR) medio
+                                annuale di 0.727</em>, un valore molto buono al netto degli ombreggiamenti.
+                        </li>
+                        <li><strong>Convenienza Economica:</strong> L'investimento fotovoltaico è risultato estremamente
+                            vantaggioso.
+                            La valutazione economica in vari scenari di costo energia (2021 e 2022) ha dimostrato tempi
+                            di ritorno (Payback Time)
+                            compresi tra i <strong>4.0 e 6.1 anni</strong>, con un ritorno economico percentuale (ROI)
+                            finale
+                            tra il <strong>126% e il 201%</strong>.
+                        </li>
+                        <li><strong>Vantaggi dell'Accumulo (Batterie):</strong> Un risultato chiave è l'impatto dei
+                            sistemi di accumulo.
+                            Nonostante un costo d'investimento iniziale superiore del 23.7%, l'accumulo garantisce un
+                            ricavo economico
+                            a lungo termine <strong>superiore del 144%</strong> rispetto al caso senza batterie.
+                        </li>
+                        <li><strong>Dinamica di Condivisione:</strong> L'accumulo permette infatti di coprire i picchi
+                            di fabbisogno
+                            condominiale nelle <em>ore serali</em>, massimizzando drasticamente la quantità di energia
+                            "condivisa" col GSE
+                            e massimizzando gli incentivi associati all'Autoconsumo Collettivo.
+                        </li>
+                    </ul>
                 </div>
 
             </div>

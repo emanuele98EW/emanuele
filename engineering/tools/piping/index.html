@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Piping – Cervello Online</title>
+
+  <!-- FIX CSS PATH -->
+  <link rel="stylesheet" href="../../../css/style.css">
+</head>
+
+<body>
+
+  <div class="layout">
+
+    <!-- TOP NAVBAR -->
+    <header class="navbar">
+      <div class="navbar-logo">
+        <img src="../../../assets/logo.png" alt="Logo">
+        <h1><a href="../../../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
+      </div>
+
+      <nav class="menu">
+        <a href="../../../index.html" class="menu-link">Home</a>
+
+        <div class="menu-group">
+          <button class="menu-toggle">
+            Finanza <span class="arrow">▼</span>
+          </button>
+          <div class="menu-content">
+            <a href="../../../finanza/index.html" class="menu-link finance">Interesse Composto</a>
+            <a href="../../../finanza/interesse/index.html" class="menu-link finance">Portafoglio</a>
+            <a href="../../../finanza/mutuo/index.html" class="menu-link finance">Mutui</a>
+          </div>
+        </div>
+
+        <div class="menu-group">
+          <button class="menu-toggle active">
+            Ingegneria <span class="arrow">▼</span>
+          </button>
+          <div class="menu-content">
+            <a href="../../appunti/index.html" class="menu-link engineering">Appunti</a>
+            <a href="../index.html" class="menu-link engineering">Tools</a>
+          </div>
+        </div>
+
+        <div class="menu-group">
+          <button class="menu-toggle">
+            Personale <span class="arrow">▼</span>
+          </button>
+          <div class="menu-content">
+            <a href="../../../personale/index.html" class="menu-link personal">Chi Sono</a>
+            <a href="../../../personale/accademico/index.html" class="menu-link personal">Percorso Accademico</a>
+            <a href="../../../personale/progetti/index.html" class="menu-link personal">Progetti Personali</a>
+          </div>
+        </div>
+
+        <span id="clock" class="digital-clock"></span>
+      </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+      <!-- BACKGROUND LOGO -->
+      <div class="background-logo"></div>
+
+      <h2
+        style="color: #60a5fa; text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(96, 165, 250, 0.5); font-size: 2rem;">
+        🚰 Piping</h2>
+      <p style="color: #94a3b8; text-align: center; margin-bottom: 40px; max-width: 600px;">
+        Sezione dedicata ai componenti fluidodinamici: reti di distribuzione, tubazioni, flange, raccordi e valvole.
+      </p>
+
+      <section class="cards">
+
+        <a class="card engineering" href="tubazioni/index2.html">
+          <h3>🛠️ Tubazioni</h3>
+          <p>Spessori e Pesi al Metro</p>
+        </a>
+
+        <a class="card engineering" href="flange/index.html">
+          <h3>⭕ Flange</h3>
+          <p>Dimensioni e Pesi</p>
+        </a>
+
+        <a class="card engineering" href="fittings/index.html">
+          <h3>🔩 Fittings</h3>
+          <p>Curve, tee, riduzioni</p>
+        </a>
+
+        <a class="card engineering" href="gaskets/index.html">
+          <h3>🧻 Gaskets</h3>
+          <p>Tipologie, materiali, tenuta</p>
+        </a>
+
+        <a class="card engineering" href="valvole/index.html">
+          <h3>🚰 Valvole</h3>
+          <p>Gate, globe, ball, check</p>
+        </a>
+
+      </section>
+
+    </main>
+  </div>
+
+  <script src="../../../js/main.js"></script>
+</body>
+
+</html>

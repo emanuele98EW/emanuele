@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Tubazioni</title>
+</head>
+
+<body>
+
+<label>DN</label>
+<select id="dnSelect"></select>
+
+<label>Schedule</label>
+<select id="schSelect"></select>
+
+<hr>
+
+<p>OD: <span id="od">–</span></p>
+<p>ID: <span id="id">–</span></p>
+<p>t: <span id="thk">–</span></p>
+<p>kg/m: <span id="kgm">–</span></p>
+
+<hr>
+
+<h3>Tabella di riferimento DN / Schedule (ASME)</h3>
+
+<div class="pipe-table-wrapper">
+  <img 
+    src="./pipe-dn-schedule.PNG"
+    alt="Tabella DN Schedule ASME"
+    class="pipe-table-img"
+  >
+</div>
+
+<script src="./pipe-tool.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  console.log("pipeData:", pipeData); // 👈 DEBUG
+
+  const dnSelect = document.getElementById("dnSelect");
+  const schSelect = document.getElementById("schSelect");
+
+  dnSelect.innerHTML = '<option value="">Seleziona DN</option>';
+
+  Object.keys(pipeData).forEach(dn => {
+    const o = document.createElement("option");
+    o.value = dn;
+    o.textContent = dn;
+    dnSelect.appendChild(o);
+  });
+
+  dnSelect.addEventListener("change", () => {
+    schSelect.innerHTML = '<option value="">Seleziona Schedule</option>';
+
+    const dn = dnSelect.value;
+    if (!dn) return;
+
+    Object.keys(pipeData[dn].schedules).forEach(sch => {
+      const o = document.createElement("option");
+      o.value = sch;
+      o.textContent = sch;
+      schSelect.appendChild(o);
+    });
+  });
+
+  schSelect.addEventListener("change", () => {
+    const dn = dnSelect.value;
+    const sch = schSelect.value;
+
+    if (!dn || !sch) return;
+
+    const OD = pipeData[dn].OD;
+    const t = pipeData[dn].schedules[sch].t;
+
+    document.getElementById("od").textContent = OD;
+    document.getElementById("thk").textContent = t;
+    document.getElementById("id").textContent = (OD - 2*t).toFixed(2);
+    document.getElementById("kgm").textContent =
+      pipeData[dn].schedules[sch].kgm;
+  });
+
+});
+</script>
+
+</body>
+</html>

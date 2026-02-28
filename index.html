@@ -16,7 +16,7 @@
     <header class="navbar">
       <div class="navbar-logo">
         <img src="assets/logo.png" alt="Logo">
-        <h1>Emanuele Zanella</h1>
+        <h1><a href="personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
       </div>
 
       <nav class="menu">
@@ -27,8 +27,8 @@
             Finanza <span class="arrow">▼</span>
           </button>
           <div class="menu-content">
-            <a href="finanza/index.html" class="menu-link finance">Interesse Composto</a>
-            <a href="finanza/interesse/index.html" class="menu-link finance">Portafoglio</a>
+            <a href="finanza/interesse/index.html" class="menu-link finance">Interesse Composto</a>
+            <a href="finanza/portafoglio/index.html" class="menu-link finance">Portafoglio</a>
             <a href="finanza/mutuo/index.html" class="menu-link finance">Mutui</a>
           </div>
         </div>
@@ -48,6 +48,7 @@
             Personale <span class="arrow">▼</span>
           </button>
           <div class="menu-content">
+            <a href="personale/index.html" class="menu-link personal">Chi Sono</a>
             <a href="personale/accademico/index.html" class="menu-link personal">Percorso Accademico</a>
             <a href="personale/progetti/index.html" class="menu-link personal">Progetti Personali</a>
           </div>
@@ -75,12 +76,12 @@
 
         <a class="card engineering" href="engineering/index.html">
           <h3>Ingegneria</h3>
-          <p>Tool tecnici, sistemi di simulazione termodinamica e stress test strutturali.</p>
+          <p>Tool tecnici, simulazioni termodinamiche e stress test.</p>
         </a>
 
         <a class="card personal" href="personale/index.html" style="flex-basis: 100%;">
           <h3>Personale</h3>
-          <p>Chi sono io (curriculum, presentazione).</p>
+          <p>Chi sono io (curriculum, carriera, presentazioni).</p>
         </a>
 
       </section>
@@ -101,7 +102,126 @@
 
   </div>
 
+  <!-- WEATHER WIDGET -->
+  <div id="weather-widget"
+    style="position: absolute; top: 100px; left: 20px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(0, 255, 255, 0.3); border-radius: 8px; padding: 15px; box-shadow: 0 0 15px rgba(0, 255, 255, 0.1); backdrop-filter: blur(10px); z-index: 100; min-width: 150px; display: none;">
+    <h3
+      style="color: #0ff; font-size: 0.9rem; margin-bottom: 10px; border-bottom: 1px solid rgba(0, 255, 255, 0.2); padding-bottom: 5px; text-align: center;">
+      Bologna 🌤️</h3>
+    <div id="weather-content"
+      style="font-size: 0.85rem; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px;">
+      <!-- Caricamento in corso... -->
+      <span style="text-align: center;">Caricamento...</span>
+    </div>
+  </div>
+
+  <!-- NASA APOD WIDGET -->
+  <div id="nasa-widget"
+    style="position: absolute; top: 100px; right: 20px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 8px; padding: 15px; box-shadow: 0 0 15px rgba(139, 92, 246, 0.1); backdrop-filter: blur(10px); z-index: 50; width: 220px; display: none;">
+    <h3
+      style="color: #a78bfa; font-size: 0.9rem; margin-bottom: 10px; border-bottom: 1px solid rgba(139, 92, 246, 0.2); padding-bottom: 5px; text-align: center;">
+      NASA APOD 🚀</h3>
+    <div id="nasa-content"
+      style="font-size: 0.85rem; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px; align-items: center; text-align: center;">
+      <span style="text-align: center;">Caricamento...</span>
+    </div>
+  </div>
+
   <script src="js/main.js"></script>
+
+  <!-- SCRIPT WIDGET METEO -->
+  <script>
+    async function fetchWeather() {
+      // Coordinate di Bologna: 44.4949, 11.3426
+      const url = "https://api.open-meteo.com/v1/forecast?latitude=44.4949&longitude=11.3426&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Europe%2FRome&forecast_days=3";
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        const weatherDesc = {
+          0: "Soleggiato ☀️", 1: "Poco Nuv. 🌤️", 2: "Nuvoloso ⛅", 3: "Coperto ☁️",
+          45: "Nebbia 🌫️", 48: "Nebbia 🌫️",
+          51: "Pioggerella 🌦️", 53: "Pioggerella 🌦️", 55: "Pioggerella 🌦️",
+          61: "Pioggia 🌧️", 63: "Pioggia 🌧️", 65: "Pioggia Forte 🌧️",
+          71: "Neve ❄️", 73: "Neve ❄️", 75: "Neve ❄️",
+          95: "Temporale 🌩️"
+        };
+
+        const daily = data.daily;
+        const days = ["Oggi", "Domani", "Dopodomani"];
+
+        let htmlContent = "";
+
+        for (let i = 0; i < 3; i++) {
+          const maxT = Math.round(daily.temperature_2m_max[i]);
+          const minT = Math.round(daily.temperature_2m_min[i]);
+          const code = daily.weathercode[i];
+          const icon = weatherDesc[code] || "Misto ☁️";
+
+          htmlContent += `
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 4px;">
+                <span style="font-weight: bold; color: #e2e8f0; width: 105px;">${days[i]}</span>
+                <span style="flex: 1; text-align: left; padding-left: 5px;">${icon}</span>
+                <span style="color: #ef4444; font-weight: bold; margin-left:10px;">${maxT}°</span> / <span style="color: #3b82f6;">${minT}°</span>
+              </div>
+            `;
+        }
+
+        document.getElementById('weather-content').innerHTML = htmlContent;
+        document.getElementById('weather-widget').style.display = 'block';
+
+      } catch (error) {
+        console.error("Errore meteo: ", error);
+        document.getElementById('weather-content').innerHTML = "<span style='color: #ef4444;'>Errore API Meteo</span>";
+        document.getElementById('weather-widget').style.display = 'block';
+      }
+    }
+
+    // Mostra il widget solo su schermi larghi (desktop) per non rompere il layout mobile
+    if (window.innerWidth > 1024) {
+      fetchWeather();
+      fetchNasaApod();
+    }
+
+    async function fetchNasaApod() {
+      const url = "https://api.nasa.gov/planetary/apod?api_key=N1SVRVEJ7hzo9T76bgMldhMCwCfbZLAUZRIkqj8I";
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+          throw new Error(data.error?.message || data.error?.code || "Rate limit superato");
+        }
+
+        let mediaHtml = "";
+        if (data.media_type === "image") {
+          mediaHtml = `<img src="${data.url}" alt="${data.title}" style="width: 100%; border-radius: 4px; border: 1px solid rgba(139, 92, 246, 0.5); margin-bottom: 5px; cursor: pointer;" onclick="window.open('${data.hdurl || data.url}', '_blank')">`;
+        } else if (data.media_type === "video") {
+          const thumbUrl = data.thumbnail_url || 'https://via.placeholder.com/300x150/111827/a78bfa?text=Video+APOD';
+          mediaHtml = `<a href="${data.url}" target="_blank" style="text-decoration: none;"><img src="${thumbUrl}" alt="Video Thumbnail" style="width: 100%; border-radius: 4px; border: 1px solid rgba(139, 92, 246, 0.5); margin-bottom: 5px;"><div style="color: #a78bfa; font-weight: bold; margin-bottom: 5px;">▶️ Guarda il Video</div></a>`;
+        } else {
+          mediaHtml = `<div style="color: #a78bfa; padding: 20px 0;">Contenuto non disponibile</div>`;
+        }
+
+        const htmlContent = `
+          ${mediaHtml}
+          <span style="font-weight: bold; color: #e2e8f0; font-size: 0.8rem;">${data.title || "Immagine del giorno"}</span>
+        `;
+
+        document.getElementById('nasa-content').innerHTML = htmlContent;
+        document.getElementById('nasa-widget').style.display = 'block';
+
+      } catch (error) {
+        console.error("Errore NASA API: ", error);
+        document.getElementById('nasa-content').innerHTML = `
+            <span style='color: #ef4444; font-size: 0.8rem;'>Errore di Rete o Chiave in attivazione. Riprova tra poco. (Ctrl+F5)</span>
+        `;
+        document.getElementById('nasa-widget').style.display = 'block';
+      }
+    }
+  </script>
+  </script>
 </body>
 
 </html>

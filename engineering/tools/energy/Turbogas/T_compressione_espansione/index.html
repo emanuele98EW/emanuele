@@ -16,7 +16,7 @@
   <header class="navbar">
     <div class="navbar-logo">
       <img src="../../../../../assets/logo.png" alt="Logo">
-      <h1>Emanuele Zanella</h1>
+      <h1><a href="../../../../../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
     </div>
 
     <nav class="menu">
@@ -42,9 +42,9 @@
         </div>
       </div>
 
-      
-        <a href="../../../../../personale/index.html" class="menu-link personal">Personale</a>
-        <span id="clock" class="digital-clock"></span>
+
+      <a href="../../../../../personale/index.html" class="menu-link personal">Personale</a>
+      <span id="clock" class="digital-clock"></span>
     </nav>
   </header>
 
@@ -54,11 +54,13 @@
     <h2 style="color: #0ff; text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">🌡️
       T–s Compressione ed Espansione</h2>
 
-    <section class="cards" style="grid-template-columns: 1fr 1fr; max-width: 1000px;">
+    <!-- ROW COMPRESSIONE: dati a sinistra, grafico a destra -->
+    <div
+      style="display: flex; gap: 20px; max-width: 1000px; margin: 0 auto 30px auto; align-items: stretch; flex-wrap: wrap;">
 
-      <!-- COMPRESSIONE INPUT -->
-      <div class="card engineering">
-        <h3>Compressione</h3>
+      <!-- CARD DATI COMPRESSIONE -->
+      <div class="card engineering" style="flex: 1; min-width: 280px;">
+        <h3>🔵 Dati Compressione</h3>
 
         <div class="inline-input">T1 = <input id="T1" type="number" value="288"> K</div>
         <div class="inline-input">β = <input id="betaC" type="number" value="12"></div>
@@ -69,21 +71,30 @@
           \]</p>
 
         <button onclick="calcCompressione()" class="cyber-btn">Calcola</button>
-        <p id="outC" style="margin-top: 15px; font-size: 1.2rem; color: #fff; text-shadow: 0 0 10px #f97316;"></p>
+        <p id="outC"
+          style="margin-top: 15px; font-size: 1.2rem; color: #fff; text-shadow: 0 0 10px #f97316; text-align: center;">
+        </p>
       </div>
 
       <!-- GRAFICO COMPRESSIONE -->
-      <div class="card engineering" style="display: flex; flex-direction: column; align-items: center;">
-        <h3>📈 Ts Compressione</h3>
+      <div class="card engineering"
+        style="flex: 1; min-width: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <h3>📈 T–s Compressione</h3>
         <div
           style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 8px; border: 1px solid rgba(0, 255, 255, 0.2);">
-          <canvas id="tsC" width="400" height="300"></canvas>
+          <canvas id="tsC" width="380" height="280"></canvas>
         </div>
       </div>
 
-      <!-- ESPANSIONE INPUT -->
-      <div class="card engineering">
-        <h3>Espansione</h3>
+    </div>
+
+    <!-- ROW ESPANSIONE: dati a sinistra, grafico a destra -->
+    <div
+      style="display: flex; gap: 20px; max-width: 1000px; margin: 0 auto 30px auto; align-items: stretch; flex-wrap: wrap;">
+
+      <!-- CARD DATI ESPANSIONE -->
+      <div class="card engineering" style="flex: 1; min-width: 280px;">
+        <h3>🔴 Dati Espansione</h3>
 
         <div class="inline-input">T3 = <input id="T3" type="number" value="1400"> K</div>
         <div class="inline-input">β = <input id="betaE" type="number" value="12"></div>
@@ -94,19 +105,22 @@
           \]</p>
 
         <button onclick="calcEspansione()" class="cyber-btn">Calcola</button>
-        <p id="outE" style="margin-top: 15px; font-size: 1.2rem; color: #fff; text-shadow: 0 0 10px #f97316;"></p>
+        <p id="outE"
+          style="margin-top: 15px; font-size: 1.2rem; color: #fff; text-shadow: 0 0 10px #f97316; text-align: center;">
+        </p>
       </div>
 
       <!-- GRAFICO ESPANSIONE -->
-      <div class="card engineering" style="display: flex; flex-direction: column; align-items: center;">
+      <div class="card engineering"
+        style="flex: 1; min-width: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <h3>📈 T–s Espansione</h3>
         <div
           style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 8px; border: 1px solid rgba(0, 255, 255, 0.2);">
-          <canvas id="tsE" width="400" height="300"></canvas>
+          <canvas id="tsE" width="380" height="280"></canvas>
         </div>
       </div>
 
-    </section>
+    </div>
 
   </main>
   </div>
@@ -152,11 +166,17 @@
       ctx.fillText("s", w - 25, h - padding + 4);
       ctx.fillText("T", padding - 20, padding + 10);
 
-      // --- SCALA ---
+      // --- SCALA DINAMICA (si adatta ai valori reali) ---
       const sCenter = w / 2;
-      const yScale = (h - 2 * padding) / 1600;
-      const yIn = (h - padding) - Tin * yScale;
-      const yOut = (h - padding) - Tout * yScale;
+      const Tmin = Math.min(Tin, Tout);
+      const Tmax = Math.max(Tin, Tout);
+      const Trange = Tmax - Tmin || 100; // evita divisione per zero
+      const marginT = Trange * 0.35; // 35% di margine sopra e sotto
+      const scaleMin = Tmin - marginT;
+      const scaleMax = Tmax + marginT;
+      const yScale = (h - 2 * padding) / (scaleMax - scaleMin);
+      const yIn = (h - padding) - (Tin - scaleMin) * yScale;
+      const yOut = (h - padding) - (Tout - scaleMin) * yScale;
 
       // --- ISOBARE STILIZZATE ---
       ctx.setLineDash([4, 4]);

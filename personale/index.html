@@ -16,7 +16,7 @@
         <header class="navbar">
             <div class="navbar-logo">
                 <img src="../assets/logo.png" alt="Logo">
-                <h1>Emanuele Zanella</h1>
+                <h1><a href="../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
             </div>
 
             <nav class="menu">
@@ -27,8 +27,8 @@
                         Finanza <span class="arrow">▼</span>
                     </button>
                     <div class="menu-content">
-                        <a href="../finanza/index.html" class="menu-link finance">Interesse Composto</a>
-                        <a href="../finanza/interesse/index.html" class="menu-link finance">Portafoglio</a>
+                        <a href="../finanza/interesse/index.html" class="menu-link finance">Interesse Composto</a>
+                        <a href="../finanza/portafoglio/index.html" class="menu-link finance">Portafoglio</a>
                         <a href="../finanza/mutuo/index.html" class="menu-link finance">Mutui</a>
                     </div>
                 </div>
@@ -47,7 +47,16 @@
                     </div>
                 </div>
 
-                <a href="index.html" class="menu-link personal active">Personale</a>
+                <div class="menu-group">
+                    <button class="menu-toggle">
+                        Personale <span class="arrow">▼</span>
+                    </button>
+                    <div class="menu-content">
+                        <a href="index.html" class="menu-link personal active">Chi Sono</a>
+                        <a href="accademico/index.html" class="menu-link personal">Percorso Accademico</a>
+                        <a href="progetti/index.html" class="menu-link personal">Progetti Personali</a>
+                    </div>
+                </div>
 
                 <span id="clock" class="digital-clock"></span>
             </nav>
@@ -246,10 +255,12 @@
                         </div>
                     </div>
 
-                    <div class="timeline-item">
+                    <div class="timeline-item active">
                         <div class="timeline-content">
-                            <span class="timeline-date">Gen 2024 – Presente</span>
-                            <h3 class="timeline-title">REIA</h3>
+                            <span class="timeline-date"
+                                style="color: #facc15; text-shadow: 0 0 5px rgba(250, 204, 21, 0.5);">Gen 2024 –
+                                Presente</span>
+                            <h3 class="timeline-title" style="color: #fef08a;">REIA</h3>
                             <p class="timeline-desc">Project Engineer</p>
                         </div>
                     </div>
