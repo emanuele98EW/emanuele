@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cervello Online - Weldneck RF</title>
+    <link rel="stylesheet" href="../../../../../../../css/style.css">
+    <style>
+        .tool-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+        }
+
+        .visual-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Immagine flangia */
+        .rotating-flange {
+            width: 250px;
+            height: 250px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 15px rgba(96, 165, 250, 0.6));
+            transform-style: preserve-3d;
+        }
+
+        @keyframes rotateFlange {
+            from {
+                transform: perspective(1000px) rotateY(0deg);
+            }
+
+            to {
+                transform: perspective(1000px) rotateY(360deg);
+            }
+        }
+
+        .controls-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-group label {
+            color: #60a5fa;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        select {
+            background: rgba(30, 41, 59, 0.9);
+            color: #fff;
+            border: 1px solid rgba(96, 165, 250, 0.5);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        .results-display {
+            background: rgba(2, 6, 23, 0.5);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            color: #94a3b8;
+            flex: 1;
+            line-height: 1.4;
+        }
+
+        .result-value {
+            color: #fff;
+            font-weight: bold;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .diagram-container {
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .diagram-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            opacity: 0.8;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .diagram-img:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 900px) {
+            .tool-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <header class="navbar">
+            <div class="navbar-logo" style="display: flex; align-items: center; gap: 15px;">
+                <img src="../../../../../../../assets/logo.png" alt="Logo">
+                <h1><a href="../../../../../../../personale/index.html"
+                        style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
+                <video autoplay loop muted playsinline
+                    style="width: 50px; height: 50px; background: transparent; pointer-events: none;">
+                    <source src="../../../../../../../assets/Cute%20Bird%20Flapping%20Animation.webm" type="video/webm">
+                </video>
+            </div>
+            <nav class="menu">
+                <a href="../../../../../../../index.html" class="menu-link">Home</a>
+
+                <div class="menu-group">
+                    <a href="../../../../../../../finanza/index.html" class="menu-toggle">Finanza <span class="arrow">▼</span></a>
+                    <div class="menu-content">
+                        <a href="../../../../../../../finanza/interesse/index.html" class="menu-link finance">Interesse
+                            Composto</a>
+                        <a href="../../../../../../../finanza/mutuo/index.html" class="menu-link finance">Mutui</a>
+                    </div>
+                </div>
+
+                <div class="menu-group">
+                    <a href="../../../../../../../engineering/index.html" class="menu-toggle active" style="display: flex; align-items: center; gap: 8px;"><video autoplay loop muted playsinline style="width: 35px; height: 35px; background: transparent; pointer-events: none;">  <source src="../../../../../../../assets/Cute%20Bird%20Flapping%20Animation.webm" type="video/webm"></video>Ingegneria <span class="arrow">▼</span></a>
+                    <div class="menu-content">
+                        <a href="../../../../../../appunti/index.html" class="menu-link engineering">Appunti</a>
+                        <a href="../../../../../index.html" class="menu-link engineering active">Tools</a>
+                    </div>
+                </div>
+
+                <div class="menu-group">
+                    <a href="../../../../../../../personale/index.html" class="menu-toggle">Personale <span class="arrow">▼</span></a>
+                    <div class="menu-content">
+                        <a href="../../../../../../../personale/index.html" class="menu-link personal">Chi Sono</a>
+                        <a href="../../../../../../../personale/accademico/index.html"
+                            class="menu-link personal">Percorso Accademico</a>
+                        <a href="../../../../../../../personale/progetti/index.html" class="menu-link personal">Progetti
+                            Personali</a>
+                    </div>
+                </div>
+
+                <span id="clock" class="digital-clock"></span>
+            </nav>
+        </header>
+
+        <main class="main">
+            <div class="background-logo"></div>
+            <h2
+                style="color: #60a5fa; text-align: center; margin-bottom: 10px; text-shadow: 0 0 10px rgba(96, 165, 250, 0.5); font-size: 2rem;">
+                ⭕ Tool Dimensionale Weldneck RF</h2>
+            <p style="color: #94a3b8; text-align: center; margin-bottom: 5px;">ASME B16.5 - Raised Face Welding Neck
+                Flanges</p>
+            <p style="color: #cbd5e1; text-align: center; font-size: 1.1rem; font-weight: bold; margin-bottom: 30px;">
+                Flangia a Collarino a Saldare</p>
+
+            <div class="tool-container">
+                <!-- SEZIONE VISIVA -->
+                <div class="visual-section">
+                    <img src="flange.svg" alt="Rotating Flange SVG" class="rotating-flange">
+
+                    <div class="diagram-container">
+                        <p style="color: #60a5fa; font-size: 0.8rem; margin-bottom: 5px;">Sezione Trasversale</p>
+                        <svg viewBox="0 0 500 300" class="diagram-img"
+                            style="background: rgba(30, 41, 59, 0.5); border-radius: 12px; border: 1px solid rgba(96, 165, 250, 0.2);">
+                            <!-- Definizione marker frecce -->
+                            <defs>
+                                <marker id="arrow-start" viewBox="0 0 10 10" refX="0" refY="5" markerWidth="6"
+                                    markerHeight="6" orient="auto">
+                                    <path d="M 10 0 L 0 5 L 10 10 z" fill="#fff" />
+                                </marker>
+                                <marker id="arrow-end" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6"
+                                    markerHeight="6" orient="auto">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#fff" />
+                                </marker>
+                            </defs>
+
+                            <!-- Sfondo interno tubo e fori (leggermente più chiaro) -->
+                            <rect x="175" y="100" width="150" height="130" fill="rgba(255, 255, 255, 0.08)" />
+                            <rect x="75" y="180" width="30" height="30" fill="rgba(255, 255, 255, 0.08)" />
+                            <rect x="395" y="180" width="30" height="30" fill="rgba(255, 255, 255, 0.08)" />
+
+                            <!-- Linea d'asse centrale verticale -->
+                            <line x1="250" y1="20" x2="250" y2="245" stroke="#94a3b8" stroke-dasharray="5,5" />
+
+                            <!-- Sezione flangia colorata (Azzurro stile Oppo) -->
+                            <!-- Metà Sinistra - Parte Esterna (oltre il foro) -->
+                            <path d="M 60,180 L 60,210 L 75,210 L 75,180 Z" fill="#69b4e4" stroke="#1e293b"
+                                stroke-width="1.5" />
+                            <!-- Metà Sinistra - Parte Interna (tra foro e centro) -->
+                            <path d="M 105,180 L 105,210 L 150,230 L 175,230 L 175,100 L 160,100 L 140,130 L 125,180 Z"
+                                fill="#69b4e4" stroke="#1e293b" stroke-width="1.5" />
+
+                            <!-- Metà Destra - Parte Esterna (oltre il foro) -->
+                            <path d="M 440,180 L 440,210 L 425,210 L 425,180 Z" fill="#69b4e4" stroke="#1e293b"
+                                stroke-width="1.5" />
+                            <!-- Metà Destra - Parte Interna (tra foro e centro) -->
+                            <path d="M 395,180 L 395,210 L 350,230 L 325,230 L 325,100 L 340,100 L 360,130 L 375,180 Z"
+                                fill="#69b4e4" stroke="#1e293b" stroke-width="1.5" />
+
+                            <!-- Bordo superiore interno e inferiore -->
+                            <line x1="175" y1="100" x2="325" y2="100" stroke="#1e293b" stroke-width="1.5" />
+                            <line x1="175" y1="230" x2="325" y2="230" stroke="#1e293b" stroke-width="1.5" />
+
+                            <!-- Bordo inferiore piatto flangia tra i pezzi esterni e interni -->
+                            <line x1="75" y1="210" x2="105" y2="210" stroke="#1e293b" stroke-width="1.5" />
+                            <line x1="395" y1="210" x2="425" y2="210" stroke="#1e293b" stroke-width="1.5" />
+                            <line x1="75" y1="180" x2="105" y2="180" stroke="#1e293b" stroke-width="1.5" />
+                            <line x1="395" y1="180" x2="425" y2="180" stroke="#1e293b" stroke-width="1.5" />
+
+                            <!-- Linee d'asse dei fori -->
+                            <line x1="90" y1="160" x2="90" y2="230" stroke="#94a3b8" stroke-dasharray="5,5" />
+                            <line x1="410" y1="160" x2="410" y2="230" stroke="#94a3b8" stroke-dasharray="5,5" />
+
+                            <!-- QUOTE DIMENSIONALI -->
+
+                            <!-- Quota e (Collarino cima) -->
+                            <line x1="160" y1="35" x2="160" y2="95" stroke="#94a3b8" stroke-width="1" />
+                            <line x1="340" y1="35" x2="340" y2="95" stroke="#94a3b8" stroke-width="1" />
+                            <line x1="162" y1="45" x2="338" y2="45" stroke="#fff" marker-start="url(#arrow-start)"
+                                marker-end="url(#arrow-end)" />
+                            <text x="250" y="40" fill="#fff" font-size="14" font-weight="bold" font-style="italic"
+                                text-anchor="middle">e = <tspan id="svg-e" font-style="normal">-</tspan></text>
+
+                            <!-- Quota f (Collarino base prima del gradino) -->
+                            <line x1="125" y1="65" x2="125" y2="175" stroke="#94a3b8" stroke-width="1" />
+                            <line x1="375" y1="65" x2="375" y2="175" stroke="#94a3b8" stroke-width="1" />
+                            <line x1="127" y1="75" x2="373" y2="75" stroke="#fff" marker-start="url(#arrow-start)"
+                                marker-end="url(#arrow-end)" />
+                            <text x="250" y="70" fill="#fff" font-size="14" font-weight="bold" font-style="italic"
+                                text-anchor="middle">f = <tspan id="svg-f" font-style="normal">-</tspan></text>
+
+                            <!-- Quota b (Foro Interno) -->
+                            <line x1="175" y1="120" x2="325" y2="120" stroke="#fff" marker-start="url(#arrow-start)"
+                                marker-end="url(#arrow-end)" />
+                            <text x="250" y="115" fill="#fff" font-size="14" font-weight="bold" font-style="italic"
+                                text-anchor="middle">b = <tspan id="svg-b" font-style="normal">-</tspan></text>
+
+                            <!-- Quota d (Altezza Flangia) -->
+                            <line x1="445" y1="100" x2="475" y2="100" stroke="#94a3b8" stroke-width="1" />
+                            <line x1="445" y1="210" x2="475" y2="210" stroke="#94a3b8" stroke-width="1" />
+                            <line x1="460" y1="102" x2="460" y2="208" stroke="#fff" marker-start="url(#arrow-start)"
+                                marker-end="url(#arrow-end)" />
+                            <text x="495" y="160" fill="#fff" font-size="14" font-weight="bold" font-style="italic"
+                                text-anchor="end">d = <tspan id="svg-d" font-style="normal">-</tspan></text>
+
+                            <!-- Quota c (Diametro Gradino) -->
+                            <line x1="150" y1="235" x2="150" y2="255" stroke="#94a3b8" stroke-width="1" />
+                            <line x1="350" y1="235" x2="350" y2="255" stroke="#94a3b8" stroke-width="1" />
+                            <line x1="152" y1="245" x2="348" y2="245" stroke="#fff" marker-start="url(#arrow-start)"
+                                marker-end="url(#arrow-end)" />
+                            <text x="250" y="260" fill="#fff" font-size="14" font-weight="bold" font-style="italic"
+                                text-anchor="middle">c = <tspan id="svg-c" font-style="normal">-</tspan></text>
+
+                            <!-- Quota a (Diametro Esterno) -->
+                            <line x1="60" y1="215" x2="60" y2="285" stroke="#94a3b8" stroke-width="1" />
+                            <line x1="440" y1="215" x2="440" y2="285" stroke="#94a3b8" stroke-width="1" />
+                            <line x1="62" y1="275" x2="438" y2="275" stroke="#fff" marker-start="url(#arrow-start)"
+                                marker-end="url(#arrow-end)" />
+                            <text x="250" y="290" fill="#fff" font-size="14" font-weight="bold" font-style="italic"
+                                text-anchor="middle">a = <tspan id="svg-a" font-style="normal">-</tspan></text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- SEZIONE CONTROLLI -->
+                <div class="controls-section">
+                    <div class="control-group">
+                        <label>Diametro Nominale</label>
+                        <select id="size-select">
+                            <option value="1/2">1/2" - DN 15</option>
+                            <option value="3/4">3/4" - DN 20</option>
+                            <option value="1">1" - DN 25</option>
+                            <option value="1-1/4">1 1/4" - DN 32</option>
+                            <option value="1-1/2">1 1/2" - DN 40</option>
+                            <option value="2">2" - DN 50</option>
+                            <option value="2-1/2">2 1/2" - DN 65</option>
+                            <option value="3">3" - DN 80</option>
+                            <option value="3-1/2">3 1/2" - DN 90</option>
+                            <option value="4">4" - DN 100</option>
+                            <option value="5">5" - DN 125</option>
+                            <option value="6">6" - DN 150</option>
+                            <option value="8">8" - DN 200</option>
+                            <option value="10">10" - DN 250</option>
+                            <option value="12">12" - DN 300</option>
+                            <option value="14">14" - DN 350</option>
+                            <option value="16">16" - DN 400</option>
+                            <option value="18">18" - DN 450</option>
+                            <option value="20">20" - DN 500</option>
+                            <option value="24">24" - DN 600</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Classe di Pressione (ANSI / ASME)</label>
+                        <select id="class-select">
+                            <option value="150">Class 150</option>
+                            <option value="300">Class 300</option>
+                            <option value="600">Class 600</option>
+                            <option value="900">Class 900</option>
+                            <option value="1500">Class 1500</option>
+                        </select>
+                    </div>
+
+                    <div class="results-display" style="margin-top: 20px;">
+                        <h4
+                            style="color: #60a5fa; margin-bottom: 15px; text-align: center; border-bottom: 1px solid rgba(96,165,250,0.3); padding-bottom: 10px;">
+                            Dati Strutturali e Foratura</h4>
+
+                        <div class="result-item">
+                            <span class="result-label">Spessore Flangia (Saldatura)</span>
+                            <span class="result-value" id="res-spessore">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Fori (Num x Ø)</span>
+                            <span class="result-value" id="res-fori">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Interasse Fori (W)</span>
+                            <span class="result-value" id="res-w">-</span>
+                        </div>
+                        <div class="result-item"
+                            style="border-top: 1px solid rgba(96, 165, 250, 0.4); margin-top: 5px; padding-top: 12px;">
+                            <span class="result-label" style="color: #fbbf24;">Peso Approssimativo</span>
+                            <span class="result-value" id="res-peso" style="color: #fbbf24;">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="data.js"></script>
+    <script>
+        const sizeEl = document.getElementById('size-select');
+        const classEl = document.getElementById('class-select');
+
+        function formatVal(v) {
+            if (v === "-" || typeof v === "undefined") return "-";
+            const num = parseFloat(v);
+            if (!isNaN(num) && String(num).length > 0 && String(v) == String(num)) {
+                return Number.isInteger(num) ? num.toString() : num.toFixed(2).replace(/\.?0+$/, "");
+            }
+            return v;
+        }
+
+        function updateValues() {
+            const size = sizeEl.value;
+            const pressure = classEl.value;
+
+            // Se i dati per questa classe e diametro non esistono nel json, usa fallback
+            const data = (typeof flangeData !== 'undefined' && flangeData[pressure] && flangeData[pressure][size])
+                ? flangeData[pressure][size]
+                : { a: "-", b: "-", c: "-", d: "-", e: "-", f: "-", thickness: "-", w: "-", holes: "-", weight: "-" };
+
+            // Aggiornamento Tabella Info Generali
+            document.getElementById('res-spessore').innerText = data.thickness !== "-" ? formatVal(data.thickness) + " mm" : "-";
+            document.getElementById('res-fori').innerText = data.holes !== "-" ? data.holes : "-";
+            document.getElementById('res-w').innerText = data.w !== "-" ? formatVal(data.w) + " mm" : "-";
+            document.getElementById('res-peso').innerText = data.weight !== "-" ? formatVal(data.weight) + " kg" : "-";
+
+            // Aggiornamento SVG Misure
+            document.getElementById('svg-a').textContent = data.a !== "-" ? formatVal(data.a) : "a";
+            document.getElementById('svg-b').textContent = data.b !== "-" ? formatVal(data.b) : "b";
+            document.getElementById('svg-c').textContent = data.c !== "-" ? formatVal(data.c) : "c";
+            document.getElementById('svg-d').textContent = data.d !== "-" ? formatVal(data.d) : "d";
+            document.getElementById('svg-e').textContent = data.e !== "-" ? formatVal(data.e) : "e";
+            document.getElementById('svg-f').textContent = data.f !== "-" ? formatVal(data.f) : "f";
+        }
+
+        sizeEl.addEventListener('change', updateValues);
+        classEl.addEventListener('change', updateValues);
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateValues();
+        });
+    </script>
+<script src="../../../../../../../js/main.js"></script>
+</body>
+
+</html>

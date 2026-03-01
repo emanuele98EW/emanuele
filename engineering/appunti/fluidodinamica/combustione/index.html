@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Combustione – Fluidodinamica</title>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <script>
+        MathJax = {
+            chtml: { scale: 1.2, displayAlign: 'center' },
+            tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]'], ['$$', '$$']] }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* Better readable font for notes */
+        body,
+        .notes-card p,
+        .notes-card li,
+        .legend,
+        td,
+        th,
+        .mini-box p,
+        .breadcrumb {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        /* SVG diagram labels only */
+        svg text.diagram-label {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .notes-card {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin: 0 auto 28px auto;
+            max-width: 860px;
+            width: 100%;
+            box-shadow: 0 0 20px rgba(96, 165, 250, 0.07);
+        }
+
+        .notes-card h3 {
+            color: #60a5fa;
+            margin-bottom: 14px;
+            font-size: 1.15rem;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .notes-card p,
+        .notes-card li {
+            color: #cbd5e1;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .formula-box {
+            background: rgba(96, 165, 250, 0.08);
+            border-left: 3px solid #60a5fa;
+            border-radius: 6px;
+            padding: 14px 20px;
+            margin: 14px 0;
+            text-align: center;
+            font-size: 1.05rem;
+            color: #e2e8f0;
+            overflow-x: auto;
+        }
+
+        .breadcrumb {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .breadcrumb a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <header class="navbar">
+            <div class="navbar-logo">
+                <img src="../../../../assets/logo.png" alt="Logo">
+                <h1><a href="../../../../personale/index.html" style="text-decoration:none;color:inherit;">Emanuele
+                        Zanella</a></h1>
+            </div>
+            <nav class="menu">
+                <a href="../../../../index.html" class="menu-link">Home</a>
+                <div class="menu-group">
+                    <a href="../../../../finanza/index.html" class="menu-toggle">Finanza <span
+                            class="arrow">▼</span></a>
+                    <div class="menu-content">
+                        <a href="../../../../finanza/interesse/index.html" class="menu-link finance">Interesse
+                            Composto</a>
+                        <a href="../../../../finanza/mutuo/index.html" class="menu-link finance">Mutui</a>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <a href="../../../../engineering/index.html" class="menu-toggle active"
+                        style="display:flex;align-items:center;gap:8px;">
+                        <video autoplay loop muted playsinline
+                            style="width:35px;height:35px;background:transparent;pointer-events:none;">
+                            <source src="../../../../assets/Cute%20Bird%20Flapping%20Animation.webm" type="video/webm">
+                        </video>
+                        Ingegneria <span class="arrow">▼</span>
+                    </a>
+                    <div class="menu-content">
+                        <a href="../index.html" class="menu-link engineering">Appunti</a>
+                        <a href="../../../tools/index.html" class="menu-link engineering">Tools</a>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <a href="../../../../personale/index.html" class="menu-toggle">Personale <span
+                            class="arrow">▼</span></a>
+                    <div class="menu-content">
+                        <a href="../../../../personale/index.html" class="menu-link personal">Chi Sono</a>
+                        <a href="../../../../personale/accademico/index.html" class="menu-link personal">Percorso
+                            Accademico</a>
+                        <a href="../../../../personale/progetti/index.html" class="menu-link personal">Progetti
+                            Personali</a>
+                    </div>
+                </div>
+                <span id="clock" class="digital-clock"></span>
+            </nav>
+        </header>
+        <main class="main" style="align-items:center;">
+            <div class="breadcrumb">
+                <a href="../../index.html">Appunti</a> › <a href="../index.html">Fluidodinamica</a> › Combustione
+            </div>
+            <h2
+                style="color:#60a5fa;text-align:center;margin-bottom:8px;font-size:2rem;text-shadow:0 0 10px rgba(96,165,250,0.5);">
+                🔥 Combustione</h2>
+            <p style="color:#94a3b8;text-align:center;margin-bottom:35px;max-width:620px;">
+                Principi fondamentali della combustione: stechiometria, aria comburente, potere calorifico inferiore
+                (PCI) e superiore (PCS), prodotti di combustione e temperatura adiabatica.
+            </p>
+            <section class="notes-card">
+                <h3>Stechiometria</h3>
+                <p>Per una reazione completa di combustione di un idrocarburo generico C<sub>m</sub>H<sub>n</sub> con
+                    aria:</p>
+                <div class="formula-box">\( C_{m}H_{n} + \left(m + \frac{n}{4}\right) O_{2} \rightarrow m CO_{2} +
+                    \frac{n}{2} H_{2}O \)</div>
+                <p>Il rapporto stechiometrico aria‑combustibile (AFR) è:</p>
+                <div class="formula-box">\( AFR_{st} = \frac{\text{massa aria}}{\text{massa combustibile}} =
+                    \frac{\left(m + \frac{n}{4}\right) M_{O_{2}}}{M_{C_{m}H_{n}}} \)</div>
+            </section>
+            <section class="notes-card">
+                <h3>Aria comburente</h3>
+                <p>L'aria è composta principalmente da N<sub>2</sub> e O<sub>2</sub> (≈ 21% in volume). Il rapporto
+                    volumetrico O<sub>2</sub>/N<sub>2</sub> è 1/3.76.</p>
+                <p>Il rapporto aria‑combustibile reale (AFR) può essere espresso in termini di equivalenza (φ):</p>
+                <div class="formula-box">\( \phi = \frac{AFR_{st}}{AFR} \)</div>
+            </section>
+            <section class="notes-card">
+                <h3>PCI / PCS</h3>
+                <p>Il potere calorifico inferiore (PCI) e superiore (PCS) sono espressi in [J/kg] e dipendono dalla
+                    composizione del combustibile.</p>
+                <div class="formula-box">\( Q_{L} = \text{PCI} \cdot m_{comb} \quad ; \quad Q_{H} = \text{PCS} \cdot
+                    m_{comb} \)</div>
+            </section>
+            <section class="notes-card">
+                <h3>Prodotti di combustione</h3>
+                <p>In condizioni ideali, i prodotti principali sono CO<sub>2</sub>, H<sub>2</sub>O, N<sub>2</sub> e
+                    O<sub>2</sub> residuo.</p>
+                <div class="formula-box">\( \text{Prodotti} = m CO_{2} + \frac{n}{2} H_{2}O + (\text{Aria} -
+                    \text{O}_{2}\text{ consumato}) \)</div>
+            </section>
+            <section class="notes-card">
+                <h3>Temperatura adiabatica</h3>
+                <p>Temperatura teorica di combustione (adiabatica) calcolata con il bilancio energetico:</p>
+                <div class="formula-box">\( T_{ad} = T_{0} + \frac{\eta_{c}\, Q_{L}}{c_{p,\,prod}} \)</div>
+                <p>dove \(\eta_{c}\) è l'efficienza di combustione, \(c_{p,\mathrm{prod}}\) è il calore specifico medio
+                    dei prodotti.</p>
+            </section>
+        </main>
+        <script src="../../../../js/main.js"></script>
+    </div>
+</body>
+
+</html>

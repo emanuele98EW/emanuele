@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Conservazione dell'Energia – Fluidodinamica</title>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <script>
+        MathJax = {
+            chtml: { scale: 1.2, displayAlign: 'center' },
+            tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]'], ['$$', '$$']] }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* Better readable font for notes */
+        body,
+        .notes-card p,
+        .notes-card li,
+        .legend,
+        td,
+        th,
+        .mini-box p,
+        .breadcrumb {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        /* SVG diagram labels: keep Inter for diagram axis labels only */
+        svg text.diagram-label {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .notes-card {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin: 0 auto 28px auto;
+            max-width: 860px;
+            width: 100%;
+            box-shadow: 0 0 20px rgba(96, 165, 250, 0.07);
+        }
+
+        .notes-card h3 {
+            color: #60a5fa;
+            margin-bottom: 14px;
+            font-size: 1.15rem;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .notes-card p,
+        .notes-card li {
+            color: #cbd5e1;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .notes-card ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .formula-box {
+            background: rgba(96, 165, 250, 0.08);
+            border-left: 3px solid #60a5fa;
+            border-radius: 6px;
+            padding: 14px 20px;
+            margin: 14px 0;
+            text-align: center;
+            font-size: 1.05rem;
+            color: #e2e8f0;
+            overflow-x: auto;
+        }
+
+        .formula-box.green {
+            border-left-color: #22c55e;
+            background: rgba(34, 197, 94, 0.07);
+        }
+
+        .formula-box.orange {
+            border-left-color: #f97316;
+            background: rgba(249, 115, 22, 0.07);
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(96, 165, 250, 0.15);
+            color: #93c5fd;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 0.78rem;
+            margin-bottom: 10px;
+        }
+
+        .legend {
+            color: #94a3b8;
+            font-size: 0.88rem;
+            margin-top: 8px;
+        }
+
+        .legend span {
+            color: #e2e8f0;
+        }
+
+        .breadcrumb {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .breadcrumb a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: rgba(96, 165, 250, 0.12);
+            color: #93c5fd;
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        td {
+            color: #cbd5e1;
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        tr:hover td {
+            background: rgba(96, 165, 250, 0.04);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <header class="navbar">
+            <div class="navbar-logo">
+                <img src="../../../../assets/logo.png" alt="Logo">
+                <h1><a href="../../../../personale/index.html" style="text-decoration:none;color:inherit;">Emanuele
+                        Zanella</a></h1>
+            </div>
+            <nav class="menu">
+                <a href="../../../../index.html" class="menu-link">Home</a>
+                <div class="menu-group">
+                    <a href="../../../../finanza/index.html" class="menu-toggle">Finanza <span
+                            class="arrow">▼</span></a>
+                    <div class="menu-content">
+                        <a href="../../../../finanza/interesse/index.html" class="menu-link finance">Interesse
+                            Composto</a>
+                        <a href="../../../../finanza/mutuo/index.html" class="menu-link finance">Mutui</a>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <a href="../../../../engineering/index.html" class="menu-toggle active"
+                        style="display:flex;align-items:center;gap:8px;">
+                        <video autoplay loop muted playsinline
+                            style="width:35px;height:35px;background:transparent;pointer-events:none;">
+                            <source src="../../../../assets/Cute%20Bird%20Flapping%20Animation.webm" type="video/webm">
+                        </video>
+                        Ingegneria <span class="arrow">▼</span>
+                    </a>
+                    <div class="menu-content">
+                        <a href="../../index.html" class="menu-link engineering">Appunti</a>
+                        <a href="../../../tools/index.html" class="menu-link engineering">Tools</a>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <a href="../../../../personale/index.html" class="menu-toggle">Personale <span
+                            class="arrow">▼</span></a>
+                    <div class="menu-content">
+                        <a href="../../../../personale/index.html" class="menu-link personal">Chi Sono</a>
+                        <a href="../../../../personale/accademico/index.html" class="menu-link personal">Percorso
+                            Accademico</a>
+                        <a href="../../../../personale/progetti/index.html" class="menu-link personal">Progetti
+                            Personali</a>
+                    </div>
+                </div>
+                <span id="clock" class="digital-clock"></span>
+            </nav>
+        </header>
+
+        <main class="main" style="align-items:center;">
+            <div class="breadcrumb">
+                <a href="../../index.html">Appunti</a> › <a href="../index.html">Fluidodinamica</a> › Conservazione
+                dell'Energia
+            </div>
+
+            <h2
+                style="color:#60a5fa;text-align:center;margin-bottom:8px;font-size:2rem;text-shadow:0 0 10px rgba(96,165,250,0.5);">
+                ⚡ Conservazione dell'Energia</h2>
+            <p style="color:#94a3b8;text-align:center;margin-bottom:35px;max-width:640px;">
+                Primo Principio della Termodinamica applicato ai sistemi aperti — equazione di Eulero e casi
+                particolari.
+            </p>
+
+            <!-- SCHEMA SVG volume di controllo -->
+            <div class="notes-card" style="text-align:center;">
+                <h3>📐 Volume di Controllo — Scambi Energetici</h3>
+                <svg width="620" height="200" viewBox="0 0 620 200" style="max-width:100%;">
+                    <defs>
+                        <marker id="arr2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                            <polygon points="0 0,8 3,0 6" fill="#60a5fa" />
+                        </marker>
+                        <marker id="arrQ" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                            <polygon points="0 0,8 3,0 6" fill="#f97316" />
+                        </marker>
+                        <marker id="arrL" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                            <polygon points="0 0,8 3,0 6" fill="#22c55e" />
+                        </marker>
+                    </defs>
+                    <!-- Volume di controllo -->
+                    <rect x="180" y="50" width="260" height="120" rx="10" fill="rgba(96,165,250,0.05)"
+                        stroke="rgba(96,165,250,0.4)" stroke-width="1.5" stroke-dasharray="6 4" />
+                    <text x="310" y="115" text-anchor="middle" fill="#64748b" font-size="12">Volume di Controllo</text>
+                    <!-- flusso in -->
+                    <line x1="60" y1="110" x2="175" y2="110" stroke="#60a5fa" stroke-width="2"
+                        marker-end="url(#arr2)" />
+                    <text x="30" y="100" fill="#93c5fd" font-size="11" text-anchor="middle">ṁ₁</text>
+                    <text x="30" y="116" fill="#93c5fd" font-size="11" text-anchor="middle">h₁,w₁,z₁</text>
+                    <!-- flusso out -->
+                    <line x1="445" y1="110" x2="560" y2="110" stroke="#60a5fa" stroke-width="2"
+                        marker-end="url(#arr2)" />
+                    <text x="590" y="100" fill="#93c5fd" font-size="11" text-anchor="middle">ṁ₂</text>
+                    <text x="590" y="116" fill="#93c5fd" font-size="11" text-anchor="middle">h₂,w₂,z₂</text>
+                    <!-- Calore Q -->
+                    <line x1="310" y1="168" x2="310" y2="195" stroke="#f97316" stroke-width="2"
+                        marker-end="url(#arrQ)" />
+                    <text x="335" y="192" fill="#fb923c" font-size="12">Q̇ (calore ceduto)</text>
+                    <!-- Lavoro L -->
+                    <line x1="310" y1="52" x2="310" y2="25" stroke="#22c55e" stroke-width="2" marker-end="url(#arrL)" />
+                    <text x="335" y="22" fill="#4ade80" font-size="12">Ṗᵢ (lavoro tecnico)</text>
+                </svg>
+            </div>
+
+            <!-- FORMULA GENERALE -->
+            <div class="notes-card">
+                <div class="tag">1° Principio — Sistema Aperto — Regime Stazionario</div>
+                <h3>Equazione Generale dell'Energia (Eulero)</h3>
+                <p>Tra due sezioni di un sistema aperto in regime stazionario:</p>
+                <div class="formula-box">
+                    \[
+                    q_{12} - l_{i,12} = (h_2 - h_1) + \frac{w_2^2 - w_1^2}{2} + g(z_2 - z_1)
+                    \]
+                </div>
+                <p class="legend">
+                    <span>q₁₂</span> = calore specifico scambiato [J/kg] &ensp;|&ensp;
+                    <span>lᵢ</span> = lavoro tecnico specifico [J/kg] &ensp;|&ensp;
+                    <span>h</span> = entalpia specifica = u + pv [J/kg]
+                </p>
+                <p class="legend" style="margin-top:6px;">
+                    <span>w</span> = velocità [m/s] &ensp;|&ensp;
+                    <span>g·z</span> = energia potenziale [J/kg]
+                </p>
+            </div>
+
+            <!-- ENTALPIA TOTALE -->
+            <div class="notes-card">
+                <div class="tag">Grandezza chiave</div>
+                <h3>Entalpia Totale (o di Ristagno)</h3>
+                <p>Si definisce l'entalpia totale come:</p>
+                <div class="formula-box">
+                    \[ h_{tot} = h + \frac{w^2}{2} + gz \]
+                </div>
+                <p>In forma di potenza (per portata massica ṁ):</p>
+                <div class="formula-box green">
+                    \[ \dot{Q} - \dot{P}_i = \dot{m} \left[ (h_2 - h_1) + \frac{w_2^2 - w_1^2}{2} + g(z_2 - z_1) \right]
+                    \]
+                </div>
+            </div>
+
+            <!-- CASI PARTICOLARI -->
+            <div class="notes-card">
+                <div class="tag">Casi pratici</div>
+                <h3>Casi Particolari</h3>
+                <table>
+                    <tr>
+                        <th>Ipotesi</th>
+                        <th>Equazione semplificata</th>
+                    </tr>
+                    <tr>
+                        <td>Macchina adiabatica (q = 0), Δz ≈ 0</td>
+                        <td>\( l_i = h_1 - h_2 \)</td>
+                    </tr>
+                    <tr>
+                        <td>Scambiatore di calore (lᵢ = 0, Δw ≈ 0, Δz ≈ 0)</td>
+                        <td>\( q = h_2 - h_1 \)</td>
+                    </tr>
+                    <tr>
+                        <td>Fluido incomprimibile (Bernoulli generalizzato)</td>
+                        <td>\( l_i = \frac{p_1 - p_2}{\rho} + \frac{w_1^2 - w_2^2}{2} + g(z_1 - z_2) \)</td>
+                    </tr>
+                    <tr>
+                        <td>Ugello adiabatico (lᵢ = 0, Δz ≈ 0)</td>
+                        <td>\( h_1 + \frac{w_1^2}{2} = h_2 + \frac{w_2^2}{2} \)</td>
+                    </tr>
+                </table>
+            </div>
+
+        </main>
+    </div>
+    <script src="../../../../js/main.js"></script>
+</body>
+
+</html>

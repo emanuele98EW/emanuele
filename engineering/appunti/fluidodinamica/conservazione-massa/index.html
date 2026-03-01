@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Conservazione della Massa – Fluidodinamica</title>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <script>
+        MathJax = {
+            chtml: { scale: 1.2, displayAlign: 'center' },
+            tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]'], ['$$', '$$']] }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* Better readable font for notes */
+        body,
+        .notes-card p,
+        .notes-card li,
+        .legend,
+        td,
+        th,
+        .mini-box p,
+        .breadcrumb {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        /* SVG diagram labels: keep Inter for diagram axis labels only */
+        svg text.diagram-label {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .notes-card {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin: 0 auto 28px auto;
+            max-width: 860px;
+            width: 100%;
+            box-shadow: 0 0 20px rgba(96, 165, 250, 0.07);
+        }
+
+        .notes-card h3 {
+            color: #60a5fa;
+            margin-bottom: 14px;
+            font-size: 1.15rem;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .notes-card p,
+        .notes-card li {
+            color: #cbd5e1;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .notes-card ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .formula-box {
+            background: rgba(96, 165, 250, 0.08);
+            border-left: 3px solid #60a5fa;
+            border-radius: 6px;
+            padding: 14px 20px;
+            margin: 14px 0;
+            text-align: center;
+            font-size: 1.05rem;
+            color: #e2e8f0;
+            overflow-x: auto;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(96, 165, 250, 0.15);
+            color: #93c5fd;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 0.78rem;
+            margin-bottom: 10px;
+        }
+
+        .legend {
+            color: #94a3b8;
+            font-size: 0.88rem;
+            margin-top: 8px;
+        }
+
+        .legend span {
+            color: #e2e8f0;
+        }
+
+        svg text {
+            font-family: 'Orbitron', monospace;
+        }
+
+        .breadcrumb {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .breadcrumb a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <header class="navbar">
+            <div class="navbar-logo">
+                <img src="../../../../assets/logo.png" alt="Logo">
+                <h1><a href="../../../../personale/index.html" style="text-decoration:none;color:inherit;">Emanuele
+                        Zanella</a></h1>
+            </div>
+            <nav class="menu">
+                <a href="../../../../index.html" class="menu-link">Home</a>
+                <div class="menu-group">
+                    <a href="../../../../finanza/index.html" class="menu-toggle">Finanza <span
+                            class="arrow">▼</span></a>
+                    <div class="menu-content">
+                        <a href="../../../../finanza/interesse/index.html" class="menu-link finance">Interesse
+                            Composto</a>
+                        <a href="../../../../finanza/mutuo/index.html" class="menu-link finance">Mutui</a>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <a href="../../../../engineering/index.html" class="menu-toggle active"
+                        style="display:flex;align-items:center;gap:8px;">
+                        <video autoplay loop muted playsinline
+                            style="width:35px;height:35px;background:transparent;pointer-events:none;">
+                            <source src="../../../../assets/Cute%20Bird%20Flapping%20Animation.webm" type="video/webm">
+                        </video>
+                        Ingegneria <span class="arrow">▼</span>
+                    </a>
+                    <div class="menu-content">
+                        <a href="../../index.html" class="menu-link engineering">Appunti</a>
+                        <a href="../../../tools/index.html" class="menu-link engineering">Tools</a>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <a href="../../../../personale/index.html" class="menu-toggle">Personale <span
+                            class="arrow">▼</span></a>
+                    <div class="menu-content">
+                        <a href="../../../../personale/index.html" class="menu-link personal">Chi Sono</a>
+                        <a href="../../../../personale/accademico/index.html" class="menu-link personal">Percorso
+                            Accademico</a>
+                        <a href="../../../../personale/progetti/index.html" class="menu-link personal">Progetti
+                            Personali</a>
+                    </div>
+                </div>
+                <span id="clock" class="digital-clock"></span>
+            </nav>
+        </header>
+
+        <main class="main" style="align-items:center;">
+            <div class="breadcrumb">
+                <a href="../../index.html">Appunti</a> › <a href="../index.html">Fluidodinamica</a> › Conservazione
+                della Massa
+            </div>
+
+            <h2
+                style="color:#60a5fa;text-align:center;margin-bottom:8px;font-size:2rem;text-shadow:0 0 10px rgba(96,165,250,0.5);">
+                ⚖️ Conservazione della Massa</h2>
+            <p style="color:#94a3b8;text-align:center;margin-bottom:35px;max-width:620px;">
+                Equazione di continuità per sistemi aperti in regime stazionario — principali risultati, senza
+                dimostrazioni.
+            </p>
+
+            <!-- SCHEMA SVG -->
+            <div class="notes-card" style="text-align:center;">
+                <h3>📐 Schema Concettuale – Tubo di Flusso</h3>
+                <svg width="640" height="160" viewBox="0 0 640 160" style="max-width:100%;">
+                    <!-- sfondo tubo -->
+                    <rect x="100" y="55" width="440" height="50" rx="4" fill="rgba(96,165,250,0.06)"
+                        stroke="rgba(96,165,250,0.35)" stroke-width="1.5" />
+                    <!-- frecce flusso -->
+                    <defs>
+                        <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                            <polygon points="0 0, 8 3, 0 6" fill="#60a5fa" />
+                        </marker>
+                    </defs>
+                    <line x1="200" y1="80" x2="280" y2="80" stroke="#60a5fa" stroke-width="2" marker-end="url(#arr)" />
+                    <line x1="360" y1="80" x2="440" y2="80" stroke="#60a5fa" stroke-width="2" marker-end="url(#arr)" />
+                    <!-- sezioni verticali -->
+                    <line x1="210" y1="52" x2="210" y2="108" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4 3" />
+                    <line x1="430" y1="52" x2="430" y2="108" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4 3" />
+                    <!-- etichette sezioni -->
+                    <text x="210" y="42" text-anchor="middle" fill="#93c5fd" font-size="13">Sezione 1</text>
+                    <text x="430" y="42" text-anchor="middle" fill="#93c5fd" font-size="13">Sezione 2</text>
+                    <!-- grandezze sezione 1 -->
+                    <text x="155" y="76" text-anchor="middle" fill="#e2e8f0" font-size="12">ρ₁, A₁, w₁</text>
+                    <!-- grandezze sezione 2 -->
+                    <text x="490" y="76" text-anchor="middle" fill="#e2e8f0" font-size="12">ρ₂, A₂, w₂</text>
+                    <!-- portata massica al centro -->
+                    <text x="320" y="100" text-anchor="middle" fill="#fcd34d" font-size="13">ṁ = costante</text>
+                    <!-- label asse x -->
+                    <text x="320" y="148" text-anchor="middle" fill="#64748b" font-size="11">direzione del flusso
+                        →</text>
+                </svg>
+            </div>
+
+            <!-- FORMULA PRINCIPALE -->
+            <div class="notes-card">
+                <div class="tag">Regime Stazionario — Sistema Aperto</div>
+                <h3>Equazione di Continuità</h3>
+                <p>In regime <strong>stazionario</strong> la portata massica si conserva tra due sezioni qualsiasi:</p>
+                <div class="formula-box">
+                    \[ \dot{m} = \rho_1 \, A_1 \, w_1 = \rho_2 \, A_2 \, w_2 = \mathrm{costante} \]
+                </div>
+                <p class="legend">
+                    <span>ṁ</span> = portata massica [kg/s] &ensp;|&ensp;
+                    <span>ρ</span> = densità [kg/m³] &ensp;|&ensp;
+                    <span>A</span> = area sezione [m²] &ensp;|&ensp;
+                    <span>w</span> = velocità [m/s]
+                </p>
+            </div>
+
+            <!-- PORTATA VOLUMETRICA -->
+            <div class="notes-card">
+                <div class="tag">Fluido Incomprimibile (ρ = cost)</div>
+                <h3>Portata Volumetrica</h3>
+                <p>Per fluidi incomprimibili (liquidi, gas a bassa velocità) la densità è costante, quindi:</p>
+                <div class="formula-box">
+                    \[ \dot{V} = A_1 w_1 = A_2 w_2 = \text{costante} \quad [\text{m}^3/\text{s}] \]
+                </div>
+                <p>Relazione tra portata massica e volumetrica:</p>
+                <div class="formula-box">
+                    \[ \dot{m} = \rho \, \dot{V} \]
+                </div>
+            </div>
+
+            <!-- REGIME TRANSITORIO -->
+            <div class="notes-card">
+                <div class="tag">Forma Generale</div>
+                <h3>Bilancio di Massa — Regime Non Stazionario</h3>
+                <p>In forma differenziale per un volume di controllo generico:</p>
+                <div class="formula-box">
+                    \[ \frac{dm_{vc}}{dt} = \dot{m}_{in} - \dot{m}_{out} \]
+                </div>
+                <ul style="margin-top:10px;">
+                    <li>In regime <strong>stazionario</strong>: \( dm_{vc}/dt = 0 \implies \dot{m}_{in} = \dot{m}_{out}
+                        \)</li>
+                    <li>Per più ingressi/uscite: \(\sum \dot{m}_{in} = \sum \dot{m}_{out}\)</li>
+                </ul>
+            </div>
+
+        </main>
+    </div>
+    <script src="../../../../js/main.js"></script>
+</body>
+
+</html>

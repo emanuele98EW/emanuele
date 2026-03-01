@@ -16,16 +16,17 @@
   <header class="navbar">
     <div class="navbar-logo">
       <img src="../../../../../assets/logo.png" alt="Logo">
-      <h1><a href="../../../../../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
+      <h1><a href="../../../../../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele
+          Zanella</a></h1>
     </div>
 
     <nav class="menu">
       <a href="../../../../../index.html" class="menu-link">Home</a>
 
       <div class="menu-group">
-        <button class="menu-toggle">
+        <a href="../../../../../finanza/index.html" class="menu-toggle">
           Finanza <span class="arrow">▼</span>
-        </button>
+        </a>
         <div class="menu-content">
           <a href="../../../../../finanza/interesse/index.html" class="menu-link finance">Interesse Composto</a>
           <a href="../../../../../finanza/mutuo/index.html" class="menu-link finance">Mutui</a>
@@ -33,9 +34,14 @@
       </div>
 
       <div class="menu-group">
-        <button class="menu-toggle">
+        <a href="../../../../../engineering/index.html" class="menu-toggle"
+          style="display: flex; align-items: center; gap: 8px;">
+          <video autoplay loop muted playsinline
+            style="width: 35px; height: 35px; background: transparent; pointer-events: none;">
+            <source src="../../../../../assets/Cute%20Bird%20Flapping%20Animation.webm" type="video/webm">
+          </video>
           Ingegneria <span class="arrow">▼</span>
-        </button>
+        </a>
         <div class="menu-content">
           <a href="../../../../appunti/index.html" class="menu-link engineering">Appunti</a>
           <a href="../../../index.html" class="menu-link engineering">Tools</a>
@@ -70,10 +76,10 @@
           T_2 = T_1 \cdot \beta^{\frac{k-1}{k}} \hspace{1cm} \beta=\frac{p_2}{p_1}
           \]</p>
 
-        <button onclick="calcCompressione()" class="cyber-btn">Calcola</button>
-        <p id="outC"
-          style="margin-top: 15px; font-size: 1.2rem; color: #fff; text-shadow: 0 0 10px #f97316; text-align: center;">
-        </p>
+        <button onclick="calcCompressione()" class="cyber-btn">Calcola</a>
+          <p id="outC"
+            style="margin-top: 15px; font-size: 1.2rem; color: #fff; text-shadow: 0 0 10px #f97316; text-align: center;">
+          </p>
       </div>
 
       <!-- GRAFICO COMPRESSIONE -->
@@ -104,10 +110,10 @@
           T_4 = T_3 \cdot \frac{1}{\beta^{\frac{k-1}{k}}} \hspace{1cm} \beta=\frac{p_3}{p_4}
           \]</p>
 
-        <button onclick="calcEspansione()" class="cyber-btn">Calcola</button>
-        <p id="outE"
-          style="margin-top: 15px; font-size: 1.2rem; color: #fff; text-shadow: 0 0 10px #f97316; text-align: center;">
-        </p>
+        <button onclick="calcEspansione()" class="cyber-btn">Calcola</a>
+          <p id="outE"
+            style="margin-top: 15px; font-size: 1.2rem; color: #fff; text-shadow: 0 0 10px #f97316; text-align: center;">
+          </p>
       </div>
 
       <!-- GRAFICO ESPANSIONE -->
@@ -245,6 +251,7 @@
     }, 500);
 
   </script>
+  <script src="../../../../../js/main.js"></script>
 
   <style>
     .inline-input {

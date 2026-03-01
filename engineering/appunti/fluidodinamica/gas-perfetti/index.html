@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gas Perfetti e Ideali – Fluidodinamica</title>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <script>
+        MathJax = {
+            chtml: { scale: 1.2, displayAlign: 'center' },
+            tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]'], ['$$', '$$']] }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* Better readable font for notes */
+        body,
+        .notes-card p,
+        .notes-card li,
+        .legend,
+        td,
+        th,
+        .mini-box p,
+        .breadcrumb {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        /* SVG diagram labels only */
+        svg text.diagram-label {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .notes-card {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin: 0 auto 28px auto;
+            max-width: 860px;
+            width: 100%;
+            box-shadow: 0 0 20px rgba(96, 165, 250, 0.07);
+        }
+
+        .notes-card h3 {
+            color: #60a5fa;
+            margin-bottom: 14px;
+            font-size: 1.15rem;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .notes-card p,
+        .notes-card li {
+            color: #cbd5e1;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .notes-card ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .formula-box {
+            background: rgba(96, 165, 250, 0.08);
+            border-left: 3px solid #60a5fa;
+            border-radius: 6px;
+            padding: 14px 20px;
+            margin: 14px 0;
+            text-align: center;
+            font-size: 1.05rem;
+            color: #e2e8f0;
+            overflow-x: auto;
+        }
+
+        .formula-box.gold {
+            border-left-color: #fbbf24;
+            background: rgba(251, 191, 36, 0.07);
+        }
+
+        .formula-box.green {
+            border-left-color: #22c55e;
+            background: rgba(34, 197, 94, 0.07);
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(96, 165, 250, 0.15);
+            color: #93c5fd;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 0.78rem;
+            margin-bottom: 10px;
+        }
+
+        .legend {
+            color: #94a3b8;
+            font-size: 0.88rem;
+            margin-top: 8px;
+        }
+
+        .legend span {
+            color: #e2e8f0;
+        }
+
+        .breadcrumb {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .breadcrumb a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: rgba(96, 165, 250, 0.12);
+            color: #93c5fd;
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        td {
+            color: #cbd5e1;
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 0.88rem;
+        }
+
+        tr:hover td {
+            background: rgba(96, 165, 250, 0.04);
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .mini-box {
+            background: rgba(96, 165, 250, 0.07);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            border-radius: 8px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .mini-box p {
+            color: #94a3b8;
+            font-size: 0.82rem;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <header class="navbar">
+            <div class="navbar-logo">
+                <img src="../../../../assets/logo.png" alt="Logo">
+                <h1><a href="../../../../personale/index.html" style="text-decoration:none;color:inherit;">Emanuele
+                        Zanella</a></h1>
+            </div>
+            <nav class="menu">
+                <a href="../../../../index.html" class="menu-link">Home</a>
+                <div class="menu-group">
+                    <a href="../../../../finanza/index.html" class="menu-toggle">Finanza <span
+                            class="arrow">▼</span></a>
+                    <div class="menu-content">
+                        <a href="../../../../finanza/interesse/index.html" class="menu-link finance">Interesse
+                            Composto</a>
+                        <a href="../../../../finanza/mutuo/index.html" class="menu-link finance">Mutui</a>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <a href="../../../../engineering/index.html" class="menu-toggle active"
+                        style="display:flex;align-items:center;gap:8px;">
+                        <video autoplay loop muted playsinline
+                            style="width:35px;height:35px;background:transparent;pointer-events:none;">
+                            <source src="../../../../assets/Cute%20Bird%20Flapping%20Animation.webm" type="video/webm">
+                        </video>
+                        Ingegneria <span class="arrow">▼</span>
+                    </a>
+                    <div class="menu-content">
+                        <a href="../../index.html" class="menu-link engineering">Appunti</a>
+                        <a href="../../../tools/index.html" class="menu-link engineering">Tools</a>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <a href="../../../../personale/index.html" class="menu-toggle">Personale <span
+                            class="arrow">▼</span></a>
+                    <div class="menu-content">
+                        <a href="../../../../personale/index.html" class="menu-link personal">Chi Sono</a>
+                        <a href="../../../../personale/accademico/index.html" class="menu-link personal">Percorso
+                            Accademico</a>
+                        <a href="../../../../personale/progetti/index.html" class="menu-link personal">Progetti
+                            Personali</a>
+                    </div>
+                </div>
+                <span id="clock" class="digital-clock"></span>
+            </nav>
+        </header>
+
+        <main class="main" style="align-items:center;">
+            <div class="breadcrumb">
+                <a href="../../index.html">Appunti</a> › <a href="../index.html">Fluidodinamica</a> › Gas Perfetti e
+                Ideali
+            </div>
+
+            <h2
+                style="color:#60a5fa;text-align:center;margin-bottom:8px;font-size:2rem;text-shadow:0 0 10px rgba(96,165,250,0.5);">
+                🌡️ Gas Perfetti e Ideali</h2>
+            <p style="color:#94a3b8;text-align:center;margin-bottom:35px;max-width:640px;">
+                Equazione di stato, grandezze termodinamiche e trasformazioni principali — solo i risultati chiave.
+            </p>
+
+            <!-- EQUAZIONE DI STATO -->
+            <div class="notes-card">
+                <div class="tag">Equazione di Stato</div>
+                <h3>Legge dei Gas Perfetti</h3>
+                <p>Relazione che lega pressione, volume specifico e temperatura per un gas ideale:</p>
+                <div class="formula-box gold">
+                    \[ p \cdot v = R \cdot T \quad \Longleftrightarrow \quad p \cdot V = n \cdot R_u \cdot T \]
+                </div>
+                <p class="legend">
+                    <span>p</span> = pressione assoluta [Pa] &ensp;|&ensp;
+                    <span>v</span> = volume specifico [m³/kg] &ensp;|&ensp;
+                    <span>T</span> = temperatura assoluta [K]<br>
+                    <span>R</span> = costante specifica del gas [J/(kg·K)] &ensp;|&ensp;
+                    <span>Rᵤ</span> = 8.314 J/(mol·K) &ensp;|&ensp;
+                    <span>R = Rᵤ / M</span> (M = massa molare)
+                </p>
+                <div class="two-col" style="margin-top:14px;">
+                    <div class="mini-box">
+                        <div style="color:#fbbf24;font-size:1.1rem;">\( R_{aria} = 287 \; \text{J/(kg{\cdot}K)} \)</div>
+                        <p>aria secca</p>
+                    </div>
+                    <div class="mini-box">
+                        <div style="color:#fbbf24;font-size:1.1rem;">\( R_{CO_2} = 189 \; \text{J/(kg{\cdot}K)} \)</div>
+                        <p>anidride carbonica</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ENERGIA INTERNA E ENTALPIA -->
+            <div class="notes-card">
+                <div class="tag">Gas Ideale — Calori Specifici Costanti</div>
+                <h3>Energia Interna, Entalpia e Relazione di Mayer</h3>
+                <div class="two-col">
+                    <div>
+                        <p style="color:#93c5fd;margin-bottom:4px;">Energia interna specifica:</p>
+                        <div class="formula-box" style="margin:0;">
+                            \[ \Delta u = c_v \, \Delta T \]
+                        </div>
+                    </div>
+                    <div>
+                        <p style="color:#93c5fd;margin-bottom:4px;">Entalpia specifica:</p>
+                        <div class="formula-box" style="margin:0;">
+                            \[ \Delta h = c_p \, \Delta T \]
+                        </div>
+                    </div>
+                </div>
+                <div class="formula-box green" style="margin-top:16px;">
+                    \[ c_p - c_v = R \qquad \text{(Relazione di Mayer)} \]
+                </div>
+                <div class="formula-box" style="margin-top:0;">
+                    \[ k = \frac{c_p}{c_v} \quad \Rightarrow \quad c_p = \frac{kR}{k-1} \;, \quad c_v = \frac{R}{k-1} \]
+                </div>
+                <p class="legend">
+                    <span>k</span> = rapporto dei calori specifici (aria: k ≈ 1.4 &ensp;|&ensp; gas combusti: k ≈ 1.3)
+                </p>
+            </div>
+
+            <!-- TRASFORMAZIONI -->
+            <div class="notes-card">
+                <div class="tag">Trasformazioni Principali</div>
+                <h3>Trasformazioni Termodinamiche per Gas Ideale</h3>
+                <table>
+                    <tr>
+                        <th>Trasformazione</th>
+                        <th>Legge / Relazione</th>
+                        <th>Calore / Lavoro</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Isoterma</strong> (T = cost)</td>
+                        <td>\( p v = \text{cost} \)</td>
+                        <td>\( q = l = RT \ln(v_2/v_1) \)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Isocora</strong> (v = cost)</td>
+                        <td>\( p / T = \text{cost} \)</td>
+                        <td>\( q = c_v \Delta T \;,\; l = 0 \)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Isobara</strong> (p = cost)</td>
+                        <td>\( v / T = \text{cost} \)</td>
+                        <td>\( q = c_p \Delta T \;,\; l_i = 0 \)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Isentropica</strong> (s = cost)</td>
+                        <td>\( p v^k = \text{cost} \)</td>
+                        <td>\( q = 0 \;,\; l_i = -c_p \Delta T \)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Politropica</strong></td>
+                        <td>\( p v^n = \text{cost} \)</td>
+                        <td>generalizza tutti i casi (n = 0…∞)</td>
+                    </tr>
+                </table>
+
+                <!-- SVG diagramma p-v -->
+                <h3 style="margin-top:24px;">📊 Diagramma p-v — Confronto Trasformazioni</h3>
+                <svg width="500" height="260" viewBox="0 0 500 260" style="max-width:100%;display:block;margin:0 auto;">
+                    <defs>
+                        <marker id="ax" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+                            <polygon points="0 0,7 2.5,0 5" fill="#64748b" />
+                        </marker>
+                    </defs>
+                    <!-- assi -->
+                    <line x1="60" y1="220" x2="460" y2="220" stroke="#64748b" stroke-width="1.5"
+                        marker-end="url(#ax)" />
+                    <line x1="60" y1="220" x2="60" y2="20" stroke="#64748b" stroke-width="1.5" marker-end="url(#ax)" />
+                    <text x="470" y="224" fill="#64748b" font-size="13">v</text>
+                    <text x="48" y="17" fill="#64748b" font-size="13">p</text>
+
+                    <!-- Isoterma (pvk=cost con k=1) -->
+                    <path d="M 100,50 C 160,80 260,140 420,190" stroke="#60a5fa" stroke-width="2" fill="none" />
+                    <text x="425" y="185" fill="#60a5fa" font-size="11">T=cost</text>
+
+                    <!-- Isentropica (più ripida) -->
+                    <path d="M 100,50 C 140,90 210,155 350,205" stroke="#f97316" stroke-width="2" fill="none" />
+                    <text x="352" y="200" fill="#f97316" font-size="11">s=cost</text>
+
+                    <!-- Isobara (orizzontale) -->
+                    <line x1="100" y1="50" x2="420" y2="50" stroke="#22c55e" stroke-width="2" />
+                    <text x="425" y="53" fill="#22c55e" font-size="11">p=cost</text>
+
+                    <!-- Isocora (verticale) -->
+                    <line x1="100" y1="50" x2="100" y2="210" stroke="#a78bfa" stroke-width="2" />
+                    <text x="66" y="215" fill="#a78bfa" font-size="10">v=cost</text>
+
+                    <!-- punto A -->
+                    <circle cx="100" cy="50" r="4" fill="#e2e8f0" />
+                    <text x="88" y="42" fill="#e2e8f0" font-size="11">A</text>
+                </svg>
+            </div>
+
+        </main>
+    </div>
+    <script src="../../../../js/main.js"></script>
+</body>
+
+</html>

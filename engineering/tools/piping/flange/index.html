@@ -6,62 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cervello Online - Flange</title>
   <link rel="stylesheet" href="../../../../css/style.css">
-  <style>
-    /* Stile tabella flange */
-    .content table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      background-color: #fff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
 
-    .content th,
-    .content td {
-      padding: 10px;
-      border: 1px solid #ccc;
-      text-align: center;
-    }
-
-    .content th {
-      background-color: #0077cc;
-      color: #fff;
-    }
-
-    .content tbody tr:hover {
-      background-color: #e0f0ff;
-    }
-
-    @media (max-width: 768px) {
-
-      .content table,
-      thead,
-      tbody,
-      th,
-      td,
-      tr {
-        display: block;
-      }
-
-      th {
-        position: sticky;
-        top: 0;
-      }
-
-      td {
-        text-align: right;
-        padding-left: 50%;
-        position: relative;
-      }
-
-      td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 10px;
-        font-weight: bold;
-      }
-    }
-  </style>
 </head>
 
 <body>
@@ -72,16 +17,17 @@
     <header class="navbar">
       <div class="navbar-logo">
         <img src="../../../../assets/logo.png" alt="Logo">
-        <h1><a href="../../../../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
+        <h1><a href="../../../../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele
+            Zanella</a></h1>
       </div>
 
       <nav class="menu">
         <a href="../../../../index.html" class="menu-link">Home</a>
 
         <div class="menu-group">
-          <button class="menu-toggle">
+          <a href="../../../../finanza/index.html" class="menu-toggle">
             Finanza <span class="arrow">▼</span>
-          </button>
+          </a>
           <div class="menu-content">
             <a href="../../../../finanza/index.html" class="menu-link finance">Interesse Composto</a>
             <a href="../../../../finanza/interesse/index.html" class="menu-link finance">Portafoglio</a>
@@ -90,9 +36,12 @@
         </div>
 
         <div class="menu-group">
-          <button class="menu-toggle active">
+          <a href="../../../../engineering/index.html" class="menu-toggle active" style="display: flex; align-items: center; gap: 8px;">
+            <video autoplay loop muted playsinline style="width: 35px; height: 35px; background: transparent; pointer-events: none;">
+              <source src="../../../../assets/Cute%20Bird%20Flapping%20Animation.webm" type="video/webm">
+            </video>
             Ingegneria <span class="arrow">▼</span>
-          </button>
+          </a>
           <div class="menu-content">
             <a href="../../../appunti/index.html" class="menu-link engineering">Appunti</a>
             <a href="../../index.html" class="menu-link engineering">Tools</a>
@@ -100,9 +49,9 @@
         </div>
 
         <div class="menu-group">
-          <button class="menu-toggle">
+          <a href="../../../../personale/index.html" class="menu-toggle">
             Personale <span class="arrow">▼</span>
-          </button>
+          </a>
           <div class="menu-content">
             <a href="../../../../personale/index.html" class="menu-link personal">Chi Sono</a>
             <a href="../../../../personale/accademico/index.html" class="menu-link personal">Percorso Accademico</a>
@@ -124,10 +73,16 @@
         style="color: #60a5fa; text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(96, 165, 250, 0.5); font-size: 2rem;">
         ⭕ Flange</h2>
 
-      <section class="content">
-        <p style="color: #94a3b8; text-align: center; margin-bottom: 30px;">
-          Pagina in fase di sviluppo — presto disponibili tabelle dimensionali per flange EN e ASME.
-        </p>
+      <section class="cards">
+        <a class="card engineering" href="asme/index.html">
+          <h3>🇺🇸 Flange ASME</h3>
+          <p>Standard B16.5, Classi 150-2500</p>
+        </a>
+
+        <a class="card engineering" href="en/index.html">
+          <h3>🇪🇺 Flange EN</h3>
+          <p>Standard 1092-1, PN 6-400</p>
+        </a>
       </section>
 
     </main>

@@ -16,16 +16,17 @@
     <header class="navbar">
       <div class="navbar-logo">
         <img src="../../assets/logo.png" alt="Logo">
-        <h1><a href="../../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
+        <h1><a href="../../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a>
+        </h1>
       </div>
 
       <nav class="menu">
         <a href="../../index.html" class="menu-link">Home</a>
 
         <div class="menu-group">
-          <button class="menu-toggle">
+          <a href="../../finanza/index.html" class="menu-toggle">
             Finanza <span class="arrow">▼</span>
-          </button>
+          </a>
           <div class="menu-content">
             <a href="../../finanza/interesse/index.html" class="menu-link finance">Interesse Composto</a>
             <a href="../../finanza/mutuo/index.html" class="menu-link finance">Mutui</a>
@@ -33,16 +34,28 @@
         </div>
 
         <div class="menu-group">
-          <button class="menu-toggle">
+          <a href="../../engineering/index.html" class="menu-toggle" style="display: flex; align-items: center; gap: 8px;">
+            <video autoplay loop muted playsinline style="width: 35px; height: 35px; background: transparent; pointer-events: none;">
+              <source src="../../assets/Cute%20Bird%20Flapping%20Animation.webm" type="video/webm">
+            </video>
             Ingegneria <span class="arrow">▼</span>
-          </button>
+          </a>
           <div class="menu-content">
             <a href="../appunti/index.html" class="menu-link engineering">Appunti</a>
             <a href="index.html" class="menu-link engineering active">Tools</a>
           </div>
         </div>
 
-        <a href="../../personale/index.html" class="menu-link personal">Personale</a>
+        <div class="menu-group">
+          <a href="../../personale/index.html" class="menu-toggle">
+            Personale <span class="arrow">▼</span>
+          </a>
+          <div class="menu-content">
+            <a href="../../personale/index.html" class="menu-link personal">Chi Sono</a>
+            <a href="../../personale/accademico/index.html" class="menu-link personal">Percorso Accademico</a>
+            <a href="../../personale/progetti/index.html" class="menu-link personal">Progetti Personali</a>
+          </div>
+        </div>
 
         <span id="clock" class="digital-clock"></span>
       </nav>
@@ -59,17 +72,17 @@
       <!-- CARDS (Floating below the logo) -->
       <section class="cards">
         <a class="card engineering" href="energy/index.html">
-          <h3>🔥 Sistemi energetici</h3>
+          <h3>⚡ Sistemi energetici</h3>
           <p>Cicli termodinamici, rendimenti, diagrammi</p>
         </a>
 
         <a class="card engineering" href="piping/index.html">
           <h3>🚰 Piping</h3>
-          <p>Linee, perdite di carico, diametri</p>
+          <p>Linee, diametri, componenti di linea</p>
         </a>
 
         <a class="card engineering" href="stress/index.html">
-          <h3>📐 Stress analysis</h3>
+          <h3>🔩 Stress analysis</h3>
           <p>Tensioni, verifiche e criteri</p>
         </a>
 

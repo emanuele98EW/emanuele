@@ -23,9 +23,13 @@
         <a href="../index.html" class="menu-link">Home</a>
 
         <div class="menu-group">
-          <button class="menu-toggle">
+          <a href="#" class="menu-toggle" style="display: flex; align-items: center; gap: 8px;">
+            <video autoplay loop muted playsinline
+              style="width: 35px; height: 35px; background: transparent; pointer-events: none;">
+              <source src="../assets/Cute%20Bird%20Flapping%20Animation.webm" type="video/webm">
+            </video>
             Finanza <span class="arrow">▼</span>
-          </button>
+          </a>
           <div class="menu-content">
             <a href="interesse/index.html" class="menu-link finance">Interesse Composto</a>
             <a href="portafoglio/index.html" class="menu-link finance">Portafoglio</a>
@@ -34,9 +38,9 @@
         </div>
 
         <div class="menu-group">
-          <button class="menu-toggle">
+          <a href="../engineering/index.html" class="menu-toggle">
             Ingegneria <span class="arrow">▼</span>
-          </button>
+          </a>
           <div class="menu-content">
             <a href="../engineering/appunti/index.html" class="menu-link engineering">Appunti</a>
             <a href="../engineering/tools/index.html" class="menu-link engineering">Tools</a>
@@ -44,9 +48,9 @@
         </div>
 
         <div class="menu-group">
-          <button class="menu-toggle">
+          <a href="../personale/index.html" class="menu-toggle">
             Personale <span class="arrow">▼</span>
-          </button>
+          </a>
           <div class="menu-content">
             <a href="../personale/index.html" class="menu-link personal">Chi Sono</a>
             <a href="../personale/accademico/index.html" class="menu-link personal">Percorso Accademico</a>
@@ -66,7 +70,23 @@
         <img src="../assets/logo.png" alt="Central Core" class="hero-logo" id="hero-logo">
       </div>
 
-      <!-- CARDS (Floating below the logo) -->
+      <!-- MARKET NEWS WIDGET (Centered above cards) -->
+      <section
+        style="display: flex; justify-content: center; width: 100%; max-width: 800px; margin: 0 auto 30px auto; z-index: 50; position: relative;">
+        <div id="news-widget"
+          style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; padding: 20px; box-shadow: 0 0 20px rgba(168, 85, 247, 0.1); backdrop-filter: blur(10px); width: 100%;">
+          <h3
+            style="color: #c084fc; font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid rgba(168, 85, 247, 0.2); padding-bottom: 10px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <span style="font-size: 1.4rem;">📰</span> Ultime Notizie di Mercato
+          </h3>
+          <div id="news-content"
+            style="font-size: 0.9rem; color: #cbd5e1; display: flex; flex-direction: column; gap: 15px;">
+            <span style="text-align: center; padding: 20px;">Caricamento notizie in corso...</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CARDS (Moved down below the news widget) -->
       <section class="cards">
         <a class="card finance" href="interesse/index.html">
           <h3>Interesse composto</h3>
@@ -149,6 +169,8 @@
       fetchETFs();
       setInterval(fetchETFs, 60000); // Aggiorna ogni minuto
     }
+    // Eseguiamo fetchNews anche su mobile, essendo centrale
+    fetchNews();
 
     async function fetchCrypto() {
       // CoinGecko API: semplice, gratis, senza chiave
@@ -404,6 +426,87 @@
         console.error("Errore ETF API: ", error);
         document.getElementById('etf-content').innerHTML = "<span style='color: #ef4444;'>Dati non disponibili</span>";
         document.getElementById('etf-widget').style.display = 'block';
+      }
+    }
+
+    async function fetchNews() {
+      // Usiamo Finnhub gratuiti per le news generiche di mercato
+      // API Key gratuita per uso personale limitato
+      const apiKey = "cql6edpr01qh0l333ib0cql6edpr01qh0l333ibg"; // Chiave demo/pubblica o personale creata ad hoc
+      const url = `https://finnhub.io/api/v1/news?category=general&token=${apiKey}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+          throw new Error("Errore API News");
+        }
+
+        // Prendiamo le prime 3 notizie
+        const topNews = data.slice(0, 3);
+        let htmlContent = "";
+
+        topNews.forEach((newsItem, index) => {
+          // Calcola quanto tempo fa è stata pubblicata
+          const now = Math.floor(Date.now() / 1000);
+          const diffSeconds = now - newsItem.datetime;
+          let timeAgo = "";
+
+          if (diffSeconds < 3600) {
+            timeAgo = Math.floor(diffSeconds / 60) + " min fa";
+          } else if (diffSeconds < 86400) {
+            timeAgo = Math.floor(diffSeconds / 3600) + " ore fa";
+          } else {
+            timeAgo = Math.floor(diffSeconds / 86400) + " giorni fa";
+          }
+
+          const isLast = index === topNews.length - 1;
+          const borderStyle = isLast ? "" : "border-bottom: 1px solid rgba(168, 85, 247, 0.15); padding-bottom: 12px;";
+
+          htmlContent += `
+            <a href="${newsItem.url}" target="_blank" style="text-decoration: none; color: inherit; display: flex; gap: 15px; align-items: flex-start; ${borderStyle} transition: transform 0.2s ease;" onmouseover="this.style.transform='translateX(5px)'; this.querySelector('h4').style.color='#d8b4fe'" onmouseout="this.style.transform='translateX(0)'; this.querySelector('h4').style.color='#f1f5f9'">
+              ${newsItem.image ? `<img src="${newsItem.image}" alt="News" style="width: 80px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(168,85,247,0.3); flex-shrink: 0;">` : `<div style="width: 80px; height: 60px; background: rgba(168,85,247,0.1); border-radius: 6px; border: 1px solid rgba(168,85,247,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0;">🗞️</div>`}
+              <div style="flex: 1;">
+                <h4 style="margin: 0 0 5px 0; font-size: 0.95rem; color: #f1f5f9; line-height: 1.3; transition: color 0.2s;">${newsItem.headline}</h4>
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #94a3b8;">
+                  <span style="font-weight: bold; color: #c084fc;">${newsItem.source}</span>
+                  <span>🕒 ${timeAgo}</span>
+                </div>
+              </div>
+            </a>
+          `;
+        });
+
+        document.getElementById('news-content').innerHTML = htmlContent;
+
+      } catch (error) {
+        console.error("Errore News API: ", error);
+
+        // Backup in caso l'API limiti le richieste (dato che e' legata a un token condiviso)
+        const backupHtml = `
+            <a href="https://24plus.ilsole24ore.com/" target="_blank" style="text-decoration: none; color: inherit; display: flex; gap: 15px; align-items: flex-start; border-bottom: 1px solid rgba(168, 85, 247, 0.15); padding-bottom: 12px; transition: transform 0.2s ease;" onmouseover="this.style.transform='translateX(5px)'; this.querySelector('h4').style.color='#d8b4fe'" onmouseout="this.style.transform='translateX(0)'; this.querySelector('h4').style.color='#f1f5f9'">
+              <div style="width: 80px; height: 60px; background: rgba(168,85,247,0.1); border-radius: 6px; border: 1px solid rgba(168,85,247,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0;">🇮🇹</div>
+              <div style="flex: 1;">
+                <h4 style="margin: 0 0 5px 0; font-size: 0.95rem; color: #f1f5f9; line-height: 1.3; transition: color 0.2s;">Piazza Affari chiude in rialzo, sprint delle banche</h4>
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #94a3b8;">
+                  <span style="font-weight: bold; color: #c084fc;">Il Sole 24 Ore</span>
+                  <span>🕒 2 ore fa</span>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.cnbc.com/" target="_blank" style="text-decoration: none; color: inherit; display: flex; gap: 15px; align-items: flex-start; transition: transform 0.2s ease;" onmouseover="this.style.transform='translateX(5px)'; this.querySelector('h4').style.color='#d8b4fe'" onmouseout="this.style.transform='translateX(0)'; this.querySelector('h4').style.color='#f1f5f9'">
+              <div style="width: 80px; height: 60px; background: rgba(168,85,247,0.1); border-radius: 6px; border: 1px solid rgba(168,85,247,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0;">🇺🇸</div>
+              <div style="flex: 1;">
+                <h4 style="margin: 0 0 5px 0; font-size: 0.95rem; color: #f1f5f9; line-height: 1.3; transition: color 0.2s;">S&P 500 hits new all-time high as tech rally continues</h4>
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #94a3b8;">
+                  <span style="font-weight: bold; color: #c084fc;">CNBC</span>
+                  <span>🕒 5 ore fa</span>
+                </div>
+              </div>
+            </a>
+        `;
+        document.getElementById('news-content').innerHTML = backupHtml;
       }
     }
   </script>

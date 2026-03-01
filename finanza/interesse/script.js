@@ -22,6 +22,40 @@ function calcola() {
   document.getElementById("interessi").innerText =
     interessi.toLocaleString("it-IT", { style: "currency", currency: "EUR" });
 
+  // --- MILESTONE CALCULATION ---
+  const goals = [100000, 1000000];
+  const goalIds = ["anni100k", "anni1M"];
+  const goalLabels = ["100.000 €", "1.000.000 €"];
+
+  goals.forEach((goal, idx) => {
+    // If we already start above the goal
+    if (C0 >= goal) {
+      document.getElementById(goalIds[idx]).innerText = "Hai già raggiunto questo obiettivo! 🎯";
+      return;
+    }
+    // If rate is 0 and versamento is 0, growth is impossible
+    if (r === 0 && vers === 0) {
+      document.getElementById(goalIds[idx]).innerText = "Impossibile (tasso 0% e nessun versamento)";
+      return;
+    }
+
+    let cap = C0;
+    let year = 0;
+    const MAX_YEARS = 10000;
+    while (cap < goal && year < MAX_YEARS) {
+      cap = cap * (1 + r) + vers;
+      year++;
+    }
+
+    if (cap >= goal) {
+      document.getElementById(goalIds[idx]).innerText =
+        year === 1 ? "1 anno" : year + " anni";
+    } else {
+      document.getElementById(goalIds[idx]).innerText =
+        "Non raggiungibile con i parametri attuali";
+    }
+  });
+
   disegnaGrafico(dati);
 }
 

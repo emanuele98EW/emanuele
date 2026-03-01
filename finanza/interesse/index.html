@@ -16,16 +16,21 @@
     <header class="navbar">
       <div class="navbar-logo">
         <img src="../../assets/logo.png" alt="Logo">
-        <h1><a href="../../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
+        <h1><a href="../../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a>
+        </h1>
       </div>
 
       <nav class="menu">
         <a href="../../index.html" class="menu-link">Home</a>
 
         <div class="menu-group">
-          <button class="menu-toggle">
+          <a href="../../finanza/index.html" class="menu-toggle" style="display: flex; align-items: center; gap: 8px;">
+            <video autoplay loop muted playsinline
+              style="width: 35px; height: 35px; background: transparent; pointer-events: none;">
+              <source src="../../assets/Cute%20Bird%20Flapping%20Animation.webm" type="video/webm">
+            </video>
             Finanza <span class="arrow">▼</span>
-          </button>
+          </a>
           <div class="menu-content">
             <a href="../index.html" class="menu-link finance">Panoramica</a>
             <a href="index.html" class="menu-link finance active">Interesse Composto</a>
@@ -33,16 +38,16 @@
         </div>
 
         <div class="menu-group">
-          <button class="menu-toggle">
+          <a href="../../engineering/index.html" class="menu-toggle">
             Ingegneria <span class="arrow">▼</span>
-          </button>
+          </a>
           <div class="menu-content">
             <a href="../../engineering/appunti/index.html" class="menu-link engineering">Appunti</a>
             <a href="../../engineering/tools/index.html" class="menu-link engineering">Tools</a>
           </div>
         </div>
 
-        
+
         <a href="../../personale/index.html" class="menu-link personal">Personale</a>
         <span id="clock" class="digital-clock"></span>
       </nav>
@@ -89,7 +94,7 @@
           onmouseover="this.style.background='rgba(0, 255, 255, 0.3)'; this.style.boxShadow='0 0 15px rgba(0, 255, 255, 0.5)';"
           onmouseout="this.style.background='rgba(0, 255, 255, 0.1)'; this.style.boxShadow='none';">
           Calcola
-        </button>
+          </a>
 
       </section>
 
@@ -103,6 +108,19 @@
         <div class="card finance" style="padding: 20px;">
           <h3 style="font-size: 1.2rem;">Interessi maturati</h3>
           <p id="interessi" style="font-size: 1.8rem; color: #fff; text-shadow: 0 0 15px rgba(37, 99, 235, 0.8);">—</p>
+        </div>
+      </section>
+
+      <!-- MILESTONE CARDS -->
+      <section class="cards" style="margin-bottom: 30px; max-width: 800px; width: 100%;">
+        <div class="card finance" style="padding: 20px; border-top: 3px solid #22c55e;">
+          <h3 style="font-size: 1.1rem; color: #86efac; margin-bottom: 10px;">🎯 Anni per raggiungere 100.000 €</h3>
+          <p id="anni100k" style="font-size: 1.6rem; color: #fff; text-shadow: 0 0 15px rgba(34, 197, 94, 0.6);">—</p>
+        </div>
+
+        <div class="card finance" style="padding: 20px; border-top: 3px solid #f59e0b;">
+          <h3 style="font-size: 1.1rem; color: #fcd34d; margin-bottom: 10px;">🏆 Anni per raggiungere 1.000.000 €</h3>
+          <p id="anni1M" style="font-size: 1.6rem; color: #fff; text-shadow: 0 0 15px rgba(245, 158, 11, 0.6);">—</p>
         </div>
       </section>
 
