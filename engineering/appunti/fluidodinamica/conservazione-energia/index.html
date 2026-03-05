@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 
 <head>
@@ -151,10 +151,27 @@
         <header class="navbar">
             <div class="navbar-logo">
                 <img src="../../../../assets/logo.png" alt="Logo">
-                <h1><a href="../../../../personale/index.html" style="text-decoration:none;color:inherit;">Emanuele
-                        Zanella</a></h1>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <h1 style="margin: 0;"><a href="../../../../personale/index.html"
+                            style="text-decoration: none; color: inherit;">Emanuele
+                            Zanella</a></h1>
+                    <div id="theme-toggle" class="theme-toggle-btn" title="Cambia Tema"
+                        style="cursor: pointer; display: flex; align-items: center; padding: 5px;">
+                        <video id="theme-video" muted playsinline
+                            style="width: 38px; height: 38px; pointer-events: none; border-radius: 50%;">
+                            <source src="../../../../assets/theme_moon.svg.webm" type="video/webm">
+                        </video>
+                    </div>
+                </div>
             </div>
-            <nav class="menu">
+                  <!-- Hamburger Menu Button (Mobile Only) -->
+      <div class="hamburger-menu" id="hamburger-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <nav class="menu" id="main-menu">
                 <a href="../../../../index.html" class="menu-link">Home</a>
                 <div class="menu-group">
                     <a href="../../../../finanza/index.html" class="menu-toggle">Finanza <span
@@ -201,12 +218,8 @@
             </div>
 
             <h2
-                style="color:#60a5fa;text-align:center;margin-bottom:8px;font-size:2rem;text-shadow:0 0 10px rgba(96,165,250,0.5);">
+                style="color:#60a5fa;text-align:center;margin-bottom:35px;font-size:2rem;text-shadow:0 0 10px rgba(96,165,250,0.5);">
                 ⚡ Conservazione dell'Energia</h2>
-            <p style="color:#94a3b8;text-align:center;margin-bottom:35px;max-width:640px;">
-                Primo Principio della Termodinamica applicato ai sistemi aperti — equazione di Eulero e casi
-                particolari.
-            </p>
 
             <!-- SCHEMA SVG volume di controllo -->
             <div class="notes-card" style="text-align:center;">
@@ -230,20 +243,50 @@
                     <!-- flusso in -->
                     <line x1="60" y1="110" x2="175" y2="110" stroke="#60a5fa" stroke-width="2"
                         marker-end="url(#arr2)" />
-                    <text x="30" y="100" fill="#93c5fd" font-size="11" text-anchor="middle">ṁ₁</text>
-                    <text x="30" y="116" fill="#93c5fd" font-size="11" text-anchor="middle">h₁,w₁,z₁</text>
+                    <foreignObject x="0" y="85" width="80" height="40">
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                            style="color:#93c5fd; font-size:12px; text-align:center;">
+                            \(\dot{m}_1\)
+                        </div>
+                    </foreignObject>
+                    <foreignObject x="0" y="115" width="80" height="40">
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                            style="color:#93c5fd; font-size:11px; text-align:center;">
+                            \(h_1, w_1, z_1\)
+                        </div>
+                    </foreignObject>
                     <!-- flusso out -->
                     <line x1="445" y1="110" x2="560" y2="110" stroke="#60a5fa" stroke-width="2"
                         marker-end="url(#arr2)" />
-                    <text x="590" y="100" fill="#93c5fd" font-size="11" text-anchor="middle">ṁ₂</text>
-                    <text x="590" y="116" fill="#93c5fd" font-size="11" text-anchor="middle">h₂,w₂,z₂</text>
+                    <foreignObject x="540" y="85" width="80" height="40">
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                            style="color:#93c5fd; font-size:12px; text-align:center;">
+                            \(\dot{m}_2\)
+                        </div>
+                    </foreignObject>
+                    <foreignObject x="540" y="115" width="80" height="40">
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                            style="color:#93c5fd; font-size:11px; text-align:center;">
+                            \(h_2, w_2, z_2\)
+                        </div>
+                    </foreignObject>
                     <!-- Calore Q -->
-                    <line x1="310" y1="168" x2="310" y2="195" stroke="#f97316" stroke-width="2"
-                        marker-end="url(#arrQ)" />
-                    <text x="335" y="192" fill="#fb923c" font-size="12">Q̇ (calore ceduto)</text>
-                    <!-- Lavoro L -->
-                    <line x1="310" y1="52" x2="310" y2="25" stroke="#22c55e" stroke-width="2" marker-end="url(#arrL)" />
-                    <text x="335" y="22" fill="#4ade80" font-size="12">Ṗᵢ (lavoro tecnico)</text>
+                    <line x1="280" y1="20" x2="280" y2="50" stroke="#f97316" stroke-width="2" marker-end="url(#arrQ)" />
+                    <foreignObject x="260" y="0" width="40" height="30">
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                            style="color:#fb923c; font-size:13px; text-align:center;">
+                            \(\dot{Q}\)
+                        </div>
+                    </foreignObject>
+                    <!-- Potenza L -->
+                    <line x1="340" y1="170" x2="340" y2="200" stroke="#22c55e" stroke-width="2"
+                        marker-end="url(#arrL)" />
+                    <foreignObject x="320" y="175" width="40" height="30">
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                            style="color:#4ade80; font-size:13px; text-align:center;">
+                            \(\dot{L}\)
+                        </div>
+                    </foreignObject>
                 </svg>
             </div>
 

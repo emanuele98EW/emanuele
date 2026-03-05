@@ -74,12 +74,12 @@ function disegnaGrafico(dati) {
       datasets: [{
         label: "Capitale (€)",
         data: dati,
-        borderColor: "#0ff",
-        backgroundColor: "rgba(0, 255, 255, 0.1)",
-        borderWidth: 3,
+        borderColor: "#3b82f6", // Blue
+        backgroundColor: "rgba(59, 130, 246, 0.2)",
+        borderWidth: 4,
         tension: 0.3,
-        pointBackgroundColor: "#050814",
-        pointBorderColor: "#0ff",
+        pointBackgroundColor: "#0f172a",
+        pointBorderColor: "#60a5fa",
         pointBorderWidth: 2,
         fill: true
       }]
@@ -89,23 +89,23 @@ function disegnaGrafico(dati) {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: "rgba(2, 6, 23, 0.9)",
-          titleColor: "#0ff",
-          bodyColor: "#e0f7fa",
-          borderColor: "rgba(0, 255, 255, 0.3)",
+          backgroundColor: "rgba(15, 23, 42, 0.95)",
+          titleColor: "#93c5fd",
+          bodyColor: "#f8fafc",
+          borderColor: "rgba(59, 130, 246, 0.3)",
           borderWidth: 1
         }
       },
       scales: {
         x: {
-          title: { display: true, text: "Anni", color: "#a5f3fc" },
-          grid: { color: "rgba(0, 255, 255, 0.1)" },
-          ticks: { color: "#94a3b8" }
+          title: { display: true, text: "Anni", color: "#64748b" },
+          grid: { color: "rgba(100, 116, 139, 0.1)" },
+          ticks: { color: "#cbd5e1" }
         },
         y: {
-          title: { display: true, text: "€", color: "#a5f3fc" },
-          grid: { color: "rgba(0, 255, 255, 0.1)" },
-          ticks: { color: "#94a3b8" }
+          title: { display: true, text: "€", color: "#64748b" },
+          grid: { color: "rgba(100, 116, 139, 0.1)" },
+          ticks: { color: "#cbd5e1" }
         }
       }
     }

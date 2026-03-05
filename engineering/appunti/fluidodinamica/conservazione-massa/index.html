@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 
 <head>
@@ -98,7 +98,7 @@
         }
 
         svg text {
-            font-family: 'Orbitron', monospace;
+            font-family: 'Inter', system-ui, sans-serif;
         }
 
         .breadcrumb {
@@ -124,10 +124,27 @@
         <header class="navbar">
             <div class="navbar-logo">
                 <img src="../../../../assets/logo.png" alt="Logo">
-                <h1><a href="../../../../personale/index.html" style="text-decoration:none;color:inherit;">Emanuele
-                        Zanella</a></h1>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <h1 style="margin: 0;"><a href="../../../../personale/index.html"
+                            style="text-decoration: none; color: inherit;">Emanuele
+                            Zanella</a></h1>
+                    <div id="theme-toggle" class="theme-toggle-btn" title="Cambia Tema"
+                        style="cursor: pointer; display: flex; align-items: center; padding: 5px;">
+                        <video id="theme-video" muted playsinline
+                            style="width: 38px; height: 38px; pointer-events: none; border-radius: 50%;">
+                            <source src="../../../../assets/theme_moon.svg.webm" type="video/webm">
+                        </video>
+                    </div>
+                </div>
             </div>
-            <nav class="menu">
+                  <!-- Hamburger Menu Button (Mobile Only) -->
+      <div class="hamburger-menu" id="hamburger-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <nav class="menu" id="main-menu">
                 <a href="../../../../index.html" class="menu-link">Home</a>
                 <div class="menu-group">
                     <a href="../../../../finanza/index.html" class="menu-toggle">Finanza <span
@@ -174,12 +191,8 @@
             </div>
 
             <h2
-                style="color:#60a5fa;text-align:center;margin-bottom:8px;font-size:2rem;text-shadow:0 0 10px rgba(96,165,250,0.5);">
+                style="color:#60a5fa;text-align:center;margin-bottom:35px;font-size:2rem;text-shadow:0 0 10px rgba(96,165,250,0.5);">
                 ⚖️ Conservazione della Massa</h2>
-            <p style="color:#94a3b8;text-align:center;margin-bottom:35px;max-width:620px;">
-                Equazione di continuità per sistemi aperti in regime stazionario — principali risultati, senza
-                dimostrazioni.
-            </p>
 
             <!-- SCHEMA SVG -->
             <div class="notes-card" style="text-align:center;">
@@ -203,11 +216,26 @@
                     <text x="210" y="42" text-anchor="middle" fill="#93c5fd" font-size="13">Sezione 1</text>
                     <text x="430" y="42" text-anchor="middle" fill="#93c5fd" font-size="13">Sezione 2</text>
                     <!-- grandezze sezione 1 -->
-                    <text x="155" y="76" text-anchor="middle" fill="#e2e8f0" font-size="12">ρ₁, A₁, w₁</text>
+                    <foreignObject x="105" y="62" width="100" height="30">
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                            style="color:#e2e8f0; font-size:13px; text-align:center;">
+                            \(\rho_1, A_1, w_1\)
+                        </div>
+                    </foreignObject>
                     <!-- grandezze sezione 2 -->
-                    <text x="490" y="76" text-anchor="middle" fill="#e2e8f0" font-size="12">ρ₂, A₂, w₂</text>
+                    <foreignObject x="440" y="62" width="100" height="30">
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                            style="color:#e2e8f0; font-size:13px; text-align:center;">
+                            \(\rho_2, A_2, w_2\)
+                        </div>
+                    </foreignObject>
                     <!-- portata massica al centro -->
-                    <text x="320" y="100" text-anchor="middle" fill="#fcd34d" font-size="13">ṁ = costante</text>
+                    <foreignObject x="250" y="80" width="140" height="40">
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                            style="color:#fcd34d; font-size:14px; text-align:center;">
+                            \(\dot{m} = \mathrm{costante}\)
+                        </div>
+                    </foreignObject>
                     <!-- label asse x -->
                     <text x="320" y="148" text-anchor="middle" fill="#64748b" font-size="11">direzione del flusso
                         →</text>
@@ -223,16 +251,16 @@
                     \[ \dot{m} = \rho_1 \, A_1 \, w_1 = \rho_2 \, A_2 \, w_2 = \mathrm{costante} \]
                 </div>
                 <p class="legend">
-                    <span>ṁ</span> = portata massica [kg/s] &ensp;|&ensp;
-                    <span>ρ</span> = densità [kg/m³] &ensp;|&ensp;
-                    <span>A</span> = area sezione [m²] &ensp;|&ensp;
-                    <span>w</span> = velocità [m/s]
+                    <span>\(\dot{m}\)</span> = portata massica [\(\text{kg/s}\)] &ensp;|&ensp;
+                    <span>\(\rho\)</span> = densità [\(\text{kg/m}^3\)] &ensp;|&ensp;
+                    <span>\(A\)</span> = area sezione [\(\text{m}^2\)] &ensp;|&ensp;
+                    <span>\(w\)</span> = velocità [\(\text{m/s}\)]
                 </p>
             </div>
 
             <!-- PORTATA VOLUMETRICA -->
             <div class="notes-card">
-                <div class="tag">Fluido Incomprimibile (ρ = cost)</div>
+                <div class="tag">Fluido Incomprimibile (\(\rho = \text{cost}\))</div>
                 <h3>Portata Volumetrica</h3>
                 <p>Per fluidi incomprimibili (liquidi, gas a bassa velocità) la densità è costante, quindi:</p>
                 <div class="formula-box">
@@ -253,9 +281,9 @@
                     \[ \frac{dm_{vc}}{dt} = \dot{m}_{in} - \dot{m}_{out} \]
                 </div>
                 <ul style="margin-top:10px;">
-                    <li>In regime <strong>stazionario</strong>: \( dm_{vc}/dt = 0 \implies \dot{m}_{in} = \dot{m}_{out}
-                        \)</li>
-                    <li>Per più ingressi/uscite: \(\sum \dot{m}_{in} = \sum \dot{m}_{out}\)</li>
+                    <li>In regime <strong>stazionario</strong>: \( \frac{dm_{vc}}{dt} = 0 \implies \dot{m}_{in} =
+                        \dot{m}_{out} \)</li>
+                    <li>Per più ingressi/uscite: \( \sum \dot{m}_{in} = \sum \dot{m}_{out} \)</li>
                 </ul>
             </div>
 

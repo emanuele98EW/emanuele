@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 
 <head>
@@ -16,11 +16,27 @@
     <header class="navbar">
       <div class="navbar-logo">
         <img src="../../assets/logo.png" alt="Logo">
-        <h1><a href="../../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a>
-        </h1>
+        <div style="display: flex; align-items: center; gap: 15px;">
+          <h1 style="margin: 0;"><a href="../../personale/index.html"
+              style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
+          <div id="theme-toggle" class="theme-toggle-btn" title="Cambia Tema"
+            style="cursor: pointer; display: flex; align-items: center; padding: 5px;">
+            <video id="theme-video" muted playsinline
+              style="width: 38px; height: 38px; pointer-events: none; border-radius: 50%;">
+              <source src="../../assets/theme_moon.svg.webm" type="video/webm">
+            </video>
+          </div>
+        </div>
       </div>
 
-      <nav class="menu">
+            <!-- Hamburger Menu Button (Mobile Only) -->
+      <div class="hamburger-menu" id="hamburger-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <nav class="menu" id="main-menu">
         <a href="../../index.html" class="menu-link">Home</a>
 
         <div class="menu-group">
@@ -48,7 +64,16 @@
         </div>
 
 
-        <a href="../../personale/index.html" class="menu-link personal">Personale</a>
+        <div class="menu-group">
+          <a href="../../personale/index.html" class="menu-toggle">
+            Personale <span class="arrow">▼</span>
+          </a>
+          <div class="menu-content">
+            <a href="../../personale/index.html" class="menu-link personal">Chi Sono</a>
+            <a href="../../personale/accademico/index.html" class="menu-link personal">Percorso Accademico</a>
+            <a href="../../personale/progetti/index.html" class="menu-link personal">Progetti Personali</a>
+          </div>
+        </div>
         <span id="clock" class="digital-clock"></span>
       </nav>
     </header>
@@ -56,7 +81,9 @@
     <!-- MAIN CONTENT -->
     <main class="main">
 
-      <h2 style="color: #0ff; text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">📈
+      <h2
+        style="color: #38bdf8; text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);">
+        📈
         Interesse composto</h2>
 
       <!-- CONTENUTO INPUT -->
@@ -64,37 +91,37 @@
         <h3 style="margin-bottom: 20px;">Parametri di calcolo</h3>
 
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
-          <label style="display: flex; flex-direction: column; gap: 8px; color: #a5f3fc;">
+          <label class="input-label" style="display: flex; flex-direction: column; gap: 8px;">
             Capitale iniziale (€)
             <input id="capitale" type="number" value="10000"
-              style="padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid #0ff; color: #0ff; border-radius: 4px; font-family: 'Orbitron', sans-serif;">
+              style="padding: 10px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(56, 189, 248, 0.5); color: #f8fafc; border-radius: 4px; font-family: 'Orbitron', sans-serif;">
           </label>
 
-          <label style="display: flex; flex-direction: column; gap: 8px; color: #a5f3fc;">
+          <label class="input-label" style="display: flex; flex-direction: column; gap: 8px;">
             Versamento annuo (€)
             <input id="versamento" type="number" value="0"
-              style="padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid #0ff; color: #0ff; border-radius: 4px; font-family: 'Orbitron', sans-serif;">
+              style="padding: 10px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(56, 189, 248, 0.5); color: #f8fafc; border-radius: 4px; font-family: 'Orbitron', sans-serif;">
           </label>
 
-          <label style="display: flex; flex-direction: column; gap: 8px; color: #a5f3fc;">
+          <label class="input-label" style="display: flex; flex-direction: column; gap: 8px;">
             Tasso annuo (%)
             <input id="tasso" type="number" step="0.1" value="5"
-              style="padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid #0ff; color: #0ff; border-radius: 4px; font-family: 'Orbitron', sans-serif;">
+              style="padding: 10px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(56, 189, 248, 0.5); color: #f8fafc; border-radius: 4px; font-family: 'Orbitron', sans-serif;">
           </label>
 
-          <label style="display: flex; flex-direction: column; gap: 8px; color: #a5f3fc;">
+          <label class="input-label" style="display: flex; flex-direction: column; gap: 8px;">
             Anni
             <input id="anni" type="number" value="20"
-              style="padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid #0ff; color: #0ff; border-radius: 4px; font-family: 'Orbitron', sans-serif;">
+              style="padding: 10px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(56, 189, 248, 0.5); color: #f8fafc; border-radius: 4px; font-family: 'Orbitron', sans-serif;">
           </label>
         </div>
 
         <button onclick="calcola()"
-          style="margin-top:20px; padding: 12px 24px; background: rgba(0, 255, 255, 0.1); border: 1px solid #0ff; color: #0ff; border-radius: 4px; cursor: pointer; font-weight: bold; font-family: 'Orbitron', sans-serif; transition: all 0.3s;"
-          onmouseover="this.style.background='rgba(0, 255, 255, 0.3)'; this.style.boxShadow='0 0 15px rgba(0, 255, 255, 0.5)';"
-          onmouseout="this.style.background='rgba(0, 255, 255, 0.1)'; this.style.boxShadow='none';">
+          style="margin-top:20px; padding: 12px 24px; background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; border-radius: 4px; cursor: pointer; font-weight: bold; font-family: 'Orbitron', sans-serif; transition: all 0.3s;"
+          onmouseover="this.style.background='rgba(56, 189, 248, 0.3)'; this.style.boxShadow='0 0 15px rgba(56, 189, 248, 0.4)';"
+          onmouseout="this.style.background='rgba(56, 189, 248, 0.15)'; this.style.boxShadow='none';">
           Calcola
-          </a>
+        </button>
 
       </section>
 
@@ -128,13 +155,12 @@
       <section class="card finance" style="max-width: 800px; width: 100%;">
         <h3>Andamento nel tempo</h3>
         <div
-          style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 10px; border: 1px solid rgba(0, 255, 255, 0.1);">
+          style="background: rgba(15, 23, 42, 0.6); border-radius: 8px; padding: 15px; border: 1px solid rgba(56, 189, 248, 0.2);">
           <canvas id="grafico" height="100"></canvas>
         </div>
       </section>
 
     </main>
-
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

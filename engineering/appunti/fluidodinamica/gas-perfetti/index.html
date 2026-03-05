@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 
 <head>
@@ -178,10 +178,27 @@
         <header class="navbar">
             <div class="navbar-logo">
                 <img src="../../../../assets/logo.png" alt="Logo">
-                <h1><a href="../../../../personale/index.html" style="text-decoration:none;color:inherit;">Emanuele
-                        Zanella</a></h1>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <h1 style="margin: 0;"><a href="../../../../personale/index.html"
+                            style="text-decoration: none; color: inherit;">Emanuele
+                            Zanella</a></h1>
+                    <div id="theme-toggle" class="theme-toggle-btn" title="Cambia Tema"
+                        style="cursor: pointer; display: flex; align-items: center; padding: 5px;">
+                        <video id="theme-video" muted playsinline
+                            style="width: 38px; height: 38px; pointer-events: none; border-radius: 50%;">
+                            <source src="../../../../assets/theme_moon.svg.webm" type="video/webm">
+                        </video>
+                    </div>
+                </div>
             </div>
-            <nav class="menu">
+                  <!-- Hamburger Menu Button (Mobile Only) -->
+      <div class="hamburger-menu" id="hamburger-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <nav class="menu" id="main-menu">
                 <a href="../../../../index.html" class="menu-link">Home</a>
                 <div class="menu-group">
                     <a href="../../../../finanza/index.html" class="menu-toggle">Finanza <span
@@ -228,11 +245,8 @@
             </div>
 
             <h2
-                style="color:#60a5fa;text-align:center;margin-bottom:8px;font-size:2rem;text-shadow:0 0 10px rgba(96,165,250,0.5);">
+                style="color:#60a5fa;text-align:center;margin-bottom:35px;font-size:2rem;text-shadow:0 0 10px rgba(96,165,250,0.5);">
                 🌡️ Gas Perfetti e Ideali</h2>
-            <p style="color:#94a3b8;text-align:center;margin-bottom:35px;max-width:640px;">
-                Equazione di stato, grandezze termodinamiche e trasformazioni principali — solo i risultati chiave.
-            </p>
 
             <!-- EQUAZIONE DI STATO -->
             <div class="notes-card">
@@ -345,19 +359,39 @@
 
                     <!-- Isoterma (pvk=cost con k=1) -->
                     <path d="M 100,50 C 160,80 260,140 420,190" stroke="#60a5fa" stroke-width="2" fill="none" />
-                    <text x="425" y="185" fill="#60a5fa" font-size="11">T=cost</text>
+                    <foreignObject x="400" y="170" width="80" height="30">
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                            style="color:#60a5fa; font-size:11px; text-align:center;">
+                            \(T=\text{cost}\)
+                        </div>
+                    </foreignObject>
 
                     <!-- Isentropica (più ripida) -->
                     <path d="M 100,50 C 140,90 210,155 350,205" stroke="#f97316" stroke-width="2" fill="none" />
-                    <text x="352" y="200" fill="#f97316" font-size="11">s=cost</text>
+                    <foreignObject x="330" y="185" width="80" height="30">
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                            style="color:#f97316; font-size:11px; text-align:center;">
+                            \(s=\text{cost}\)
+                        </div>
+                    </foreignObject>
 
                     <!-- Isobara (orizzontale) -->
                     <line x1="100" y1="50" x2="420" y2="50" stroke="#22c55e" stroke-width="2" />
-                    <text x="425" y="53" fill="#22c55e" font-size="11">p=cost</text>
+                    <foreignObject x="400" y="32" width="80" height="30">
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                            style="color:#22c55e; font-size:11px; text-align:center;">
+                            \(p=\text{cost}\)
+                        </div>
+                    </foreignObject>
 
                     <!-- Isocora (verticale) -->
                     <line x1="100" y1="50" x2="100" y2="210" stroke="#a78bfa" stroke-width="2" />
-                    <text x="66" y="215" fill="#a78bfa" font-size="10">v=cost</text>
+                    <foreignObject x="50" y="195" width="80" height="30">
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                            style="color:#a78bfa; font-size:10px; text-align:center;">
+                            \(v=\text{cost}\)
+                        </div>
+                    </foreignObject>
 
                     <!-- punto A -->
                     <circle cx="100" cy="50" r="4" fill="#e2e8f0" />

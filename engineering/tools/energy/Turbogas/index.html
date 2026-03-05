@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 
 <head>
@@ -15,10 +15,24 @@
     <header class="navbar">
       <div class="navbar-logo">
         <img src="../../../../assets/logo.png" alt="Logo">
-        <h1><a href="../../../../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
+                <div style="display: flex; align-items: center; gap: 15px;">
+          <h1 style="margin: 0;"><a href="../../../../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
+          <div id="theme-toggle" class="theme-toggle-btn" title="Cambia Tema" style="cursor: pointer; display: flex; align-items: center; padding: 5px;">
+            <video id="theme-video" muted playsinline style="width: 38px; height: 38px; pointer-events: none; border-radius: 50%;">
+              <source src="../../../../assets/theme_moon.svg.webm" type="video/webm">
+            </video>
+          </div>
+        </div>
       </div>
 
-      <nav class="menu">
+            <!-- Hamburger Menu Button (Mobile Only) -->
+      <div class="hamburger-menu" id="hamburger-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <nav class="menu" id="main-menu">
         <a href="../../../../index.html" class="menu-link">Home</a>
 
         <div class="menu-group">
@@ -94,3 +108,4 @@
 </body>
 
 </html>
+
