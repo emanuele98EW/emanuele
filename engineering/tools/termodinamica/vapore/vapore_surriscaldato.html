@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vapore Surriscaldato – Calcolatore Tecnico</title>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <style>
+        .calculator-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .input-section {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow-base);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .steam-input {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 12px 15px;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            width: 140px;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .steam-input:focus {
+            border-color: var(--color-engineering);
+            box-shadow: 0 0 15px var(--color-engineering-glow);
+        }
+
+        .unit-select {
+            background: var(--nav-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            cursor: pointer;
+            outline: none;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        .result-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-engineering);
+        }
+
+        .result-label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .result-value {
+            display: block;
+            color: var(--color-engineering);
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px var(--color-engineering-glow);
+        }
+
+        .result-unit {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+
+        .btn-calc {
+            background: var(--color-engineering);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px var(--color-engineering-glow);
+        }
+
+        .btn-calc:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px var(--color-engineering-glow);
+        }
+
+        /* Mollier Diagram Styles */
+        .diagram-section {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow-base);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #mollier-svg {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .axis-line {
+            stroke: var(--text-secondary);
+            stroke-width: 1;
+        }
+
+        .curve-sat {
+            fill: none;
+            stroke: var(--color-engineering);
+            stroke-width: 2.5;
+            filter: drop-shadow(0 0 5px var(--color-engineering-glow));
+        }
+
+        .curve-liquid {
+            stroke: #3b82f6;
+            stroke-dasharray: 4;
+        }
+
+        .state-point {
+            fill: #ff3e3e;
+            stroke: #fff;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 8px #ff3e3e);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .axis-label {
+            fill: var(--text-secondary);
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <!-- TOP NAVBAR -->
+        <header class="navbar">
+            <div class="navbar-logo">
+                <img src="../../../../assets/logo.png" alt="Logo">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <h1 style="margin: 0;"><a href="../../../../personale/index.html"
+                            style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
+                    <div id="theme-toggle" class="theme-toggle-btn" title="Cambia Tema"
+                        style="cursor: pointer; display: flex; align-items: center; padding: 5px;">
+                        <video id="theme-video" muted playsinline
+                            style="width: 38px; height: 38px; pointer-events: none; border-radius: 50%;">
+                            <source src="../../../../assets/theme_moon.svg.webm" type="video/webm">
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hamburger-menu" id="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <nav class="menu" id="main-menu">
+                <a href="../../../../index.html" class="menu-link">Home</a>
+                <div class="menu-group">
+                    <a href="../../../../finanza/index.html" class="menu-toggle">Finanza <span
+                            class="arrow">▼</span></a>
+                    <div class="menu-content">
+                        <a href="../../../../finanza/interesse/index.html" class="menu-link finance">Interesse
+                            Composto</a>
+                        <a href="../../../../finanza/mutuo/index.html" class="menu-link finance">Mutui</a>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <a href="../../../../engineering/index.html" class="menu-toggle"
+                        style="display: flex; align-items: center; gap: 8px;">
+                        <video autoplay loop muted playsinline
+                            style="width: 35px; height: 35px; background: transparent; pointer-events: none;">
+                            <source src="../../../../assets/Cute%20Bird%20Flapping%20Animation.webm" type="video/webm">
+                        </video>
+                        Ingegneria <span class="arrow">▼</span>
+                    </a>
+                    <div class="menu-content">
+                        <a href="../../../../engineering/appunti/index.html" class="menu-link engineering">Appunti</a>
+                        <a href="../../../index.html" class="menu-link engineering active">Tools</a>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <a href="../../../../personale/index.html" class="menu-toggle">
+                        Personale <span class="arrow">▼</span>
+                    </a>
+                    <div class="menu-content">
+                        <a href="../../../../personale/index.html" class="menu-link personal">Chi Sono</a>
+                        <a href="../../../../personale/accademico/index.html" class="menu-link personal">Percorso
+                            Accademico</a>
+                        <a href="../../../../personale/progetti/index.html" class="menu-link personal">Progetti
+                            Personali</a>
+                    </div>
+                </div>
+                <span id="clock" class="digital-clock"></span>
+            </nav>
+        </header>
+
+        <main class="main">
+            <!-- Breadcrumbs -->
+            <div style="width: 100%; max-width: 1000px; margin-bottom: 20px;">
+                <a href="index.html" class="menu-link engineering"
+                    style="display: inline-flex; align-items: center; gap: 5px;">
+                    <span style="font-size: 1.2rem;">←</span> Torna a Vapore
+                </a>
+            </div>
+
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h2
+                    style="font-family: 'Orbitron', sans-serif; font-size: 1.8rem; color: var(--color-engineering); letter-spacing: 1px; text-shadow: 0 0 15px var(--color-engineering-glow); margin-bottom: 10px;">
+                    Vapore Surriscaldato
+                </h2>
+                <p style="color: var(--text-secondary); font-size: 1rem;">Calcolo proprietà di precisione (IAPWS-IF97)
+                    per vapore surriscaldato.</p>
+            </div>
+
+            <!-- Area Calcolatore -->
+            <div class="calculator-container">
+                <section class="input-section">
+                    <div class="input-group">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                            <label for="pressure-input"
+                                style="font-weight: bold; color: var(--text-primary);">Pressione:</label>
+                            <div style="display: flex; gap: 5px;">
+                                <input type="number" id="pressure-input" class="steam-input" value="10" step="1"
+                                    min="0.01">
+                                <select id="pressure-unit" class="unit-select">
+                                    <option value="barg">bar(g)</option>
+                                    <option value="bar">bar(a)</option>
+                                    <option value="mpa">MPa(a)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                            <label for="temperature-input"
+                                style="font-weight: bold; color: var(--text-primary);">Temperatura:</label>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <input type="number" id="temperature-input" class="steam-input" value="250" step="5"
+                                    min="0">
+                                <span style="color: var(--text-primary); font-size: 1.2rem;">°C</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="calculate-btn" class="btn-calc">Calcola Proprietà</button>
+                    <p id="status-msg" style="color: var(--color-engineering); font-size: 0.9rem; margin-top: 10px;">
+                    </p>
+                </section>
+
+                <!-- Risultati -->
+                <div class="results-grid">
+                    <div class="result-card">
+                        <span class="result-label">Temperatura di saturazione</span>
+                        <span id="res-tsat" class="result-value">---</span>
+                        <span class="result-unit">°C</span>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-label">Entalpia (h)</span>
+                        <span id="res-h" class="result-value">---</span>
+                        <span class="result-unit">kJ/kg</span>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-label">Volume specifico (v)</span>
+                        <span id="res-v" class="result-value">---</span>
+                        <span class="result-unit">m³/kg</span>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-label">Entropia (s)</span>
+                        <span id="res-s" class="result-value">---</span>
+                        <span class="result-unit">kJ/kgK</span>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-label">Grado di surriscaldamento</span>
+                        <span id="res-dt" class="result-value">---</span>
+                        <span class="result-unit">°C</span>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-label">Entalpia saturo (hg)</span>
+                        <span id="res-hg" class="result-value">---</span>
+                        <span class="result-unit">kJ/kg</span>
+                    </div>
+                </div>
+
+                <!-- Mollier Diagram Section -->
+                <section class="diagram-section">
+                    <h3
+                        style="font-family: 'Orbitron', sans-serif; font-size: 1rem; color: var(--color-engineering); align-self: flex-start; margin-left:10px;">
+                        Diagramma h-s (Mollier)</h3>
+                    <svg id="mollier-svg" viewBox="0 0 500 400">
+                        <line x1="50" y1="350" x2="480" y2="350" class="axis-line" /> <!-- S axis -->
+                        <line x1="50" y1="30" x2="50" y2="350" class="axis-line" /> <!-- H axis -->
+                        <text x="460" y="370" class="axis-label">s [kJ/kgK]</text>
+                        <text x="15" y="40" class="axis-label" transform="rotate(-90, 15, 40)">h [kJ/kg]</text>
+                        <path id="curve-liquid" class="curve-sat curve-liquid" />
+                        <path id="curve-vapor" class="curve-sat" />
+                        <circle id="state-point" cx="-20" cy="-20" r="6" class="state-point" />
+                    </svg>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- IAPWS-IF97 Library -->
+    <script src="https://cdn.jsdelivr.net/gh/kpatvt/xsteam2/xsteam2.js"></script>
+    <script src="../../../../js/main.js"></script>
+    <script>
+        // Constants for Diagram Scaling
+        const S_MIN = 0, S_MAX = 9.5;
+        const H_MIN = 0, H_MAX = 3500;
+        const SVG_W = 430, SVG_H = 320, OFF_X = 50, OFF_Y = 30;
+
+        function scaleS(s) { return OFF_X + (s / S_MAX) * SVG_W; }
+        function scaleH(h) { return (OFF_Y + SVG_H) - (h / H_MAX) * SVG_H; }
+
+        function drawSaturationCurves() {
+            let pathLiq = "";
+            let pathVap = "";
+            const pressures = [0.000611, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 2, 5, 10, 15, 20, 22.064];
+
+            pressures.forEach((p, i) => {
+                const sL = xsteam2.sL_p(p);
+                const hL = xsteam2.hL_p(p);
+                const sV = xsteam2.sV_p(p);
+                const hV = xsteam2.hV_p(p);
+
+                if (i === 0) {
+                    pathLiq = `M ${scaleS(sL)} ${scaleH(hL)}`;
+                    pathVap = `M ${scaleS(sV)} ${scaleH(hV)}`;
+                } else {
+                    pathLiq += ` L ${scaleS(sL)} ${scaleH(hL)}`;
+                    pathVap += ` L ${scaleS(sV)} ${scaleH(hV)}`;
+                }
+            });
+
+            document.getElementById('curve-liquid').setAttribute('d', pathLiq);
+            document.getElementById('curve-vapor').setAttribute('d', pathVap);
+        }
+
+        function calculate() {
+            const pInput = parseFloat(document.getElementById('pressure-input').value);
+            const tInput = parseFloat(document.getElementById('temperature-input').value);
+            const unit = document.getElementById('pressure-unit').value;
+            const statusMsg = document.getElementById('status-msg');
+
+            if (isNaN(pInput) || isNaN(tInput)) return;
+
+            let pMPa = 0;
+            const atm = 0.101325;
+            if (unit === 'barg') pMPa = (pInput / 10) + atm;
+            else if (unit === 'bar') pMPa = pInput / 10;
+            else if (unit === 'mpa') pMPa = pInput;
+
+            let tK = tInput + 273.15;
+
+            // Bounds check
+            if (pMPa < 0.000611) pMPa = 0.000611;
+            if (pMPa > 100) pMPa = 100; // Limit for standard IF97 region 2
+            if (tK < 273.15) tK = 273.15;
+            if (tK > 1073.15) tK = 1073.15; // 800 °C
+
+            try {
+                const tsatK = xsteam2.Tsat_p(pMPa);
+                const tsatC = tsatK - 273.15;
+
+                if (tK <= tsatK) {
+                    statusMsg.textContent = "ATTENZIONE: Temperatura inferiore o uguale alla saturazione (" + tsatC.toFixed(1) + "°C). Inserisci una temperatura maggiore.";
+                    statusMsg.style.color = "#ff3e3e";
+                } else {
+                    statusMsg.textContent = "Regione: Vapore Surriscaldato";
+                    statusMsg.style.color = "var(--color-engineering)";
+                }
+
+                // Property Calculation
+                const h = xsteam2.h_pt(pMPa, tK);
+                const v = xsteam2.v_pt(pMPa, tK);
+                const s = xsteam2.s_pt(pMPa, tK);
+                const hg = xsteam2.hV_p(pMPa);
+                const dt = tInput - tsatC;
+
+                // Update UI
+                document.getElementById('res-tsat').textContent = tsatC.toFixed(2);
+                document.getElementById('res-h').textContent = h.toFixed(1);
+                document.getElementById('res-v').textContent = v.toFixed(4);
+                document.getElementById('res-s').textContent = s.toFixed(3);
+                document.getElementById('res-dt').textContent = dt.toFixed(1);
+                document.getElementById('res-hg').textContent = hg.toFixed(1);
+
+                // Update Diagram
+                const point = document.getElementById('state-point');
+                point.setAttribute('cx', scaleS(s));
+                point.setAttribute('cy', scaleH(h));
+
+            } catch (err) {
+                console.error("IF97 error:", err);
+                statusMsg.textContent = "Errore nei parametri di input.";
+            }
+        }
+
+        window.onload = () => {
+            drawSaturationCurves();
+            calculate();
+        };
+
+        document.getElementById('calculate-btn').onclick = calculate;
+        const inputs = ['pressure-input', 'temperature-input'];
+        inputs.forEach(id => {
+            document.getElementById(id).onkeypress = (e) => { if (e.key === 'Enter') calculate(); };
+        });
+    </script>
+</body>
+
+</html>

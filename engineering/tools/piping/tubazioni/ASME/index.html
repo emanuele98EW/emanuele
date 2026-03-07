@@ -56,6 +56,115 @@
     .header-main {
       background-color: #004494 !important;
     }
+
+    /* ===== ENHANCED DROPDOWN STYLING ===== */
+    .tool-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      backdrop-filter: blur(10px);
+      flex-wrap: wrap;
+    }
+
+    .tool-row label {
+      color: #60a5fa;
+      font-weight: bold;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .tool-row select {
+      background: rgba(30, 41, 59, 0.9);
+      color: #fff;
+      border: 1px solid rgba(96, 165, 250, 0.5);
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.3s;
+      width: 220px;
+      /* INVECE DI min-width */
+      max-width: 100%;
+      /* Per responsiveness su mobile */
+      text-overflow: ellipsis;
+      /* Taglia il testo troppo lungo se necessario */
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="%2360a5fa" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+      background-repeat: no-repeat;
+      background-position-x: 95%;
+      background-position-y: 50%;
+    }
+
+    .tool-row select:focus,
+    .tool-row select:hover {
+      border-color: #3b82f6;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+      background-color: rgba(30, 41, 59, 1);
+    }
+
+    /* ===== PIPE DATA CARD STYLING ===== */
+    .pipe-result {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 20px;
+    }
+
+    .pipe-data-card {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      border-radius: 12px;
+      padding: 25px;
+      min-width: 280px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .pipe-data-card h3 {
+      color: #60a5fa;
+      margin-top: 0;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 1.2rem;
+      border-bottom: 1px solid rgba(96, 165, 250, 0.3);
+      padding-bottom: 10px;
+    }
+
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .data-row:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .data-label {
+      color: #94a3b8;
+      font-weight: bold;
+    }
+
+    .data-value {
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
   </style>
 </head>
 
@@ -67,17 +176,20 @@
     <header class="navbar">
       <div class="navbar-logo">
         <img src="../../../../../assets/logo.png" alt="Logo">
-                <div style="display: flex; align-items: center; gap: 15px;">
-          <h1 style="margin: 0;"><a href="../../../../../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
-          <div id="theme-toggle" class="theme-toggle-btn" title="Cambia Tema" style="cursor: pointer; display: flex; align-items: center; padding: 5px;">
-            <video id="theme-video" muted playsinline style="width: 38px; height: 38px; pointer-events: none; border-radius: 50%;">
+        <div style="display: flex; align-items: center; gap: 15px;">
+          <h1 style="margin: 0;"><a href="../../../../../personale/index.html"
+              style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
+          <div id="theme-toggle" class="theme-toggle-btn" title="Cambia Tema"
+            style="cursor: pointer; display: flex; align-items: center; padding: 5px;">
+            <video id="theme-video" muted playsinline
+              style="width: 38px; height: 38px; pointer-events: none; border-radius: 50%;">
               <source src="../../../../../assets/theme_moon.svg.webm" type="video/webm">
             </video>
           </div>
         </div>
       </div>
 
-            <!-- Hamburger Menu Button (Mobile Only) -->
+      <!-- Hamburger Menu Button (Mobile Only) -->
       <div class="hamburger-menu" id="hamburger-menu">
         <span></span>
         <span></span>
@@ -99,8 +211,10 @@
         </div>
 
         <div class="menu-group">
-          <a href="../../../../../engineering/index.html" class="menu-toggle active" style="display: flex; align-items: center; gap: 8px;">
-            <video autoplay loop muted playsinline style="width: 35px; height: 35px; background: transparent; pointer-events: none;">
+          <a href="../../../../../engineering/index.html" class="menu-toggle active"
+            style="display: flex; align-items: center; gap: 8px;">
+            <video autoplay loop muted playsinline
+              style="width: 35px; height: 35px; background: transparent; pointer-events: none;">
               <source src="../../../../../assets/Cute%20Bird%20Flapping%20Animation.webm" type="video/webm">
             </video>
             Ingegneria <span class="arrow">▼</span>
@@ -153,273 +267,74 @@
         <div class="pipe-result">
           <canvas id="pipeCanvas" width="400" height="260"></canvas>
 
-          <div class="pipe-data">
-            <p><strong>OD:</strong> <span id="od">–</span></p>
-            <p><strong>ID:</strong> <span id="id">–</span></p>
-            <p><strong>Spessore:</strong> <span id="thk">–</span></p>
-            <p><strong>Peso:</strong> <span id="kgm">–</span></p>
+          <div class="pipe-data-card">
+            <h3>Dati Dimensionali</h3>
+            <div class="data-row">
+              <span class="data-label">OD (Diametro Est.)</span>
+              <span class="data-value" id="od">–</span>
+            </div>
+            <div class="data-row">
+              <span class="data-label">ID (Diametro Int.)</span>
+              <span class="data-value" id="id">–</span>
+            </div>
+            <div class="data-row">
+              <span class="data-label">Spessore</span>
+              <span class="data-value" id="thk">–</span>
+            </div>
+            <div class="data-row"
+              style="border-top: 1px solid rgba(96, 165, 250, 0.4); margin-top: 5px; padding-top: 15px;">
+              <span class="data-label" style="color: #fbbf24;">Peso Appross.</span>
+              <span class="data-value" id="kgm" style="color: #fbbf24;">–</span>
+            </div>
           </div>
         </div>
 
-        <div class="table-container">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th class="header-main">DN (pollici)</th>
-                <th class="header-main">DN (mm)</th>
-                <th class="header-main">Ø est. (mm)</th>
-                <th>Std</th>
-                <th>XS</th>
-                <th>XXS</th>
-                <th>Sch.10</th>
-                <th>Sch.20</th>
-                <th>Sch.30</th>
-                <th>Sch.40</th>
-                <th>Sch.80</th>
-                <th>Sch.160</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="dn-col">1/8"</td>
-                <td>DN 6</td>
-                <td>10.29</td>
-                <td>1.73</td>
-                <td>2.41</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>1.73</td>
-                <td>2.41</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td class="dn-col">1/4"</td>
-                <td>DN 8</td>
-                <td>13.72</td>
-                <td>2.23</td>
-                <td>3.02</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>2.23</td>
-                <td>3.02</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td class="dn-col">3/8"</td>
-                <td>DN 10</td>
-                <td>17.14</td>
-                <td>2.31</td>
-                <td>3.20</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>2.31</td>
-                <td>3.20</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td class="dn-col">1/2"</td>
-                <td>DN 15</td>
-                <td>21.34</td>
-                <td>2.77</td>
-                <td>3.73</td>
-                <td>7.47</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>2.77</td>
-                <td>3.73</td>
-                <td>4.75</td>
-              </tr>
-              <tr>
-                <td class="dn-col">3/4"</td>
-                <td>DN 20</td>
-                <td>26.67</td>
-                <td>2.87</td>
-                <td>3.91</td>
-                <td>7.82</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>2.87</td>
-                <td>3.91</td>
-                <td>5.54</td>
-              </tr>
-              <tr>
-                <td class="dn-col">1"</td>
-                <td>DN 25</td>
-                <td>33.40</td>
-                <td>3.38</td>
-                <td>4.55</td>
-                <td>9.09</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>3.38</td>
-                <td>4.55</td>
-                <td>6.35</td>
-              </tr>
-              <tr>
-                <td class="dn-col">1" 1/4</td>
-                <td>DN 32</td>
-                <td>42.16</td>
-                <td>3.56</td>
-                <td>4.85</td>
-                <td>9.70</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>3.56</td>
-                <td>4.85</td>
-                <td>6.35</td>
-              </tr>
-              <tr>
-                <td class="dn-col">1" 1/2</td>
-                <td>DN 40</td>
-                <td>48.26</td>
-                <td>3.68</td>
-                <td>5.08</td>
-                <td>10.16</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>3.68</td>
-                <td>5.08</td>
-                <td>7.14</td>
-              </tr>
-              <tr>
-                <td class="dn-col">2"</td>
-                <td>DN 50</td>
-                <td>60.32</td>
-                <td>3.91</td>
-                <td>5.54</td>
-                <td>11.07</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>3.91</td>
-                <td>5.54</td>
-                <td>8.71</td>
-              </tr>
-              <tr>
-                <td class="dn-col">2" 1/2</td>
-                <td>DN 65</td>
-                <td>73.02</td>
-                <td>5.16</td>
-                <td>7.01</td>
-                <td>14.02</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>5.16</td>
-                <td>7.01</td>
-                <td>9.52</td>
-              </tr>
-              <tr>
-                <td class="dn-col">3"</td>
-                <td>DN 80</td>
-                <td>88.90</td>
-                <td>5.49</td>
-                <td>7.62</td>
-                <td>15.24</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>5.49</td>
-                <td>7.62</td>
-                <td>11.12</td>
-              </tr>
-              <tr>
-                <td class="dn-col">4"</td>
-                <td>DN 100</td>
-                <td>114.30</td>
-                <td>6.02</td>
-                <td>8.56</td>
-                <td>17.12</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>6.02</td>
-                <td>8.56</td>
-                <td>13.49</td>
-              </tr>
-              <tr>
-                <td class="dn-col">6"</td>
-                <td>DN 150</td>
-                <td>168.27</td>
-                <td>7.11</td>
-                <td>10.97</td>
-                <td>21.94</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>7.11</td>
-                <td>10.97</td>
-                <td>18.24</td>
-              </tr>
-              <tr>
-                <td class="dn-col">8"</td>
-                <td>DN 200</td>
-                <td>219.07</td>
-                <td>8.18</td>
-                <td>12.70</td>
-                <td>22.22</td>
-                <td>-</td>
-                <td>6.35</td>
-                <td>7.04</td>
-                <td>8.18</td>
-                <td>12.70</td>
-                <td>23.01</td>
-              </tr>
-              <tr>
-                <td class="dn-col">10"</td>
-                <td>DN 250</td>
-                <td>273.05</td>
-                <td>9.27</td>
-                <td>12.70</td>
-                <td>-</td>
-                <td>-</td>
-                <td>6.35</td>
-                <td>7.80</td>
-                <td>9.27</td>
-                <td>15.06</td>
-                <td>28.57</td>
-              </tr>
-              <tr>
-                <td class="dn-col">12"</td>
-                <td>DN 300</td>
-                <td>323.85</td>
-                <td>9.52</td>
-                <td>12.70</td>
-                <td>-</td>
-                <td>-</td>
-                <td>6.35</td>
-                <td>8.38</td>
-                <td>10.31</td>
-                <td>17.45</td>
-                <td>33.32</td>
-              </tr>
-              <tr>
-                <td class="dn-col">14"</td>
-                <td>DN 350</td>
-                <td>355.60</td>
-                <td>9.52</td>
-                <td>12.70</td>
-                <td>-</td>
-                <td>6.35</td>
-                <td>7.92</td>
-                <td>9.52</td>
-                <td>11.12</td>
-                <td>19.05</td>
-                <td>35.71</td>
-              </tr>
-            </tbody>
-          </table>
+        <div style="display: flex; justify-content: center; margin-bottom: 40px; width: 100%;">
+          <div class="pipe-data-card" style="width: 100%; max-width: 650px; margin-top: 0;">
+            <h3>Peso Tubo + Fluido</h3>
+            <div class="data-row" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+              <span class="data-label">Densità Fluido (kg/m³)</span>
+              <input type="number" id="fluid-density" value="1000" style="
+                width: 100%;
+                background: rgba(30, 41, 59, 0.9);
+                color: #fff;
+                border: 1px solid rgba(96, 165, 250, 0.5);
+                padding: 10px;
+                border-radius: 8px;
+                font-size: 1rem;
+                outline: none;
+                transition: all 0.3s;
+              " placeholder="es. 1000 per l'acqua">
+            </div>
+            <div class="data-row" style="margin-top: 20px;">
+              <span class="data-label">Peso Fluido</span>
+              <span class="data-value" id="fluid-weight" style="color: #38bdf8;">–</span>
+            </div>
+            <div class="data-row"
+              style="border-top: 1px dashed rgba(96, 165, 250, 0.4); margin-top: 5px; padding-top: 15px;">
+              <span class="data-label" style="color: #f43f5e; font-size: 1.1rem;">Peso Totale (Tubo + Fluido)</span>
+              <span class="data-value" id="total-weight" style="color: #f43f5e; font-size: 1.2rem;">–</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; margin-top: 40px; margin-bottom: 40px;">
+          <a href="https://www.oppo.it/tabelle/tabella-dim-spess-astm.html" target="_blank" rel="noopener noreferrer"
+            style="
+            display: inline-block;
+            background: linear-gradient(135deg, #3b82f6, #0ea5e9);
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+            transition: all 0.3s ease;
+          " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(56, 189, 248, 0.6)';"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(56, 189, 248, 0.4)';">
+            Tabella ASTM Oppo Dimensioni e Spessori Tubi
+          </a>
         </div>
 
       </section>
@@ -445,4 +360,3 @@
 </body>
 
 </html>
-

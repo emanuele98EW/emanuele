@@ -350,6 +350,10 @@ function updateValues() {
   const sch = schSelect.value;
   if (!dn || !sch) return;
 
+  const densityInput = document.getElementById("fluid-density");
+  const fluidWeightSpan = document.getElementById("fluid-weight");
+  const totalWeightSpan = document.getElementById("total-weight");
+
   const OD = pipeData[dn].OD;
   const t = pipeData[dn].schedules[sch].t;
   const ID = (OD - 2 * t).toFixed(2);
@@ -358,15 +362,38 @@ function updateValues() {
   od.textContent = `${OD} mm`;
   id.textContent = `${ID} mm`;
   thk.textContent = `${t} mm`;
-  kgmSpan.textContent = `${kgm} kg/m`;
+  kgmSpan.textContent = `${kgm.toFixed(2)} kg/m`;
+
+  if (densityInput && fluidWeightSpan && totalWeightSpan) {
+    const rho = parseFloat(densityInput.value) || 0;
+    const areaInt_m2 = Math.PI * Math.pow(ID / 2000, 2);
+    const fluid_kgm = areaInt_m2 * rho;
+    const total_kgm = kgm + fluid_kgm;
+
+    fluidWeightSpan.textContent = `${fluid_kgm.toFixed(2)} kg/m`;
+    totalWeightSpan.textContent = `${total_kgm.toFixed(2)} kg/m`;
+  }
 
   drawPipe(OD, ID, t);
 }
 
 function clearValues() {
   od.textContent = id.textContent = thk.textContent = kgmSpan.textContent = "–";
+
+  const fluidWeightSpan = document.getElementById("fluid-weight");
+  const totalWeightSpan = document.getElementById("total-weight");
+  if (fluidWeightSpan) fluidWeightSpan.textContent = "–";
+  if (totalWeightSpan) totalWeightSpan.textContent = "–";
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const densityInput = document.getElementById("fluid-density");
+  if (densityInput) {
+    densityInput.addEventListener("input", updateValues);
+  }
+});
 
 /* ================================
    DISEGNO

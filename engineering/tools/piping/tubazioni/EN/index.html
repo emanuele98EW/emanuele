@@ -88,6 +88,115 @@
     .header-main {
       background-color: #004494 !important;
     }
+
+    /* ===== ENHANCED DROPDOWN STYLING ===== */
+    .tool-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      backdrop-filter: blur(10px);
+      flex-wrap: wrap;
+    }
+
+    .tool-row label {
+      color: #60a5fa;
+      font-weight: bold;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .tool-row select {
+      background: rgba(30, 41, 59, 0.9);
+      color: #fff;
+      border: 1px solid rgba(96, 165, 250, 0.5);
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.3s;
+      width: 220px;
+      /* INVECE DI min-width */
+      max-width: 100%;
+      /* Per responsiveness su mobile */
+      text-overflow: ellipsis;
+      /* Taglia il testo troppo lungo se necessario */
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="%2360a5fa" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+      background-repeat: no-repeat;
+      background-position-x: 95%;
+      background-position-y: 50%;
+    }
+
+    .tool-row select:focus,
+    .tool-row select:hover {
+      border-color: #3b82f6;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+      background-color: rgba(30, 41, 59, 1);
+    }
+
+    /* ===== PIPE DATA CARD STYLING ===== */
+    .pipe-result {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .pipe-data-card {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      border-radius: 12px;
+      padding: 25px;
+      min-width: 280px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .pipe-data-card h3 {
+      color: #60a5fa;
+      margin-top: 0;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 1.2rem;
+      border-bottom: 1px solid rgba(96, 165, 250, 0.3);
+      padding-bottom: 10px;
+    }
+
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .data-row:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .data-label {
+      color: #94a3b8;
+      font-weight: bold;
+    }
+
+    .data-value {
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
   </style>
 </head>
 
@@ -99,17 +208,20 @@
     <header class="navbar">
       <div class="navbar-logo">
         <img src="../../../../../assets/logo.png" alt="Logo">
-                <div style="display: flex; align-items: center; gap: 15px;">
-          <h1 style="margin: 0;"><a href="../../../../../personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
-          <div id="theme-toggle" class="theme-toggle-btn" title="Cambia Tema" style="cursor: pointer; display: flex; align-items: center; padding: 5px;">
-            <video id="theme-video" muted playsinline style="width: 38px; height: 38px; pointer-events: none; border-radius: 50%;">
+        <div style="display: flex; align-items: center; gap: 15px;">
+          <h1 style="margin: 0;"><a href="../../../../../personale/index.html"
+              style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
+          <div id="theme-toggle" class="theme-toggle-btn" title="Cambia Tema"
+            style="cursor: pointer; display: flex; align-items: center; padding: 5px;">
+            <video id="theme-video" muted playsinline
+              style="width: 38px; height: 38px; pointer-events: none; border-radius: 50%;">
               <source src="../../../../../assets/theme_moon.svg.webm" type="video/webm">
             </video>
           </div>
         </div>
       </div>
 
-            <!-- Hamburger Menu Button (Mobile Only) -->
+      <!-- Hamburger Menu Button (Mobile Only) -->
       <div class="hamburger-menu" id="hamburger-menu">
         <span></span>
         <span></span>
@@ -131,8 +243,10 @@
         </div>
 
         <div class="menu-group">
-          <a href="../../../../../engineering/index.html" class="menu-toggle active" style="display: flex; align-items: center; gap: 8px;">
-            <video autoplay loop muted playsinline style="width: 35px; height: 35px; background: transparent; pointer-events: none;">
+          <a href="../../../../../engineering/index.html" class="menu-toggle active"
+            style="display: flex; align-items: center; gap: 8px;">
+            <video autoplay loop muted playsinline
+              style="width: 35px; height: 35px; background: transparent; pointer-events: none;">
               <source src="../../../../../assets/Cute%20Bird%20Flapping%20Animation.webm" type="video/webm">
             </video>
             Ingegneria <span class="arrow">▼</span>
@@ -185,11 +299,54 @@
         <div class="pipe-result">
           <canvas id="pipeCanvas" width="400" height="260"></canvas>
 
-          <div class="pipe-data">
-            <p><strong>OD:</strong> <span id="od">–</span></p>
-            <p><strong>ID:</strong> <span id="id">–</span></p>
-            <p><strong>Spessore:</strong> <span id="thk">–</span></p>
-            <p><strong>Peso:</strong> <span id="kgm">–</span></p>
+          <div class="pipe-data-card">
+            <h3>Dati Dimensionali</h3>
+            <div class="data-row">
+              <span class="data-label">OD (Diametro Est.)</span>
+              <span class="data-value" id="od">–</span>
+            </div>
+            <div class="data-row">
+              <span class="data-label">ID (Diametro Int.)</span>
+              <span class="data-value" id="id">–</span>
+            </div>
+            <div class="data-row">
+              <span class="data-label">Spessore</span>
+              <span class="data-value" id="thk">–</span>
+            </div>
+            <div class="data-row"
+              style="border-top: 1px solid rgba(96, 165, 250, 0.4); margin-top: 5px; padding-top: 15px;">
+              <span class="data-label" style="color: #fbbf24;">Peso Appross.</span>
+              <span class="data-value" id="kgm" style="color: #fbbf24;">–</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; margin-bottom: 40px; width: 100%;">
+          <div class="pipe-data-card" style="width: 100%; max-width: 650px; margin-top: 0;">
+            <h3>Peso Tubo + Fluido</h3>
+            <div class="data-row" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+              <span class="data-label">Densità Fluido (kg/m³)</span>
+              <input type="number" id="fluid-density" value="1000" style="
+                width: 100%;
+                background: rgba(30, 41, 59, 0.9);
+                color: #fff;
+                border: 1px solid rgba(96, 165, 250, 0.5);
+                padding: 10px;
+                border-radius: 8px;
+                font-size: 1rem;
+                outline: none;
+                transition: all 0.3s;
+              " placeholder="es. 1000 per l'acqua">
+            </div>
+            <div class="data-row" style="margin-top: 20px;">
+              <span class="data-label">Peso Fluido</span>
+              <span class="data-value" id="fluid-weight" style="color: #38bdf8;">–</span>
+            </div>
+            <div class="data-row"
+              style="border-top: 1px dashed rgba(96, 165, 250, 0.4); margin-top: 5px; padding-top: 15px;">
+              <span class="data-label" style="color: #f43f5e; font-size: 1.1rem;">Peso Totale (Tubo + Fluido)</span>
+              <span class="data-value" id="total-weight" style="color: #f43f5e; font-size: 1.2rem;">–</span>
+            </div>
           </div>
         </div>
 
@@ -491,4 +648,3 @@
 </body>
 
 </html>
-

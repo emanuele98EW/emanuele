@@ -61,6 +61,10 @@ function updateValues() {
   const tStr = schSelect.value;
   if (!dn || !tStr) return;
 
+  const densityInput = document.getElementById("fluid-density");
+  const fluidWeightSpan = document.getElementById("fluid-weight");
+  const totalWeightSpan = document.getElementById("total-weight");
+
   const OD = pipeData[dn].OD;
   const t = parseFloat(tStr);
   const ID = (OD - 2 * t).toFixed(2);
@@ -71,6 +75,18 @@ function updateValues() {
   thkSpan.textContent = `${t} mm`;
   kgmSpan.textContent = `${kgm.toFixed(2)} kg/m`;
 
+  // Calcolo fluido e peso totale (Volume interno = pi * (ID/2)^2 / 1000000 m^3 al metro)
+  // 1 metro di tubo = (Math.PI * (ID / 2 / 1000) ** 2) metri cubi.
+  if (densityInput && fluidWeightSpan && totalWeightSpan) {
+    const rho = parseFloat(densityInput.value) || 0; // kg/m^3
+    const areaInt_m2 = Math.PI * Math.pow(ID / 2000, 2);
+    const fluid_kgm = areaInt_m2 * rho; // massa del fluido in un metro di tubo
+    const total_kgm = kgm + fluid_kgm;
+
+    fluidWeightSpan.textContent = `${fluid_kgm.toFixed(2)} kg/m`;
+    totalWeightSpan.textContent = `${total_kgm.toFixed(2)} kg/m`;
+  }
+
   drawPipe(OD, ID, t);
 }
 
@@ -79,10 +95,25 @@ function clearValues() {
   document.getElementById("id").textContent = "–";
   document.getElementById("thk").textContent = "–";
   document.getElementById("kgm").textContent = "–";
+
+  const fluidWeightSpan = document.getElementById("fluid-weight");
+  const totalWeightSpan = document.getElementById("total-weight");
+
+  if (fluidWeightSpan) fluidWeightSpan.textContent = "–";
+  if (totalWeightSpan) totalWeightSpan.textContent = "–";
+
   const canvas = document.getElementById("pipeCanvas");
   const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
+
+// listener per l'input densita
+document.addEventListener("DOMContentLoaded", () => {
+  const densityInput = document.getElementById("fluid-density");
+  if (densityInput) {
+    densityInput.addEventListener("input", updateValues);
+  }
+});
 
 /* ================================
    DISEGNO

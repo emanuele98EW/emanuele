@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vapore Saturo (Temperatura) – Appunti Termodinamica</title>
+    <link rel="stylesheet" href="../../../../../css/style.css">
+    <style>
+        .table-controls {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 10px 15px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            flex-grow: 1;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--color-engineering);
+            box-shadow: 0 0 10px var(--color-engineering-glow);
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            box-shadow: var(--shadow-base);
+            max-height: 700px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            background: var(--nav-bg);
+            z-index: 10;
+        }
+
+        th {
+            padding: 15px 10px;
+            color: var(--color-engineering);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--card-border);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        th:hover {
+            background: rgba(96, 165, 250, 0.1);
+        }
+
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid var(--card-border);
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--color-engineering);
+        }
+
+        .unit-note {
+            display: block;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            text-transform: none;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 768px) {
+
+            th,
+            td {
+                padding: 10px 8px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <!-- TOP NAVBAR -->
+        <header class="navbar">
+            <div class="navbar-logo">
+                <img src="../../../../../assets/logo.png" alt="Logo">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <h1 style="margin: 0;"><a href="../../../../../personale/index.html"
+                            style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
+                    <div id="theme-toggle" class="theme-toggle-btn" title="Cambia Tema"
+                        style="cursor: pointer; display: flex; align-items: center; padding: 5px;">
+                        <video id="theme-video" muted playsinline
+                            style="width: 38px; height: 38px; pointer-events: none; border-radius: 50%;">
+                            <source src="../../../../../assets/theme_moon.svg.webm" type="video/webm">
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hamburger-menu" id="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <nav class="menu" id="main-menu">
+                <a href="../../../../../index.html" class="menu-link">Home</a>
+                <div class="menu-group">
+                    <a href="../../../../../finanza/index.html" class="menu-toggle">Finanza <span
+                            class="arrow">▼</span></a>
+                    <div class="menu-content">
+                        <a href="../../../../../finanza/interesse/index.html" class="menu-link finance">Interesse
+                            Composto</a>
+                        <a href="../../../../../finanza/mutuo/index.html" class="menu-link finance">Mutui</a>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <a href="../../../../../engineering/index.html" class="menu-toggle active"
+                        style="display: flex; align-items: center; gap: 8px;">
+                        <video autoplay loop muted playsinline
+                            style="width: 35px; height: 35px; background: transparent; pointer-events: none;">
+                            <source src="../../../../../assets/Cute%20Bird%20Flapping%20Animation.webm"
+                                type="video/webm">
+                        </video>
+                        Ingegneria <span class="arrow">▼</span>
+                    </a>
+                    <div class="menu-content">
+                        <a href="../../index.html" class="menu-link engineering">Appunti</a>
+                        <a href="../../../../tools/index.html" class="menu-link engineering">Tools</a>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <a href="../../../../../personale/index.html" class="menu-toggle">Personale <span
+                            class="arrow">▼</span></a>
+                    <div class="menu-content">
+                        <a href="../../../../../personale/index.html" class="menu-link personal">Chi Sono</a>
+                        <a href="../../../../../personale/accademico/index.html" class="menu-link personal">Percorso
+                            Accademico</a>
+                        <a href="../../../../../personale/progetti/index.html" class="menu-link personal">Progetti
+                            Personali</a>
+                    </div>
+                </div>
+                <span id="clock" class="digital-clock"></span>
+            </nav>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <main class="main">
+            <div class="background-logo"></div>
+
+            <!-- Breadcrumbs -->
+            <div style="width: 100%; max-width: 1000px; margin-bottom: 20px;">
+                <a href="../index.html" class="menu-link engineering"
+                    style="display: inline-flex; align-items: center; gap: 5px;">
+                    <span style="font-size: 1.2rem;">←</span> Torna a Vapore
+                </a>
+            </div>
+
+            <h2
+                style="color: #60a5fa; text-align: center; margin-bottom: 10px; text-shadow: 0 0 10px rgba(96, 165, 250, 0.5); font-size: 2rem;">
+                💨 Vapore Saturo (Temperatura)</h2>
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 30px;">Proprietà termodinamiche
+                organizzate per temperatura.</p>
+
+            <div class="table-controls">
+                <span style="color: var(--text-primary); font-weight: bold;">🔍 Filtra:</span>
+                <input type="text" id="steam-search" class="search-input" placeholder="Inserisci temperatura (°C)...">
+                <span id="row-count" style="color: var(--text-secondary); font-size: 0.85rem;">Caricamento
+                    dati...</span>
+            </div>
+
+            <div class="table-container">
+                <table id="steam-table">
+                    <thead>
+                        <tr id="table-headers">
+                            <!-- Headers injected via JS -->
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Data injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 30px; text-align: center; font-size: 0.8rem; color: var(--text-secondary);">
+                Data Source: Neil Hendren, University of Colorado Boulder (2022)
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../../../../js/main.js"></script>
+    <script src="data.js"></script>
+    <script>
+        let steamData = tableData.data;
+        let headers = tableData.headers;
+
+        function loadData() {
+            renderHeaders();
+            renderTable(steamData);
+            document.getElementById('row-count').textContent = `Record totali: ${steamData.length}`;
+        }
+
+        function renderHeaders() {
+            const headerRow = document.getElementById('table-headers');
+            headerRow.innerHTML = headers.map((h, i) => {
+                let cleanH = h.split(' (')[0];
+                let unit = h.includes(' (') ? '(' + h.split(' (')[1] : '';
+                if (!unit && h.includes(' [')) {
+                    cleanH = h.split(' [')[0];
+                    unit = '[' + h.split(' [')[1];
+                }
+
+                // Colonna Pressione: Convertita visivamente
+                if (cleanH === "P") {
+                    unit = "(bar g)";
+                }
+
+                if (cleanH.includes("Specific Volume")) cleanH = cleanH.replace("Specific Volume", "Vol. Sp.");
+                if (cleanH.includes("Internal Energy")) cleanH = cleanH.replace("Internal Energy", "En. Int.");
+                if (cleanH.includes("Enthalpy")) cleanH = cleanH.replace("Enthalpy", "Entalpia");
+                if (cleanH.includes("Entropy")) cleanH = cleanH.replace("Entropy", "Entropia");
+                if (cleanH.includes("Vaporization")) cleanH = cleanH.replace("Vaporization", "Evap.");
+                if (cleanH.includes("Liquid")) cleanH = cleanH.replace("Liquid", "(Liq)");
+                if (cleanH.includes("Vapor")) cleanH = replaceVapor(cleanH);
+
+                return `<th onclick="sortTable(${i})">
+                            ${cleanH}
+                            <span class="unit-note">${unit}</span>
+                        </th>`;
+            }).join('');
+        }
+
+        function replaceVapor(str) {
+            return str.replace("Vapor", "(Vap)");
+        }
+
+        function renderTable(data) {
+            const body = document.getElementById('table-body');
+            body.innerHTML = data.map(row => {
+                return `<tr>${row.map((val, colIndex) => {
+                    if (val === null) return '<td>---</td>';
+                    let displayVal = val;
+                    // Conversione manuale della colonna pressione P(MPa) -> (bar g), indice 1 (la 0 è la T)
+                    if (colIndex === 1) {
+                        displayVal = (val * 10) - 1.01325;
+                        if (displayVal < -1.01) displayVal = -1.013;
+                    }
+                    return `<td>${displayVal.toLocaleString('it-IT', { minimumFractionDigits: 1, maximumFractionDigits: 4 })}</td>`;
+                }).join('')}</tr>`;
+            }).join('');
+        }
+
+        function filterData() {
+            const searchInput = document.getElementById('steam-search').value.trim().replace(',', '.');
+            if (searchInput === "") {
+                renderTable(steamData);
+                document.getElementById('row-count').textContent = `Record totali: ${steamData.length}`;
+                return;
+            }
+
+            const targetT = parseFloat(searchInput);
+            if (isNaN(targetT)) return; // Ignora se non è un numero valido
+
+            const filtered = steamData.filter(row => {
+                // Filtra nell'intorno della Temperatura, indice 0
+                const t = row[0];
+                // Mostra i valori compresi tra target - 1 e target + 1 °C
+                return t >= (targetT - 1) && t <= (targetT + 1);
+            });
+            renderTable(filtered);
+            document.getElementById('row-count').textContent = `Risultati: ${filtered.length}`;
+        }
+
+        document.getElementById('steam-search').addEventListener('input', filterData);
+
+        let sortDirection = 1;
+        function sortTable(columnIndex) {
+            sortDirection *= -1;
+            steamData.sort((a, b) => {
+                let valA = a[columnIndex] || 0;
+                let valB = b[columnIndex] || 0;
+                return (valA - valB) * sortDirection;
+            });
+            renderTable(steamData);
+        }
+
+        window.onload = loadData;
+    </script>
+</body>
+
+</html>
