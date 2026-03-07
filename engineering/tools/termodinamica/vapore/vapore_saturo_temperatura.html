@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Vapore Saturo (Temperatura) – Calcolatore Tecnico</title>
     <link rel="stylesheet" href="../../../../css/style.css">
+    <script>
+        MathJax = {
+            chtml: { scale: 1.1, displayAlign: 'center' },
+            tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]'], ['$$', '$$']] }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         .calculator-container {
             width: 100%;
@@ -295,30 +302,42 @@
                         <span class="result-unit">bar(a)</span>
                     </div>
                     <div class="result-card">
-                        <span class="result-label">Calore latente</span>
+                        <span class="result-label">Calore latente ( \(\lambda\) )</span>
                         <span id="res-hfg" class="result-value">---</span>
                         <span class="result-unit">kJ/kg</span>
                     </div>
                     <div class="result-card">
-                        <span class="result-label">Entalpia vapore saturo (hg)</span>
+                        <span class="result-label">Entalpia vapore saturo ( \(h_v\) )</span>
                         <span id="res-hg" class="result-value">---</span>
                         <span class="result-unit">kJ/kg</span>
                     </div>
                     <div class="result-card">
-                        <span class="result-label">Entalpia acqua satura (hf)</span>
+                        <span class="result-label">Entalpia acqua satura ( \(h_L\) )</span>
                         <span id="res-hf" class="result-value">---</span>
                         <span class="result-unit">kJ/kg</span>
                     </div>
                     <div class="result-card">
-                        <span class="result-label">Volume specifico vapore (vg)</span>
+                        <span class="result-label">Volume specifico vapore ( \(v_v\) )</span>
                         <span id="res-vg" class="result-value">---</span>
                         <span class="result-unit">m³/kg</span>
                     </div>
                     <div class="result-card">
-                        <span class="result-label">Volume specifico acqua (vf)</span>
+                        <span class="result-label">Volume specifico acqua ( \(v_L\) )</span>
                         <span id="res-vf" class="result-value">---</span>
                         <span class="result-unit">m³/kg</span>
                     </div>
+                </div>
+
+                <!-- Link to Data Table (Card Style) -->
+                <div
+                    style="width: 100%; display: flex; justify-content: center; margin-top: 15px; margin-bottom: 25px;">
+                    <a href="../../../appunti/termodinamica/vapore/temperatura/index.html" class="result-card"
+                        style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 600px;">
+                        <span style="font-size: 1.5rem;">📊</span>
+                        <span
+                            style="color: var(--color-engineering); font-size: 1.1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Tabella
+                            del Vapore Saturo in base alla Temperatura</span>
+                    </a>
                 </div>
 
                 <!-- Mollier Diagram Section -->
@@ -326,13 +345,23 @@
                     <h3
                         style="font-family: 'Orbitron', sans-serif; font-size: 1rem; color: var(--color-engineering); align-self: flex-start; margin-left:10px;">
                         Diagramma h-s (Mollier)</h3>
+                    <style>
+                        .isobar-line {
+                            stroke: rgba(255, 255, 255, 0.15);
+                            stroke-width: 1;
+                        }
+                    </style>
                     <svg id="mollier-svg" viewBox="0 0 500 400">
                         <line x1="50" y1="350" x2="480" y2="350" class="axis-line" /> <!-- S axis -->
                         <line x1="50" y1="30" x2="50" y2="350" class="axis-line" /> <!-- H axis -->
-                        <text x="460" y="370" class="axis-label">s [kJ/kgK]</text>
-                        <text x="15" y="40" class="axis-label" transform="rotate(-90, 15, 40)">h [kJ/kg]</text>
-                        <path id="curve-liquid" class="curve-sat curve-liquid" />
-                        <path id="curve-vapor" class="curve-sat" />
+                        <text x="480" y="370" class="axis-label" text-anchor="end">s [kJ/kgK]</text>
+                        <text x="15" y="40" class="axis-label" transform="rotate(-90, 15, 40)" text-anchor="end">h
+                            [kJ/kg]</text>
+
+                        <g id="isobars-group"></g>
+
+                        <path id="curve-liquid" class="curve-sat" />
+
                         <circle id="state-point" cx="-20" cy="-20" r="6" class="state-point" />
                     </svg>
                 </section>
@@ -340,8 +369,7 @@
         </main>
     </div>
 
-    <!-- IAPWS-IF97 Library -->
-    <script src="https://cdn.jsdelivr.net/gh/kpatvt/xsteam2/xsteam2.js"></script>
+    <script src="../../../../js/xsteam2.js"></script>
     <script src="../../../../js/main.js"></script>
     <script>
         // Constants for Diagram Scaling
@@ -352,28 +380,74 @@
         function scaleS(s) { return OFF_X + (s / S_MAX) * SVG_W; }
         function scaleH(h) { return (OFF_Y + SVG_H) - (h / H_MAX) * SVG_H; }
 
-        function drawSaturationCurves() {
-            let pathLiq = "";
-            let pathVap = "";
-            const pressures = [0.000611, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 2, 5, 10, 15, 20, 22.064];
+        function isValid(val) {
+            return typeof val === 'number' && Number.isFinite(val);
+        }
 
-            pressures.forEach((p, i) => {
+        function drawSaturationCurves() {
+            let pathLiq = [];
+            let pathVap = [];
+            const isobarsContent = [];
+
+            // Safe bounded pressures to avoid xsteam2 extreme ends
+            const pressures = [0.005, 0.01, 0.05, 0.1, 0.5, 1, 2, 5, 10, 15, 20, 22.0];
+
+            pressures.forEach((p) => {
                 const sL = xsteam2.sL_p(p);
                 const hL = xsteam2.hL_p(p);
                 const sV = xsteam2.sV_p(p);
                 const hV = xsteam2.hV_p(p);
 
-                if (i === 0) {
-                    pathLiq = `M ${scaleS(sL)} ${scaleH(hL)}`;
-                    pathVap = `M ${scaleS(sV)} ${scaleH(hV)}`;
-                } else {
-                    pathLiq += ` L ${scaleS(sL)} ${scaleH(hL)}`;
-                    pathVap += ` L ${scaleS(sV)} ${scaleH(hV)}`;
+                if (isValid(sL) && isValid(hL) && isValid(sV) && isValid(hV)) {
+                    const cxL = scaleS(sL);
+                    const cyL = scaleH(hL);
+                    const cxV = scaleS(sV);
+                    const cyV = scaleH(hV);
+
+                    if (isValid(cxL) && isValid(cyL)) {
+                        pathLiq.push(`${Math.round(cxL)},${Math.round(cyL)}`);
+                    }
+                    if (isValid(cxV) && isValid(cyV)) {
+                        pathVap.push(`${Math.round(cxV)},${Math.round(cyV)}`);
+                    }
+
+                    if (isValid(cxL) && isValid(cyL) && isValid(cxV) && isValid(cyV)) {
+                        isobarsContent.push(`<line x1="${Math.round(cxL)}" y1="${Math.round(cyL)}" x2="${Math.round(cxV)}" y2="${Math.round(cyV)}" class="isobar-line" />`);
+
+                        let pathSuper = `M ${Math.round(cxV)} ${Math.round(cyV)}`;
+                        const tSat = xsteam2.Tsat_p(p);
+                        if (isValid(tSat)) {
+                            for (let t = tSat + 20; t <= 873.15; t += 40) {
+                                try {
+                                    const hp = xsteam2.h_pT(p, t);
+                                    const sp = xsteam2.s_pT(p, t);
+                                    if (isValid(hp) && isValid(sp)) {
+                                        const cx = scaleS(sp);
+                                        const cy = scaleH(hp);
+                                        if (isValid(cx) && isValid(cy)) {
+                                            pathSuper += ` L ${Math.round(cx)} ${Math.round(cy)}`;
+                                        }
+                                    }
+                                } catch (e) { }
+                            }
+                            if (pathSuper.includes(" L ")) {
+                                isobarsContent.push(`<path d="${pathSuper}" class="isobar-line" fill="none" />`);
+                            }
+                        }
+                    }
                 }
             });
 
-            document.getElementById('curve-liquid').setAttribute('d', pathLiq);
-            document.getElementById('curve-vapor').setAttribute('d', pathVap);
+            if (pathLiq.length > 0 && pathVap.length > 0) {
+                const bellPath = "M " + pathLiq.join(" L ") + " L " + pathVap.reverse().join(" L ");
+                const liqEl = document.getElementById('curve-liquid');
+                if (liqEl) liqEl.setAttribute('d', bellPath);
+            }
+
+            const isobarsGroup = document.getElementById('isobars-group');
+            if (isobarsGroup) {
+                isobarsGroup.innerHTML = isobarsContent.join("");
+            }
         }
 
         function calculate() {
@@ -389,7 +463,7 @@
 
             try {
                 // 2. Calculate using IAPWS-IF97 (xsteam2)
-                const pMPa = xsteam2.psat_t(tK);
+                const pMPa = xsteam2.psat_T(tK);
                 const pBar = pMPa * 10;
 
                 const hf = xsteam2.hL_p(pMPa);
