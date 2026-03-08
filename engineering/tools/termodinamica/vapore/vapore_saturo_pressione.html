@@ -354,6 +354,10 @@
                             stroke: rgba(255, 255, 255, 0.15);
                             stroke-width: 1;
                         }
+
+                        body.light-mode .isobar-line {
+                            stroke: rgba(0, 0, 0, 0.3);
+                        }
                     </style>
                     <svg id="mollier-svg" viewBox="0 0 500 400">
                         <line x1="50" y1="350" x2="480" y2="350" class="axis-line" /> <!-- S axis -->
@@ -393,8 +397,14 @@
             let pathVap = [];
             const isobarsContent = [];
 
-            // Safe bounded pressures to avoid xsteam2 extreme ends
-            const pressures = [0.005, 0.01, 0.05, 0.1, 0.5, 1, 2, 5, 10, 15, 20, 22.0];
+            // Pressioni originali + quelle specifiche richieste
+            // Richieste: 
+            // -0.96 barg -> 0.005 MPa
+            // 0 barg -> 0.101325 MPa
+            // 4 barg -> 0.501325 MPa
+            // 49 barg -> 5.001325 MPa
+            // punto critico -> 22.064 MPa
+            const pressures = [0.005, 0.01, 0.05, 0.101325, 0.501325, 1, 2, 5.001325, 10, 15, 20, 22.064];
 
             pressures.forEach((p) => {
                 const sL = xsteam2.sL_p(p);
@@ -402,42 +412,77 @@
                 const sV = xsteam2.sV_p(p);
                 const hV = xsteam2.hV_p(p);
 
-                if (isValid(sL) && isValid(hL) && isValid(sV) && isValid(hV)) {
-                    const cxL = scaleS(sL);
-                    const cyL = scaleH(hL);
-                    const cxV = scaleS(sV);
-                    const cyV = scaleH(hV);
+                let cxL = null, cyL = null, cxV = null, cyV = null;
 
-                    if (isValid(cxL) && isValid(cyL)) {
-                        pathLiq.push(`${Math.round(cxL)},${Math.round(cyL)}`);
-                    }
-                    if (isValid(cxV) && isValid(cyV)) {
-                        pathVap.push(`${Math.round(cxV)},${Math.round(cyV)}`);
-                    }
+                if (isValid(sL) && isValid(hL)) {
+                    cxL = scaleS(sL);
+                    cyL = scaleH(hL);
+                }
 
-                    if (isValid(cxL) && isValid(cyL) && isValid(cxV) && isValid(cyV)) {
-                        isobarsContent.push(`<line x1="${Math.round(cxL)}" y1="${Math.round(cyL)}" x2="${Math.round(cxV)}" y2="${Math.round(cyV)}" class="isobar-line" />`);
+                if (isValid(sV) && isValid(hV)) {
+                    cxV = scaleS(sV);
+                    cyV = scaleH(hV);
+                }
 
-                        let pathSuper = `M ${Math.round(cxV)} ${Math.round(cyV)}`;
-                        const tSat = xsteam2.Tsat_p(p);
-                        if (isValid(tSat)) {
-                            for (let t = tSat + 20; t <= 873.15; t += 40) {
-                                try {
-                                    const hp = xsteam2.h_pT(p, t);
-                                    const sp = xsteam2.s_pT(p, t);
-                                    if (isValid(hp) && isValid(sp)) {
-                                        const cx = scaleS(sp);
-                                        const cy = scaleH(hp);
-                                        if (isValid(cx) && isValid(cy)) {
-                                            pathSuper += ` L ${Math.round(cx)} ${Math.round(cy)}`;
+                // Disegno della campana di saturazione
+                if (p < 22.064 && cxL && cyL && cxV && cyV) {
+                    pathLiq.push(`${Math.round(cxL)},${Math.round(cyL)}`);
+                    pathVap.push(`${Math.round(cxV)},${Math.round(cyV)}`);
+                    isobarsContent.push(`<line x1="${Math.round(cxL)}" y1="${Math.round(cyL)}" x2="${Math.round(cxV)}" y2="${Math.round(cyV)}" class="isobar-line" />`);
+                }
+
+                // Forziamo le coordinate del punto critico per disegnare la curva in alto
+                if (p >= 22.064) {
+                    const sCrit = 4.4120; // Entropia critica
+                    const hCrit = 2087.6; // Entalpia critica
+                    cxV = scaleS(sCrit);
+                    cyV = scaleH(hCrit);
+                }
+
+                if (cxV && cyV) {
+                    let pathSuper = `M ${Math.round(cxV)} ${Math.round(cyV)}`;
+                    const tSat = p >= 22.064 ? 373.946 + 273.15 : xsteam2.Tsat_p(p);
+
+                    let labelCx = Math.round(cxV);
+                    let labelCy = Math.round(cyV);
+
+                    if (isValid(tSat)) {
+                        for (let t = tSat + 20; t <= 873.15; t += 40) {
+                            try {
+                                const hp = xsteam2.h_pT(p, t);
+                                const sp = xsteam2.s_pT(p, t);
+                                if (isValid(hp) && isValid(sp)) {
+                                    const cx = scaleS(sp);
+                                    const cy = scaleH(hp);
+                                    if (isValid(cx) && isValid(cy)) {
+                                        pathSuper += ` L ${Math.round(cx)} ${Math.round(cy)}`;
+
+                                        // Trova un punto leggermente fuori dalla campana
+                                        if (Math.abs(t - (tSat + 60)) < 25 || (p >= 22.064 && Math.abs(t - (tSat + 20)) < 25)) {
+                                            labelCx = Math.round(cx);
+                                            labelCy = Math.round(cy);
                                         }
                                     }
-                                } catch (e) { }
-                            }
-                            if (pathSuper.includes(" L ")) {
-                                isobarsContent.push(`<path d="${pathSuper}" class="isobar-line" fill="none" />`);
-                            }
+                                }
+                            } catch (e) { }
                         }
+                        if (pathSuper.includes(" L ")) {
+                            isobarsContent.push(`<path d="${pathSuper}" class="isobar-line" fill="none" />`);
+                        }
+                    }
+
+                    // Aggiungi la label solo per le pressioni specifiche
+                    let labelText = null;
+                    if (Math.abs(p - 0.005) < 0.001) labelText = "0.05";
+                    else if (Math.abs(p - 0.101325) < 0.001) labelText = "1.01";
+                    else if (Math.abs(p - 0.501325) < 0.001) labelText = "5.01";
+                    else if (Math.abs(p - 5.001325) < 0.001) labelText = "50.01";
+                    else if (Math.abs(p - 22.064) < 0.001) labelText = "Critica";
+
+                    if (labelText) {
+                        const isLight = document.body.classList.contains('light-mode');
+                        const labelFill = isLight ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.45)';
+                        isobarsContent.push(`<text x="${labelCx + 3}" y="${labelCy - 4}" fill="${labelFill}" font-size="9px" font-weight="bold" font-family="Inter, sans-serif" transform="rotate(-20, ${labelCx}, ${labelCy})">${labelText}${labelText !== "Critica" ? " bar(a)" : ""}</text>`);
                     }
                 }
             });

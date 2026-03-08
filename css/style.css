@@ -33,7 +33,7 @@
 
 body.light-mode {
   /* Light Theme Colors */
-  --bg-color: #f8fafc;
+  --bg-color: #74a5c4;
   --text-primary: #1e293b;
   --text-secondary: #475569;
   --accent-cyan: #0284c7;
@@ -651,14 +651,21 @@ body::before {
     height: 150px;
   }
 
-  /* WIDGETS MOBILE FIX */
+  /* WIDGETS MOBILE: nascosti su schermi piccoli */
   .weather-widget,
   .nasa-widget {
-    position: static;
-    margin: 20px auto;
-    width: 90%;
-    max-width: 350px;
+    display: none !important;
+  }
+
+  /* EMAIL CONTATTI: wrap su mobile per evitare taglio */
+  .contact-email {
     display: block !important;
+    word-break: break-all !important;
+    font-size: 0.85rem !important;
+    padding: 10px 14px !important;
+    white-space: normal !important;
+    letter-spacing: 0 !important;
+    text-align: center !important;
   }
 }
 
@@ -692,8 +699,23 @@ body.light-mode .card {
 }
 
 body.light-mode .card h3 {
-  color: #0284c7 !important;
   text-shadow: none !important;
+}
+
+body.light-mode .card.finance h3 {
+  color: var(--color-finance) !important;
+}
+
+body.light-mode .card.engineering h3 {
+  color: var(--color-engineering) !important;
+}
+
+body.light-mode .card.personal h3 {
+  color: var(--color-personal) !important;
+}
+
+body.light-mode .card.contact h3 {
+  color: var(--color-contact) !important;
 }
 
 body.light-mode .card p {
@@ -964,9 +986,66 @@ body,
   transition: color 0.5s ease, text-shadow 0.5s ease, filter 0.5s ease;
 }
 
-body.light-mode {
-  background-color: #f8fafc !important;
+/* ============================================================
+   DARK MODE ENHANCEMENTS (solo tema scuro)
+   ============================================================ */
+
+/* 1. SURFACE ELEVATION – Card Finanza e Ingegneria
+   Sfondo più chiaro del body (#161B22) con 95% opacità
+   + ombra profonda per distaccarle dalla griglia */
+body:not(.light-mode) .card.finance,
+body:not(.light-mode) .card.engineering,
+body:not(.light-mode) .card.personal {
+  background: rgba(22, 27, 34, 0.95) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6) !important;
 }
+
+/* 2. ACCENT BORDERS – Bordo superiore colorato per categoria */
+body:not(.light-mode) .card.finance {
+  border-top: 2px solid #007FFF !important;
+}
+
+body:not(.light-mode) .card.engineering {
+  border-top: 2px solid #FF8C00 !important;
+}
+
+/* HOVER GLOW – al passaggio mouse il bordo si illumina */
+body:not(.light-mode) .card.finance:hover {
+  border-top-color: #007FFF !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(0, 127, 255, 0.3) !important;
+}
+
+body:not(.light-mode) .card.engineering:hover {
+  border-top-color: #FF8C00 !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(255, 140, 0, 0.3) !important;
+}
+
+body:not(.light-mode) .card.personal {
+  border-top: 2px solid #8B5CF6 !important;
+}
+
+body:not(.light-mode) .card.personal:hover {
+  border-top-color: #8B5CF6 !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(139, 92, 246, 0.3) !important;
+}
+
+/* 3. NAVBAR GLASSMORPHISM – effetto vetro scuro
+   backdrop-blur 12px + sfondo semi-trasparente + bordo metallico */
+body:not(.light-mode) .navbar {
+  background: rgba(13, 17, 23, 0.8) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid #30363D !important;
+  box-shadow: 0 1px 0 rgba(48, 54, 61, 0.5) !important;
+}
+
+body.light-mode {
+  background-color: var(--bg-color) !important;
+}
+
 
 body.light-mode .layout {
   background: transparent !important;
@@ -974,4 +1053,39 @@ body.light-mode .layout {
 
 body.light-mode .main {
   background: transparent !important;
+}
+
+/* ========== LIGHT MODE: OVERRIDE COLORI HARDCODED DARK THEME ========== */
+/* I colori chiari usati nel tema scuro non si vedono sullo sfondo azzurro.
+   Questi override garantiscono la leggibilità senza toccare ogni singolo file HTML. */
+
+/* Testi h2/h3 azzurro chiaro (#60a5fa) → colore engineering arancione */
+body.light-mode h2[style*="color: #60a5fa"],
+body.light-mode h3[style*="color: #60a5fa"],
+body.light-mode p[style*="color: #60a5fa"],
+body.light-mode span[style*="color: #60a5fa"],
+body.light-mode div[style*="color: #60a5fa"] {
+  color: #1e40af !important;
+  /* Blu scuro leggibile */
+}
+
+/* Testi grigi chiari (#94a3b8, #64748b) → grigio scuro leggibile */
+body.light-mode *[style*="color: #94a3b8"],
+body.light-mode *[style*="color: #64748b"],
+body.light-mode *[style*="color: #cbd5e1"],
+body.light-mode *[style*="color: #e2e8f0"] {
+  color: #334155 !important;
+  /* Grigio scuro leggibile */
+}
+
+/* Sfondi scuri hardcoded nelle card/badge → bianco semitrasparente */
+body.light-mode *[style*="background: rgba(2, 6, 23"],
+body.light-mode *[style*="background: rgba(15, 23, 42"] {
+  background: rgba(255, 255, 255, 0.75) !important;
+  border-color: rgba(30, 64, 175, 0.2) !important;
+}
+
+/* Text-shadow azzurro (non serve in light mode) */
+body.light-mode *[style*="text-shadow: 0 0 10px rgba(96, 165, 250"] {
+  text-shadow: none !important;
 }

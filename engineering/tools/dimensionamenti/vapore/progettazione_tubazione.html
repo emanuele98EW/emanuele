@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Progettazione Tubazione (Vapore) – Calcolatore Tecnico</title>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <script>
+        MathJax = {
+            chtml: { scale: 1.1, displayAlign: 'center' },
+            tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]'], ['$$', '$$']] }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .calculator-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .input-section {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow-base);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .steam-input {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 12px 15px;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            width: 150px;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .steam-input:focus {
+            border-color: var(--color-engineering);
+            box-shadow: 0 0 15px var(--color-engineering-glow);
+        }
+
+        .unit-select {
+            background: var(--nav-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            cursor: pointer;
+            outline: none;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        .result-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-engineering);
+        }
+
+        .result-label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .result-value {
+            display: block;
+            color: var(--color-engineering);
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px var(--color-engineering-glow);
+        }
+
+        .result-unit {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+
+        .btn-calc {
+            background: var(--color-engineering);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px var(--color-engineering-glow);
+        }
+
+        .btn-calc:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px var(--color-engineering-glow);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <!-- TOP NAVBAR -->
+        <header class="navbar">
+            <div class="navbar-logo">
+                <img src="../../../../assets/logo.png" alt="Logo">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <h1 style="margin: 0;"><a href="../../../../personale/index.html"
+                            style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
+                    <div id="theme-toggle" class="theme-toggle-btn" title="Cambia Tema"
+                        style="cursor: pointer; display: flex; align-items: center; padding: 5px;">
+                        <video id="theme-video" muted playsinline
+                            style="width: 38px; height: 38px; pointer-events: none; border-radius: 50%;">
+                            <source src="../../../../assets/theme_moon.svg.webm" type="video/webm">
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hamburger-menu" id="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <nav class="menu" id="main-menu">
+                <a href="../../../../index.html" class="menu-link">Home</a>
+                <div class="menu-group">
+                    <a href="../../../../finanza/index.html" class="menu-toggle">Finanza <span
+                            class="arrow">▼</span></a>
+                    <div class="menu-content">
+                        <a href="../../../../finanza/interesse/index.html" class="menu-link finance">Interesse
+                            Composto</a>
+                        <a href="../../../../finanza/mutuo/index.html" class="menu-link finance">Mutui</a>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <a href="../../../../engineering/index.html" class="menu-toggle"
+                        style="display: flex; align-items: center; gap: 8px;">
+                        <video autoplay loop muted playsinline
+                            style="width: 35px; height: 35px; background: transparent; pointer-events: none;">
+                            <source src="../../../../assets/Cute%20Bird%20Flapping%20Animation.webm" type="video/webm">
+                        </video>
+                        Ingegneria <span class="arrow">▼</span>
+                    </a>
+                    <div class="menu-content">
+                        <a href="../../../../engineering/appunti/index.html" class="menu-link engineering">Appunti</a>
+                        <a href="../../../index.html" class="menu-link engineering active">Tools</a>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <a href="../../../../personale/index.html" class="menu-toggle">
+                        Personale <span class="arrow">▼</span>
+                    </a>
+                    <div class="menu-content">
+                        <a href="../../../../personale/index.html" class="menu-link personal">Chi Sono</a>
+                        <a href="../../../../personale/accademico/index.html" class="menu-link personal">Percorso
+                            Accademico</a>
+                        <a href="../../../../personale/progetti/index.html" class="menu-link personal">Progetti
+                            Personali</a>
+                    </div>
+                </div>
+                <span id="clock" class="digital-clock"></span>
+            </nav>
+        </header>
+
+        <main class="main">
+            <!-- Breadcrumbs -->
+            <div style="width: 100%; max-width: 1000px; margin-bottom: 20px;">
+                <a href="index.html" class="menu-link engineering"
+                    style="display: inline-flex; align-items: center; gap: 5px;">
+                    <span style="font-size: 1.2rem;">←</span> Torna ai Dimensionamenti Vapore
+                </a>
+            </div>
+
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h2
+                    style="font-family: 'Orbitron', sans-serif; font-size: 1.8rem; color: var(--color-engineering); letter-spacing: 1px; text-shadow: 0 0 15px var(--color-engineering-glow); margin-bottom: 10px;">
+                    Progettazione Tubazione
+                </h2>
+                <p style="color: var(--text-secondary); font-size: 1rem;">
+                    Strumenti completi per il dimensionamento e verifica delle tubazioni del vapore saturo.<br>
+                </p>
+            </div>
+
+            <section class="cards">
+                <a class="card engineering" href="tubazione_perdita_pressione.html">
+                    <h3>💨 Dimensionamento: Perdita di Pressione</h3>
+                    <p>Alesaggio teorico in funzione della portata e della perdita di carico tollerata.</p>
+                </a>
+            </section>
+        </main>
+    </div>
+
+    <script src="../../../../js/main.js"></script>
+</body>
+
+</html>

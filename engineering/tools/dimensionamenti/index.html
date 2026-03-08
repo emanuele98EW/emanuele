@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dimensionamenti – Cervello Online</title>
+
+    <link rel="stylesheet" href="../../../css/style.css">
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <!-- TOP NAVBAR -->
+        <header class="navbar">
+            <div class="navbar-logo">
+                <img src="../../../assets/logo.png" alt="Logo">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <h1 style="margin: 0;"><a href="../../../personale/index.html"
+                            style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
+                    <div id="theme-toggle" class="theme-toggle-btn" title="Cambia Tema"
+                        style="cursor: pointer; display: flex; align-items: center; padding: 5px;">
+                        <video id="theme-video" muted playsinline
+                            style="width: 38px; height: 38px; pointer-events: none; border-radius: 50%;">
+                            <source src="../../../assets/theme_moon.svg.webm" type="video/webm">
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hamburger Menu Button (Mobile Only) -->
+            <div class="hamburger-menu" id="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <nav class="menu" id="main-menu">
+                <a href="../../../index.html" class="menu-link">Home</a>
+
+                <div class="menu-group">
+                    <a href="../../../finanza/index.html" class="menu-toggle">
+                        Finanza <span class="arrow">▼</span>
+                    </a>
+                    <div class="menu-content">
+                        <a href="../../../finanza/index.html" class="menu-link finance">Interesse Composto</a>
+                        <a href="../../../finanza/interesse/index.html" class="menu-link finance">Portafoglio</a>
+                        <a href="../../../finanza/mutuo/index.html" class="menu-link finance">Mutui</a>
+                    </div>
+                </div>
+
+                <div class="menu-group">
+                    <a href="../../../engineering/index.html" class="menu-toggle active"
+                        style="display: flex; align-items: center; gap: 8px;">
+                        <video autoplay loop muted playsinline
+                            style="width: 35px; height: 35px; background: transparent; pointer-events: none;">
+                            <source src="../../../assets/Cute%20Bird%20Flapping%20Animation.webm" type="video/webm">
+                        </video>
+                        Ingegneria <span class="arrow">▼</span>
+                    </a>
+                    <div class="menu-content">
+                        <a href="../../appunti/index.html" class="menu-link engineering">Appunti</a>
+                        <a href="../index.html" class="menu-link engineering">Tools</a>
+                    </div>
+                </div>
+
+                <div class="menu-group">
+                    <a href="../../../personale/index.html" class="menu-toggle">
+                        Personale <span class="arrow">▼</span>
+                    </a>
+                    <div class="menu-content">
+                        <a href="../../../personale/index.html" class="menu-link personal">Chi Sono</a>
+                        <a href="../../../personale/accademico/index.html" class="menu-link personal">Percorso
+                            Accademico</a>
+                        <a href="../../../personale/progetti/index.html" class="menu-link personal">Progetti
+                            Personali</a>
+                    </div>
+                </div>
+
+                <span id="clock" class="digital-clock"></span>
+            </nav>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <main class="main">
+
+            <!-- BACKGROUND LOGO -->
+            <div class="background-logo"></div>
+
+            <!-- 3D CENTRAL LOGO -->
+            <div class="hero-logo-container" id="hero-container">
+                <img src="../../../assets/logo.png" alt="Central Core" class="hero-logo" id="hero-logo">
+            </div>
+
+            <h2
+                style="color: #60a5fa; text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(96, 165, 250, 0.5); font-size: 2rem;">
+                📐 Dimensionamenti
+            </h2>
+            <p style="color: #94a3b8; text-align: center; margin-bottom: 40px; max-width: 600px;">
+                Sezione dedicata ai calcoli e agli strumenti di dimensionamento per componenti e sistemi ingegneristici.
+            </p>
+
+            <section class="cards">
+                <a class="card engineering" href="vapore/index.html">
+                    <h3>💨 Dimensionamenti Vapore</h3>
+                    <p>Calcoli termo-fluidodinamici e dimensionamento di reti vapore</p>
+                </a>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="../../../js/main.js"></script>
+</body>
+
+</html>
