@@ -359,13 +359,10 @@
                             stroke: rgba(255, 255, 255, 0.15);
                             stroke-width: 1;
                         }
-<<<<<<< HEAD
 
                         body.light-mode .isobar-line {
                             stroke: rgba(0, 0, 0, 0.3);
                         }
-=======
->>>>>>> bc59ed59c224c06a01920b4015dd8963e9d5d744
                     </style>
                     <svg id="mollier-svg" viewBox="0 0 500 400">
                         <line x1="50" y1="350" x2="480" y2="350" class="axis-line" /> <!-- S axis -->
@@ -405,7 +402,6 @@
             let pathVap = [];
             const isobarsContent = [];
 
-<<<<<<< HEAD
             // Pressioni originali + quelle specifiche richieste
             // Richieste in barg e convertite in bar(a) per le etichette:
             // -0.96 barg -> 0.005 MPa -> 0.05 bar(a)
@@ -414,10 +410,6 @@
             // 49 barg -> 5.001325 MPa -> 50.01 bar(a)
             // punto critico -> 22.064 MPa -> Critica
             const pressures = [0.005, 0.01, 0.05, 0.101325, 0.501325, 1, 2, 5.001325, 10, 15, 20, 22.064];
-=======
-            // Safe bounded pressures to avoid xsteam2 extreme ends
-            const pressures = [0.005, 0.01, 0.05, 0.1, 0.5, 1, 2, 5, 10, 15, 20, 22.0];
->>>>>>> bc59ed59c224c06a01920b4015dd8963e9d5d744
 
             pressures.forEach((p) => {
                 const sL = xsteam2.sL_p(p);
@@ -425,7 +417,6 @@
                 const sV = xsteam2.sV_p(p);
                 const hV = xsteam2.hV_p(p);
 
-<<<<<<< HEAD
                 let cxL = null, cyL = null, cxV = null, cyV = null;
 
                 if (isValid(sL) && isValid(hL)) {
@@ -498,45 +489,6 @@
                         const labelFill = isLight ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.45)';
                         isobarsContent.push(`<text x="${labelCx + 3}" y="${labelCy - 4}" fill="${labelFill}" font-size="9px" font-weight="bold" font-family="Inter, sans-serif" transform="rotate(-20, ${labelCx}, ${labelCy})">${labelText}${labelText !== "Critica" ? " bar(a)" : ""}</text>`);
                     }
-=======
-                if (isValid(sL) && isValid(hL) && isValid(sV) && isValid(hV)) {
-                    const cxL = scaleS(sL);
-                    const cyL = scaleH(hL);
-                    const cxV = scaleS(sV);
-                    const cyV = scaleH(hV);
-
-                    if (isValid(cxL) && isValid(cyL)) {
-                        pathLiq.push(`${Math.round(cxL)},${Math.round(cyL)}`);
-                    }
-                    if (isValid(cxV) && isValid(cyV)) {
-                        pathVap.push(`${Math.round(cxV)},${Math.round(cyV)}`);
-                    }
-
-                    if (isValid(cxL) && isValid(cyL) && isValid(cxV) && isValid(cyV)) {
-                        isobarsContent.push(`<line x1="${Math.round(cxL)}" y1="${Math.round(cyL)}" x2="${Math.round(cxV)}" y2="${Math.round(cyV)}" class="isobar-line" />`);
-
-                        let pathSuper = `M ${Math.round(cxV)} ${Math.round(cyV)}`;
-                        const tSat = xsteam2.Tsat_p(p);
-                        if (isValid(tSat)) {
-                            for (let t = tSat + 20; t <= 1073.15; t += 40) {
-                                try {
-                                    const hp = xsteam2.h_pT(p, t);
-                                    const sp = xsteam2.s_pT(p, t);
-                                    if (isValid(hp) && isValid(sp)) {
-                                        const cx = scaleS(sp);
-                                        const cy = scaleH(hp);
-                                        if (isValid(cx) && isValid(cy)) {
-                                            pathSuper += ` L ${Math.round(cx)} ${Math.round(cy)}`;
-                                        }
-                                    }
-                                } catch (e) { }
-                            }
-                            if (pathSuper.includes(" L ")) {
-                                isobarsContent.push(`<path d="${pathSuper}" class="isobar-line" fill="none" />`);
-                            }
-                        }
-                    }
->>>>>>> bc59ed59c224c06a01920b4015dd8963e9d5d744
                 }
             });
 
