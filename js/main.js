@@ -1,4 +1,4 @@
-﻿// ==============================
+// ==============================
 // PAGE TRANSITIONS (Fade In)
 // ==============================
 document.addEventListener('DOMContentLoaded', () => {
@@ -30,7 +30,7 @@ document.querySelectorAll(".menu-toggle").forEach(toggle => {
   toggle.addEventListener("click", (e) => {
     // Chiudi gli altri
     document.querySelectorAll('.menu-group').forEach(group => {
-      if(group !== toggle.parentElement) {
+      if (group !== toggle.parentElement) {
         group.classList.remove('open');
       }
     });
@@ -71,9 +71,9 @@ document.addEventListener('click', (e) => {
 const heroContainer = document.getElementById('hero-container');
 const heroLogo = document.getElementById('hero-logo');
 
-if(heroContainer && heroLogo) {
+if (heroContainer && heroLogo) {
   document.addEventListener('mousemove', (e) => {
-    let xAxis = (window.innerWidth / 2 - e.pageX) / 25; 
+    let xAxis = (window.innerWidth / 2 - e.pageX) / 25;
     let yAxis = (window.innerHeight / 2 - e.pageY) / 25;
 
     // Use regular string concatenation for the strings that break AST
@@ -82,7 +82,7 @@ if(heroContainer && heroLogo) {
   });
 
   document.addEventListener('mouseleave', () => {
-    heroLogo.style.transform = 'rotateY(0deg) rotateX(10deg)'; 
+    heroLogo.style.transform = 'rotateY(0deg) rotateX(10deg)';
     heroLogo.style.filter = 'drop-shadow(0 0 20px rgba(0, 255, 255, 0.6)) drop-shadow(0 0 40px rgba(0, 150, 255, 0.4))';
   });
 }
@@ -108,11 +108,11 @@ async function getThemeData() {
     const url = "https://api.open-meteo.com/v1/forecast?latitude=" + BOLOGNA_LAT + "&longitude=" + BOLOGNA_LON + "&daily=sunrise,sunset&timezone=Europe%2FRome";
     const response = await fetch(url);
     const data = await response.json();
-    
+
     // We expect ISO strings like "2026-03-04T06:45"
     const sunrise = new Date(data.daily.sunrise[0]).getTime();
     const sunset = new Date(data.daily.sunset[0]).getTime();
-    
+
     const themeData = { date: today, sunrise, sunset };
     localStorage.setItem("themeData", JSON.stringify(themeData));
     return themeData;
@@ -129,11 +129,11 @@ async function getThemeData() {
 function updateThemeVideoFrame(isLightMode) {
   const themeVideo = document.getElementById("theme-video");
   if (!themeVideo) return;
-  
-  const duration = themeVideo.duration || 1; 
+
+  const duration = themeVideo.duration || 1;
   const nightTime = duration / 2; // Il video e' un loop completo. 
 
-  const fps = 30; 
+  const fps = 30;
   const step = (duration / 2) / fps;
   let current = themeVideo.currentTime;
 
@@ -164,11 +164,13 @@ function updateThemeVideoFrame(isLightMode) {
 
 function applyTheme(isLightMode, animateVideo = false) {
   if (isLightMode) {
+    document.documentElement.classList.add("light-mode");
     document.body.classList.add("light-mode");
   } else {
+    document.documentElement.classList.remove("light-mode");
     document.body.classList.remove("light-mode");
   }
-  
+
   const themeVideo = document.getElementById("theme-video");
   if (themeVideo) {
     const nightTime = (themeVideo.duration || 1) / 2;
@@ -207,7 +209,7 @@ async function initTheme() {
   document.addEventListener("click", (e) => {
     const toggleBtn = e.target.closest("#theme-toggle");
     if (!toggleBtn) return;
-    
+
     isLightMode = !document.body.classList.contains("light-mode");
     localStorage.setItem("themePref", isLightMode ? "light" : "dark");
     applyTheme(isLightMode, true); // Animate on click

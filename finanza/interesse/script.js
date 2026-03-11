@@ -64,6 +64,13 @@ let chart;
 function disegnaGrafico(dati) {
 
   const ctx = document.getElementById("grafico");
+  const isLight = document.body.classList.contains('light-mode');
+
+  // Colori adattivi per il tema
+  const tickColor = isLight ? '#1e293b' : '#cbd5e1';
+  const titleColor = isLight ? '#334155' : '#64748b';
+  const gridColor = isLight ? 'rgba(30, 41, 59, 0.12)' : 'rgba(100, 116, 139, 0.1)';
+  const pointBg = isLight ? '#ffffff' : '#0f172a';
 
   if (chart) chart.destroy();
 
@@ -74,12 +81,12 @@ function disegnaGrafico(dati) {
       datasets: [{
         label: "Capitale (€)",
         data: dati,
-        borderColor: "#3b82f6", // Blue
-        backgroundColor: "rgba(59, 130, 246, 0.2)",
+        borderColor: "#2563eb",
+        backgroundColor: "rgba(37, 99, 235, 0.15)",
         borderWidth: 4,
         tension: 0.3,
-        pointBackgroundColor: "#0f172a",
-        pointBorderColor: "#60a5fa",
+        pointBackgroundColor: pointBg,
+        pointBorderColor: "#3b82f6",
         pointBorderWidth: 2,
         fill: true
       }]
@@ -98,14 +105,14 @@ function disegnaGrafico(dati) {
       },
       scales: {
         x: {
-          title: { display: true, text: "Anni", color: "#64748b" },
-          grid: { color: "rgba(100, 116, 139, 0.1)" },
-          ticks: { color: "#cbd5e1" }
+          title: { display: true, text: "Anni", color: titleColor, font: { weight: 'bold' } },
+          grid: { color: gridColor },
+          ticks: { color: tickColor, font: { weight: '600' } }
         },
         y: {
-          title: { display: true, text: "€", color: "#64748b" },
-          grid: { color: "rgba(100, 116, 139, 0.1)" },
-          ticks: { color: "#cbd5e1" }
+          title: { display: true, text: "€", color: titleColor, font: { weight: 'bold' } },
+          grid: { color: gridColor },
+          ticks: { color: tickColor, font: { weight: '600' } }
         }
       }
     }
