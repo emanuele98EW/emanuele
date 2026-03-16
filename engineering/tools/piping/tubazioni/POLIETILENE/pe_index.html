@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Tubazioni PE | Emanuele Zanella</title>
+  <meta name="description" content="Dimensionamento tubazioni polietilene PE80/PE100 – EN 12201 / ISO 4427 – SDR – PN.">
+  <script>
+    (function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
+  </script>
+  <link rel="stylesheet" href="../../../../../css/style.css">
+  <style>
+
+    /* ── Layout principale ───────────────────────────────── */
+    .pe-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    @media (max-width: 700px) {
+      .pe-wrapper { grid-template-columns: 1fr; }
+    }
+
+    /* ── Card generica ───────────────────────────────────── */
+    .pe-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(16,185,129,0.22);
+      border-radius: 12px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .pe-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top left,
+        rgba(16,185,129,0.05) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    /* ── Card label ──────────────────────────────────────── */
+    .card-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      color: var(--color-engineering);
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(16,185,129,0.18);
+    }
+
+    /* ── Selects / inputs ────────────────────────────────── */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .field label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.62rem;
+      color: #666;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .field select,
+    .field input[type="number"] {
+      padding: 9px 12px;
+      background: rgba(16,185,129,0.04);
+      border: 1px solid rgba(16,185,129,0.28);
+      color: var(--text-primary);
+      border-radius: 6px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.78rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .field select:focus,
+    .field input[type="number"]:focus {
+      outline: none;
+      border-color: rgba(16,185,129,0.65);
+      box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
+    }
+    .field select option { background: #0d1117; }
+
+    /* ── Risultati ───────────────────────────────────────── */
+    .result-list {
+      list-style: none;
+      padding: 0; margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .result-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-family: 'Orbitron', sans-serif;
+    }
+    .result-list li:last-child { border-bottom: none; }
+    .r-label {
+      font-size: 0.63rem;
+      color: #666;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .r-value           { font-size: 0.88rem; color: #e2e8f0; text-align: right; }
+    .r-value.accent    { color: var(--color-engineering, #10b981); text-shadow: 0 0 10px rgba(16,185,129,0.45); }
+    .r-value.warm      { color: #fb923c; }
+    .r-value.blue      { color: #60a5fa; }
+    .r-value.yellow    { color: #facc15; }
+
+    /* ── PN badge ────────────────────────────────────────── */
+    .pn-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 1px;
+      font-weight: 700;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #888;
+      background: rgba(255,255,255,0.04);
+    }
+    .pn-badge.pn-low  { background: rgba(52,211,153,0.1);  border-color: rgba(52,211,153,0.4);  color: #34d399; }
+    .pn-badge.pn-mid  { background: rgba(250,204,21,0.1);  border-color: rgba(250,204,21,0.4);  color: #facc15; }
+    .pn-badge.pn-high { background: rgba(251,146,60,0.1);  border-color: rgba(251,146,60,0.4);  color: #fb923c; }
+
+    /* ── Norma badge ─────────────────────────────────────── */
+    .norm-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 1px;
+      font-weight: 700;
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.32);
+      color: #34d399;
+      margin-bottom: 18px;
+    }
+
+    /* ── Canvas ──────────────────────────────────────────── */
+    .canvas-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(11,17,32,0.6);
+      border: 1px solid rgba(16,185,129,0.13);
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 4px;
+    }
+
+    /* ── Grade info ──────────────────────────────────────── */
+    .grade-info {
+      margin-top: 16px;
+      padding: 12px 14px;
+      background: rgba(16,185,129,0.04);
+      border: 1px solid rgba(16,185,129,0.16);
+      border-radius: 8px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.63rem;
+      color: #555;
+      line-height: 1.75;
+    }
+
+    /* ── Separatore ──────────────────────────────────────── */
+    .sep {
+      border: none;
+      border-top: 1px solid rgba(16,185,129,0.13);
+      margin: 16px 0 14px;
+    }
+
+    /* ── Breadcrumb ──────────────────────────────────────── */
+    .breadcrumb {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      letter-spacing: 1px;
+    }
+    .breadcrumb a { color: var(--color-engineering); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 6px; }
+
+    /* ── Tabella rapida ──────────────────────────────────── */
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.62rem;
+      margin-top: 8px;
+    }
+    .ref-table th {
+      color: #555;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 7px 8px;
+      text-align: left;
+      border-bottom: 1px solid rgba(16,185,129,0.18);
+      white-space: nowrap;
+    }
+    .ref-table td {
+      padding: 7px 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: #94a3b8;
+      white-space: nowrap;
+    }
+    .ref-table tr:hover td { background: rgba(16,185,129,0.05); color: #e2e8f0; }
+    .ref-table tr.active-row td {
+      background: rgba(16,185,129,0.1);
+      color: #34d399;
+    }
+    .t-num { text-align: right; }
+
+    /* ── SDR info box ────────────────────────────────────── */
+    .sdr-info {
+      margin-top: 14px;
+      padding: 11px 14px;
+      background: rgba(96,165,250,0.05);
+      border: 1px solid rgba(96,165,250,0.18);
+      border-radius: 8px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.62rem;
+      color: #555;
+      line-height: 1.7;
+    }
+    .sdr-info strong { color: #60a5fa; }
+  </style>
+</head>
+
+<body>
+<div class="layout">
+
+  <header id="main-navbar"></header>
+
+  <main class="main">
+
+    <h2 style="color: var(--color-engineering); text-align: center; margin-bottom: 10px; font-size: 2rem;">
+      Tubazioni Polietilene (PE)
+    </h2>
+
+    <p class="breadcrumb">
+      <a href="../../../index.html">Tools</a><span>/</span>
+      <a href="../../index.html">Piping</a><span>/</span>
+      <a href="../index.html">Tubazioni</a><span>/</span>
+      <span style="color: var(--text-primary);">Polietilene (PE)</span>
+    </p>
+
+    <div class="pe-wrapper">
+
+      <!-- ── COLONNA SINISTRA ── -->
+      <div style="display:flex; flex-direction:column; gap:22px;">
+
+        <!-- Selezione -->
+        <div class="pe-card">
+          <p class="card-label">⚙ Selezione</p>
+
+          <div class="norm-badge">✦ EN 12201 / ISO 4427 / EN 13244</div>
+
+          <!-- Grado PE -->
+          <div class="field">
+            <label>Grado polietilene</label>
+            <select id="pe-grade">
+              <option value="PE100" selected>PE 100 / MRS 10 — ρ 959 kg/m³</option>
+              <option value="PE100-RC">PE 100-RC — ρ 959 kg/m³</option>
+              <option value="PE80">PE 80 / MRS 8 — ρ 950 kg/m³</option>
+            </select>
+          </div>
+
+          <!-- DN -->
+          <div class="field">
+            <label>DN / OD nominale</label>
+            <select id="dnSelect">
+              <option value="">— Seleziona DN —</option>
+            </select>
+          </div>
+
+          <!-- SDR -->
+          <div class="field">
+            <label>Serie SDR</label>
+            <select id="sdrSelect">
+              <option value="">— Prima seleziona DN —</option>
+            </select>
+          </div>
+
+          <hr class="sep">
+
+          <!-- Densità fluido -->
+          <div class="field">
+            <label>Densità fluido (kg/m³)</label>
+            <input type="number" id="fluid-density" value="1000" min="0" step="1"
+              placeholder="es. 1000 per acqua">
+          </div>
+
+          <!-- SDR info -->
+          <div class="sdr-info">
+            <strong>SDR</strong> = Standard Dimension Ratio = OD / t<br>
+            Maggiore SDR → parete più sottile → pressione ammissibile minore.<br>
+            <strong>PN</strong> calcolata secondo ISO 4427: PN = 2·MRS / [(SDR–1)·C], C = 1.25
+          </div>
+
+          <!-- Grade info -->
+          <div class="grade-info" id="grade-info">
+            Seleziona grado e DN per visualizzare i risultati.
+          </div>
+        </div>
+
+        <!-- Risultati dimensionali -->
+        <div class="pe-card">
+          <p class="card-label">📐 Dimensioni</p>
+          <ul class="result-list">
+            <li>
+              <span class="r-label">Ø Esterno (OD)</span>
+              <span class="r-value accent" id="od">–</span>
+            </li>
+            <li>
+              <span class="r-label">Ø Interno (ID)</span>
+              <span class="r-value accent" id="id">–</span>
+            </li>
+            <li>
+              <span class="r-label">Spessore (t)</span>
+              <span class="r-value warm" id="thk">–</span>
+            </li>
+            <li>
+              <span class="r-label">Serie SDR</span>
+              <span class="r-value yellow" id="sdr-val">–</span>
+            </li>
+            <li>
+              <span class="r-label">Sezione interna</span>
+              <span class="r-value blue" id="area-int">–</span>
+            </li>
+            <li>
+              <span class="r-label">Rapporto OD/t</span>
+              <span class="r-value" id="dt-ratio">–</span>
+            </li>
+          </ul>
+
+          <hr class="sep">
+          <p class="card-label">🔴 Pressione nominale</p>
+
+          <div style="display:flex; align-items:center; gap:14px; margin-bottom:14px;">
+            <span class="pn-badge" id="pn-badge">–</span>
+            <span class="r-value" style="font-size:0.8rem;" id="pn-val">–</span>
+          </div>
+
+          <hr class="sep">
+          <p class="card-label">⚖ Pesi lineari</p>
+          <ul class="result-list">
+            <li>
+              <span class="r-label">Tubo (vuoto)</span>
+              <span class="r-value accent" id="kgm">–</span>
+            </li>
+            <li>
+              <span class="r-label">Fluido interno</span>
+              <span class="r-value blue" id="fluid-weight">–</span>
+            </li>
+            <li>
+              <span class="r-label">Totale (tubo + fluido)</span>
+              <span class="r-value warm" id="total-weight">–</span>
+            </li>
+          </ul>
+        </div>
+
+      </div><!-- /colonna sinistra -->
+
+      <!-- ── COLONNA DESTRA ── -->
+      <div style="display:flex; flex-direction:column; gap:22px;">
+
+        <!-- Canvas sezione -->
+        <div class="pe-card">
+          <p class="card-label">📏 Sezione trasversale</p>
+          <div class="canvas-wrap">
+            <canvas id="pipeCanvas" width="300" height="280"></canvas>
+          </div>
+        </div>
+
+        <!-- Tabella rapida -->
+        <div class="pe-card">
+          <p class="card-label">📋 Tabella SDR — DN selezionato</p>
+          <div style="overflow-x:auto;">
+            <table class="ref-table">
+              <thead>
+                <tr>
+                  <th>SDR</th>
+                  <th>t (mm)</th>
+                  <th>ID (mm)</th>
+                  <th class="t-num">Sez. (cm²)</th>
+                  <th class="t-num">kg/m</th>
+                  <th class="t-num">PN (bar)</th>
+                </tr>
+              </thead>
+              <tbody id="ref-tbody">
+                <tr><td colspan="6" style="color:#444;padding:14px;text-align:center;">
+                  Seleziona un DN
+                </td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- /colonna destra -->
+
+    </div><!-- /pe-wrapper -->
+
+  </main>
+</div>
+
+<script src="./pe-tool.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  initPeTool();
+  updateGradeInfo();
+});
+</script>
+
+<script src="../../../../../js/navbar.js"></script>
+<script src="../../../../../js/main.js"></script>
+<script src="../../../../../js/footer.js"></script>
+</body>
+</html>

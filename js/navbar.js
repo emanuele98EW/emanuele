@@ -132,7 +132,7 @@
   // Navbar completa
   const navbarHTML = `
     <div class="navbar-logo">
-      <img src="${basePath}assets/logo.png" alt="Logo Emanuele Zanella" style="width: 45px; height: 45px; object-fit: contain;">
+      <img src="${basePath}assets/logo.png" alt="Logo Emanuele Zanella" style="width: 60px; height: px; object-fit: contain;">
       <div style="display: flex; align-items: center; gap: 15px;">
         <h1 style="margin: 0;"><a href="${basePath}personale/index.html" style="text-decoration: none; color: inherit;">Emanuele Zanella</a></h1>
         <div id="theme-toggle" class="theme-toggle-btn" title="Cambia Tema" style="cursor: pointer; display: flex; align-items: center; padding: 5px;">
