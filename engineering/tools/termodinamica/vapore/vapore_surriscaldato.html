@@ -1,0 +1,526 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vapore Surriscaldato | Emanuele Zanella</title>
+  <meta name="description" content="Calcolatore proprieta vapore surriscaldato.">
+  <script>
+// Anti-flash: applica il tema PRIMA del render CSS
+(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
+</script>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <script>
+        MathJax = {
+            chtml: { scale: 1.1, displayAlign: 'center' },
+            tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]'], ['$$', '$$']] }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .calculator-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .input-section {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow-base);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .steam-input {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 12px 15px;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            width: 140px;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .steam-input:focus {
+            border-color: var(--color-engineering);
+            box-shadow: 0 0 15px var(--color-engineering-glow);
+        }
+
+        .unit-select {
+            background: var(--nav-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            cursor: pointer;
+            outline: none;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        .result-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-engineering);
+        }
+
+        .result-label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .result-value {
+            display: block;
+            color: var(--color-engineering);
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px var(--color-engineering-glow);
+        }
+
+        .result-unit {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+
+        .btn-calc {
+            background: var(--color-engineering);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px var(--color-engineering-glow);
+        }
+
+        .btn-calc:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px var(--color-engineering-glow);
+        }
+
+        /* Mollier Diagram Styles */
+        .diagram-section {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow-base);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #mollier-svg {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .axis-line {
+            stroke: var(--text-secondary);
+            stroke-width: 1;
+        }
+
+        .curve-sat {
+            fill: none;
+            stroke: var(--color-engineering);
+            stroke-width: 2.5;
+            filter: drop-shadow(0 0 5px var(--color-engineering-glow));
+        }
+
+        .curve-liquid {
+            stroke: #3b82f6;
+            stroke-dasharray: 4;
+        }
+
+        .state-point {
+            fill: #ff3e3e;
+            stroke: #fff;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 8px #ff3e3e);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .axis-label {
+            fill: var(--text-secondary);
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout">
+
+    <!-- NAVBAR (generated by js/navbar.js) -->
+    <header id="main-navbar"></header>
+
+        <main class="main">
+            <!-- Breadcrumbs -->
+            <div style="width: 100%; max-width: 1000px; margin-bottom: 20px;">
+                <a href="index.html" class="menu-link engineering"
+                    style="display: inline-flex; align-items: center; gap: 5px;">
+                    <span style="font-size: 1.2rem;">←</span> Torna a Vapore
+                </a>
+            </div>
+
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h2
+                    style="font-family: 'Orbitron', sans-serif; font-size: 1.8rem; color: var(--color-engineering); letter-spacing: 1px; text-shadow: 0 0 15px var(--color-engineering-glow); margin-bottom: 10px;">
+                    Vapore Surriscaldato
+                </h2>
+                <p style="color: var(--text-secondary); font-size: 1rem;">Calcolo proprietà di precisione (IAPWS-IF97)
+                    per vapore surriscaldato.</p>
+            </div>
+
+            <!-- Area Calcolatore -->
+            <div class="calculator-container">
+                <section class="input-section">
+                    <div class="input-group">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                            <label for="pressure-input"
+                                style="font-weight: bold; color: var(--text-primary);">Pressione:</label>
+                            <div style="display: flex; gap: 5px;">
+                                <input type="number" id="pressure-input" class="steam-input" value="10" step="1"
+                                    min="0.01">
+                                <select id="pressure-unit" class="unit-select">
+                                    <option value="barg">bar(g)</option>
+                                    <option value="bar">bar(a)</option>
+                                    <option value="mpa">MPa(a)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                            <label for="temperature-input"
+                                style="font-weight: bold; color: var(--text-primary);">Temperatura:</label>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <input type="number" id="temperature-input" class="steam-input" value="250" step="5"
+                                    min="0">
+                                <span style="color: var(--text-primary); font-size: 1.2rem;">°C</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="calculate-btn" class="btn-calc">Calcola Proprietà</button>
+                    <p id="status-msg" style="color: var(--color-engineering); font-size: 0.9rem; margin-top: 10px;">
+                    </p>
+                </section>
+
+                <!-- Risultati -->
+                <div class="results-grid">
+                    <div class="result-card">
+                        <span class="result-label">Entalpia ( \(h\) )</span>
+                        <span id="res-h" class="result-value">---</span>
+                        <span class="result-unit">kJ/kg</span>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-label">Volume specifico ( \(v\) )</span>
+                        <span id="res-v" class="result-value">---</span>
+                        <span class="result-unit">m³/kg</span>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-label">Calore specifico ( \(c_p\) )</span>
+                        <span id="res-cp" class="result-value">---</span>
+                        <span class="result-unit">kJ/kgK</span>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-label">Viscosit&agrave; dinamica ( \(\mu\) )</span>
+                        <span id="res-visc" class="result-value">---</span>
+                        <span class="result-unit">&mu;Pa&middot;s</span>
+                    </div>
+                </div>
+
+                <!-- Link to Data Table (Card Style) -->
+                <div
+                    style="width: 100%; display: flex; justify-content: center; margin-top: 15px; margin-bottom: 25px;">
+                    <a href="../../../appunti/termodinamica/vapore/surriscaldato/index.html" class="result-card"
+                        style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 600px;">
+                        <span style="font-size: 1.5rem;">📊</span>
+                        <span
+                            style="color: var(--color-engineering); font-size: 1.1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Tabella
+                            del Vapore Surriscaldato</span>
+                    </a>
+                </div>
+
+                <!-- Mollier Diagram Section -->
+                <section class="diagram-section">
+                    <h3
+                        style="font-family: 'Orbitron', sans-serif; font-size: 1rem; color: var(--color-engineering); align-self: flex-start; margin-left:10px;">
+                        Diagramma h-s (Mollier)</h3>
+                    <style>
+                        .isobar-line {
+                            stroke: rgba(255, 255, 255, 0.15);
+                            stroke-width: 1;
+                        }
+
+                        body.light-mode .isobar-line {
+                            stroke: rgba(0, 0, 0, 0.3);
+                        }
+                    </style>
+                    <svg id="mollier-svg" viewBox="0 0 500 400">
+                        <line x1="50" y1="350" x2="480" y2="350" class="axis-line" /> <!-- S axis -->
+                        <line x1="50" y1="30" x2="50" y2="350" class="axis-line" /> <!-- H axis -->
+                        <text x="480" y="370" class="axis-label" text-anchor="end">s [kJ/kgK]</text>
+                        <text x="15" y="40" class="axis-label" transform="rotate(-90, 15, 40)" text-anchor="end">h
+                            [kJ/kg]</text>
+
+                        <g id="isobars-group"></g>
+
+                        <path id="curve-liquid" class="curve-sat" />
+
+                        <circle id="state-point" cx="-20" cy="-20" r="6" class="state-point" />
+                    </svg>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../../../js/xsteam2.js"></script>
+    <script src="../../../../js/navbar.js"></script>
+  <script src="../../../../js/main.js"></script>
+  <script src="../../../../js/footer.js"></script>
+    <script>
+        // Constants for Diagram Scaling
+        const S_MIN = 0, S_MAX = 9.5;
+        const H_MIN = 0, H_MAX = 3500;
+        const SVG_W = 430, SVG_H = 320, OFF_X = 50, OFF_Y = 30;
+
+        function scaleS(s) { return OFF_X + (s / S_MAX) * SVG_W; }
+        function scaleH(h) { return (OFF_Y + SVG_H) - (h / H_MAX) * SVG_H; }
+
+        function isValid(val) {
+            return typeof val === 'number' && Number.isFinite(val);
+        }
+
+        function drawSaturationCurves() {
+            let pathLiq = [];
+            let pathVap = [];
+            const isobarsContent = [];
+
+            // Pressioni originali + quelle specifiche richieste
+            // Richieste in barg e convertite in bar(a) per le etichette:
+            // -0.96 barg -> 0.005 MPa -> 0.05 bar(a)
+            // 0 barg -> 0.101325 MPa -> 1.01 bar(a)
+            // 4 barg -> 0.501325 MPa -> 5.01 bar(a)
+            // 49 barg -> 5.001325 MPa -> 50.01 bar(a)
+            // punto critico -> 22.064 MPa -> Critica
+            const pressures = [0.005, 0.01, 0.05, 0.101325, 0.501325, 1, 2, 5.001325, 10, 15, 20, 22.064];
+
+            pressures.forEach((p) => {
+                const sL = xsteam2.sL_p(p);
+                const hL = xsteam2.hL_p(p);
+                const sV = xsteam2.sV_p(p);
+                const hV = xsteam2.hV_p(p);
+
+                let cxL = null, cyL = null, cxV = null, cyV = null;
+
+                if (isValid(sL) && isValid(hL)) {
+                    cxL = scaleS(sL);
+                    cyL = scaleH(hL);
+                }
+
+                if (isValid(sV) && isValid(hV)) {
+                    cxV = scaleS(sV);
+                    cyV = scaleH(hV);
+                }
+
+                // Disegno della campana di saturazione
+                if (p < 22.064 && cxL && cyL && cxV && cyV) {
+                    pathLiq.push(`${Math.round(cxL)},${Math.round(cyL)}`);
+                    pathVap.push(`${Math.round(cxV)},${Math.round(cyV)}`);
+                    isobarsContent.push(`<line x1="${Math.round(cxL)}" y1="${Math.round(cyL)}" x2="${Math.round(cxV)}" y2="${Math.round(cyV)}" class="isobar-line" />`);
+                }
+
+                // Forziamo le coordinate del punto critico per disegnare la curva in alto
+                if (p >= 22.064) {
+                    const sCrit = 4.4120; // Entropia critica
+                    const hCrit = 2087.6; // Entalpia critica
+                    cxV = scaleS(sCrit);
+                    cyV = scaleH(hCrit);
+                }
+
+                if (cxV && cyV) {
+                    let pathSuper = `M ${Math.round(cxV)} ${Math.round(cyV)}`;
+                    const tSat = p >= 22.064 ? 373.946 + 273.15 : xsteam2.Tsat_p(p);
+
+                    let labelCx = Math.round(cxV);
+                    let labelCy = Math.round(cyV);
+
+                    if (isValid(tSat)) {
+                        for (let t = tSat + 20; t <= 1073.15; t += 40) {
+                            try {
+                                const hp = xsteam2.h_pT(p, t);
+                                const sp = xsteam2.s_pT(p, t);
+                                if (isValid(hp) && isValid(sp)) {
+                                    const cx = scaleS(sp);
+                                    const cy = scaleH(hp);
+                                    if (isValid(cx) && isValid(cy)) {
+                                        pathSuper += ` L ${Math.round(cx)} ${Math.round(cy)}`;
+
+                                        // Trova un punto leggermente fuori dalla campana
+                                        if (Math.abs(t - (tSat + 60)) < 25 || (p >= 22.064 && Math.abs(t - (tSat + 20)) < 25)) {
+                                            labelCx = Math.round(cx);
+                                            labelCy = Math.round(cy);
+                                        }
+                                    }
+                                }
+                            } catch (e) { }
+                        }
+                        if (pathSuper.includes(" L ")) {
+                            isobarsContent.push(`<path d="${pathSuper}" class="isobar-line" fill="none" />`);
+                        }
+                    }
+
+                    // Aggiungi la label solo per le pressioni specifiche (in bar assoluti)
+                    let labelText = null;
+                    if (Math.abs(p - 0.005) < 0.001) labelText = "0.05";
+                    else if (Math.abs(p - 0.101325) < 0.001) labelText = "1.01";
+                    else if (Math.abs(p - 0.501325) < 0.001) labelText = "5.01";
+                    else if (Math.abs(p - 5.001325) < 0.001) labelText = "50.01";
+                    else if (Math.abs(p - 22.064) < 0.001) labelText = "Critica";
+
+                    if (labelText) {
+                        const isLight = document.body.classList.contains('light-mode');
+                        const labelFill = isLight ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.45)';
+                        isobarsContent.push(`<text x="${labelCx + 3}" y="${labelCy - 4}" fill="${labelFill}" font-size="9px" font-weight="bold" font-family="Inter, sans-serif" transform="rotate(-20, ${labelCx}, ${labelCy})">${labelText}${labelText !== "Critica" ? " bar(a)" : ""}</text>`);
+                    }
+                }
+            });
+
+            if (pathLiq.length > 0 && pathVap.length > 0) {
+                const bellPath = "M " + pathLiq.join(" L ") + " L " + pathVap.reverse().join(" L ");
+                const liqEl = document.getElementById('curve-liquid');
+                if (liqEl) liqEl.setAttribute('d', bellPath);
+            }
+
+            const isobarsGroup = document.getElementById('isobars-group');
+            if (isobarsGroup) {
+                isobarsGroup.innerHTML = isobarsContent.join("");
+            }
+        }
+
+        function calculate() {
+            const pInput = parseFloat(document.getElementById('pressure-input').value);
+            const tInput = parseFloat(document.getElementById('temperature-input').value);
+            const unit = document.getElementById('pressure-unit').value;
+            const statusMsg = document.getElementById('status-msg');
+
+            if (isNaN(pInput) || isNaN(tInput)) return;
+
+            let pMPa = 0;
+            const atm = 0.101325;
+            if (unit === 'barg') pMPa = (pInput / 10) + atm;
+            else if (unit === 'bar') pMPa = pInput / 10;
+            else if (unit === 'mpa') pMPa = pInput;
+
+            let tK = tInput + 273.15;
+
+            // Bounds check
+            if (pMPa < 0.000611) pMPa = 0.000611;
+            if (pMPa > 100) pMPa = 100; // Limit for standard IF97 region 2
+            if (tK < 273.15) tK = 273.15;
+            if (tK > 1073.15) tK = 1073.15; // 800 °C
+
+            try {
+                const tsatK = xsteam2.Tsat_p(pMPa);
+                const tsatC = tsatK - 273.15;
+
+                if (tK <= tsatK) {
+                    statusMsg.textContent = "ATTENZIONE: Temperatura inferiore o uguale alla saturazione (" + tsatC.toFixed(1) + "°C). Inserisci una temperatura maggiore.";
+                    statusMsg.style.color = "#ff3e3e";
+                } else {
+                    statusMsg.textContent = "Regione: Vapore Surriscaldato";
+                    statusMsg.style.color = "var(--color-engineering)";
+                }
+
+                // Property Calculation
+                const h = xsteam2.h_pT(pMPa, tK);
+                const v = xsteam2.v_pT(pMPa, tK);
+                const s = xsteam2.s_pT(pMPa, tK);  // needed for Mollier diagram
+                const cp = xsteam2.Cp_pT(pMPa, tK);
+                const visc = xsteam2.my_pT(pMPa, tK); // Pa·s → μPa·s
+
+                // Update UI
+                document.getElementById('res-h').textContent = isValid(h) ? h.toFixed(1) : '---';
+                document.getElementById('res-v').textContent = isValid(v) ? v.toFixed(5) : '---';
+                document.getElementById('res-cp').textContent = isValid(cp) ? cp.toFixed(3) : '---';
+                document.getElementById('res-visc').textContent = isValid(visc) ? (visc * 1e6).toFixed(2) : '---';
+
+                // Update Diagram
+                const point = document.getElementById('state-point');
+                if (isValid(s) && isValid(h)) {
+                    point.setAttribute('cx', scaleS(s));
+                    point.setAttribute('cy', scaleH(h));
+                }
+
+            } catch (err) {
+                console.error("IF97 error:", err);
+                statusMsg.textContent = "Errore nei parametri di input.";
+            }
+        }
+
+        window.onload = () => {
+            drawSaturationCurves();
+            calculate();
+        };
+
+        document.getElementById('calculate-btn').onclick = calculate;
+        const inputs = ['pressure-input', 'temperature-input'];
+        inputs.forEach(id => {
+            document.getElementById(id).onkeypress = (e) => { if (e.key === 'Enter') calculate(); };
+        });
+    </script>
+</body>
+
+</html>

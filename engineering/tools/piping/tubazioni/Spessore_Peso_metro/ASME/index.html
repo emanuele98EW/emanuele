@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Tubazioni ASME | Emanuele Zanella</title>
+  <meta name="description" content="Tubazioni ASME B36.10/B36.19: dimensioni e schedule.">
+  <script>
+(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
+</script>
+  <link rel="stylesheet" href="../../../../../../css/style.css">
+  <style>
+
+    /* ── Layout principale ───────────────────────────────── */
+    .asme-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    @media (max-width: 700px) {
+      .asme-wrapper { grid-template-columns: 1fr; }
+    }
+
+    /* ── Card generica ───────────────────────────────────── */
+    .asme-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(59,130,246,0.22);
+      border-radius: 12px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .asme-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top left,
+        rgba(59,130,246,0.05) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    /* ── Card label ──────────────────────────────────────── */
+    .card-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      color: var(--color-engineering);
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(59,130,246,0.18);
+    }
+
+    /* ── Selects / inputs ────────────────────────────────── */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .field label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.62rem;
+      color: #666;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .field select,
+    .field input[type="number"] {
+      padding: 9px 12px;
+      background: rgba(59,130,246,0.04);
+      border: 1px solid rgba(59,130,246,0.28);
+      color: var(--text-primary);
+      border-radius: 6px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.78rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+      box-sizing: border-box;
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="%2360a5fa" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+    }
+    .field select:focus,
+    .field input[type="number"]:focus {
+      outline: none;
+      border-color: rgba(59,130,246,0.65);
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+    }
+    .field select option { background: #0d1117; }
+
+    /* ── Norma badge ─────────────────────────────────────── */
+    .norm-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 1px;
+      font-weight: 700;
+      background: rgba(59,130,246,0.1);
+      border: 1px solid rgba(59,130,246,0.32);
+      color: #60a5fa;
+      margin-bottom: 18px;
+    }
+
+    /* ── Risultati ───────────────────────────────────────── */
+    .result-list {
+      list-style: none;
+      padding: 0; margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .result-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-family: 'Orbitron', sans-serif;
+    }
+    .result-list li:last-child { border-bottom: none; }
+    .r-label {
+      font-size: 0.63rem;
+      color: #666;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .r-value        { font-size: 0.88rem; color: #e2e8f0; text-align: right; }
+    .r-value.accent { color: #60a5fa; text-shadow: 0 0 10px rgba(59,130,246,0.45); }
+    .r-value.warm   { color: #fb923c; }
+    .r-value.blue   { color: #38bdf8; }
+    .r-value.red    { color: #f43f5e; }
+    .r-value.yellow { color: #facc15; }
+
+    /* ── Canvas ──────────────────────────────────────────── */
+    .canvas-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(11,17,32,0.6);
+      border: 1px solid rgba(59,130,246,0.13);
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 4px;
+    }
+
+    /* ── Separatore ──────────────────────────────────────── */
+    .sep {
+      border: none;
+      border-top: 1px solid rgba(59,130,246,0.13);
+      margin: 16px 0 14px;
+    }
+
+    /* ── Breadcrumb ──────────────────────────────────────── */
+    .breadcrumb {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      letter-spacing: 1px;
+    }
+    .breadcrumb a { color: var(--color-engineering); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 6px; }
+
+    /* ── Tabella rapida ──────────────────────────────────── */
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.62rem;
+      margin-top: 8px;
+    }
+    .ref-table th {
+      color: #555;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 7px 8px;
+      text-align: left;
+      border-bottom: 1px solid rgba(59,130,246,0.18);
+      white-space: nowrap;
+    }
+    .ref-table td {
+      padding: 7px 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: #94a3b8;
+      white-space: nowrap;
+    }
+    .ref-table tr:hover td { background: rgba(59,130,246,0.05); color: #e2e8f0; }
+    .ref-table tr.active-row td {
+      background: rgba(59,130,246,0.1);
+      color: #60a5fa;
+    }
+    .t-num { text-align: right; }
+
+    /* ── Link esterno ────────────────────────────────────── */
+    .ext-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #3b82f6, #0ea5e9);
+      color: #fff;
+      padding: 11px 22px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(56,189,248,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .ext-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(56,189,248,0.5);
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="layout">
+
+    <header id="main-navbar"></header>
+
+    <main class="main">
+
+      <h2 style="color: var(--color-engineering); text-align: center; margin-bottom: 10px; font-size: 2rem;">
+        Tubazioni – ASME B36</h2>
+
+      <p class="breadcrumb">
+        <a href="../../../../index.html">Tools</a><span>/</span>
+        <a href="../../../index.html">Piping</a><span>/</span>
+        <a href="../../index.html">Tubazioni</a><span>/</span>
+        <a href="../index.html">Spessori e Pesi per metro</a><span>/</span>
+        <span style="color: var(--text-primary);">ASME</span>
+      </p>
+
+      <div class="asme-wrapper">
+
+        <!-- ── COLONNA SINISTRA ── -->
+        <div style="display:flex; flex-direction:column; gap:22px;">
+
+          <!-- Selezione -->
+          <div class="asme-card">
+            <p class="card-label">⚙ Selezione</p>
+
+            <div class="norm-badge">✦ ASME B36.10M / B36.19M</div>
+
+            <div class="field">
+              <label>DN</label>
+              <select id="dnSelect">
+                <option value="">— Seleziona DN —</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Schedule</label>
+              <select id="schSelect">
+                <option value="">— Prima seleziona DN —</option>
+              </select>
+            </div>
+
+            <hr class="sep">
+
+            <div class="field">
+              <label>Densità fluido (kg/m³)</label>
+              <input type="number" id="fluid-density" value="1000" min="0" step="1"
+                placeholder="es. 1000 per acqua">
+            </div>
+          </div>
+
+          <!-- Risultati dimensionali -->
+          <div class="asme-card">
+            <p class="card-label">📐 Dimensioni</p>
+            <ul class="result-list">
+              <li>
+                <span class="r-label">NPS</span>
+                <span class="r-value yellow" id="nps">–</span>
+              </li>
+              <li>
+                <span class="r-label">Ø Esterno (OD)</span>
+                <span class="r-value accent" id="od">–</span>
+              </li>
+              <li>
+                <span class="r-label">Ø Interno (ID)</span>
+                <span class="r-value accent" id="id">–</span>
+              </li>
+              <li>
+                <span class="r-label">Spessore (t)</span>
+                <span class="r-value warm" id="thk">–</span>
+              </li>
+              <li>
+                <span class="r-label">Sezione interna</span>
+                <span class="r-value blue" id="area-int">–</span>
+              </li>
+              <li>
+                <span class="r-label">Rapporto OD/t</span>
+                <span class="r-value" id="dt-ratio">–</span>
+              </li>
+            </ul>
+
+            <hr class="sep">
+            <p class="card-label">⚖ Pesi lineari</p>
+            <ul class="result-list">
+              <li>
+                <span class="r-label">Tubo (vuoto)</span>
+                <span class="r-value accent" id="kgm">–</span>
+              </li>
+              <li>
+                <span class="r-label">Fluido interno</span>
+                <span class="r-value blue" id="fluid-weight">–</span>
+              </li>
+              <li>
+                <span class="r-label">Totale (tubo + fluido)</span>
+                <span class="r-value red" id="total-weight">–</span>
+              </li>
+            </ul>
+          </div>
+
+        </div><!-- /colonna sinistra -->
+
+        <!-- ── COLONNA DESTRA ── -->
+        <div style="display:flex; flex-direction:column; gap:22px;">
+
+          <!-- Canvas sezione -->
+          <div class="asme-card">
+            <p class="card-label">📏 Sezione trasversale</p>
+            <div class="canvas-wrap">
+              <canvas id="pipeCanvas" width="300" height="280"></canvas>
+            </div>
+          </div>
+
+          <!-- Tabella rapida -->
+          <div class="asme-card">
+            <p class="card-label">📋 Tabella Schedule — DN selezionato</p>
+            <div style="overflow-x:auto;">
+              <table class="ref-table">
+                <thead>
+                  <tr>
+                    <th>Schedule</th>
+                    <th>t (mm)</th>
+                    <th>ID (mm)</th>
+                    <th class="t-num">Sez. (cm²)</th>
+                    <th class="t-num">kg/m</th>
+                    <th class="t-num">OD/t</th>
+                  </tr>
+                </thead>
+                <tbody id="ref-tbody">
+                  <tr><td colspan="6" style="color:#444;padding:14px;text-align:center;">
+                    Seleziona un DN
+                  </td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Link esterno -->
+          <div style="display:flex; justify-content:center; padding: 8px 0;">
+            <a class="ext-link" href="https://www.oppo.it/tabelle/tabella-dim-spess-astm.html"
+              target="_blank" rel="noopener noreferrer">
+              ↗ Tabella ASTM Oppo — Dimensioni e Spessori
+            </a>
+          </div>
+
+        </div><!-- /colonna destra -->
+
+      </div><!-- /asme-wrapper -->
+
+    </main>
+  </div>
+
+  <script src="./pipe-tool.js"></script>
+  <script src="../../../../../../js/navbar.js"></script>
+  <script src="../../../../../../js/main.js"></script>
+  <script src="../../../../../../js/footer.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPipeTool();
+    });
+
+    /* Aggiorna tabella rapida al cambio DN */
+    document.addEventListener('change', (e) => {
+      if (e.target.id === 'dnSelect') updateRefTable();
+      if (e.target.id === 'schSelect') highlightRefTable();
+    });
+
+    function updateRefTable() {
+      const dn    = document.getElementById('dnSelect').value;
+      const tbody = document.getElementById('ref-tbody');
+      if (!dn) {
+        tbody.innerHTML = '<tr><td colspan="6" style="color:#444;padding:14px;text-align:center;">Seleziona un DN</td></tr>';
+        return;
+      }
+      const OD = pipeData[dn].OD;
+      let rows = '';
+      Object.entries(pipeData[dn].schedules).forEach(([sch, v]) => {
+        const ID  = (OD - 2 * v.t).toFixed(2);
+        const A   = (Math.PI * Math.pow(parseFloat(ID) / 2000, 2) * 1e4).toFixed(3);
+        const dt  = (OD / v.t).toFixed(1);
+        rows += `<tr data-sch="${sch}">
+          <td>${sch}</td>
+          <td>${v.t}</td>
+          <td>${ID}</td>
+          <td class="t-num">${A}</td>
+          <td class="t-num">${v.kgm.toFixed(2)}</td>
+          <td class="t-num">${dt}</td>
+        </tr>`;
+      });
+      tbody.innerHTML = rows;
+      highlightRefTable();
+    }
+
+    function highlightRefTable() {
+      const sch = document.getElementById('schSelect').value;
+      document.querySelectorAll('#ref-tbody tr').forEach(tr => {
+        tr.classList.toggle('active-row', tr.dataset.sch === sch);
+      });
+    }
+  </script>
+
+</body>
+</html>

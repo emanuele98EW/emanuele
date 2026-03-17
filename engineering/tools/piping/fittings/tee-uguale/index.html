@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tee Uguale | Fittings | Emanuele Zanella</title>
+  <meta name="description" content="Dimensioni e pesi tee uguali saldati secondo EN 10253-2 e ASME B16.9.">
+  <script>
+(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
+</script>
+  <link rel="stylesheet" href="../../../../../css/style.css">
+  <style>
+    .fitting-svg-wrap{background:var(--bg-secondary,rgba(255,255,255,0.04));border:1px solid var(--border-color,rgba(255,255,255,0.08));border-radius:12px;padding:24px;display:flex;gap:32px;align-items:center;flex-wrap:wrap;justify-content:center;margin:24px 0 16px}
+    .fitting-svg-item{display:flex;flex-direction:column;align-items:center;gap:8px}
+    .fitting-svg-item span{font-size:.75rem;color:var(--text-secondary);letter-spacing:.05em}
+    .norm-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.72rem;font-weight:600;border:1px solid var(--color-engineering);color:var(--color-engineering);margin:0 4px}
+    .filter-bar{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+    .filter-bar label{font-size:.82rem;color:var(--text-secondary)}
+    .filter-bar select{background:#1a1f2e;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:5px 10px;font-size:.82rem;color:#e8d88a;appearance:auto;-webkit-appearance:auto}
+    .filter-bar select option{background:#1a1f2e;color:#e8d88a}
+    .light-mode .filter-bar select{background:#f5f5f0;border-color:rgba(0,0,0,0.2);color:#3a3000}
+    .light-mode .filter-bar select option{background:#f5f5f0;color:#3a3000}
+    .data-table{width:100%;border-collapse:collapse;font-size:.82rem}
+    .data-table thead th{text-align:center;padding:10px 8px;border-bottom:2px solid var(--color-engineering);color:var(--color-engineering);font-size:.75rem;letter-spacing:.05em;white-space:nowrap}
+    .data-table thead th.left{text-align:left}
+    .data-table tbody tr{border-bottom:1px solid var(--border-color,rgba(255,255,255,0.06));transition:background .15s}
+    .data-table tbody tr:hover{background:rgba(100,180,100,.06)}
+    .data-table tbody td{padding:8px;text-align:center;color:var(--text-primary)}
+    .data-table tbody td.left{text-align:left;font-weight:600}
+    .data-table tbody td.muted{color:var(--text-secondary)}
+    .note-block{background:var(--bg-secondary,rgba(255,255,255,0.03));border-left:3px solid var(--color-engineering);border-radius:0 8px 8px 0;padding:12px 16px;margin-top:24px;font-size:.80rem;color:var(--text-secondary);line-height:1.7}
+    .note-block strong{color:var(--text-primary)}
+    .dim-legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:12px;font-size:.78rem;color:var(--text-secondary)}
+    .dim-legend span strong{color:var(--color-engineering)}
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <header id="main-navbar"></header>
+    <main class="main">
+
+      <h2 style="color:var(--color-engineering);text-align:center;margin-bottom:10px;font-size:2rem;">Tee Uguale</h2>
+      <p style="text-align:center;margin-bottom:6px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+        <a href="../../../index.html" style="color:var(--color-engineering);text-decoration:none;">Tools</a>
+        <span style="margin:0 6px;">/</span>
+        <a href="../../index.html" style="color:var(--color-engineering);text-decoration:none;">Piping</a>
+        <span style="margin:0 6px;">/</span>
+        <a href="../index.html" style="color:var(--color-engineering);text-decoration:none;">Fittings</a>
+        <span style="margin:0 6px;">/</span>
+        <span style="color:var(--text-primary);">Tee Uguale</span>
+      </p>
+      <p style="text-align:center;margin-bottom:28px;font-size:.82rem;">
+        <span class="norm-badge">EN 10253-2</span>
+        <span class="norm-badge">ASME B16.9</span>
+      </p>
+
+      <div class="fitting-svg-wrap">
+        <div class="fitting-svg-item">
+          <svg width="200" height="160" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Tee uguale: corpo orizzontale + derivazione verticale -->
+            <!-- Corpo orizzontale -->
+            <path d="M10 50 L190 50 L190 80 L10 80 Z" stroke="var(--color-engineering)" stroke-width="2" fill="none"/>
+            <!-- Derivazione verticale -->
+            <path d="M85 80 L85 148 L115 148 L115 80" stroke="var(--color-engineering)" stroke-width="2" fill="none"/>
+            <!-- Asse orizzontale -->
+            <line x1="0" y1="65" x2="200" y2="65" stroke="var(--text-secondary)" stroke-width="0.6" stroke-dasharray="5 3"/>
+            <!-- Asse derivazione -->
+            <line x1="100" y1="40" x2="100" y2="155" stroke="var(--text-secondary)" stroke-width="0.6" stroke-dasharray="5 3"/>
+            <!-- Quote C (lungh. corpo) -->
+            <line x1="10" y1="90" x2="190" y2="90" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <line x1="10" y1="86" x2="10" y2="94" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <line x1="190" y1="86" x2="190" y2="94" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <text x="100" y="98" font-size="10" fill="var(--color-engineering)" font-family="monospace" text-anchor="middle">C</text>
+            <!-- Quote M (lungh. derivazione) -->
+            <line x1="124" y1="80" x2="124" y2="148" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <line x1="120" y1="80" x2="128" y2="80" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <line x1="120" y1="148" x2="128" y2="148" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <text x="130" y="118" font-size="10" fill="var(--color-engineering)" font-family="monospace">M</text>
+            <!-- De label -->
+            <line x1="2" y1="50" x2="2" y2="80" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <line x1="0" y1="50" x2="6" y2="50" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <line x1="0" y1="80" x2="6" y2="80" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <text x="4" y="68" font-size="9" fill="var(--color-engineering)" font-family="monospace" transform="rotate(-90,4,68)">De</text>
+          </svg>
+          <span>Tre bocche uguali — C = lunghezza corpo, M = lunghezza derivazione</span>
+        </div>
+      </div>
+
+      <div class="dim-legend">
+        <span><strong>De</strong> = diametro esterno [mm] (uguale su tutte e tre le bocche)</span>
+        <span><strong>T</strong> = spessore [mm]</span>
+        <span><strong>C</strong> = lunghezza totale corpo [mm] (= 2 × metà corpo)</span>
+        <span><strong>M</strong> = lunghezza derivazione [mm] (dal centro al bordo)</span>
+        <span><strong>Peso</strong> calcolato su acciaio al carbonio ρ = 7850 kg/m³</span>
+      </div>
+
+      <div class="filter-bar" style="margin-top:28px;">
+        <label for="sel-norma">Norma:</label>
+        <select id="sel-norma" onchange="renderTable()">
+          <option value="en">EN 10253-2</option>
+          <option value="asme">ASME B16.9</option>
+        </select>
+      </div>
+
+      <div id="table-container"></div>
+
+      <div class="note-block">
+        <strong>EN 10253-2</strong> — Il tee uguale ha le tre bocche dello stesso DN e De.
+        C = lunghezza totale corpo (centro-centro), M = lunghezza derivazione (centro–bordo).<br>
+        <strong>ASME B16.9</strong> — Equal tees. Dimensioni in mm (convertite da pollici). C ≈ 2×M per tee uguali.<br>
+        <strong>Nota pesi</strong>: valori nominali calcolati geometricamente, variazione ±5%.
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../../../../../js/navbar.js"></script>
+  <script src="../../../../../js/main.js"></script>
+  <script src="../../../../../js/footer.js"></script>
+  <script>
+  // [DN, De, T, C_en, M_en, C_asme, M_asme, kg_en, kg_asme]
+  // C = lunghezza corpo totale, M = lunghezza derivazione
+  // Fonte: EN 10253-2:2007 Tab.2, ASME B16.9 Tab.3
+  const DATA = [
+    [15,  21.3, 2.3,  38,  25,  57,  29, 0.07, 0.10],
+    [20,  26.9, 2.6,  51,  25,  64,  32, 0.12, 0.16],
+    [25,  33.7, 3.2,  57,  29,  76,  38, 0.19, 0.27],
+    [32,  42.4, 3.6,  64,  32,  76,  38, 0.29, 0.38],
+    [40,  48.3, 3.6,  76,  38,  89,  44, 0.40, 0.53],
+    [50,  60.3, 3.9,  89,  44, 102,  51, 0.64, 0.83],
+    [65,  76.1, 5.0, 114,  57, 127,  64, 1.25, 1.55],
+    [80,  88.9, 5.5, 127,  64, 152,  76, 1.83, 2.40],
+    [100,114.3, 6.0, 152,  76, 178,  89, 3.18, 4.00],
+    [125,139.7, 6.5, 178,  89, 203, 102, 5.12, 6.40],
+    [150,168.3, 7.1, 203, 102, 229, 114, 8.07,10.10],
+    [200,219.1, 8.2, 254, 127, 305, 152,16.20,21.50],
+    [250,273.0, 9.3, 305, 152, 356, 178,29.70,38.40],
+    [300,323.9,10.3, 356, 178, 406, 203,49.00,63.00],
+  ];
+
+  function renderTable() {
+    const norma = document.getElementById('sel-norma').value;
+    const isEN  = norma === 'en';
+
+    let html = `<table class="data-table">
+      <thead><tr>
+        <th class="left">DN</th>
+        <th>De [mm]</th><th>T [mm]</th>
+        <th>C [mm]</th><th>M [mm]</th>
+        <th>Peso [kg]</th>
+      </tr></thead><tbody>`;
+
+    DATA.forEach(r => {
+      const [dn,de,t,c_en,m_en,c_asme,m_asme,kg_en,kg_asme] = r;
+      const C  = isEN ? c_en  : c_asme;
+      const M  = isEN ? m_en  : m_asme;
+      const kg = isEN ? kg_en : kg_asme;
+      html += `<tr>
+        <td class="left">DN ${dn}</td>
+        <td>${de}</td><td>${t}</td>
+        <td>${C}</td><td>${M}</td>
+        <td>${kg.toFixed(2)}</td>
+      </tr>`;
+    });
+
+    html += `</tbody></table>`;
+    document.getElementById('table-container').innerHTML = html;
+  }
+
+  renderTable();
+  </script>
+</body>
+</html>

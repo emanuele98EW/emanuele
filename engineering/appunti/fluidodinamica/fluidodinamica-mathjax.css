@@ -1,0 +1,11 @@
+/* fluidodinamica-mathjax.css */
+/* Classic LaTeX style for MathJax formulas */
+.mathjax .mjx-math {
+    font-family: "Latin Modern", "Computer Modern", serif !important;
+    font-size: 1.1rem; /* adjust for readability */
+    line-height: 1.4;
+}
+/* Ensure SVG text uses the same font */
+svg text {
+    font-family: "Latin Modern", "Computer Modern", serif !important;
+}

@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aria Umida | Emanuele Zanella</title>
+  <meta name="description" content="Calcolatore aria umida e diagramma psicrometrico interattivo con CoolProp.">
+  <script>
+    (function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
+  </script>
+  <link rel="stylesheet" href="../../../../css/style.css">
+  <style>
+    .tool-wrapper { max-width: 1100px; width: 100%; display: flex; flex-direction: column; gap: 28px; }
+
+    /* ── Loading overlay ── */
+    #loading-overlay {
+      position:fixed; inset:0; z-index:999; background:rgba(0,0,0,0.88);
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px;
+    }
+    .load-title { font-family:'Orbitron',sans-serif; font-size:1rem; color:var(--color-engineering); letter-spacing:2px; }
+    .load-sub   { font-family:'Orbitron',sans-serif; font-size:0.68rem; color:#555; letter-spacing:1px; text-align:center; max-width:320px; }
+    .load-bar-wrap { width:280px; height:4px; background:rgba(16,185,129,0.15); border-radius:4px; overflow:hidden; }
+    .load-bar   { height:100%; background:var(--color-engineering); border-radius:4px; width:0%; transition:width .4s ease; }
+    #load-status { font-family:'Orbitron',sans-serif; font-size:0.65rem; color:#555; }
+
+    /* ── Card base ── */
+    .s-card {
+      background:var(--card-bg);
+      border:1px solid rgba(16,185,129,0.28);
+      border-radius:12px; padding:26px 28px;
+    }
+    .s-card h3 {
+      font-family:'Orbitron',sans-serif; font-size:0.76rem;
+      letter-spacing:2px; text-transform:uppercase;
+      color:var(--color-engineering); margin-bottom:20px;
+    }
+
+    /* ── Form elements ── */
+    .form-grid  { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; }
+    .form-field { display:flex; flex-direction:column; gap:7px; }
+    .form-field label {
+      font-family:'Orbitron',sans-serif; font-size:0.6rem;
+      letter-spacing:1.5px; text-transform:uppercase; color:#888;
+    }
+    .select-wrap { position:relative; }
+    .select-wrap::after {
+      content:'▾'; position:absolute; right:11px; top:50%;
+      transform:translateY(-50%); color:var(--color-engineering);
+      pointer-events:none; font-size:.85rem;
+    }
+    .form-field select {
+      width:100%; padding:10px 32px 10px 12px;
+      background:var(--card-bg); border:1px solid rgba(16,185,129,.38);
+      color:var(--text-primary); border-radius:6px;
+      font-family:'Orbitron',sans-serif; font-size:0.78rem;
+      appearance:none; -webkit-appearance:none;
+      outline:none; transition:border-color .2s,box-shadow .2s;
+    }
+    .form-field select:focus { border-color:var(--color-engineering); box-shadow:0 0 0 3px rgba(16,185,129,.1); }
+
+    .input-with-unit {
+      display:flex; align-items:stretch;
+      border:1px solid rgba(16,185,129,.38); border-radius:6px; overflow:hidden;
+      transition:border-color .2s,box-shadow .2s;
+    }
+    .input-with-unit:focus-within { border-color:var(--color-engineering); box-shadow:0 0 0 3px rgba(16,185,129,.1); }
+    .input-with-unit input {
+      flex:1; padding:10px 11px; background:var(--card-bg); border:none;
+      color:var(--text-primary); font-family:'Orbitron',sans-serif; font-size:0.8rem;
+      outline:none; width:0;
+    }
+    .unit-badge {
+      padding:10px 11px; background:rgba(16,185,129,.07);
+      border-left:1px solid rgba(16,185,129,.22);
+      font-family:'Orbitron',sans-serif; font-size:0.65rem;
+      color:var(--color-engineering);
+      display:flex; align-items:center; white-space:nowrap;
+      min-width:58px; justify-content:center;
+    }
+
+    /* ── Separatore ── */
+    .sep { border:none; border-top:1px solid rgba(16,185,129,.13); margin:20px 0 16px; }
+    .sec-lbl {
+      font-family:'Orbitron',sans-serif; font-size:0.6rem;
+      letter-spacing:2px; text-transform:uppercase; color:var(--color-engineering);
+      margin-bottom:12px; display:block;
+    }
+
+    /* ── Tipo coppia input ── */
+    .pair-tabs { display:flex; gap:8px; flex-wrap:wrap; }
+    .pair-tab {
+      padding:8px 14px;
+      background:rgba(16,185,129,.05); border:1px solid rgba(16,185,129,.25);
+      color:#777; border-radius:6px; cursor:pointer;
+      font-family:'Orbitron',sans-serif; font-size:0.65rem; letter-spacing:1px;
+      transition:all .2s;
+    }
+    .pair-tab.active, .pair-tab:hover {
+      background:rgba(16,185,129,.18); border-color:var(--color-engineering);
+      color:var(--color-engineering);
+    }
+
+    /* ── Bottone calcola ── */
+    .btn-calc {
+      padding:11px 28px;
+      background:rgba(16,185,129,.12); border:1px solid var(--color-engineering);
+      color:var(--color-engineering); border-radius:6px; cursor:pointer;
+      font-family:'Orbitron',sans-serif; font-size:0.78rem;
+      font-weight:700; letter-spacing:2px; text-transform:uppercase;
+      transition:all .25s; display:flex; align-items:center; gap:9px;
+    }
+    .btn-calc:hover { background:rgba(16,185,129,.25); box-shadow:0 0 18px rgba(16,185,129,.3); }
+    .btn-calc:disabled { opacity:.3; cursor:not-allowed; }
+
+    .spinner {
+      width:14px; height:14px;
+      border:2px solid rgba(16,185,129,.25); border-top-color:var(--color-engineering);
+      border-radius:50%; animation:spin .7s linear infinite; display:none;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    .cp-status { font-family:'Orbitron',sans-serif; font-size:.6rem; color:#555; letter-spacing:1px; }
+    .cp-status.ready { color:var(--color-engineering); }
+
+    .error-box {
+      display:none; margin-top:14px;
+      background:rgba(239,68,68,.07); border:1px solid rgba(239,68,68,.35);
+      border-radius:8px; padding:11px 15px;
+      color:#fca5a5; font-family:'Orbitron',sans-serif; font-size:.72rem;
+    }
+
+    /* ── Risultati chips ── */
+    .results-grid {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:12px;
+    }
+    .result-chip {
+      background:rgba(16,185,129,.04); border:1px solid rgba(16,185,129,.18);
+      border-radius:8px; padding:14px 16px;
+      display:flex; flex-direction:column; gap:4px;
+      animation:chipIn .3s ease both; transition:border-color .2s,transform .2s;
+    }
+    .result-chip:hover { border-color:rgba(16,185,129,.45); transform:translateY(-2px); }
+    @keyframes chipIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    .chip-key  { font-family:'Orbitron',sans-serif; font-size:.57rem; color:#444; letter-spacing:1.5px; text-transform:uppercase; }
+    .chip-name { font-family:'Orbitron',sans-serif; font-size:.7rem; color:#888; }
+    .chip-val  { font-family:'Orbitron',sans-serif; font-size:1.1rem; color:#e2e8f0; text-shadow:0 0 10px rgba(16,185,129,.4); }
+    .chip-unit { font-family:'Orbitron',sans-serif; font-size:.6rem; color:var(--color-engineering); }
+    .chip-na   { color:#444; }
+
+    /* ── Diagramma psicrometrico ── */
+    .chart-card { display:none; }
+    .chart-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:16px; }
+    .chart-header h3 { margin-bottom:0; }
+    .chart-legend { display:flex; gap:14px; flex-wrap:wrap; }
+    .legend-item { display:flex; align-items:center; gap:6px; font-family:'Orbitron',sans-serif; font-size:.6rem; color:#666; }
+    .legend-dot  { width:10px; height:10px; border-radius:50%; }
+    .chart-container {
+      position:relative; background:rgba(0,0,0,.35);
+      border:1px solid rgba(16,185,129,.15); border-radius:8px; padding:14px;
+    }
+    #psych-canvas { width:100% !important; }
+    .chart-note { font-family:'Orbitron',sans-serif; font-size:.58rem; color:#444; margin-top:8px; letter-spacing:1px; }
+
+    /* ── Storico punti ── */
+    .history-card { display:none; }
+    .history-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:10px; margin-top:4px; }
+    .history-chip {
+      background:rgba(16,185,129,.03); border:1px solid rgba(16,185,129,.15);
+      border-radius:8px; padding:12px 14px; cursor:pointer;
+      display:flex; flex-direction:column; gap:3px;
+      transition:border-color .2s, background .2s;
+      position:relative;
+    }
+    .history-chip:hover { border-color:rgba(16,185,129,.4); background:rgba(16,185,129,.07); }
+    .history-chip.active { border-color:var(--color-engineering); background:rgba(16,185,129,.1); }
+    .hc-title { font-family:'Orbitron',sans-serif; font-size:.65rem; color:var(--color-engineering); letter-spacing:1px; }
+    .hc-row   { font-family:'Orbitron',sans-serif; font-size:.6rem; color:#777; }
+    .hc-del {
+      position:absolute; top:8px; right:8px;
+      background:transparent; border:none; color:#555; cursor:pointer;
+      font-size:.7rem; transition:color .2s;
+    }
+    .hc-del:hover { color:#f87171; }
+
+    /* ── Humidità slider ── */
+    .hint-note { font-family:'Orbitron',sans-serif; font-size:.62rem; color:#555; margin-top:8px; letter-spacing:.5px; }
+
+    /* ── Condense warning ── */
+    .warn-box {
+      display:none; margin-top:12px;
+      background:rgba(251,146,60,.07); border:1px solid rgba(251,146,60,.4);
+      border-radius:8px; padding:11px 15px;
+      color:#fdba74; font-family:'Orbitron',sans-serif; font-size:.72rem;
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <header id="main-navbar"></header>
+
+  <!-- Loading overlay -->
+  <div id="loading-overlay">
+    <div class="load-title">💧 Inizializzazione CoolProp</div>
+    <div class="load-bar-wrap"><div class="load-bar" id="load-bar"></div></div>
+    <div id="load-status" class="load-sub">Caricamento Pyodide…</div>
+    <div class="load-sub">Il primo caricamento richiede ~20 secondi.</div>
+  </div>
+
+  <main class="main">
+    <h2 style="color:var(--color-engineering);text-align:center;margin-bottom:10px;font-size:2rem;">
+      Aria Umida
+    </h2>
+    <p style="text-align:center;margin-bottom:30px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+      <a href="../../index.html" style="color:var(--color-engineering);text-decoration:none;">Tools</a>
+      <span style="margin:0 6px;">/</span>
+      <a href="../index.html"    style="color:var(--color-engineering);text-decoration:none;">Termodinamica</a>
+      <span style="margin:0 6px;">/</span>
+      <span style="color:var(--text-primary);">Calcolatore Aria Umida</span>
+    </p>
+
+    <div class="tool-wrapper">
+
+      <!-- ══ INPUT CARD ══ -->
+      <div class="s-card">
+        <h3>⚙ Parametri</h3>
+
+        <!-- Pressione + coppia -->
+        <div class="form-grid" style="margin-bottom:18px;">
+          <div class="form-field">
+            <label>Pressione atmosferica</label>
+            <div class="input-with-unit">
+              <input type="number" id="inp-P" value="1.01325" step="0.001">
+              <span class="unit-badge">bar</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="sep" style="margin-top:0;">
+        <span class="sec-lbl">🌡 Coppia di input umidità</span>
+
+        <!-- Tabs coppia -->
+        <div class="pair-tabs" id="pair-tabs" style="margin-bottom:16px;">
+          <button class="pair-tab active" data-pair="T_RH"  onclick="setPair('T_RH')">T + UR%</button>
+          <button class="pair-tab"        data-pair="T_Tdp" onclick="setPair('T_Tdp')">T + T<sub>dew</sub></button>
+          <button class="pair-tab"        data-pair="T_Twb" onclick="setPair('T_Twb')">T + T<sub>wb</sub></button>
+          <button class="pair-tab"        data-pair="T_W"   onclick="setPair('T_W')">T + W (umidità spec.)</button>
+          <button class="pair-tab"        data-pair="H_RH"  onclick="setPair('H_RH')">H + UR%</button>
+        </div>
+
+        <!-- Campi input dinamici -->
+        <div class="form-grid" id="pair-fields"></div>
+
+        <p class="hint-note" id="pair-hint"></p>
+        <div class="warn-box" id="warn-box"></div>
+
+        <hr class="sep">
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <button class="btn-calc" id="btn-calc" onclick="calcola()" disabled>
+            <span class="spinner" id="spinner"></span>
+            ▶ Calcola
+          </button>
+          <span class="cp-status" id="cp-status">CoolProp: inizializzazione…</span>
+        </div>
+        <div class="error-box" id="error-box"></div>
+      </div>
+
+      <!-- ══ RISULTATI ══ -->
+      <div class="s-card" id="results-card" style="display:none;">
+        <h3>📊 Risultati</h3>
+        <div class="results-grid" id="results-grid"></div>
+      </div>
+
+      <!-- ══ DIAGRAMMA PSICROMETRICO ══ -->
+      <div class="s-card chart-card" id="chart-card">
+        <div class="chart-header">
+          <h3 style="margin-bottom:0;">🌫 Diagramma Psicrometrico</h3>
+          <div class="chart-legend">
+            <div class="legend-item"><span class="legend-dot" style="background:#38bdf8;"></span>UR = 100% (saturazione)</div>
+            <div class="legend-item"><span class="legend-dot" style="background:rgba(16,185,129,.5);"></span>Isobare UR</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#f59e0b;"></span>Punto corrente</div>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="psych-canvas" height="460"></canvas>
+        </div>
+        <p class="chart-note">Diagramma T–W a pressione costante. Linee tratteggiate: isoentalpiche. Click sul grafico per calcolare quel punto.</p>
+      </div>
+
+      <!-- ══ STORICO PUNTI ══ -->
+      <div class="s-card history-card" id="history-card">
+        <h3 style="margin-bottom:14px;">🗂 Punti calcolati</h3>
+        <div class="history-grid" id="history-grid"></div>
+        <button onclick="clearHistory()" style="margin-top:14px;padding:7px 16px;background:transparent;border:1px solid rgba(239,68,68,.3);color:#f87171;border-radius:6px;cursor:pointer;font-family:'Orbitron',sans-serif;font-size:.65rem;letter-spacing:1px;transition:all .2s;" onmouseover="this.style.background='rgba(239,68,68,.1)'" onmouseout="this.style.background='transparent'">
+          🗑 Cancella tutto
+        </button>
+      </div>
+
+    </div><!-- tool-wrapper -->
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<script>
+'use strict';
+
+/* ══════════════════════════════════════════════════════════
+   STATO
+══════════════════════════════════════════════════════════ */
+let pyodide  = null;
+let cpReady  = false;
+let currentPair = 'T_RH';
+let psychChart  = null;
+let pointHistory = [];   // array di risultati calcolati
+let activeHistIdx = null;
+
+/* ══════════════════════════════════════════════════════════
+   DEFINIZIONE COPPIE
+══════════════════════════════════════════════════════════ */
+const PAIRS_DEF = {
+  T_RH:  {
+    fields: [
+      { id:'v1', label:'Temperatura bulbo secco', unit:'°C',  default: 25,   hint:'T bulbo secco' },
+      { id:'v2', label:'Umidità relativa',         unit:'%',   default: 50,   hint:'0–100' },
+    ],
+    hint: 'Coppia più comune. Inserisci T e UR% per ricavare tutte le proprietà.',
+    pyArgs: (v1,v2,P) => `"T",${v1+273.15},"R",${v2/100},"P",${P*1e5}`,
+  },
+  T_Tdp: {
+    fields: [
+      { id:'v1', label:'Temperatura bulbo secco', unit:'°C',  default: 25,   hint:'T bulbo secco' },
+      { id:'v2', label:'Temperatura di rugiada',  unit:'°C',  default: 10,   hint:'T dew point' },
+    ],
+    hint: 'Inserisci T bulbo secco e punto di rugiada.',
+    pyArgs: (v1,v2,P) => `"T",${v1+273.15},"D",${v2+273.15},"P",${P*1e5}`,
+  },
+  T_Twb: {
+    fields: [
+      { id:'v1', label:'Temperatura bulbo secco', unit:'°C',  default: 25,   hint:'T bulbo secco' },
+      { id:'v2', label:'Temperatura bulbo umido', unit:'°C',  default: 18,   hint:'T wet bulb' },
+    ],
+    hint: 'Inserisci T bulbo secco e T bulbo umido (igrometro psicrometrico).',
+    pyArgs: (v1,v2,P) => `"T",${v1+273.15},"B",${v2+273.15},"P",${P*1e5}`,
+  },
+  T_W: {
+    fields: [
+      { id:'v1', label:'Temperatura bulbo secco', unit:'°C',  default: 25,   hint:'T bulbo secco' },
+      { id:'v2', label:'Umidità specifica (W)',    unit:'kg/kg', default: 0.010, hint:'kg vapore/kg aria secca' },
+    ],
+    hint: 'Inserisci T e umidità specifica W (rapporto di mescolanza).',
+    pyArgs: (v1,v2,P) => `"T",${v1+273.15},"W",${v2},"P",${P*1e5}`,
+  },
+  H_RH: {
+    fields: [
+      { id:'v1', label:'Entalpia specifica',       unit:'kJ/kg', default: 50,   hint:'kJ/kg aria secca' },
+      { id:'v2', label:'Umidità relativa',         unit:'%',     default: 50,   hint:'0–100' },
+    ],
+    hint: 'Inserisci entalpia specifica e UR%.',
+    pyArgs: (v1,v2,P) => `"H",${v1*1e3},"R",${v2/100},"P",${P*1e5}`,
+  },
+};
+
+/* Proprietà da richiedere a HAPropsSI */
+const HA_OUTPUTS = [
+  { key:'T',    name:'T bulbo secco',       unit:'°C',     fmt: v => (v-273.15).toFixed(3) },
+  { key:'B',    name:'T bulbo umido',        unit:'°C',     fmt: v => (v-273.15).toFixed(3) },
+  { key:'D',    name:'T punto di rugiada',   unit:'°C',     fmt: v => (v-273.15).toFixed(3) },
+  { key:'R',    name:'Umidità relativa',     unit:'%',      fmt: v => (v*100).toFixed(2)    },
+  { key:'W',    name:'Umidità specifica',    unit:'kg/kg',  fmt: v => v.toFixed(6)           },
+  { key:'H',    name:'Entalpia specifica',   unit:'kJ/kg',  fmt: v => (v/1e3).toFixed(4)    },
+  { key:'S',    name:'Entropia specifica',   unit:'kJ/kg·K',fmt: v => (v/1e3).toFixed(5)    },
+  { key:'V',    name:'Volume specifico',     unit:'m³/kg',  fmt: v => v.toFixed(5)           },
+  { key:'mu',   name:'Viscosità dinamica',   unit:'Pa·s',   fmt: v => v.toExponential(4)     },
+  { key:'k',    name:'Conduttività termica', unit:'W/m·K',  fmt: v => v.toFixed(5)           },
+  { key:'C',    name:'Cp aria umida',        unit:'kJ/kg·K',fmt: v => (v/1e3).toFixed(5)    },
+  { key:'Psi_w',name:'Frazione molare H₂O', unit:'—',      fmt: v => v.toFixed(6)           },
+  { key:'P_w',  name:'P parziale vapore',    unit:'bar',    fmt: v => (v/1e5).toFixed(5)    },
+];
+
+/* ══════════════════════════════════════════════════════════
+   PYODIDE INIT
+══════════════════════════════════════════════════════════ */
+async function initPyodide() {
+  const bar = document.getElementById('load-bar');
+  const st  = document.getElementById('load-status');
+  try {
+    st.textContent = 'Caricamento Pyodide…'; bar.style.width = '10%';
+    pyodide = await loadPyodide();
+    bar.style.width = '40%'; st.textContent = 'Installazione CoolProp…';
+    await pyodide.loadPackage('micropip'); bar.style.width = '55%';
+    await pyodide.runPythonAsync(`import micropip\nawait micropip.install('CoolProp')`);
+    bar.style.width = '85%'; st.textContent = 'Verifica HAPropsSI…';
+    await pyodide.runPythonAsync(`
+from CoolProp.HumidAirProp import HAPropsSI
+_ = HAPropsSI("T","T",298.15,"R",0.5,"P",101325)
+`);
+    bar.style.width = '100%'; st.textContent = 'Pronto ✓';
+    cpReady = true;
+    document.getElementById('cp-status').textContent = 'CoolProp: pronto ✓';
+    document.getElementById('cp-status').classList.add('ready');
+    document.getElementById('btn-calc').disabled = false;
+    setTimeout(() => {
+      document.getElementById('loading-overlay').style.display = 'none';
+      buildPsychChart();  // disegna il grafico base vuoto
+    }, 500);
+  } catch(e) {
+    bar.style.background = '#ef4444';
+    st.textContent = 'Errore: ' + e.message;
+    document.getElementById('loading-overlay').style.display = 'none';
+    console.error(e);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   UI — COPPIA
+══════════════════════════════════════════════════════════ */
+function setPair(pair) {
+  currentPair = pair;
+  document.querySelectorAll('.pair-tab').forEach(b => b.classList.toggle('active', b.dataset.pair === pair));
+  renderPairFields();
+  hideError(); hideWarn();
+  document.getElementById('results-card').style.display = 'none';
+}
+
+function renderPairFields() {
+  const def = PAIRS_DEF[currentPair];
+  const container = document.getElementById('pair-fields');
+  container.innerHTML = '';
+  def.fields.forEach(f => {
+    container.innerHTML += `
+      <div class="form-field">
+        <label>${f.label}</label>
+        <div class="input-with-unit">
+          <input type="number" id="${f.id}" value="${f.default}" step="any" placeholder="${f.hint}">
+          <span class="unit-badge">${f.unit}</span>
+        </div>
+      </div>`;
+  });
+  document.getElementById('pair-hint').textContent = def.hint;
+}
+
+/* ══════════════════════════════════════════════════════════
+   CALCOLA
+══════════════════════════════════════════════════════════ */
+async function calcola() {
+  if (!cpReady) { showError('CoolProp non pronto.'); return; }
+  hideError(); hideWarn();
+
+  const P  = parseFloat(document.getElementById('inp-P').value);
+  const v1 = parseFloat(document.getElementById('v1').value);
+  const v2 = parseFloat(document.getElementById('v2').value);
+  if ([P,v1,v2].some(isNaN)) { showError('Inserisci valori numerici validi.'); return; }
+
+  // Validazioni base
+  if (currentPair === 'T_RH' || currentPair === 'H_RH') {
+    if (v2 < 0 || v2 > 100) { showError('Umidità relativa deve essere tra 0 e 100%.'); return; }
+  }
+  if (currentPair === 'T_Tdp' && v2 > v1) {
+    showError('Il punto di rugiada non può essere maggiore della temperatura bulbo secco.'); return;
+  }
+  if (currentPair === 'T_Twb' && v2 > v1) {
+    showError('Il bulbo umido non può essere maggiore del bulbo secco.'); return;
+  }
+
+  setLoading(true);
+  try {
+    const pyArgStr = PAIRS_DEF[currentPair].pyArgs(v1, v2, P);
+    const outKeys  = HA_OUTPUTS.map(o => o.key);
+
+    const py = `
+import json, math
+from CoolProp.HumidAirProp import HAPropsSI
+
+P_Pa  = ${P * 1e5}
+args  = [${pyArgStr}]
+keys  = ${JSON.stringify(outKeys)}
+
+# Mappa chiave → nome HAPropsSI
+key_map = {
+  "T":"T","B":"B","D":"D","R":"R","W":"W","H":"H",
+  "S":"S","V":"Vda","mu":"mu","k":"k","C":"cp","Psi_w":"psi_w","P_w":"P_w"
+}
+
+results = {}
+for k in keys:
+    kk = key_map.get(k, k)
+    try:
+        v = HAPropsSI(kk, *args)
+        results[k] = None if (v is None or math.isnan(v) or math.isinf(v)) else v
+    except Exception as ex:
+        results[k] = None
+
+json.dumps(results)
+`;
+    const jsonStr = await pyodide.runPythonAsync(py);
+    const results = JSON.parse(jsonStr);
+
+    // Avvisi
+    const T_K = results['T'];
+    const Tdp_K = results['D'];
+    if (T_K != null && Tdp_K != null && Math.abs(T_K - Tdp_K) < 0.5) {
+      showWarn('⚠ L\'aria è quasi satura (T ≈ T_dew). Condensazione imminente.');
+    }
+
+    renderResults(results, P, v1, v2);
+    addToHistory(results, P);
+    updatePsychPoint(results);
+
+  } catch(e) {
+    showError('Errore: ' + e.message);
+    console.error(e);
+  } finally {
+    setLoading(false);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   RENDER RISULTATI
+══════════════════════════════════════════════════════════ */
+function renderResults(results, P, v1, v2) {
+  const grid = document.getElementById('results-grid');
+  grid.innerHTML = '';
+  HA_OUTPUTS.forEach((o, i) => {
+    const raw = results[o.key];
+    let valHtml, unit = o.unit;
+    if (raw === null || raw === undefined) {
+      valHtml = '<span class="chip-na">n/d</span>'; unit = '';
+    } else {
+      valHtml = o.fmt(raw);
+    }
+    const chip = document.createElement('div');
+    chip.className = 'result-chip';
+    chip.style.animationDelay = (i * 28) + 'ms';
+    chip.innerHTML = `
+      <span class="chip-key">${o.key}</span>
+      <span class="chip-name">${o.name}</span>
+      <span class="chip-val">${valHtml}</span>
+      <span class="chip-unit">${unit}</span>`;
+    grid.appendChild(chip);
+  });
+  document.getElementById('results-card').style.display = 'block';
+  document.getElementById('results-card').scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+/* ══════════════════════════════════════════════════════════
+   STORICO PUNTI
+══════════════════════════════════════════════════════════ */
+function addToHistory(results, P) {
+  const T_C  = results.T  != null ? (results.T  - 273.15).toFixed(1) + ' °C' : '—';
+  const RH   = results.R  != null ? (results.R  * 100).toFixed(1)    + ' %'  : '—';
+  const W    = results.W  != null ? results.W.toFixed(5)              + ' kg/kg' : '—';
+  const H    = results.H  != null ? (results.H / 1e3).toFixed(3)     + ' kJ/kg' : '—';
+  const Tdp  = results.D  != null ? (results.D  - 273.15).toFixed(1) + ' °C' : '—';
+
+  const entry = { results, P, T_C, RH, W, H, Tdp, ts: Date.now() };
+  pointHistory.push(entry);
+  activeHistIdx = pointHistory.length - 1;
+  renderHistory();
+  document.getElementById('history-card').style.display = 'block';
+}
+
+function renderHistory() {
+  const grid = document.getElementById('history-grid');
+  grid.innerHTML = '';
+  pointHistory.forEach((e, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'history-chip' + (i === activeHistIdx ? ' active' : '');
+    chip.innerHTML = `
+      <button class="hc-del" onclick="deleteHistEntry(${i}, event)">✕</button>
+      <span class="hc-title">Punto ${i+1}</span>
+      <span class="hc-row">T = ${e.T_C} &nbsp;|&nbsp; UR = ${e.RH}</span>
+      <span class="hc-row">W = ${e.W}</span>
+      <span class="hc-row">H = ${e.H} &nbsp;|&nbsp; T<sub>dew</sub> = ${e.Tdp}</span>`;
+    chip.onclick = () => { activeHistIdx = i; renderHistory(); renderResults(e.results, e.P, 0, 0); updatePsychPoint(e.results); };
+    grid.appendChild(chip);
+  });
+}
+
+function deleteHistEntry(i, evt) {
+  evt.stopPropagation();
+  pointHistory.splice(i, 1);
+  if (activeHistIdx >= pointHistory.length) activeHistIdx = pointHistory.length - 1;
+  renderHistory();
+  if (pointHistory.length === 0) { document.getElementById('history-card').style.display = 'none'; buildPsychChart(); }
+  else updatePsychPoint(pointHistory[activeHistIdx]?.results);
+}
+
+function clearHistory() {
+  pointHistory = []; activeHistIdx = null;
+  document.getElementById('history-card').style.display = 'none';
+  buildPsychChart();
+}
+
+/* ══════════════════════════════════════════════════════════
+   DIAGRAMMA PSICROMETRICO
+   Asse X = T [°C], Asse Y = W [kg/kg]
+   Linee iso-UR e curva di saturazione
+══════════════════════════════════════════════════════════ */
+
+// Calcola W saturo a T dato P (formula Magnus approssimata)
+function Wsat(T_C, P_bar) {
+  const T_K = T_C + 273.15;
+  const P_Pa = P_bar * 1e5;
+  // Pressione vapore saturo: Antoine / formula Magnus
+  const Pws = 611.657 * Math.exp(17.2694 * (T_K - 273.16) / (T_K - 35.86));
+  return 0.62198 * Pws / (P_Pa - Pws);
+}
+
+// Entalpia approssimata aria umida  h = 1.006*T + W*(2501 + 1.86*T) [kJ/kg]
+function enthalpyHA(T_C, W) {
+  return 1.006 * T_C + W * (2501 + 1.86 * T_C);
+}
+
+function buildPsychChart() {
+  const P_bar = parseFloat(document.getElementById('inp-P').value) || 1.01325;
+  const T_arr = [];
+  for (let t = -10; t <= 55; t += 1) T_arr.push(t);
+
+  // Curva saturazione (UR=100%)
+  const satData = T_arr.map(t => ({ x: t, y: Wsat(t, P_bar) }));
+
+  // Curve iso-UR: 10,20,...,90%
+  const isoRHsets = [];
+  const RH_vals = [10, 20, 30, 40, 50, 60, 70, 80, 90];
+  RH_vals.forEach(rh => {
+    isoRHsets.push({
+      label: `UR ${rh}%`,
+      data: T_arr.map(t => ({ x: t, y: Wsat(t, P_bar) * (rh / 100) })),
+      borderColor: `rgba(16,185,129,${0.12 + rh/100*0.18})`,
+      backgroundColor: 'transparent',
+      fill: false, tension: 0.3,
+      pointRadius: 0, borderWidth: 1,
+      borderDash: rh % 20 === 0 ? [] : [3, 4],
+      showLine: true,
+    });
+  });
+
+  // Curve iso-entalpiche ogni 10 kJ/kg
+  const isoHsets = [];
+  for (let h = 0; h <= 100; h += 10) {
+    const hData = T_arr.map(t => {
+      // W = (h - 1.006*T) / (2501 + 1.86*T)
+      const W = (h - 1.006 * t) / (2501 + 1.86 * t);
+      if (W < 0 || W > 0.05) return null;
+      return { x: t, y: W };
+    }).filter(Boolean);
+    isoHsets.push({
+      label: `h=${h}kJ`,
+      data: hData,
+      borderColor: 'rgba(99,102,241,0.18)',
+      backgroundColor: 'transparent',
+      fill: false, tension: 0,
+      pointRadius: 0, borderWidth: 1,
+      borderDash: [2, 5],
+      showLine: true,
+    });
+  }
+
+  // Punti storici
+  const histPoints = pointHistory.map((e, i) => ({
+    x: e.results.T != null ? e.results.T - 273.15 : null,
+    y: e.results.W,
+  })).filter(p => p.x != null && p.y != null);
+
+  // Punto attivo evidenziato
+  const activeRes = activeHistIdx != null ? pointHistory[activeHistIdx]?.results : null;
+  const activePoint = activeRes && activeRes.T != null && activeRes.W != null
+    ? [{ x: activeRes.T - 273.15, y: activeRes.W }]
+    : [];
+
+  const datasets = [
+    ...isoHsets,
+    ...isoRHsets,
+    {
+      label: 'Saturazione (UR=100%)',
+      data: satData,
+      borderColor: '#38bdf8',
+      backgroundColor: 'rgba(56,189,248,0.04)',
+      fill: true, tension: 0.3,
+      pointRadius: 0, borderWidth: 2.5, showLine: true,
+    },
+    {
+      label: 'Punti calcolati',
+      data: histPoints,
+      borderColor: 'rgba(245,158,11,0.6)',
+      backgroundColor: 'rgba(245,158,11,0.3)',
+      pointRadius: 5, pointHoverRadius: 7,
+      showLine: false,
+    },
+    {
+      label: 'Punto attivo',
+      data: activePoint,
+      borderColor: '#f59e0b',
+      backgroundColor: '#f59e0b',
+      pointRadius: 9, pointHoverRadius: 11,
+      pointStyle: 'circle',
+      showLine: false,
+    },
+  ];
+
+  if (psychChart) { psychChart.destroy(); psychChart = null; }
+  const ctx = document.getElementById('psych-canvas').getContext('2d');
+
+  psychChart = new Chart(ctx, {
+    type: 'scatter',
+    data: { datasets },
+    options: {
+      responsive: true,
+      animation: { duration: 400 },
+      interaction: { mode: 'nearest', intersect: false },
+      onClick: onChartClick,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            color: '#555',
+            font: { family:"'Orbitron',sans-serif", size: 8 },
+            boxWidth: 10, padding: 10,
+            filter: item => ['Saturazione (UR=100%)','Punti calcolati','Punto attivo'].includes(item.text),
+          }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(6,10,20,.95)',
+          borderColor: 'rgba(16,185,129,.4)',
+          borderWidth: 1,
+          titleColor: '#6ee7b7',
+          bodyColor: '#cbd5e1',
+          padding: 10,
+          titleFont: { family:"'Orbitron',sans-serif", size:9 },
+          bodyFont:  { family:"'Orbitron',sans-serif", size:9 },
+          filter: item => !item.dataset.label.startsWith('h=') && !item.dataset.label.startsWith('UR'),
+          callbacks: {
+            title: items => items[0]?.dataset.label || '',
+            label: item => [
+              `T  = ${item.parsed.x.toFixed(2)} °C`,
+              `W  = ${item.parsed.y.toFixed(6)} kg/kg`,
+              `UR ≈ ${(item.parsed.y / Wsat(item.parsed.x, P_bar) * 100).toFixed(1)} %`,
+              `h  ≈ ${enthalpyHA(item.parsed.x, item.parsed.y).toFixed(2)} kJ/kg`,
+            ]
+          }
+        }
+      },
+      scales: {
+        x: {
+          type: 'linear', min: -10, max: 55,
+          title: { display:true, text:'T  [°C]', color:'#555', font:{family:"'Orbitron',sans-serif",size:9} },
+          ticks: { color:'#555', font:{family:"'Orbitron',sans-serif",size:8}, maxTicksLimit:14 },
+          grid: { color:'rgba(255,255,255,0.04)' }
+        },
+        y: {
+          type: 'linear', min: 0, max: 0.035,
+          title: { display:true, text:'W  [kg H₂O / kg aria secca]', color:'#555', font:{family:"'Orbitron',sans-serif",size:9} },
+          ticks: {
+            color:'#555', font:{family:"'Orbitron',sans-serif",size:8}, maxTicksLimit:10,
+            callback: v => v.toFixed(3)
+          },
+          grid: { color:'rgba(255,255,255,0.04)' }
+        }
+      }
+    }
+  });
+
+  document.getElementById('chart-card').style.display = 'block';
+}
+
+function updatePsychPoint(results) {
+  if (!psychChart || !results) return;
+  buildPsychChart(); // rebuild con il punto aggiornato
+}
+
+/* Click sul grafico → calcola proprietà di quel punto */
+async function onChartClick(evt, elements, chart) {
+  if (!cpReady) return;
+  const rect = chart.canvas.getBoundingClientRect();
+  const x = evt.clientX - rect.left;
+  const y = evt.clientY - rect.top;
+  const xVal = chart.scales.x.getValueForPixel(x);
+  const yVal = chart.scales.y.getValueForPixel(y);
+  if (xVal == null || yVal == null || yVal < 0) return;
+
+  const P_bar = parseFloat(document.getElementById('inp-P').value) || 1.01325;
+  const Ws = Wsat(xVal, P_bar);
+  const W_clamped = Math.max(0, Math.min(yVal, Ws * 0.9999));
+
+  // Imposta i campi T_W e calcola
+  setPair('T_W');
+  document.getElementById('v1').value = xVal.toFixed(2);
+  document.getElementById('v2').value = W_clamped.toFixed(6);
+  await calcola();
+}
+
+/* ══════════════════════════════════════════════════════════
+   HELPERS UI
+══════════════════════════════════════════════════════════ */
+function setLoading(on) {
+  document.getElementById('spinner').style.display = on ? 'block' : 'none';
+  document.getElementById('btn-calc').disabled = on;
+}
+function showError(m) {
+  const el = document.getElementById('error-box');
+  el.textContent = '⚠ ' + m; el.style.display = 'block';
+}
+function hideError() { document.getElementById('error-box').style.display = 'none'; }
+function showWarn(m) {
+  const el = document.getElementById('warn-box');
+  el.textContent = m; el.style.display = 'block';
+}
+function hideWarn() { document.getElementById('warn-box').style.display = 'none'; }
+
+/* ══════════════════════════════════════════════════════════
+   BOOT
+══════════════════════════════════════════════════════════ */
+window.addEventListener('load', () => {
+  renderPairFields();
+  initPyodide();
+});
+</script>
+
+<script src="../../../../js/navbar.js"></script>
+<script src="../../../../js/main.js"></script>
+<script src="../../../../js/footer.js"></script>
+</body>
+</html>
