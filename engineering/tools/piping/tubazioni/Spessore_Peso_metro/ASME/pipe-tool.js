@@ -316,9 +316,18 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = pipeData;
 }
 
+/* Riferimenti globali – valorizzati da initPipeTool */
+let canvas, ctx, dnSelect, schSelect, od, id, thk, kgmSpan;
+
 function initPipeTool() {
-  const dnSelect = document.getElementById("dnSelect");
-  const schSelect = document.getElementById("schSelect");
+  canvas   = document.getElementById("pipeCanvas");
+  ctx      = canvas.getContext("2d");
+  dnSelect = document.getElementById("dnSelect");
+  schSelect= document.getElementById("schSelect");
+  od       = document.getElementById("od");
+  id       = document.getElementById("id");
+  thk      = document.getElementById("thk");
+  kgmSpan  = document.getElementById("kgm");
 
   Object.keys(pipeData).forEach(dn => {
     const opt = document.createElement("option");
@@ -359,14 +368,27 @@ function updateValues() {
   const ID = (OD - 2 * t).toFixed(2);
   const kgm = pipeData[dn].schedules[sch].kgm;
 
-  od.textContent = `${OD} mm`;
-  id.textContent = `${ID} mm`;
+  od.textContent  = `${OD} mm`;
+  id.textContent  = `${ID} mm`;
   thk.textContent = `${t} mm`;
   kgmSpan.textContent = `${kgm.toFixed(2)} kg/m`;
 
+  /* NPS */
+  const npsEl = document.getElementById("nps");
+  if (npsEl) npsEl.textContent = pipeData[dn].NPS;
+
+  /* Sezione interna */
+  const areaInt_m2  = Math.PI * Math.pow(parseFloat(ID) / 2000, 2);
+  const areaInt_cm2 = areaInt_m2 * 1e4;
+  const areaEl = document.getElementById("area-int");
+  if (areaEl) areaEl.textContent = `${areaInt_cm2.toFixed(3)} cm²`;
+
+  /* Rapporto OD/t */
+  const dtEl = document.getElementById("dt-ratio");
+  if (dtEl) dtEl.textContent = (OD / t).toFixed(1);
+
   if (densityInput && fluidWeightSpan && totalWeightSpan) {
     const rho = parseFloat(densityInput.value) || 0;
-    const areaInt_m2 = Math.PI * Math.pow(ID / 2000, 2);
     const fluid_kgm = areaInt_m2 * rho;
     const total_kgm = kgm + fluid_kgm;
 
@@ -374,16 +396,16 @@ function updateValues() {
     totalWeightSpan.textContent = `${total_kgm.toFixed(2)} kg/m`;
   }
 
-  drawPipe(OD, ID, t);
+  drawPipe(OD, parseFloat(ID), t);
 }
 
 function clearValues() {
   od.textContent = id.textContent = thk.textContent = kgmSpan.textContent = "–";
 
-  const fluidWeightSpan = document.getElementById("fluid-weight");
-  const totalWeightSpan = document.getElementById("total-weight");
-  if (fluidWeightSpan) fluidWeightSpan.textContent = "–";
-  if (totalWeightSpan) totalWeightSpan.textContent = "–";
+  ["fluid-weight","total-weight","nps","area-int","dt-ratio"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = "–";
+  });
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }

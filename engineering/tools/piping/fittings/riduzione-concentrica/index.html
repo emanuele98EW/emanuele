@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Riduzione Concentrica | Fittings | Emanuele Zanella</title>
+  <meta name="description" content="Dimensioni e pesi riduzioni concentriche saldate secondo EN 10253-2 e ASME B16.9.">
+  <script>
+(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
+</script>
+  <link rel="stylesheet" href="../../../../../css/style.css">
+  <style>
+    .fitting-svg-wrap{background:var(--bg-secondary,rgba(255,255,255,0.04));border:1px solid var(--border-color,rgba(255,255,255,0.08));border-radius:12px;padding:24px;display:flex;gap:32px;align-items:center;flex-wrap:wrap;justify-content:center;margin:24px 0 16px}
+    .fitting-svg-item{display:flex;flex-direction:column;align-items:center;gap:8px}
+    .fitting-svg-item span{font-size:.75rem;color:var(--text-secondary);letter-spacing:.05em}
+    .norm-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.72rem;font-weight:600;border:1px solid var(--color-engineering);color:var(--color-engineering);margin:0 4px}
+    .filter-bar{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+    .filter-bar label{font-size:.82rem;color:var(--text-secondary)}
+    .filter-bar select{background:#1a1f2e;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:5px 10px;font-size:.82rem;color:#e8d88a;appearance:auto;-webkit-appearance:auto}
+    .filter-bar select option{background:#1a1f2e;color:#e8d88a}
+    .light-mode .filter-bar select{background:#f5f5f0;border-color:rgba(0,0,0,0.2);color:#3a3000}
+    .light-mode .filter-bar select option{background:#f5f5f0;color:#3a3000}
+    .data-table{width:100%;border-collapse:collapse;font-size:.82rem}
+    .data-table thead th{text-align:center;padding:10px 8px;border-bottom:2px solid var(--color-engineering);color:var(--color-engineering);font-size:.75rem;letter-spacing:.05em;white-space:nowrap}
+    .data-table thead th.left{text-align:left}
+    .data-table tbody tr{border-bottom:1px solid var(--border-color,rgba(255,255,255,0.06));transition:background .15s}
+    .data-table tbody tr:hover{background:rgba(100,180,100,.06)}
+    .data-table tbody td{padding:8px;text-align:center;color:var(--text-primary)}
+    .data-table tbody td.left{text-align:left;font-weight:600}
+    .data-table tbody td.muted{color:var(--text-secondary)}
+    .note-block{background:var(--bg-secondary,rgba(255,255,255,0.03));border-left:3px solid var(--color-engineering);border-radius:0 8px 8px 0;padding:12px 16px;margin-top:24px;font-size:.80rem;color:var(--text-secondary);line-height:1.7}
+    .note-block strong{color:var(--text-primary)}
+    .dim-legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:12px;font-size:.78rem;color:var(--text-secondary)}
+    .dim-legend span strong{color:var(--color-engineering)}
+    @media(max-width:600px){.data-table{font-size:.72rem}.data-table thead th,.data-table tbody td{padding:5px 3px}}
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <header id="main-navbar"></header>
+    <main class="main">
+
+      <h2 style="color:var(--color-engineering);text-align:center;margin-bottom:10px;font-size:2rem;">Riduzione Concentrica</h2>
+      <p style="text-align:center;margin-bottom:6px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+        <a href="../../../index.html" style="color:var(--color-engineering);text-decoration:none;">Tools</a>
+        <span style="margin:0 6px;">/</span>
+        <a href="../../index.html" style="color:var(--color-engineering);text-decoration:none;">Piping</a>
+        <span style="margin:0 6px;">/</span>
+        <a href="../index.html" style="color:var(--color-engineering);text-decoration:none;">Fittings</a>
+        <span style="margin:0 6px;">/</span>
+        <span style="color:var(--text-primary);">Riduzione Concentrica</span>
+      </p>
+      <p style="text-align:center;margin-bottom:28px;font-size:.82rem;">
+        <span class="norm-badge">EN 10253-2</span>
+        <span class="norm-badge">ASME B16.9</span>
+      </p>
+
+      <div class="fitting-svg-wrap">
+        <div class="fitting-svg-item">
+          <svg width="200" height="100" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Riduzione concentrica: asse centrale -->
+            <line x1="10" y1="50" x2="190" y2="50" stroke="var(--text-secondary)" stroke-width="0.6" stroke-dasharray="6 3"/>
+            <!-- Profilo esterno -->
+            <path d="M10 20 L10 80 L100 65 L190 58 L190 42 L100 35 L10 20 Z"
+              stroke="var(--color-engineering)" stroke-width="2" fill="none"/>
+            <!-- Quote H -->
+            <line x1="4" y1="20" x2="4" y2="80" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <line x1="0" y1="20" x2="8" y2="20" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <line x1="0" y1="80" x2="8" y2="80" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <text x="6" y="54" font-size="9" fill="var(--color-engineering)" font-family="monospace" transform="rotate(-90,6,54)">D1</text>
+            <!-- Quote H2 (lato piccolo) -->
+            <line x1="196" y1="42" x2="196" y2="58" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <line x1="192" y1="42" x2="200" y2="42" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <line x1="192" y1="58" x2="200" y2="58" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <text x="198" y="53" font-size="9" fill="var(--color-engineering)" font-family="monospace" transform="rotate(-90,198,53)">D2</text>
+            <!-- Quote L -->
+            <line x1="10" y1="88" x2="190" y2="88" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <line x1="10" y1="84" x2="10" y2="92" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <line x1="190" y1="84" x2="190" y2="92" stroke="var(--text-secondary)" stroke-width="0.8"/>
+            <text x="95" y="96" font-size="10" fill="var(--color-engineering)" font-family="monospace" text-anchor="middle">L</text>
+            <!-- Asse simmetria label -->
+            <text x="100" y="44" font-size="8" fill="var(--text-secondary)" font-family="monospace" text-anchor="middle">asse</text>
+          </svg>
+          <span>Asse centrato — D1 &gt; D2, L = lunghezza totale</span>
+        </div>
+      </div>
+
+      <div class="dim-legend">
+        <span><strong>D1</strong> = De lato grande [mm]</span>
+        <span><strong>D2</strong> = De lato piccolo [mm]</span>
+        <span><strong>T1 / T2</strong> = spessori [mm]</span>
+        <span><strong>L</strong> = lunghezza totale [mm]</span>
+        <span><strong>Peso</strong> calcolato su acciaio al carbonio ρ = 7850 kg/m³</span>
+      </div>
+
+      <div class="filter-bar" style="margin-top:28px;">
+        <label for="sel-norma">Norma:</label>
+        <select id="sel-norma" onchange="renderTable()">
+          <option value="en">EN 10253-2</option>
+          <option value="asme">ASME B16.9</option>
+        </select>
+        <label for="sel-dn1">DN grande:</label>
+        <select id="sel-dn1" onchange="renderTable()">
+          <option value="all">Tutti</option>
+        </select>
+      </div>
+
+      <div id="table-container"></div>
+
+      <div class="note-block">
+        <strong>EN 10253-2</strong> — La riduzione concentrica ha l'asse di simmetria coincidente con l'asse del tubo.
+        La lunghezza L dipende dalla combinazione DN1×DN2 secondo tabella normativa.<br>
+        <strong>ASME B16.9</strong> — Concentric reducers. Lunghezze in mm (convertite da pollici).<br>
+        <strong>Nota pesi</strong>: valori nominali calcolati geometricamente (tronco di cono), variazione ±5%.
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../../../../../js/navbar.js"></script>
+  <script src="../../../../../js/main.js"></script>
+  <script src="../../../../../js/footer.js"></script>
+  <script>
+  // [DN1, De1, DN2, De2, T1, T2, L_en, L_asme, kg_en, kg_asme]
+  // Fonte: EN 10253-2:2007 Tab.3, ASME B16.9 Tab.2
+  const DATA = [
+    [25,  33.7, 20,  26.9, 3.2, 2.6,  38,  57, 0.07, 0.10],
+    [32,  42.4, 25,  33.7, 3.6, 3.2,  38,  64, 0.10, 0.14],
+    [32,  42.4, 20,  26.9, 3.6, 2.6,  38,  64, 0.09, 0.13],
+    [40,  48.3, 32,  42.4, 3.6, 3.6,  38,  64, 0.12, 0.16],
+    [40,  48.3, 25,  33.7, 3.6, 3.2,  38,  64, 0.11, 0.15],
+    [50,  60.3, 40,  48.3, 3.9, 3.6,  51,  76, 0.18, 0.24],
+    [50,  60.3, 32,  42.4, 3.9, 3.6,  51,  76, 0.17, 0.23],
+    [50,  60.3, 25,  33.7, 3.9, 3.2,  51,  76, 0.16, 0.21],
+    [65,  76.1, 50,  60.3, 5.0, 3.9,  64,  89, 0.31, 0.40],
+    [65,  76.1, 40,  48.3, 5.0, 3.6,  64,  89, 0.29, 0.37],
+    [65,  76.1, 32,  42.4, 5.0, 3.6,  64,  89, 0.27, 0.34],
+    [80,  88.9, 65,  76.1, 5.5, 5.0,  64,  89, 0.42, 0.54],
+    [80,  88.9, 50,  60.3, 5.5, 3.9,  64,  89, 0.38, 0.49],
+    [80,  88.9, 40,  48.3, 5.5, 3.6,  64,  89, 0.35, 0.45],
+    [100,114.3, 80,  88.9, 6.0, 5.5,  76, 102, 0.71, 0.89],
+    [100,114.3, 65,  76.1, 6.0, 5.0,  76, 102, 0.66, 0.83],
+    [100,114.3, 50,  60.3, 6.0, 3.9,  76, 102, 0.61, 0.77],
+    [125,139.7, 100,114.3, 6.5, 6.0,  89, 127, 1.14, 1.52],
+    [125,139.7, 80,  88.9, 6.5, 5.5,  89, 127, 1.05, 1.40],
+    [125,139.7, 65,  76.1, 6.5, 5.0,  89, 127, 0.98, 1.31],
+    [150,168.3, 125,139.7, 7.1, 6.5, 102, 152, 1.79, 2.50],
+    [150,168.3, 100,114.3, 7.1, 6.0, 102, 152, 1.65, 2.31],
+    [150,168.3, 80,  88.9, 7.1, 5.5, 102, 152, 1.53, 2.14],
+    [200,219.1, 150,168.3, 8.2, 7.1, 127, 178, 3.47, 4.64],
+    [200,219.1, 125,139.7, 8.2, 6.5, 127, 178, 3.22, 4.30],
+    [200,219.1, 100,114.3, 8.2, 6.0, 127, 178, 2.97, 3.97],
+    [250,273.0, 200,219.1, 9.3, 8.2, 152, 203, 6.26, 7.94],
+    [250,273.0, 150,168.3, 9.3, 7.1, 152, 203, 5.78, 7.34],
+    [250,273.0, 125,139.7, 9.3, 6.5, 152, 203, 5.44, 6.90],
+    [300,323.9, 250,273.0,10.3, 9.3, 178, 254,10.31,13.60],
+    [300,323.9, 200,219.1,10.3, 8.2, 178, 254, 9.56,12.60],
+    [300,323.9, 150,168.3,10.3, 7.1, 178, 254, 8.82,11.63],
+  ];
+
+  const DN_LIST = [...new Set(DATA.map(r => r[0]))];
+
+  function populateFilter() {
+    const sel = document.getElementById('sel-dn1');
+    DN_LIST.forEach(dn => {
+      const opt = document.createElement('option');
+      opt.value = dn;
+      opt.textContent = `DN ${dn}`;
+      sel.appendChild(opt);
+    });
+  }
+
+  function renderTable() {
+    const norma  = document.getElementById('sel-norma').value;
+    const dn1fil = document.getElementById('sel-dn1').value;
+    const isEN   = norma === 'en';
+
+    const filtered = dn1fil === 'all' ? DATA : DATA.filter(r => r[0] == dn1fil);
+
+    let html = `<table class="data-table">
+      <thead><tr>
+        <th class="left">DN1 × DN2</th>
+        <th>De1 [mm]</th><th>De2 [mm]</th>
+        <th>T1 [mm]</th><th>T2 [mm]</th>
+        <th>L [mm]</th><th>Peso [kg]</th>
+      </tr></thead><tbody>`;
+
+    filtered.forEach(r => {
+      const [dn1,de1,dn2,de2,t1,t2,l_en,l_asme,kg_en,kg_asme] = r;
+      const L  = isEN ? l_en  : l_asme;
+      const kg = isEN ? kg_en : kg_asme;
+      html += `<tr>
+        <td class="left">DN ${dn1} × DN ${dn2}</td>
+        <td>${de1}</td><td>${de2}</td>
+        <td>${t1}</td><td>${t2}</td>
+        <td>${L}</td>
+        <td>${kg.toFixed(2)}</td>
+      </tr>`;
+    });
+
+    html += `</tbody></table>`;
+    document.getElementById('table-container').innerHTML = html;
+  }
+
+  populateFilter();
+  renderTable();
+  </script>
+</body>
+</html>

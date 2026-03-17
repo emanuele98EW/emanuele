@@ -2,16 +2,16 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Tubazioni PE | Emanuele Zanella</title>
-  <meta name="description" content="Dimensionamento tubazioni polietilene PE80/PE100 – EN 12201 / ISO 4427 – SDR – PN.">
+  <title>Tubazioni Inox | Emanuele Zanella</title>
+  <meta name="description" content="Dimensionamento tubazioni acciaio inox AISI 304/316 – EN 10217-7 / EN 10216-5.">
   <script>
     (function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
   </script>
-  <link rel="stylesheet" href="../../../../../css/style.css">
+  <link rel="stylesheet" href="../../../../../../css/style.css">
   <style>
 
     /* ── Layout principale ───────────────────────────────── */
-    .pe-wrapper {
+    .inox-wrapper {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 28px;
@@ -20,28 +20,28 @@
       margin: 0 auto;
     }
     @media (max-width: 700px) {
-      .pe-wrapper { grid-template-columns: 1fr; }
+      .inox-wrapper { grid-template-columns: 1fr; }
     }
 
     /* ── Card generica ───────────────────────────────────── */
-    .pe-card {
+    .inox-card {
       background: var(--card-bg);
-      border: 1px solid rgba(16,185,129,0.22);
+      border: 1px solid rgba(var(--color-engineering-rgb, 16,185,129), 0.25);
       border-radius: 12px;
       padding: 24px;
       position: relative;
       overflow: hidden;
     }
-    .pe-card::before {
+    .inox-card::before {
       content: '';
       position: absolute;
       inset: 0;
       background: radial-gradient(ellipse at top left,
-        rgba(16,185,129,0.05) 0%, transparent 65%);
+        rgba(16,185,129,0.06) 0%, transparent 65%);
       pointer-events: none;
     }
 
-    /* ── Card label ──────────────────────────────────────── */
+    /* ── Titolo card ─────────────────────────────────────── */
     .card-label {
       font-family: 'Orbitron', sans-serif;
       font-size: 0.65rem;
@@ -57,7 +57,7 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: rgba(16,185,129,0.18);
+      background: rgba(16,185,129,0.2);
     }
 
     /* ── Selects / inputs ────────────────────────────────── */
@@ -78,11 +78,11 @@
     .field input[type="number"] {
       padding: 9px 12px;
       background: rgba(16,185,129,0.04);
-      border: 1px solid rgba(16,185,129,0.28);
+      border: 1px solid rgba(16,185,129,0.3);
       color: var(--text-primary);
       border-radius: 6px;
       font-family: 'Orbitron', sans-serif;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       transition: border-color 0.2s, box-shadow 0.2s;
       width: 100%;
       box-sizing: border-box;
@@ -90,17 +90,19 @@
     .field select:focus,
     .field input[type="number"]:focus {
       outline: none;
-      border-color: rgba(16,185,129,0.65);
+      border-color: rgba(16,185,129,0.7);
       box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
     }
     .field select option { background: #0d1117; }
 
-    /* ── Risultati ───────────────────────────────────────── */
+    /* ── Riga risultati ──────────────────────────────────── */
     .result-list {
       list-style: none;
-      padding: 0; margin: 0;
+      padding: 0;
+      margin: 0;
       display: flex;
       flex-direction: column;
+      gap: 0;
     }
     .result-list li {
       display: flex;
@@ -111,37 +113,26 @@
       font-family: 'Orbitron', sans-serif;
     }
     .result-list li:last-child { border-bottom: none; }
+
     .r-label {
       font-size: 0.63rem;
       color: #666;
       letter-spacing: 1px;
       text-transform: uppercase;
     }
-    .r-value           { font-size: 0.88rem; color: #e2e8f0; text-align: right; }
-    .r-value.accent    { color: var(--color-engineering, #10b981); text-shadow: 0 0 10px rgba(16,185,129,0.45); }
-    .r-value.warm      { color: #fb923c; }
-    .r-value.blue      { color: #60a5fa; }
-    .r-value.yellow    { color: #facc15; }
-
-    /* ── PN badge ────────────────────────────────────────── */
-    .pn-badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 5px 14px;
-      border-radius: 20px;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 1px;
-      font-weight: 700;
-      border: 1px solid rgba(255,255,255,0.1);
-      color: #888;
-      background: rgba(255,255,255,0.04);
+    .r-value {
+      font-size: 0.88rem;
+      color: #e2e8f0;
+      text-align: right;
     }
-    .pn-badge.pn-low  { background: rgba(52,211,153,0.1);  border-color: rgba(52,211,153,0.4);  color: #34d399; }
-    .pn-badge.pn-mid  { background: rgba(250,204,21,0.1);  border-color: rgba(250,204,21,0.4);  color: #facc15; }
-    .pn-badge.pn-high { background: rgba(251,146,60,0.1);  border-color: rgba(251,146,60,0.4);  color: #fb923c; }
+    .r-value.accent {
+      color: var(--color-engineering, #10b981);
+      text-shadow: 0 0 10px rgba(16,185,129,0.5);
+    }
+    .r-value.warm   { color: #fb923c; }
+    .r-value.blue   { color: #60a5fa; }
 
-    /* ── Norma badge ─────────────────────────────────────── */
+    /* ── Badge norma ─────────────────────────────────────── */
     .norm-badge {
       display: inline-flex;
       align-items: center;
@@ -153,7 +144,7 @@
       letter-spacing: 1px;
       font-weight: 700;
       background: rgba(16,185,129,0.1);
-      border: 1px solid rgba(16,185,129,0.32);
+      border: 1px solid rgba(16,185,129,0.35);
       color: #34d399;
       margin-bottom: 18px;
     }
@@ -164,29 +155,34 @@
       justify-content: center;
       align-items: center;
       background: rgba(11,17,32,0.6);
-      border: 1px solid rgba(16,185,129,0.13);
+      border: 1px solid rgba(16,185,129,0.15);
       border-radius: 10px;
       padding: 12px;
       margin-top: 4px;
     }
+    #pipeCanvas {
+      display: block;
+      border-radius: 6px;
+    }
 
-    /* ── Grade info ──────────────────────────────────────── */
+    /* ── Info grado acciaio ──────────────────────────────── */
     .grade-info {
       margin-top: 16px;
       padding: 12px 14px;
-      background: rgba(16,185,129,0.04);
-      border: 1px solid rgba(16,185,129,0.16);
+      background: rgba(16,185,129,0.05);
+      border: 1px solid rgba(16,185,129,0.18);
       border-radius: 8px;
       font-family: 'Orbitron', sans-serif;
       font-size: 0.63rem;
       color: #555;
-      line-height: 1.75;
+      line-height: 1.7;
     }
+    .grade-info strong { color: #34d399; }
 
-    /* ── Separatore ──────────────────────────────────────── */
+    /* ── Separatore sezione ──────────────────────────────── */
     .sep {
       border: none;
-      border-top: 1px solid rgba(16,185,129,0.13);
+      border-top: 1px solid rgba(16,185,129,0.15);
       margin: 16px 0 14px;
     }
 
@@ -198,107 +194,106 @@
       color: var(--text-secondary);
       letter-spacing: 1px;
     }
-    .breadcrumb a { color: var(--color-engineering); text-decoration: none; }
+    .breadcrumb a {
+      color: var(--color-engineering);
+      text-decoration: none;
+    }
     .breadcrumb a:hover { text-decoration: underline; }
     .breadcrumb span { margin: 0 6px; }
 
-    /* ── Tabella rapida ──────────────────────────────────── */
+    /* ── Tabella di riferimento ──────────────────────────── */
     .ref-table {
       width: 100%;
       border-collapse: collapse;
       font-family: 'Orbitron', sans-serif;
-      font-size: 0.62rem;
-      margin-top: 8px;
+      font-size: 0.63rem;
+      margin-top: 10px;
     }
     .ref-table th {
       color: #555;
       letter-spacing: 1px;
       text-transform: uppercase;
-      padding: 7px 8px;
+      padding: 8px 10px;
       text-align: left;
-      border-bottom: 1px solid rgba(16,185,129,0.18);
-      white-space: nowrap;
+      border-bottom: 1px solid rgba(16,185,129,0.2);
     }
     .ref-table td {
-      padding: 7px 8px;
+      padding: 7px 10px;
       border-bottom: 1px solid rgba(255,255,255,0.04);
       color: #94a3b8;
-      white-space: nowrap;
     }
-    .ref-table tr:hover td { background: rgba(16,185,129,0.05); color: #e2e8f0; }
-    .ref-table tr.active-row td {
+    .ref-table tr:hover td {
+      background: rgba(16,185,129,0.05);
+      color: #e2e8f0;
+    }
+    .ref-table tr.active-dn td {
       background: rgba(16,185,129,0.1);
       color: #34d399;
     }
-    .t-num { text-align: right; }
-
-    /* ── SDR info box ────────────────────────────────────── */
-    .sdr-info {
-      margin-top: 14px;
-      padding: 11px 14px;
-      background: rgba(96,165,250,0.05);
-      border: 1px solid rgba(96,165,250,0.18);
-      border-radius: 8px;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.62rem;
-      color: #555;
-      line-height: 1.7;
-    }
-    .sdr-info strong { color: #60a5fa; }
+    .ref-table .t-num { text-align: right; }
   </style>
 </head>
 
 <body>
 <div class="layout">
 
+  <!-- NAVBAR -->
   <header id="main-navbar"></header>
 
+  <!-- MAIN CONTENT -->
   <main class="main">
 
     <h2 style="color: var(--color-engineering); text-align: center; margin-bottom: 10px; font-size: 2rem;">
-      Tubazioni Polietilene (PE)
+      Tubazioni Acciaio Inox
     </h2>
 
     <p class="breadcrumb">
-      <a href="../../../index.html">Tools</a><span>/</span>
-      <a href="../../index.html">Piping</a><span>/</span>
-      <a href="../index.html">Tubazioni</a><span>/</span>
-      <span style="color: var(--text-primary);">Polietilene (PE)</span>
+      <a href="../../../../index.html">Tools</a><span>/</span>
+      <a href="../../../index.html">Piping</a><span>/</span>
+      <a href="../../index.html">Tubazioni</a><span>/</span>
+      <a href="../index.html">Spessori e Pesi per metro</a><span>/</span>
+      <span style="color: var(--text-primary);">Acciaio Inox</span>
     </p>
 
-    <div class="pe-wrapper">
+    <!-- ══════════════════════════════════════════════════
+         GRIGLIA PRINCIPALE
+    ══════════════════════════════════════════════════ -->
+    <div class="inox-wrapper">
 
-      <!-- ── COLONNA SINISTRA ── -->
+      <!-- ── COLONNA SINISTRA: selezione + risultati ── -->
       <div style="display:flex; flex-direction:column; gap:22px;">
 
-        <!-- Selezione -->
-        <div class="pe-card">
+        <!-- Card: selezione -->
+        <div class="inox-card">
           <p class="card-label">⚙ Selezione</p>
 
-          <div class="norm-badge">✦ EN 12201 / ISO 4427 / EN 13244</div>
+          <div class="norm-badge">
+            ✦ EN 10217-7 / EN 10216-5
+          </div>
 
-          <!-- Grado PE -->
+          <!-- Grado acciaio -->
           <div class="field">
-            <label>Grado polietilene</label>
-            <select id="pe-grade">
-              <option value="PE100" selected>PE 100 / MRS 10 — ρ 959 kg/m³</option>
-              <option value="PE100-RC">PE 100-RC — ρ 959 kg/m³</option>
-              <option value="PE80">PE 80 / MRS 8 — ρ 950 kg/m³</option>
+            <label>Grado acciaio</label>
+            <select id="steel-grade">
+              <option value="304">AISI 304 / 1.4301 — ρ 7960 kg/m³</option>
+              <option value="304L">AISI 304L / 1.4307 — ρ 7960 kg/m³</option>
+              <option value="316">AISI 316 / 1.4401 — ρ 7960 kg/m³</option>
+              <option value="316L">AISI 316L / 1.4404 — ρ 7980 kg/m³</option>
             </select>
           </div>
 
           <!-- DN -->
           <div class="field">
-            <label>DN / OD nominale</label>
+            <label>DN nominale</label>
             <select id="dnSelect">
               <option value="">— Seleziona DN —</option>
             </select>
           </div>
 
-          <!-- SDR -->
+          <!-- Spessore -->
           <div class="field">
-            <label>Serie SDR</label>
-            <select id="sdrSelect">
+            <label>Spessore parete (mm)</label>
+            <select id="schSelect">
               <option value="">— Prima seleziona DN —</option>
             </select>
           </div>
@@ -312,21 +307,14 @@
               placeholder="es. 1000 per acqua">
           </div>
 
-          <!-- SDR info -->
-          <div class="sdr-info">
-            <strong>SDR</strong> = Standard Dimension Ratio = OD / t<br>
-            Maggiore SDR → parete più sottile → pressione ammissibile minore.<br>
-            <strong>PN</strong> calcolata secondo ISO 4427: PN = 2·MRS / [(SDR–1)·C], C = 1.25
-          </div>
-
-          <!-- Grade info -->
+          <!-- Info grado -->
           <div class="grade-info" id="grade-info">
-            Seleziona grado e DN per visualizzare i risultati.
+            Seleziona DN e spessore per visualizzare i risultati.
           </div>
         </div>
 
-        <!-- Risultati dimensionali -->
-        <div class="pe-card">
+        <!-- Card: risultati dimensionali -->
+        <div class="inox-card">
           <p class="card-label">📐 Dimensioni</p>
           <ul class="result-list">
             <li>
@@ -342,26 +330,14 @@
               <span class="r-value warm" id="thk">–</span>
             </li>
             <li>
-              <span class="r-label">Serie SDR</span>
-              <span class="r-value yellow" id="sdr-val">–</span>
-            </li>
-            <li>
               <span class="r-label">Sezione interna</span>
               <span class="r-value blue" id="area-int">–</span>
             </li>
             <li>
-              <span class="r-label">Rapporto OD/t</span>
+              <span class="r-label">Rapporto D/t</span>
               <span class="r-value" id="dt-ratio">–</span>
             </li>
           </ul>
-
-          <hr class="sep">
-          <p class="card-label">🔴 Pressione nominale</p>
-
-          <div style="display:flex; align-items:center; gap:14px; margin-bottom:14px;">
-            <span class="pn-badge" id="pn-badge">–</span>
-            <span class="r-value" style="font-size:0.8rem;" id="pn-val">–</span>
-          </div>
 
           <hr class="sep">
           <p class="card-label">⚖ Pesi lineari</p>
@@ -383,34 +359,32 @@
 
       </div><!-- /colonna sinistra -->
 
-      <!-- ── COLONNA DESTRA ── -->
+      <!-- ── COLONNA DESTRA: canvas + tabella ── -->
       <div style="display:flex; flex-direction:column; gap:22px;">
 
-        <!-- Canvas sezione -->
-        <div class="pe-card">
+        <!-- Card: disegno -->
+        <div class="inox-card">
           <p class="card-label">📏 Sezione trasversale</p>
           <div class="canvas-wrap">
             <canvas id="pipeCanvas" width="300" height="280"></canvas>
           </div>
         </div>
 
-        <!-- Tabella rapida -->
-        <div class="pe-card">
-          <p class="card-label">📋 Tabella SDR — DN selezionato</p>
+        <!-- Card: tabella riferimento rapida -->
+        <div class="inox-card">
+          <p class="card-label">📋 Tabella rapida — DN selezionato</p>
           <div style="overflow-x:auto;">
-            <table class="ref-table">
+            <table class="ref-table" id="ref-table">
               <thead>
                 <tr>
-                  <th>SDR</th>
                   <th>t (mm)</th>
                   <th>ID (mm)</th>
                   <th class="t-num">Sez. (cm²)</th>
                   <th class="t-num">kg/m</th>
-                  <th class="t-num">PN (bar)</th>
                 </tr>
               </thead>
               <tbody id="ref-tbody">
-                <tr><td colspan="6" style="color:#444;padding:14px;text-align:center;">
+                <tr><td colspan="4" style="color:#444; padding:14px; text-align:center;">
                   Seleziona un DN
                 </td></tr>
               </tbody>
@@ -420,22 +394,84 @@
 
       </div><!-- /colonna destra -->
 
-    </div><!-- /pe-wrapper -->
+    </div><!-- /inox-wrapper -->
 
   </main>
-</div>
+</div><!-- /layout -->
 
-<script src="./pe-tool.js"></script>
+<!-- Script -->
+<script src="./inox-tool.js"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  initPeTool();
-  updateGradeInfo();
+document.addEventListener("DOMContentLoaded", () => {
+  initInoxTool();
+
+  /* ── Aggiorna info grado ─────────────────────────────── */
+  const gradeInfo = {
+    "304":  { name:"AISI 304 / 1.4301", rho:7960, note:"Uso generale. Resistenza alla corrosione standard. Saldato (EN 10217-7) e senza saldatura (EN 10216-5)." },
+    "304L": { name:"AISI 304L / 1.4307", rho:7960, note:"Basso tenore di carbonio. Ottima saldabilità. Ridotto rischio di corrosione intergranulare." },
+    "316":  { name:"AISI 316 / 1.4401", rho:7960, note:"Aggiunta di Mo (2–3%). Maggiore resistenza alla corrosione per cloruri e ambienti marini." },
+    "316L": { name:"AISI 316L / 1.4404", rho:7980, note:"Versione low-carbon del 316. Standard de-facto in applicazioni chimiche/farmaceutiche." },
+  };
+
+  document.getElementById("steel-grade").addEventListener("change", function() {
+    const g = gradeInfo[this.value];
+    document.getElementById("grade-info").innerHTML =
+      `<strong>${g.name}</strong> · ρ = ${g.rho} kg/m³<br>${g.note}`;
+    updateInoxValues();
+  });
+
+  /* Imposta info iniziale */
+  const initGrade = document.getElementById("steel-grade").value;
+  const g0 = gradeInfo[initGrade];
+  document.getElementById("grade-info").innerHTML =
+    `<strong>${g0.name}</strong> · ρ = ${g0.rho} kg/m³<br>${g0.note}`;
+
+  /* ── Tabella rapida: si aggiorna al cambio DN ────────── */
+  document.getElementById("dnSelect").addEventListener("change", updateRefTable);
+  document.getElementById("schSelect").addEventListener("change", highlightRefTable);
+  document.getElementById("steel-grade").addEventListener("change", updateRefTable);
+
+  function updateRefTable() {
+    const dn = document.getElementById("dnSelect").value;
+    const tbody = document.getElementById("ref-tbody");
+    if (!dn || !inoxPipeData[dn]) {
+      tbody.innerHTML = '<tr><td colspan="4" style="color:#444;padding:14px;text-align:center;">Seleziona un DN</td></tr>';
+      return;
+    }
+
+    const OD = inoxPipeData[dn].OD;
+    const grade = document.getElementById("steel-grade").value;
+    const rhoSteel = grade === "316L" ? 7980 : 7960;
+    let rows = "";
+
+    Object.keys(inoxPipeData[dn].thicknesses).forEach(tStr => {
+      const t   = parseFloat(tStr);
+      const ID  = (OD - 2 * t).toFixed(2);
+      const A   = (Math.PI * Math.pow(parseFloat(ID) / 2000, 2) * 1e4).toFixed(3);
+      const kgm = (Math.PI * (OD - t) * t * rhoSteel / 1e6).toFixed(3);
+      rows += `<tr data-t="${tStr}">
+        <td>${tStr}</td>
+        <td>${ID}</td>
+        <td class="t-num">${A}</td>
+        <td class="t-num">${kgm}</td>
+      </tr>`;
+    });
+    tbody.innerHTML = rows;
+    highlightRefTable();
+  }
+
+  function highlightRefTable() {
+    const tStr = document.getElementById("schSelect").value;
+    document.querySelectorAll("#ref-tbody tr").forEach(tr => {
+      tr.classList.toggle("active-dn", tr.dataset.t === tStr);
+    });
+  }
 });
 </script>
 
-<script src="../../../../../js/navbar.js"></script>
-<script src="../../../../../js/main.js"></script>
-<script src="../../../../../js/footer.js"></script>
+<script src="../../../../../../js/navbar.js"></script>
+<script src="../../../../../../js/main.js"></script>
+<script src="../../../../../../js/footer.js"></script>
 </body>
 </html>

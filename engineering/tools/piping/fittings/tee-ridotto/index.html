@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tee Ridotto | Fittings | Emanuele Zanella</title>
+  <meta name="description" content="Dimensioni e pesi tee ridotti saldati secondo EN 10253-2 e ASME B16.9.">
+  <script>
+(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
+</script>
+  <link rel="stylesheet" href="../../../../../css/style.css">
+  <style>
+    .fitting-svg-wrap{background:var(--bg-secondary,rgba(255,255,255,0.04));border:1px solid var(--border-color,rgba(255,255,255,0.08));border-radius:12px;padding:24px;display:flex;align-items:center;flex-wrap:wrap;justify-content:center;margin:24px 0 16px}
+    .norm-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.72rem;font-weight:600;border:1px solid var(--color-engineering);color:var(--color-engineering);margin:0 4px}
+    .filter-bar{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+    .filter-bar label{font-size:.82rem;color:var(--text-secondary)}
+    .filter-bar select{background:#1a1f2e;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:5px 10px;font-size:.82rem;color:#e8d88a;appearance:auto;-webkit-appearance:auto}
+    .filter-bar select option{background:#1a1f2e;color:#e8d88a}
+    .light-mode .filter-bar select{background:#f5f5f0;border-color:rgba(0,0,0,0.2);color:#3a3000}
+    .light-mode .filter-bar select option{background:#f5f5f0;color:#3a3000}
+    .data-table{width:100%;border-collapse:collapse;font-size:.82rem}
+    .data-table thead th{text-align:center;padding:10px 8px;border-bottom:2px solid var(--color-engineering);color:var(--color-engineering);font-size:.75rem;letter-spacing:.05em;white-space:nowrap}
+    .data-table thead th.left{text-align:left}
+    .data-table tbody tr{border-bottom:1px solid var(--border-color,rgba(255,255,255,0.06));transition:background .15s}
+    .data-table tbody tr:hover{background:rgba(100,180,100,.06)}
+    .data-table tbody td{padding:8px;text-align:center;color:var(--text-primary)}
+    .data-table tbody td.left{text-align:left;font-weight:600}
+    .data-table tbody td.muted{color:var(--text-secondary)}
+    .note-block{background:var(--bg-secondary,rgba(255,255,255,0.03));border-left:3px solid var(--color-engineering);border-radius:0 8px 8px 0;padding:12px 16px;margin-top:24px;font-size:.80rem;color:var(--text-secondary);line-height:1.7}
+    .note-block strong{color:var(--text-primary)}
+    .dim-legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:12px;font-size:.78rem;color:var(--text-secondary)}
+    .dim-legend span strong{color:var(--color-engineering)}
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <header id="main-navbar"></header>
+    <main class="main">
+
+      <h2 style="color:var(--color-engineering);text-align:center;margin-bottom:10px;font-size:2rem;">Tee Ridotto</h2>
+      <p style="text-align:center;margin-bottom:6px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+        <a href="../../../index.html" style="color:var(--color-engineering);text-decoration:none;">Tools</a>
+        <span style="margin:0 6px;">/</span>
+        <a href="../../index.html" style="color:var(--color-engineering);text-decoration:none;">Piping</a>
+        <span style="margin:0 6px;">/</span>
+        <a href="../index.html" style="color:var(--color-engineering);text-decoration:none;">Fittings</a>
+        <span style="margin:0 6px;">/</span>
+        <span style="color:var(--text-primary);">Tee Ridotto</span>
+      </p>
+      <p style="text-align:center;margin-bottom:28px;font-size:.82rem;">
+        <span class="norm-badge">EN 10253-2</span>
+        <span class="norm-badge">ASME B16.9</span>
+      </p>
+
+      <div class="fitting-svg-wrap">
+        <svg width="220" height="170" viewBox="0 0 220 170" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Corpo principale (DN grande) -->
+          <path d="M10 50 L210 50 L210 82 L10 82 Z" stroke="var(--color-engineering)" stroke-width="2" fill="none"/>
+          <!-- Derivazione ridotta (DN piccolo) -->
+          <path d="M92 82 L92 155 L128 155 L128 82" stroke="var(--color-engineering)" stroke-width="2" fill="none"/>
+          <!-- Assi -->
+          <line x1="0" y1="66" x2="220" y2="66" stroke="var(--text-secondary)" stroke-width="0.6" stroke-dasharray="5 3"/>
+          <line x1="110" y1="40" x2="110" y2="162" stroke="var(--text-secondary)" stroke-width="0.6" stroke-dasharray="5 3"/>
+          <!-- C -->
+          <line x1="10" y1="93" x2="210" y2="93" stroke="var(--text-secondary)" stroke-width="0.8"/>
+          <line x1="10" y1="89" x2="10" y2="97" stroke="var(--text-secondary)" stroke-width="0.8"/>
+          <line x1="210" y1="89" x2="210" y2="97" stroke="var(--text-secondary)" stroke-width="0.8"/>
+          <text x="110" y="101" font-size="10" fill="var(--color-engineering)" font-family="monospace" text-anchor="middle">C</text>
+          <!-- M -->
+          <line x1="138" y1="82" x2="138" y2="155" stroke="var(--text-secondary)" stroke-width="0.8"/>
+          <line x1="134" y1="82" x2="142" y2="82" stroke="var(--text-secondary)" stroke-width="0.8"/>
+          <line x1="134" y1="155" x2="142" y2="155" stroke="var(--text-secondary)" stroke-width="0.8"/>
+          <text x="144" y="122" font-size="10" fill="var(--color-engineering)" font-family="monospace">M</text>
+          <!-- D1 label (corpo) -->
+          <line x1="2" y1="50" x2="2" y2="82" stroke="var(--text-secondary)" stroke-width="0.8"/>
+          <line x1="0" y1="50" x2="6" y2="50" stroke="var(--text-secondary)" stroke-width="0.8"/>
+          <line x1="0" y1="82" x2="6" y2="82" stroke="var(--text-secondary)" stroke-width="0.8"/>
+          <text x="4" y="69" font-size="9" fill="var(--color-engineering)" font-family="monospace" transform="rotate(-90,4,69)">D1</text>
+          <!-- D2 label (derivazione) -->
+          <text x="98" y="145" font-size="9" fill="var(--color-engineering)" font-family="monospace">D2</text>
+        </svg>
+      </div>
+
+      <div class="dim-legend">
+        <span><strong>D1</strong> = De corpo principale [mm]</span>
+        <span><strong>D2</strong> = De derivazione ridotta [mm]</span>
+        <span><strong>T1/T2</strong> = spessori [mm]</span>
+        <span><strong>C</strong> = lunghezza corpo totale [mm]</span>
+        <span><strong>M</strong> = lunghezza derivazione [mm] (centro–bordo)</span>
+      </div>
+
+      <div class="filter-bar" style="margin-top:28px;">
+        <label for="sel-norma">Norma:</label>
+        <select id="sel-norma" onchange="renderTable()">
+          <option value="en">EN 10253-2</option>
+          <option value="asme">ASME B16.9</option>
+        </select>
+        <label for="sel-dn1">DN corpo:</label>
+        <select id="sel-dn1" onchange="renderTable()">
+          <option value="all">Tutti</option>
+        </select>
+      </div>
+
+      <div id="table-container"></div>
+
+      <div class="note-block">
+        <strong>EN 10253-2 / ASME B16.9</strong> — Il tee ridotto ha le due bocche del corpo uguali (DN1) e la derivazione di DN inferiore (DN2).
+        La lunghezza C del corpo è uguale al tee uguale dello stesso DN1. La lunghezza M della derivazione dipende da DN2.<br>
+        <strong>Nota pesi</strong>: valori nominali, variazione ±5% rispetto ai cataloghi.
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../../../../../js/navbar.js"></script>
+  <script src="../../../../../js/main.js"></script>
+  <script src="../../../../../js/footer.js"></script>
+  <script>
+  // [DN1, De1, DN2, De2, T1, T2, C_en, M_en, C_asme, M_asme, kg_en, kg_asme]
+  const DATA = [
+    [25, 33.7,20,26.9,3.2,2.6, 57,25, 76,29, 0.16,0.22],
+    [32,42.4,25,33.7,3.6,3.2, 64,25, 76,32, 0.23,0.30],
+    [32,42.4,20,26.9,3.6,2.6, 64,25, 76,29, 0.21,0.27],
+    [40,48.3,32,42.4,3.6,3.6, 76,32, 89,38, 0.33,0.44],
+    [40,48.3,25,33.7,3.6,3.2, 76,25, 89,32, 0.30,0.40],
+    [50,60.3,40,48.3,3.9,3.6, 89,38,102,38, 0.52,0.68],
+    [50,60.3,32,42.4,3.9,3.6, 89,32,102,32, 0.47,0.62],
+    [50,60.3,25,33.7,3.9,3.2, 89,25,102,29, 0.43,0.57],
+    [65,76.1,50,60.3,5.0,3.9,114,44,127,44, 1.00,1.28],
+    [65,76.1,40,48.3,5.0,3.6,114,38,127,38, 0.93,1.19],
+    [65,76.1,32,42.4,5.0,3.6,114,32,127,32, 0.87,1.11],
+    [80,88.9,65,76.1,5.5,5.0,127,57,152,57, 1.55,2.05],
+    [80,88.9,50,60.3,5.5,3.9,127,44,152,44, 1.42,1.88],
+    [80,88.9,40,48.3,5.5,3.6,127,38,152,38, 1.34,1.77],
+    [100,114.3,80,88.9,6.0,5.5,152,64,178,76, 2.71,3.50],
+    [100,114.3,65,76.1,6.0,5.0,152,57,178,64, 2.53,3.27],
+    [100,114.3,50,60.3,6.0,3.9,152,44,178,51, 2.38,3.08],
+    [125,139.7,100,114.3,6.5,6.0,178,76,203,89, 4.35,5.62],
+    [125,139.7,80,88.9,6.5,5.5,178,64,203,76, 4.07,5.26],
+    [125,139.7,65,76.1,6.5,5.0,178,57,203,64, 3.87,5.00],
+    [150,168.3,125,139.7,7.1,6.5,203,89,229,102, 6.85,8.83],
+    [150,168.3,100,114.3,7.1,6.0,203,76,229,89, 6.38,8.23],
+    [150,168.3,80,88.9,7.1,5.5,203,64,229,76, 6.02,7.76],
+    [200,219.1,150,168.3,8.2,7.1,254,102,305,114,13.70,18.20],
+    [200,219.1,125,139.7,8.2,6.5,254,89,305,102,12.90,17.10],
+    [200,219.1,100,114.3,8.2,6.0,254,76,305,89, 12.20,16.20],
+    [250,273.0,200,219.1,9.3,8.2,305,127,356,152,25.10,33.40],
+    [250,273.0,150,168.3,9.3,7.1,305,102,356,114,23.30,31.00],
+    [300,323.9,250,273.0,10.3,9.3,356,152,406,178,41.20,55.00],
+    [300,323.9,200,219.1,10.3,8.2,356,127,406,152,38.60,51.50],
+    [300,323.9,150,168.3,10.3,7.1,356,102,406,114,36.50,48.70],
+  ];
+
+  const DN1_LIST = [...new Set(DATA.map(r => r[0]))];
+
+  function populateFilter() {
+    const sel = document.getElementById('sel-dn1');
+    DN1_LIST.forEach(dn => {
+      const opt = document.createElement('option');
+      opt.value = dn; opt.textContent = `DN ${dn}`; sel.appendChild(opt);
+    });
+  }
+
+  function renderTable() {
+    const norma  = document.getElementById('sel-norma').value;
+    const dn1fil = document.getElementById('sel-dn1').value;
+    const isEN   = norma === 'en';
+    const filtered = dn1fil === 'all' ? DATA : DATA.filter(r => r[0] == dn1fil);
+
+    let html = `<table class="data-table">
+      <thead><tr>
+        <th class="left">DN1 × DN2</th>
+        <th>De1 [mm]</th><th>De2 [mm]</th>
+        <th>T1 [mm]</th><th>T2 [mm]</th>
+        <th>C [mm]</th><th>M [mm]</th>
+        <th>Peso [kg]</th>
+      </tr></thead><tbody>`;
+
+    filtered.forEach(r => {
+      const [dn1,de1,dn2,de2,t1,t2,c_en,m_en,c_asme,m_asme,kg_en,kg_asme] = r;
+      const C  = isEN ? c_en  : c_asme;
+      const M  = isEN ? m_en  : m_asme;
+      const kg = isEN ? kg_en : kg_asme;
+      html += `<tr>
+        <td class="left">DN ${dn1} × DN ${dn2}</td>
+        <td>${de1}</td><td>${de2}</td>
+        <td>${t1}</td><td>${t2}</td>
+        <td>${C}</td><td>${M}</td>
+        <td>${kg.toFixed(2)}</td>
+      </tr>`;
+    });
+    html += `</tbody></table>`;
+    document.getElementById('table-container').innerHTML = html;
+  }
+
+  populateFilter();
+  renderTable();
+  </script>
+</body>
+</html>
