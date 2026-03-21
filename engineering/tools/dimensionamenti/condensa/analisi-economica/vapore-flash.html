@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Recupero Vapore di Flash | Emanuele Zanella</title>
+    <script>(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();</script>
+    <link rel="stylesheet" href="../../../../../css/style.css">
+    <style>:root{--eng:var(--color-engineering,#c8a03c);--eng-rgb:var(--color-engineering-rgb,200,160,60)}.tw{max-width:860px;margin:0 auto}.card{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:14px;padding:24px 28px;margin-bottom:20px}.ct{font-size:.75rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--eng);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.07))}.ig{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}.grp{display:flex;flex-direction:column;gap:5px}.grp label{font-size:.78rem;color:var(--text-secondary);font-weight:500;display:flex;align-items:center;gap:4px}.ir{display:flex;align-items:stretch;border:1px solid var(--border-color,rgba(255,255,255,.12));border-radius:8px;overflow:hidden;background:var(--input-bg,rgba(255,255,255,.04));transition:border-color .2s}.ir:focus-within{border-color:var(--eng)}.ir input,.ir select{flex:1;border:none;background:transparent;padding:9px 12px;font-size:.88rem;color:var(--text-primary);outline:none;width:100%;min-width:0}.ir select{cursor:pointer;color-scheme:dark}html.light-mode .ir select{color-scheme:light}.ir select option{background:#1e1e1e;color:#f0f0f0}html.light-mode .ir select option{background:#fff;color:#111}.ir .un{padding:9px 10px;font-size:.75rem;color:var(--text-secondary);background:var(--unit-bg,rgba(255,255,255,.06));border-left:1px solid var(--border-color,rgba(255,255,255,.08));white-space:nowrap;user-select:none;display:flex;align-items:center}.hint{font-size:.7rem;color:var(--text-secondary);margin-top:3px;opacity:.8;line-height:1.4}.hint em{color:var(--eng);font-style:normal}.ii{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;border:1px solid var(--text-secondary);font-size:.6rem;color:var(--text-secondary);cursor:help;flex-shrink:0}.btn{display:inline-flex;align-items:center;gap:8px;background:var(--eng);color:#fff;border:none;padding:11px 32px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:opacity .2s,transform .15s}html.light-mode .btn{color:#1a1a1a}.btn:hover{opacity:.88;transform:translateY(-1px)}.rh{display:none}.rs{animation:fu .3s ease}@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:18px}.rb{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}.rb.pri{border-color:var(--eng);background:rgba(var(--eng-rgb,200,160,60),.07)}.rb.pos{border-color:rgba(80,200,120,.5);background:rgba(80,200,120,.07)}.rl{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600}.rv{font-size:1.3rem;font-weight:700;color:var(--text-primary);line-height:1.1}.rb.pri .rv{color:var(--eng)}.rb.pos .rv{color:#50c878}.ru{font-size:.76rem;color:var(--text-secondary)}.fb{border-left:3px solid var(--eng);border-radius:0 8px 8px 0;padding:12px 16px;font-size:.79rem;color:var(--text-secondary);line-height:1.7;margin-top:14px}.fb strong{color:var(--text-primary)}.eb{background:rgba(220,60,60,.08);border:1px solid rgba(220,60,60,.3);border-radius:8px;padding:10px 14px;font-size:.82rem;color:#e05050;margin-bottom:16px;display:none}@media(max-width:580px){.card{padding:18px 14px}}</style>
+</head>
+<body>
+<div class="layout"><header id="main-navbar"></header><main class="main"><div class="tw">
+    <h2 style="color:var(--eng);text-align:center;margin-bottom:10px;font-size:2rem;">Recupero del Vapore di Flash</h2>
+    <p style="text-align:center;margin-bottom:30px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+        <a href="../../../index.html" style="color:var(--eng);text-decoration:none;">Tools</a> <span style="margin:0 6px;">/</span>
+        <a href="../../index.html" style="color:var(--eng);text-decoration:none;">Dimensionamenti</a> <span style="margin:0 6px;">/</span>
+        <a href="../index.html" style="color:var(--eng);text-decoration:none;">Recupero Condensa</a> <span style="margin:0 6px;">/</span>
+        <span style="color:var(--text-primary);">Vapore di Flash</span>
+    </p>
+    <div class="card" style="border-left:3px solid var(--eng);border-radius:0 14px 14px 14px;padding:14px 20px;margin-bottom:22px;">
+        <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.6;margin:0;">
+            Quando la condensa ad alta pressione passa ad una pressione inferiore, parte si vaporizza nuovamente (vapore di flash). Questo tool calcola la quantità di vapore di flash generato e il risparmio ottenibile recuperandolo invece di disperderlo in atmosfera tramite apposite camere di flash.
+        </p>
+    </div>
+    <div class="card">
+        <div class="ct">1 · Condizioni operative</div>
+        <div class="ig">
+            <div class="grp"><label>Portata condensa</label><div class="ir"><input type="number" id="condFlow" value="1000" step="50" min="1"><span class="un">kg/h</span></div><div class="hint">Tipico: <em>500–5000 kg/h</em></div></div>
+            <div class="grp"><label>Pressione alta P₁ <span class="ii" title="Pressione a cui la condensa lascia il processo">i</span></label><div class="ir"><input type="number" id="p1" value="8" step="0.5" min="0.5"><span class="un">bar (g)</span></div><div class="hint">Pressione vapore di processo: <em>3–16 bar(g)</em></div></div>
+            <div class="grp"><label>Pressione bassa P₂ <span class="ii" title="Pressione della camera di flash o della rete a bassa pressione">i</span></label><div class="ir"><input type="number" id="p2" value="1" step="0.1" min="0.1"><span class="un">bar (g)</span></div><div class="hint">Tipicamente pressione rete secondaria: <em>0.5–3 bar(g)</em></div></div>
+            <div class="grp"><label>Ore operative annue</label><div class="ir"><input type="number" id="hours" value="7000" step="100" min="100" max="8760"><span class="un">h/anno</span></div><div class="hint"><em>5000</em>=1 turno · <em>8000</em>=continuo</div></div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="ct">2 · Valore economico del vapore</div>
+        <div class="ig">
+            <div class="grp"><label>Costo vapore a bassa pressione <span class="ii" title="Costo unitario del vapore alla pressione P2">i</span></label><div class="ir"><input type="number" id="steamCost" value="25" step="1" min="1"><span class="un">€/t</span></div><div class="hint">Vapore industriale: <em>15–40 €/t</em> secondo pressione e combustibile</div></div>
+            <div class="grp"><label>Costo combustibile caldaia</label><div class="ir"><input type="number" id="fuelCost" value="0.045" step="0.001"><span class="un">€/kWh</span></div><div class="hint">Gas naturale: <em>0.030–0.060 €/kWh</em></div></div>
+            <div class="grp"><label>Rendimento caldaia</label><div class="ir"><input type="number" id="boilerEff" value="85" step="1" min="50" max="99"><span class="un">%</span></div></div>
+            <div class="grp"><label>Investimento camera di flash</label><div class="ir"><input type="number" id="investment" value="8000" step="500" onchange="updatePayback()"><span class="un">€</span></div><div class="hint">Camera di flash standard: <em>3.000–20.000 €</em></div></div>
+        </div>
+    </div>
+    <div class="eb" id="errorBox"></div>
+    <div style="display:flex;justify-content:center;margin-bottom:28px;">
+        <button class="btn" onclick="calculate()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/><path d="M9 15h3l8-8-3-3-8 8v3z"/></svg>Calcola Vapore di Flash</button>
+    </div>
+    <div id="resultsSection" class="rh rs">
+        <div class="card">
+            <div class="ct">3 · Risultati</div>
+            <!-- Visual flash percentage bar -->
+            <div style="margin-bottom:18px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                    <span style="font-size:.78rem;color:var(--text-secondary);">Percentuale vapore di flash generato</span>
+                    <span id="flashPctLbl" style="font-size:.9rem;font-weight:700;color:var(--eng);"></span>
+                </div>
+                <div style="height:10px;border-radius:5px;background:var(--border-color,rgba(255,255,255,.1));overflow:hidden;">
+                    <div id="flashBar" style="height:100%;border-radius:5px;background:var(--eng);transition:width .6s ease;width:0%"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-secondary);margin-top:4px;">
+                    <span>0% (tutto condensa)</span><span>100% (tutto vapore)</span>
+                </div>
+            </div>
+            <div class="rg">
+                <div class="rb pri"><div class="rl">Risparmio annuo</div><div class="rv" id="rSaving">—</div><div class="ru">€/anno</div></div>
+                <div class="rb pos"><div class="rl">Portata flash steam</div><div class="rv" id="rFlashFlow">—</div><div class="ru">kg/h</div></div>
+                <div class="rb"><div class="rl">Flash steam %</div><div class="rv" id="rFlashPct">—</div><div class="ru">% della condensa</div></div>
+                <div class="rb"><div class="rl">Portata condensa residua</div><div class="rv" id="rCondResid">—</div><div class="ru">kg/h</div></div>
+                <div class="rb"><div class="rl">Energia flash annua</div><div class="rv" id="rFlashEnergy">—</div><div class="ru">MWh/anno</div></div>
+                <div class="rb"><div class="rl">Payback</div><div class="rv" id="rPB" style="color:var(--eng)">—</div><div class="ru" id="rPBlbl"></div></div>
+            </div>
+            <div class="fb"><strong>Formula vapore di flash:</strong><br>
+                % flash = (h<sub>f</sub>(P₁) − h<sub>f</sub>(P₂)) / h<sub>fg</sub>(P₂) × 100<br>
+                h<sub>f</sub>(P) = entalpia acqua satura · h<sub>fg</sub>(P) = calore latente di vaporizzazione<br>
+                T<sub>sat</sub>(P) ≈ 100 + 28.2·P − 1.3·P² (P in bar g, approssimazione)
+            </div>
+        </div>
+    </div>
+</div></main></div>
+<script src="../../../../../js/navbar.js"></script><script src="../../../../../js/main.js"></script><script src="../../../../../js/footer.js"></script>
+<script>
+function hf(T){return 4.186*T+0.001*T*T;}
+function hfg(T){return 2501-2.365*T;}
+function Tsat(Pg){return 100+28.2*Pg-1.3*Pg*Pg;}
+let savedAnnual=0;
+function fmt(v){return v>=10000?(v/1000).toFixed(1)+"k":Math.round(v).toLocaleString("it");}
+function calculate(){
+    const F=parseFloat(document.getElementById("condFlow").value),P1=parseFloat(document.getElementById("p1").value),P2=parseFloat(document.getElementById("p2").value);
+    const H=parseFloat(document.getElementById("hours").value),sc=parseFloat(document.getElementById("steamCost").value);
+    const fc=parseFloat(document.getElementById("fuelCost").value),eta=parseFloat(document.getElementById("boilerEff").value)/100;
+    if([F,P1,P2,H,sc].some(v=>isNaN(v)||v<=0)){showErr("Valori non validi.");return;}
+    if(P2>=P1){showErr("P2 deve essere inferiore a P1.");return;}
+    hideErr();
+    const T1=Tsat(P1),T2=Tsat(P2);
+    const flashPct=Math.max(0,Math.min(100,((hf(T1)-hf(T2))/hfg(T2))*100));
+    const flashFlow=F*flashPct/100;
+    const condResid=F-flashFlow;
+    // Entalpia flash steam = hg(T2) = hf(T2)+hfg(T2)
+    const hg2=hf(T2)+hfg(T2);
+    const flashEnergyKWh=flashFlow*hg2/3600*H/1000; // MWh/anno
+    const saving=flashFlow*H/1000*sc; // €/anno (valore del vapore recuperato, in t/h)
+    savedAnnual=saving;
+    document.getElementById("rSaving").textContent=fmt(saving);
+    document.getElementById("rFlashFlow").textContent=flashFlow.toFixed(1);
+    document.getElementById("rFlashPct").textContent=flashPct.toFixed(2);
+    document.getElementById("rCondResid").textContent=condResid.toFixed(1);
+    document.getElementById("rFlashEnergy").textContent=flashEnergyKWh.toFixed(1);
+    document.getElementById("flashBar").style.width=Math.min(flashPct,100)+"%";
+    document.getElementById("flashPctLbl").textContent=flashPct.toFixed(2)+"% flash";
+    updatePayback();
+    document.getElementById("resultsSection").classList.remove("rh");
+    document.getElementById("resultsSection").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function updatePayback(){
+    const inv=parseFloat(document.getElementById("investment").value)||0;
+    if(savedAnnual<=0||inv<=0){document.getElementById("rPB").textContent="—";return;}
+    const pb=inv/savedAnnual;
+    document.getElementById("rPB").textContent=pb<1?(pb*12).toFixed(1)+" mesi":pb.toFixed(1)+" anni";
+    document.getElementById("rPBlbl").textContent=pb<=1?"Eccellente":pb<=2?"Molto buono":"Buono";
+    document.getElementById("rPB").style.color=pb<=1?"#50c878":pb<=2?"var(--eng)":"#e05050";
+}
+function showErr(m){const e=document.getElementById("errorBox");e.textContent="⚠ "+m;e.style.display="block";}
+function hideErr(){document.getElementById("errorBox").style.display="none";}
+</script>
+</body></html>

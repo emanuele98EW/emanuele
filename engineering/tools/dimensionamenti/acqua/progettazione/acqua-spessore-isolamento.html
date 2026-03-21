@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spessore Isolamento Tubazione Acqua | Emanuele Zanella</title>
+    <script>
+(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
+    </script>
+    <link rel="stylesheet" href="../../../../../css/style.css">
+    <style>
+        .tool-wrap{max-width:860px;margin:0 auto}
+        .norm-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.72rem;font-weight:600;border:1px solid var(--color-engineering);color:var(--color-engineering);margin:0 4px}
+        .tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px}
+        @media(max-width:640px){.tool-grid{grid-template-columns:1fr}}
+        .tool-panel{background:var(--bg-secondary,rgba(255,255,255,0.04));border:1px solid var(--border-color,rgba(255,255,255,0.1));border-radius:12px;padding:20px}
+        .panel-title{font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-engineering);margin-bottom:16px;font-weight:600}
+        .field-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+        .field-label{font-size:0.83rem;color:var(--text-secondary);flex:1;min-width:0}
+        .field-input-wrap{display:flex;gap:6px;align-items:center;flex-shrink:0}
+        .field-input-wrap input[type="number"]{width:90px;background:#1a1f2e;border:1px solid rgba(255,255,255,0.25);border-radius:6px;padding:6px 8px;font-size:0.83rem;color:#e8d88a;text-align:right}
+        .light-mode .field-input-wrap input[type="number"]{background:#f5f5f0;border-color:rgba(0,0,0,0.2);color:#3a3000}
+        .field-input-wrap input[type="number"]:focus{outline:none;border-color:var(--color-engineering)}
+        .field-unit{font-size:0.75rem;color:var(--text-secondary);min-width:42px}
+        .field-select{background:#1a1f2e;border:1px solid rgba(255,255,255,0.25);border-radius:6px;padding:6px 8px;font-size:0.83rem;color:#e8d88a;min-width:100px}
+        .field-select option{background:#1a1f2e;color:#e8d88a}
+        .light-mode .field-select{background:#f5f5f0;border-color:rgba(0,0,0,0.2);color:#3a3000}
+        .light-mode .field-select option{background:#f5f5f0;color:#3a3000}
+        .btn-calc{display:block;width:100%;padding:12px;margin-top:20px;background:var(--color-engineering);color:#0d1117;border:none;border-radius:8px;font-size:0.9rem;font-weight:700;cursor:pointer;letter-spacing:0.04em;transition:opacity 0.2s}
+        .btn-calc:hover{opacity:0.88}
+        .results-panel{margin-top:24px;background:var(--bg-secondary,rgba(255,255,255,0.04));border:1px solid var(--color-engineering);border-radius:12px;padding:20px;display:none}
+        .results-panel.visible{display:block}
+        .results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:12px}
+        .result-card{background:var(--bg-card,rgba(255,255,255,0.03));border:1px solid var(--border-color,rgba(255,255,255,0.08));border-radius:8px;padding:12px 14px}
+        .result-label{font-size:0.72rem;color:var(--text-secondary);margin-bottom:4px}
+        .result-value{font-size:1.3rem;font-weight:600;color:var(--color-engineering)}
+        .result-unit{font-size:0.72rem;color:var(--text-secondary);margin-left:3px}
+        .note-block{background:var(--bg-secondary,rgba(255,255,255,0.03));border-left:3px solid var(--color-engineering);border-radius:0 8px 8px 0;padding:12px 16px;margin-top:24px;font-size:0.80rem;color:var(--text-secondary);line-height:1.7}
+        .note-block strong{color:var(--text-primary)}
+        .divider{border:none;border-top:1px solid var(--border-color,rgba(255,255,255,0.07));margin:16px 0}
+        .tab-bar{display:flex;gap:2px;margin-bottom:16px}
+        .tab-btn{flex:1;padding:8px;border:1px solid var(--border-color,rgba(255,255,255,0.1));border-radius:6px;background:transparent;color:var(--text-secondary);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;text-align:center}
+        .tab-btn.active{background:var(--color-engineering);color:#0d1117;border-color:var(--color-engineering)}
+        .tab-content{display:none}
+        .tab-content.active{display:block}
+        .insul-table-wrap{margin-top:16px;overflow-x:auto}
+        .insul-table{width:100%;border-collapse:collapse;font-size:.82rem}
+        .insul-table th{text-align:center;padding:8px;border-bottom:2px solid var(--color-engineering);color:var(--color-engineering);font-size:.72rem;letter-spacing:.05em;white-space:nowrap}
+        .insul-table th.left{text-align:left}
+        .insul-table td{padding:7px 8px;text-align:center;color:var(--text-primary);border-bottom:1px solid var(--border-color,rgba(255,255,255,0.06))}
+        .insul-table tr.best td{background:rgba(var(--color-engineering-rgb,200,160,60),0.12)}
+        .badge-ok{background:rgba(50,200,100,0.15);color:#3dc878;padding:2px 8px;border-radius:10px;font-size:.72rem}
+        .badge-hi{background:rgba(220,80,60,0.15);color:#e05544;padding:2px 8px;border-radius:10px;font-size:.72rem}
+        .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+        .bar-label{font-size:.72rem;color:var(--text-secondary);min-width:50px;text-align:right}
+        .bar-outer{flex:1;height:16px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden}
+        .bar-fill{height:100%;border-radius:4px;transition:width .4s ease}
+        .bar-value{font-size:.72rem;color:var(--text-secondary);min-width:55px}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <header id="main-navbar"></header>
+    <main class="main">
+    <div class="tool-wrap">
+        <h2 style="color:var(--color-engineering);text-align:center;margin-bottom:10px;font-size:1.9rem;">Spessore Isolamento — Acqua</h2>
+        <p style="text-align:center;margin-bottom:6px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+            <a href="../../../index.html" style="color:var(--color-engineering);text-decoration:none;">Tools</a><span style="margin:0 6px;">/</span>
+            <a href="../../index.html" style="color:var(--color-engineering);text-decoration:none;">Dimensionamenti</a><span style="margin:0 6px;">/</span>
+            <a href="../index.html" style="color:var(--color-engineering);text-decoration:none;">Acqua</a><span style="margin:0 6px;">/</span>
+            <span style="color:var(--text-primary);">Spessore isolamento</span>
+        </p>
+        <p style="text-align:center;margin-bottom:28px;font-size:.82rem;"><span class="norm-badge">EN ISO 12241</span><span class="norm-badge">D.Lgs 192/2005</span></p>
+
+        <div class="tool-grid">
+            <div class="tool-panel">
+                <div class="panel-title">Dati di ingresso</div>
+
+                <div class="tab-bar">
+                    <div class="tab-btn active" onclick="switchMode('hot',this)">Acqua calda / riscaldamento</div>
+                    <div class="tab-btn" onclick="switchMode('cold',this)">Acqua fredda / anticondensa</div>
+                </div>
+
+                <div id="tab-hot" class="tab-content active">
+                    <div class="field-row">
+                        <span class="field-label">Temperatura acqua calda</span>
+                        <div class="field-input-wrap">
+                            <input type="number" id="t-fluid-hot" value="80" min="30" max="150" step="1">
+                            <span class="field-unit">°C</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-cold" class="tab-content">
+                    <div class="field-row">
+                        <span class="field-label">Temperatura acqua fredda</span>
+                        <div class="field-input-wrap">
+                            <input type="number" id="t-fluid-cold" value="10" min="0" max="30" step="1">
+                            <span class="field-unit">°C</span>
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <span class="field-label">Umidità relativa aria</span>
+                        <div class="field-input-wrap">
+                            <input type="number" id="rh" value="70" min="20" max="100" step="1">
+                            <span class="field-unit">%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <span class="field-label">Temperatura ambiente</span>
+                    <div class="field-input-wrap">
+                        <input type="number" id="t-amb" value="20" min="-10" max="40" step="1">
+                        <span class="field-unit">°C</span>
+                    </div>
+                </div>
+
+                <hr class="divider">
+                <div class="field-row">
+                    <span class="field-label">Classe tubazione</span>
+                    <select class="field-select" id="pipe-class" onchange="updateDNOptions()" style="min-width:150px;">
+                        <option value="DIN2448">DIN 2448 / EN 10216</option>
+                        <option value="ANSI40" selected>ANSI Sch40</option>
+                        <option value="ANSI80">ANSI Sch80</option>
+                    </select>
+                </div>
+                <div class="field-row">
+                    <span class="field-label">DN tubazione</span>
+                    <select class="field-select" id="dn-select" onchange="updateDNInfo()"></select>
+                </div>
+                <div id="dn-info" style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:14px;line-height:1.6;"></div>
+
+                <hr class="divider">
+                <div class="field-row">
+                    <span class="field-label">Materiale isolante</span>
+                    <select class="field-select" id="insul-mat" onchange="updateInsulProps()" style="min-width:155px;">
+                        <option value="0.040">Lana minerale (0.040)</option>
+                        <option value="0.033">Lana di vetro (0.033)</option>
+                        <option value="0.030" selected>Lana di roccia (0.030)</option>
+                        <option value="0.025">Schiuma PIR (0.025)</option>
+                        <option value="0.022">Aerogel (0.022)</option>
+                        <option value="0.035">Elastomero espanso (0.035)</option>
+                    </select>
+                </div>
+                <div class="field-row">
+                    <span class="field-label">Conducibilità λ</span>
+                    <div class="field-input-wrap">
+                        <input type="number" id="lambda" value="0.030" min="0.01" max="0.2" step="0.001">
+                        <span class="field-unit">W/m·K</span>
+                    </div>
+                </div>
+                <hr class="divider">
+                <div class="field-row">
+                    <span class="field-label">Costo energia</span>
+                    <div class="field-input-wrap">
+                        <input type="number" id="cost-energy" value="0.12" min="0.01" max="1" step="0.01">
+                        <span class="field-unit">€/kWh</span>
+                    </div>
+                </div>
+                <div class="field-row">
+                    <span class="field-label">Ore operative/anno</span>
+                    <div class="field-input-wrap">
+                        <input type="number" id="hours-year" value="4000" min="100" max="8760" step="100">
+                        <span class="field-unit">h/a</span>
+                    </div>
+                </div>
+                <div class="field-row">
+                    <span class="field-label">Costo isolante</span>
+                    <div class="field-input-wrap">
+                        <input type="number" id="cost-insul" value="60" min="5" max="500" step="5">
+                        <span class="field-unit">€/m²</span>
+                    </div>
+                </div>
+                <div class="field-row">
+                    <span class="field-label">Vita utile</span>
+                    <div class="field-input-wrap">
+                        <input type="number" id="lifetime" value="15" min="1" max="30" step="1">
+                        <span class="field-unit">anni</span>
+                    </div>
+                </div>
+                <button class="btn-calc" onclick="calculate()">Calcola spessore ottimale</button>
+            </div>
+
+            <div class="tool-panel">
+                <div class="panel-title">Schema calcolo</div>
+                <div style="font-size:.8rem;color:var(--text-secondary);line-height:1.9;">
+                    <strong style="color:var(--text-primary);">Acqua calda</strong> — Minimizza il costo totale
+                    (energia dispersa + ammortamento isolante).<br><br>
+                    <strong style="color:var(--text-primary);">Acqua fredda / anticondensa</strong> — Calcola lo
+                    spessore minimo per evitare la condensazione sulla superficie esterna.<br><br>
+                    Condizione anticondensa: la temperatura superficiale esterna deve essere
+                    &gt; temperatura di rugiada dell'aria.<br>
+                    T<sub>rugiada</sub> = f(T<sub>amb</sub>, UR%)
+                </div>
+                <hr class="divider">
+                <div class="panel-title" style="margin-top:8px;">Parametri calcolati</div>
+                <div class="field-row"><span class="field-label">Raggio esterno tubo</span><div class="field-input-wrap"><span id="disp-r1" style="font-size:.85rem;color:var(--text-primary);min-width:70px;text-align:right;">—</span><span class="field-unit">mm</span></div></div>
+                <div class="field-row"><span class="field-label">ΔT (fluido – ambiente)</span><div class="field-input-wrap"><span id="disp-dt" style="font-size:.85rem;font-weight:600;color:var(--color-engineering);min-width:70px;text-align:right;">—</span><span class="field-unit">K</span></div></div>
+                <div class="field-row" id="row-tdew" style="display:none;"><span class="field-label">T. di rugiada aria</span><div class="field-input-wrap"><span id="disp-tdew" style="font-size:.85rem;font-weight:600;color:#e05544;min-width:70px;text-align:right;">—</span><span class="field-unit">°C</span></div></div>
+            </div>
+        </div>
+
+        <div class="results-panel" id="results-panel">
+            <div class="panel-title" id="results-title">Analisi spessore ottimale</div>
+            <div class="results-grid" id="results-grid"></div>
+            <div style="margin-top:20px;">
+                <div class="panel-title">Grafico costo totale per spessore</div>
+                <div id="cost-chart"></div>
+            </div>
+            <div style="margin-top:20px;">
+                <div class="panel-title">Tabella comparativa</div>
+                <div class="insul-table-wrap">
+                    <table class="insul-table">
+                        <thead><tr>
+                            <th class="left">Sp. [mm]</th>
+                            <th>Q [W/m]</th>
+                            <th>Risp. [%]</th>
+                            <th>€ energia/m·a</th>
+                            <th>€ isolante/m·a</th>
+                            <th>Totale €/m·a</th>
+                            <th id="col-extra-hdr">—</th>
+                        </tr></thead>
+                        <tbody id="insul-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="note-block">
+            <strong>Acqua calda</strong> — Spessore ottimale economico (EN ISO 12241). Il costo totale = energia persa × tariffa + costo isolante ammortizzato.<br>
+            <strong>Acqua fredda / anticondensa</strong> — Lo spessore minimo anticondensa è quello per cui T<sub>sup</sub> &gt; T<sub>rugiada</sub>. Raccomandato elastomero espanso (λ bassa, impermeabile al vapore).<br>
+            <strong>D.Lgs 192/2005</strong> — Prescrive spessori minimi per tubazioni di impianti termici in base alla T del fluido e al DN.
+        </div>
+    </div>
+    </main>
+</div>
+<script src="../../../../../js/navbar.js"></script>
+<script src="../../../../../js/main.js"></script>
+<script src="../../../../../js/footer.js"></script>
+<script>
+const PIPE_SCHEDULES={DIN2448:{data:[[15,21.3,2.6],[20,26.9,2.6],[25,33.7,3.2],[32,42.4,3.2],[40,48.3,3.2],[50,60.3,3.6],[65,76.1,3.6],[80,88.9,4.0],[100,114.3,4.5],[125,139.7,5.0],[150,168.3,5.6],[200,219.1,6.3],[250,273.0,6.3]]},ANSI40:{data:[[15,21.3,2.77],[20,26.7,2.87],[25,33.4,3.38],[32,42.2,3.56],[40,48.3,3.68],[50,60.3,3.91],[65,73.0,5.16],[80,88.9,5.49],[100,114.3,6.02],[125,141.3,6.55],[150,168.3,7.11],[200,219.1,8.18],[250,273.1,9.27]]},ANSI80:{data:[[15,21.3,3.73],[20,26.7,3.91],[25,33.4,4.55],[32,42.2,4.85],[40,48.3,5.08],[50,60.3,5.54],[65,73.0,7.01],[80,88.9,7.62],[100,114.3,8.56],[125,141.3,9.53],[150,168.3,10.97],[200,219.1,12.70],[250,273.1,15.09]]}};
+let currentMode='hot';
+function switchMode(mode,btn){
+    currentMode=mode;
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-hot').classList.toggle('active',mode==='hot');
+    document.getElementById('tab-cold').classList.toggle('active',mode==='cold');
+    document.getElementById('row-tdew').style.display=mode==='cold'?'flex':'none';
+}
+function updateDNOptions(){const cls=document.getElementById('pipe-class').value;const sel=document.getElementById('dn-select');sel.innerHTML=PIPE_SCHEDULES[cls].data.map(([dn])=>`<option value="${dn}">DN ${dn}</option>`).join('');sel.value=80;updateDNInfo();}
+function getSelectedDN(){const cls=document.getElementById('pipe-class').value;const dn=parseInt(document.getElementById('dn-select').value);return PIPE_SCHEDULES[cls].data.find(r=>r[0]===dn)||PIPE_SCHEDULES[cls].data[5];}
+function updateDNInfo(){const[dn,de,t]=getSelectedDN();document.getElementById('dn-info').innerHTML=`De: <strong>${de} mm</strong> | T: <strong>${t} mm</strong>`;document.getElementById('disp-r1').textContent=(de/2).toFixed(1);}
+function updateInsulProps(){document.getElementById('lambda').value=parseFloat(document.getElementById('insul-mat').value);}
+// Temperatura di rugiada Magnus-Tetens
+function dewPoint(T,RH){const a=17.27,b=237.7;const alpha=a*T/(b+T)+Math.log(RH/100);return b*alpha/(a-alpha);}
+// Perdita termica cilindrica
+function heatLoss(r1_m,r2_m,lambda,dT,ho=10){const Rins=Math.log(r2_m/r1_m)/lambda;const Rext=1/(r2_m*ho);return 2*Math.PI*dT/(Rins+Rext);}
+// Temp sup esterna dell'isolamento
+function tSurface(r1_m,r2_m,lambda,Tfluid,Tamb,ho=10){const Q=heatLoss(r1_m,r2_m,lambda,Math.abs(Tfluid-Tamb),ho);const sign=Tfluid>Tamb?-1:1;return Tamb+sign*Q/(2*Math.PI*r2_m*ho);}
+function calculate(){
+    const Tamb=parseFloat(document.getElementById('t-amb').value)||20;
+    const lambda=parseFloat(document.getElementById('lambda').value)||0.030;
+    const costEnergy=parseFloat(document.getElementById('cost-energy').value)||0.12;
+    const hoursYear=parseFloat(document.getElementById('hours-year').value)||4000;
+    const costInsul=parseFloat(document.getElementById('cost-insul').value)||60;
+    const lifetime=parseFloat(document.getElementById('lifetime').value)||15;
+    const[dn,de,t]=getSelectedDN();
+    const r1=de/2/1000;
+    let Tfluid, Tdew=null;
+    if(currentMode==='hot'){
+        Tfluid=parseFloat(document.getElementById('t-fluid-hot').value)||80;
+    } else {
+        Tfluid=parseFloat(document.getElementById('t-fluid-cold').value)||10;
+        const RH=parseFloat(document.getElementById('rh').value)||70;
+        Tdew=dewPoint(Tamb,RH);
+        document.getElementById('disp-tdew').textContent=Tdew.toFixed(1);
+    }
+    const dT=Math.abs(Tfluid-Tamb);
+    document.getElementById('disp-dt').textContent=dT.toFixed(1);
+    const qNaked=2*Math.PI*r1*10*dT; // senza isolamento
+    const thicknesses=[10,15,20,25,30,40,50,60,70,80,100,120,150];
+    let bestCost=Infinity,bestThick=0,minAnticondensa=null;
+    const rows=thicknesses.map(s=>{
+        const r2=r1+s/1000;
+        const q=heatLoss(r1,r2,lambda,dT);
+        const energyCost=(q*hoursYear)/1000*costEnergy;
+        const insulCost=(costInsul*2*Math.PI*r2)/lifetime;
+        const totalCost=energyCost+insulCost;
+        const saving=(1-q/qNaked)*100;
+        let tSup=null,anticond=null;
+        if(currentMode==='cold'&&Tdew!==null){
+            tSup=tSurface(r1,r2,lambda,Tfluid,Tamb);
+            anticond=tSup>Tdew;
+            if(anticond&&minAnticondensa===null) minAnticondensa=s;
+        }
+        if(totalCost<bestCost){bestCost=totalCost;bestThick=s;}
+        return{s,q,saving,energyCost,insulCost,totalCost,tSup,anticond};
+    });
+    const recommended=currentMode==='cold'&&minAnticondensa?minAnticondensa:bestThick;
+    document.getElementById('results-title').textContent=currentMode==='cold'?'Spessore minimo anticondensa + analisi economica':'Analisi spessore ottimale';
+    document.getElementById('results-grid').innerHTML=`
+        <div class="result-card"><div class="result-label">${currentMode==='hot'?'Spessore ottimale':'Spessore anticondensa min.'}</div><div class="result-value">${recommended}<span class="result-unit">mm</span></div></div>
+        <div class="result-card"><div class="result-label">Costo ottimale min.</div><div class="result-value">${rows.find(r=>r.s===recommended).totalCost.toFixed(2)}<span class="result-unit">€/m·a</span></div></div>
+        <div class="result-card"><div class="result-label">Q persa con ottimale</div><div class="result-value">${rows.find(r=>r.s===recommended).q.toFixed(2)}<span class="result-unit">W/m</span></div></div>
+        <div class="result-card"><div class="result-label">Q persa senza isolamento</div><div class="result-value">${qNaked.toFixed(2)}<span class="result-unit">W/m</span></div></div>
+        <div class="result-card"><div class="result-label">Risparmio energetico</div><div class="result-value">${rows.find(r=>r.s===recommended).saving.toFixed(1)}<span class="result-unit">%</span></div></div>
+        ${currentMode==='cold'?`<div class="result-card"><div class="result-label">Temp. di rugiada</div><div class="result-value">${Tdew.toFixed(1)}<span class="result-unit">°C</span></div></div>`:''}
+    `;
+    const maxCost=Math.max(...rows.map(r=>r.totalCost));
+    document.getElementById('cost-chart').innerHTML=rows.map(r=>`
+        <div class="bar-row">
+            <div class="bar-label">${r.s} mm</div>
+            <div class="bar-outer"><div class="bar-fill" style="width:${(r.totalCost/maxCost*100).toFixed(1)}%;background:${r.s===recommended?'var(--color-engineering)':'rgba(200,160,60,0.3)'}"></div></div>
+            <div class="bar-value">${r.s===recommended?'<strong>':''}${r.totalCost.toFixed(2)} €${r.s===recommended?'</strong>':''}</div>
+        </div>`).join('');
+    document.getElementById('col-extra-hdr').textContent=currentMode==='cold'?'T sup. [°C]':'—';
+    document.getElementById('insul-tbody').innerHTML=rows.map(r=>`
+        <tr${r.s===recommended?' class="best"':''}>
+            <td style="text-align:left;font-weight:600;">${r.s}${r.s===recommended?' ★':''}</td>
+            <td>${r.q.toFixed(2)}</td>
+            <td>${r.saving.toFixed(1)}%</td>
+            <td>${r.energyCost.toFixed(2)}</td>
+            <td>${r.insulCost.toFixed(2)}</td>
+            <td><strong>${r.totalCost.toFixed(2)}</strong></td>
+            <td>${r.tSup!==null?`<span class="${r.anticond?'badge-ok':'badge-hi'}">${r.tSup.toFixed(1)}°C</span>`:'—'}</td>
+        </tr>`).join('');
+    document.getElementById('results-panel').classList.add('visible');
+}
+document.addEventListener('DOMContentLoaded',()=>{updateDNOptions();});
+</script>
+</body>
+</html>

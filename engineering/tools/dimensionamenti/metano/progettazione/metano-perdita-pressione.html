@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Perdita di Pressione — Metano | Emanuele Zanella</title>
+    <meta name="description" content="Calcolo della perdita di pressione nelle tubazioni gas metano con formula di Weymouth.">
+    <script>
+(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
+    </script>
+    <link rel="stylesheet" href="../../../../../css/style.css">
+    <style>
+        /* ── Wrapper ── */
+        .tool-wrapper {
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        /* ── Card ── */
+        .card {
+            background: var(--card-bg, rgba(255,255,255,0.04));
+            border: 1px solid var(--border-color, rgba(255,255,255,0.09));
+            border-radius: 14px;
+            padding: 24px 28px;
+            margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: var(--color-engineering);
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.07));
+        }
+
+        /* ── Input grid ── */
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .input-group label {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .input-row {
+            display: flex;
+            align-items: stretch;
+            border: 1px solid var(--border-color, rgba(255,255,255,0.12));
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--input-bg, rgba(255,255,255,0.04));
+            transition: border-color 0.2s;
+        }
+        .input-row:focus-within { border-color: var(--color-engineering); }
+        .input-row input,
+        .input-row select {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 9px 12px;
+            font-size: 0.88rem;
+            color: var(--text-primary);
+            outline: none;
+            width: 100%;
+            min-width: 0;
+        }
+        .input-row select {
+            cursor: pointer;
+            color-scheme: dark;
+        }
+        html.light-mode .input-row select { color-scheme: light; }
+        .input-row select option { background: #1e1e1e; color: #f0f0f0; }
+        html.light-mode .input-row select option { background: #fff; color: #111; }
+        .input-row .unit {
+            padding: 9px 10px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: var(--unit-bg, rgba(255,255,255,0.06));
+            border-left: 1px solid var(--border-color, rgba(255,255,255,0.08));
+            white-space: nowrap;
+            user-select: none;
+            display: flex;
+            align-items: center;
+        }
+
+        /* ── Info tooltip icon ── */
+        .info-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 14px; height: 14px; border-radius: 50%;
+            border: 1px solid var(--text-secondary);
+            font-size: 0.6rem; color: var(--text-secondary);
+            cursor: help; flex-shrink: 0;
+        }
+
+        /* ── Separator label ── */
+        .section-label {
+            font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 1.2px; text-transform: uppercase;
+            color: var(--text-secondary);
+            margin: 20px 0 10px;
+        }
+
+        /* ── Pipe diagram ── */
+        .pipe-diagram {
+            margin: 0 0 22px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* ── Bottone ── */
+        .btn-calc {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--color-engineering);
+            color: #fff;
+            border: none;
+            padding: 11px 32px;
+            border-radius: 8px;
+            font-size: 0.88rem; font-weight: 700;
+            cursor: pointer; letter-spacing: 0.5px;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+        html.light-mode .btn-calc { color: #1a1a1a; }
+        .btn-calc:hover { opacity: 0.88; transform: translateY(-1px); }
+        .btn-calc:active { transform: translateY(0); }
+
+        /* ── Risultati ── */
+        .results-hidden { display: none; }
+        .results-section { animation: fadeUp 0.3s ease; }
+        @keyframes fadeUp { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform:none; } }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        .result-box {
+            background: var(--card-bg, rgba(255,255,255,0.04));
+            border: 1px solid var(--border-color, rgba(255,255,255,0.09));
+            border-radius: 10px;
+            padding: 14px 16px;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .result-box.primary {
+            border-color: var(--color-engineering);
+            background: rgba(var(--color-engineering-rgb,200,160,60), 0.07);
+        }
+        .r-label {
+            font-size: 0.7rem; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--text-secondary); font-weight: 600;
+        }
+        .r-value {
+            font-size: 1.4rem; font-weight: 700;
+            color: var(--text-primary); line-height: 1.1;
+        }
+        .result-box.primary .r-value { color: var(--color-engineering); }
+        .r-unit { font-size: 0.76rem; color: var(--text-secondary); }
+
+        /* ── Pressure bar visual ── */
+        .pressure-bar-wrap {
+            margin: 10px 0 18px;
+        }
+        .pressure-bar-track {
+            height: 8px; border-radius: 4px;
+            background: var(--border-color, rgba(255,255,255,0.1));
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+        .pressure-bar-fill {
+            height: 100%; border-radius: 4px;
+            background: var(--color-engineering);
+            transition: width 0.6s ease;
+        }
+        .pressure-bar-labels {
+            display: flex; justify-content: space-between;
+            font-size: 0.75rem; color: var(--text-secondary);
+        }
+        .pressure-bar-labels span.hi { color: var(--color-engineering); font-weight: 600; }
+
+        /* ── Regime chip ── */
+        .regime-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 5px 12px; border-radius: 20px;
+            font-size: 0.78rem; font-weight: 600;
+            border: 1px solid;
+        }
+        .regime-laminar { background: rgba(80,200,120,0.12); border-color: rgba(80,200,120,0.4); color: #50c878; }
+        .regime-transition { background: rgba(240,180,50,0.12); border-color: rgba(240,180,50,0.4); color: #f0b432; }
+        .regime-turbulent { background: rgba(220,80,60,0.12); border-color: rgba(220,80,60,0.4); color: #dc503c; }
+
+        /* ── Formula box ── */
+        .formula-box {
+            background: transparent;
+            border-left: 3px solid var(--color-engineering);
+            border-radius: 0 8px 8px 0;
+            padding: 12px 16px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-top: 14px;
+        }
+        .formula-box strong { color: var(--text-primary); }
+
+        /* ── Warning ── */
+        .warn-box {
+            background: rgba(240,150,40,0.08);
+            border: 1px solid rgba(240,150,40,0.25);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.79rem;
+            color: var(--text-secondary);
+            margin-top: 14px;
+        }
+        .warn-box strong { color: #f09628; }
+
+        /* ── Error ── */
+        .error-box {
+            background: rgba(220,60,60,0.08);
+            border: 1px solid rgba(220,60,60,0.3);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.82rem;
+            color: #e05050;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        @media (max-width: 580px) {
+            .card { padding: 18px 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="layout">
+    <header id="main-navbar"></header>
+    <main class="main">
+    <div class="tool-wrapper">
+
+        <!-- Titolo e breadcrumb -->
+        <h2 style="color:var(--color-engineering);text-align:center;margin-bottom:10px;font-size:2rem;">
+            Perdita di Pressione — Gas
+        </h2>
+        <p style="text-align:center;margin-bottom:30px;font-size:0.9rem;color:var(--text-secondary);letter-spacing:1px;">
+            <a href="../../../index.html" style="color:var(--color-engineering);text-decoration:none;">Tools</a>
+            <span style="margin:0 6px;">/</span>
+            <a href="../../index.html" style="color:var(--color-engineering);text-decoration:none;">Dimensionamenti</a>
+            <span style="margin:0 6px;">/</span>
+            <a href="../index.html" style="color:var(--color-engineering);text-decoration:none;">Metano</a>
+            <span style="margin:0 6px;">/</span>
+            <span style="color:var(--text-primary);">Perdita di Pressione nella Tubazione</span>
+        </p>
+
+        <!-- Schema visivo tubazione -->
+        <div class="pipe-diagram">
+            <svg width="540" height="90" viewBox="0 0 540 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- tubo corpo -->
+                <rect x="60" y="32" width="420" height="26" rx="4"
+                    fill="rgba(var(--color-engineering-rgb,200,160,60),0.08)"
+                    stroke="var(--color-engineering)" stroke-width="1.5"/>
+                <!-- freccia flusso -->
+                <line x1="120" y1="45" x2="390" y2="45" stroke="var(--color-engineering)" stroke-width="1.2" stroke-dasharray="6 4" opacity="0.5"/>
+                <polygon points="390,41 400,45 390,49" fill="var(--color-engineering)" opacity="0.7"/>
+                <!-- flangia sinistra -->
+                <rect x="50" y="26" width="14" height="38" rx="3" fill="var(--color-engineering)" opacity="0.55"/>
+                <!-- flangia destra -->
+                <rect x="476" y="26" width="14" height="38" rx="3" fill="var(--color-engineering)" opacity="0.55"/>
+                <!-- P1 label -->
+                <text x="48" y="18" text-anchor="middle" font-size="11" fill="var(--color-engineering)" font-family="sans-serif" font-weight="600">P₁</text>
+                <text x="48" y="82" text-anchor="middle" font-size="9" fill="var(--text-secondary,#aaa)" font-family="sans-serif">Ingresso</text>
+                <!-- P2 label -->
+                <text x="492" y="18" text-anchor="middle" font-size="11" fill="var(--color-engineering)" font-family="sans-serif" font-weight="600">P₂</text>
+                <text x="492" y="82" text-anchor="middle" font-size="9" fill="var(--text-secondary,#aaa)" font-family="sans-serif">Uscita</text>
+                <!-- L label -->
+                <text x="270" y="76" text-anchor="middle" font-size="10" fill="var(--text-secondary,#aaa)" font-family="sans-serif">L (lunghezza)</text>
+                <!-- DN label -->
+                <text x="270" y="15" text-anchor="middle" font-size="10" fill="var(--text-secondary,#aaa)" font-family="sans-serif">DN (diametro interno)</text>
+                <!-- ΔP arrow -->
+                <text x="270" y="49" text-anchor="middle" font-size="9" fill="var(--color-engineering)" font-family="sans-serif" opacity="0.8">ΔP</text>
+            </svg>
+        </div>
+
+        <!-- ── 1. CONDIZIONI GAS ── -->
+        <div class="card">
+            <div class="card-title">1 · Tipo di gas e condizioni</div>
+            <div class="input-grid">
+
+                <div class="input-group">
+                    <label>Tipo di gas</label>
+                    <div class="input-row">
+                        <select id="gasType" onchange="onGasChange()">
+                            <option value="methane">Metano (CH₄)</option>
+                            <option value="naturalgas">Gas naturale</option>
+                            <option value="lpg_propane">GPL — Propano (C₃H₈)</option>
+                            <option value="lpg_butane">GPL — Butano (C₄H₁₀)</option>
+                            <option value="air">Aria</option>
+                            <option value="co2">CO₂</option>
+                            <option value="nitrogen">Azoto (N₂)</option>
+                            <option value="custom">Personalizzato</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Densità relativa (SG) <span class="info-icon" title="Rapporto densità gas / densità aria a 0°C, 1 atm">i</span></label>
+                    <div class="input-row">
+                        <input type="number" id="sg" value="0.554" step="0.001" min="0.1" max="5">
+                        <span class="unit">—</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Viscosità dinamica <span class="info-icon" title="Viscosità del gas alle condizioni operative">i</span></label>
+                    <div class="input-row">
+                        <input type="number" id="viscosity" value="0.0000113" step="0.0000001" min="0.000001">
+                        <span class="unit">Pa·s</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Temperatura del gas</label>
+                    <div class="input-row">
+                        <input type="number" id="temperature" value="15" step="1">
+                        <span class="unit">°C</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── 2. TUBAZIONE ── -->
+        <div class="card">
+            <div class="card-title">2 · Tubazione</div>
+            <div class="input-grid">
+
+                <div class="input-group">
+                    <label>Materiale tubazione</label>
+                    <div class="input-row">
+                        <select id="pipeMaterial" onchange="onMaterialChange()">
+                            <option value="steel_new">Acciaio (nuovo) — ε = 0.046 mm</option>
+                            <option value="steel_used">Acciaio (usato) — ε = 0.15 mm</option>
+                            <option value="pe_pvc">PE / PVC — ε = 0.007 mm</option>
+                            <option value="copper">Rame — ε = 0.0015 mm</option>
+                            <option value="cast_iron">Ghisa — ε = 0.26 mm</option>
+                            <option value="custom_rough">Rugosità personalizzata</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Rugosità assoluta (ε) <span class="info-icon" title="Rugosità interna della tubazione">i</span></label>
+                    <div class="input-row">
+                        <input type="number" id="roughness" value="0.046" step="0.001" min="0">
+                        <span class="unit">mm</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>DN nominale</label>
+                    <div class="input-row">
+                        <select id="pipeSize" onchange="onPipeSizeChange()">
+                            <option value="custom">— Inserisci diam. interno —</option>
+                            <optgroup label="Serie gas (acciaio)">
+                                <option value="15|16.1">DN 15 — Ø int. 16.1 mm</option>
+                                <option value="20|21.7">DN 20 — Ø int. 21.7 mm</option>
+                                <option value="25|27.3">DN 25 — Ø int. 27.3 mm</option>
+                                <option value="32|36.0">DN 32 — Ø int. 36.0 mm</option>
+                                <option value="40|41.8">DN 40 — Ø int. 41.8 mm</option>
+                                <option value="50|53.1">DN 50 — Ø int. 53.1 mm</option>
+                                <option value="65|68.9">DN 65 — Ø int. 68.9 mm</option>
+                                <option value="80|82.5">DN 80 — Ø int. 82.5 mm</option>
+                                <option value="100|105.3">DN 100 — Ø int. 105.3 mm</option>
+                                <option value="125|130.8">DN 125 — Ø int. 130.8 mm</option>
+                                <option value="150|155.4">DN 150 — Ø int. 155.4 mm</option>
+                                <option value="200|206.0">DN 200 — Ø int. 206.0 mm</option>
+                                <option value="250|257.0">DN 250 — Ø int. 257.0 mm</option>
+                                <option value="300|309.0">DN 300 — Ø int. 309.0 mm</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Diametro interno <span class="info-icon" title="Diametro interno effettivo della tubazione">i</span></label>
+                    <div class="input-row">
+                        <input type="number" id="innerDiam" value="53.1" step="0.1" min="1">
+                        <span class="unit">mm</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Lunghezza tubazione</label>
+                    <div class="input-row">
+                        <input type="number" id="pipeLength" value="100" step="1" min="0.1">
+                        <span class="unit">m</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Lungh. equiv. accessori <span class="info-icon" title="Lunghezza equivalente di curve, valvole, raccordi ecc.">i</span></label>
+                    <div class="input-row">
+                        <input type="number" id="fittings" value="0" step="1" min="0">
+                        <span class="unit">m</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── 3. CONDIZIONI OPERATIVE ── -->
+        <div class="card">
+            <div class="card-title">3 · Condizioni operative</div>
+            <div class="input-grid">
+
+                <div class="input-group">
+                    <label>Portata volumetrica <span class="info-icon" title="Portata alle condizioni standard (0°C, 1 atm)">i</span></label>
+                    <div class="input-row">
+                        <input type="number" id="flowRate" value="50" step="1" min="0.001">
+                        <span class="unit">Nm³/h</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Pressione di ingresso P₁ <span class="info-icon" title="Pressione assoluta all'ingresso della tubazione">i</span></label>
+                    <div class="input-row">
+                        <input type="number" id="p1" value="1.013" step="0.01" min="0.001">
+                        <span class="unit">bar ass.</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Error -->
+        <div class="error-box" id="errorBox"></div>
+
+        <!-- Calcola -->
+        <div style="display:flex;justify-content:center;margin-bottom:28px;">
+            <button class="btn-calc" onclick="calculate()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/>
+                    <path d="M9 15h3l8-8-3-3-8 8v3z"/>
+                </svg>
+                Calcola Perdita di Pressione
+            </button>
+        </div>
+
+        <!-- ── RISULTATI ── -->
+        <div id="resultsSection" class="results-hidden results-section">
+            <div class="card">
+                <div class="card-title">4 · Risultati</div>
+
+                <!-- Barra perdita di pressione -->
+                <div class="pressure-bar-wrap">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                        <span style="font-size:0.78rem;color:var(--text-secondary);">Perdita di pressione rispetto a P₁</span>
+                        <span id="rPctLabel" style="font-size:0.82rem;font-weight:700;color:var(--color-engineering);"></span>
+                    </div>
+                    <div class="pressure-bar-track">
+                        <div class="pressure-bar-fill" id="pressureBarFill" style="width:0%"></div>
+                    </div>
+                    <div class="pressure-bar-labels">
+                        <span>P₁ = <span id="barP1">—</span> bar</span>
+                        <span class="hi">P₂ = <span id="barP2">—</span> bar</span>
+                    </div>
+                </div>
+
+                <div class="results-grid">
+                    <div class="result-box primary">
+                        <div class="r-label">Perdita di pressione ΔP</div>
+                        <div class="r-value" id="rDeltaP">—</div>
+                        <div class="r-unit">bar</div>
+                    </div>
+                    <div class="result-box primary">
+                        <div class="r-label">ΔP</div>
+                        <div class="r-value" id="rDeltaPmbar">—</div>
+                        <div class="r-unit">mbar</div>
+                    </div>
+                    <div class="result-box">
+                        <div class="r-label">Pressione uscita P₂</div>
+                        <div class="r-value" id="rP2">—</div>
+                        <div class="r-unit">bar ass.</div>
+                    </div>
+                    <div class="result-box">
+                        <div class="r-label">Velocità gas</div>
+                        <div class="r-value" id="rVelocity">—</div>
+                        <div class="r-unit">m/s</div>
+                    </div>
+                    <div class="result-box">
+                        <div class="r-label">Numero di Reynolds</div>
+                        <div class="r-value" id="rRe">—</div>
+                        <div class="r-unit"></div>
+                    </div>
+                    <div class="result-box">
+                        <div class="r-label">Fattore d'attrito (f)</div>
+                        <div class="r-value" id="rFriction">—</div>
+                        <div class="r-unit">Darcy-Weisbach</div>
+                    </div>
+                    <div class="result-box">
+                        <div class="r-label">Portata massica</div>
+                        <div class="r-value" id="rMassFlow">—</div>
+                        <div class="r-unit">kg/h</div>
+                    </div>
+                    <div class="result-box">
+                        <div class="r-label">ΔP lineare</div>
+                        <div class="r-value" id="rDpPerM">—</div>
+                        <div class="r-unit">Pa/m</div>
+                    </div>
+                </div>
+
+                <!-- Regime di flusso -->
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+                    <span style="font-size:0.78rem;color:var(--text-secondary);">Regime di flusso:</span>
+                    <span id="regimeChip" class="regime-chip">—</span>
+                </div>
+
+                <div class="formula-box">
+                    <strong>Metodo di calcolo — Darcy-Weisbach (gas comprimibili):</strong><br>
+                    ΔP = f · (L<sub>tot</sub> / D) · (ρ<sub>op</sub> · v²) / 2<br>
+                    f calcolato con equazione di Colebrook-White (regime turbolento) o Hagen-Poiseuille (laminare).<br>
+                    La densità operativa è corretta per temperatura e pressione: ρ<sub>op</sub> = ρ<sub>std</sub> · (P₁/P<sub>atm</sub>) · (273.15 / (273.15 + T))<br>
+                    La velocità è calcolata alla pressione media: P<sub>m</sub> = P₁ − ΔP/2
+                </div>
+            </div>
+
+            <!-- Alert velocità -->
+            <div class="warn-box" id="velocityWarn" style="display:none;">
+                <strong>⚠ Attenzione:</strong> La velocità del gas supera il valore raccomandato per reti di distribuzione metano
+                (max 20 m/s per reti in bassa pressione). Considerare un diametro maggiore.
+            </div>
+
+        </div>
+        <!-- fine results -->
+
+    </div>
+    </main>
+</div>
+
+<script src="../../../../../js/navbar.js"></script>
+<script src="../../../../../js/main.js"></script>
+<script src="../../../../../js/footer.js"></script>
+<script>
+// ─────────────────────────────────────────────────────────────────
+//  DATI GAS
+// ─────────────────────────────────────────────────────────────────
+const gasData = {
+    methane:    { sg: 0.5540, visc: 0.0000113, name: "Metano CH₄" },
+    naturalgas: { sg: 0.6000, visc: 0.0000110, name: "Gas naturale" },
+    lpg_propane:{ sg: 1.5220, visc: 0.0000082, name: "Propano C₃H₈" },
+    lpg_butane: { sg: 2.0060, visc: 0.0000076, name: "Butano C₄H₁₀" },
+    air:        { sg: 1.0000, visc: 0.0000181, name: "Aria" },
+    co2:        { sg: 1.5290, visc: 0.0000148, name: "CO₂" },
+    nitrogen:   { sg: 0.9670, visc: 0.0000175, name: "Azoto N₂" },
+    custom:     { sg: null,   visc: null,       name: "Personalizzato" },
+};
+
+const materialRoughness = {
+    steel_new:    0.046,
+    steel_used:   0.150,
+    pe_pvc:       0.007,
+    copper:       0.0015,
+    cast_iron:    0.260,
+    custom_rough: null,
+};
+
+// Densità aria a condizioni standard (0°C, 1 atm) kg/m³
+const RHO_AIR_STD = 1.2922;
+const P_ATM = 1.01325; // bar
+
+// ─────────────────────────────────────────────────────────────────
+//  EVENT HANDLERS
+// ─────────────────────────────────────────────────────────────────
+function onGasChange() {
+    const key = document.getElementById("gasType").value;
+    const g = gasData[key];
+    if (g.sg !== null) {
+        document.getElementById("sg").value = g.sg;
+        document.getElementById("viscosity").value = g.visc.toExponential(7);
+    }
+}
+
+function onMaterialChange() {
+    const key = document.getElementById("pipeMaterial").value;
+    const r = materialRoughness[key];
+    if (r !== null) document.getElementById("roughness").value = r;
+}
+
+function onPipeSizeChange() {
+    const val = document.getElementById("pipeSize").value;
+    if (val !== "custom") {
+        const di = parseFloat(val.split("|")[1]);
+        document.getElementById("innerDiam").value = di;
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  COLEBROOK-WHITE (iterativo)
+// ─────────────────────────────────────────────────────────────────
+function colebrookFriction(Re, D_m, eps_m) {
+    if (Re < 2300) {
+        // Hagen-Poiseuille
+        return 64 / Re;
+    }
+    // Stima iniziale Swamee-Jain
+    const rel = eps_m / D_m;
+    let f = 0.25 / Math.pow(Math.log10(rel / 3.7 + 5.74 / Math.pow(Re, 0.9)), 2);
+    // Iterazioni Colebrook-White
+    for (let i = 0; i < 50; i++) {
+        const rhs = -2 * Math.log10(rel / 3.7 + 2.51 / (Re * Math.sqrt(f)));
+        const fNew = 1 / (rhs * rhs);
+        if (Math.abs(fNew - f) < 1e-10) break;
+        f = fNew;
+    }
+    return f;
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  CALCOLO PRINCIPALE
+// ─────────────────────────────────────────────────────────────────
+function calculate() {
+    hideError();
+
+    const sg       = parseFloat(document.getElementById("sg").value);
+    const mu       = parseFloat(document.getElementById("viscosity").value);  // Pa·s
+    const T_c      = parseFloat(document.getElementById("temperature").value);
+    const D_mm     = parseFloat(document.getElementById("innerDiam").value);
+    const L        = parseFloat(document.getElementById("pipeLength").value);
+    const Lfitt    = parseFloat(document.getElementById("fittings").value) || 0;
+    const Q_nm3h   = parseFloat(document.getElementById("flowRate").value);   // Nm³/h
+    const P1_bar   = parseFloat(document.getElementById("p1").value);
+    const eps_mm   = parseFloat(document.getElementById("roughness").value);
+
+    // Validazioni
+    if ([sg, mu, T_c, D_mm, L, Q_nm3h, P1_bar, eps_mm].some(v => isNaN(v) || v <= 0)) {
+        showError("Tutti i campi devono contenere valori numerici positivi.");
+        return;
+    }
+
+    const T_k  = 273.15 + T_c;
+    const D_m  = D_mm / 1000;
+    const eps_m = eps_mm / 1000;
+    const Ltot  = L + Lfitt;
+
+    // Densità gas alle condizioni standard (0°C, 1 atm)
+    const rho_std = sg * RHO_AIR_STD;
+
+    // Densità operativa alla pressione di ingresso P1
+    const rho_op = rho_std * (P1_bar / P_ATM) * (273.15 / T_k);
+
+    // Portata volumetrica operativa (m³/s) alle condizioni P1, T
+    const Q_std_m3s = Q_nm3h / 3600;                   // m³/s standard
+    const Q_op_m3s  = Q_std_m3s * (P_ATM / P1_bar) * (T_k / 273.15);
+
+    // Area sezione e velocità
+    const A = Math.PI * D_m * D_m / 4;
+    const v = Q_op_m3s / A;                             // m/s
+
+    // Numero di Reynolds
+    const Re = rho_op * v * D_m / mu;
+
+    // Fattore d'attrito Darcy-Weisbach
+    const f = colebrookFriction(Re, D_m, eps_m);
+
+    // Perdita di pressione [Pa] — Darcy-Weisbach
+    const dP_Pa = f * (Ltot / D_m) * (rho_op * v * v) / 2;
+    const dP_bar = dP_Pa / 1e5;
+    const dP_mbar = dP_Pa / 100;
+    const P2_bar = P1_bar - dP_bar;
+
+    if (P2_bar <= 0) {
+        showError("La perdita di pressione calcolata supera la pressione di ingresso. Ridurre la lunghezza o la portata, oppure aumentare il diametro.");
+        return;
+    }
+
+    // Portata massica
+    const mass_flow_kgs = Q_std_m3s * rho_std;   // kg/s
+    const mass_flow_kgh = mass_flow_kgs * 3600;
+
+    // ΔP per metro
+    const dP_per_m = dP_Pa / Ltot;
+
+    // Regime
+    let regimeLabel, regimeClass;
+    if (Re < 2300) {
+        regimeLabel = "Laminare"; regimeClass = "regime-laminar";
+    } else if (Re < 4000) {
+        regimeLabel = "Transitorio"; regimeClass = "regime-transition";
+    } else {
+        regimeLabel = "Turbolento"; regimeClass = "regime-turbulent";
+    }
+
+    // % perdita
+    const pct = (dP_bar / P1_bar) * 100;
+
+    // ── Display ──
+    document.getElementById("rDeltaP").textContent    = dP_bar.toFixed(4);
+    document.getElementById("rDeltaPmbar").textContent = dP_mbar.toFixed(2);
+    document.getElementById("rP2").textContent        = P2_bar.toFixed(4);
+    document.getElementById("rVelocity").textContent  = v.toFixed(2);
+    document.getElementById("rRe").textContent        = Math.round(Re).toLocaleString("it");
+    document.getElementById("rFriction").textContent  = f.toFixed(5);
+    document.getElementById("rMassFlow").textContent  = mass_flow_kgh.toFixed(2);
+    document.getElementById("rDpPerM").textContent    = dP_per_m.toFixed(2);
+
+    // Regime chip
+    const chip = document.getElementById("regimeChip");
+    chip.textContent = regimeLabel;
+    chip.className = "regime-chip " + regimeClass;
+
+    // Barra pressione
+    const barPct = Math.min(pct, 100);
+    document.getElementById("pressureBarFill").style.width = barPct + "%";
+    document.getElementById("rPctLabel").textContent = pct.toFixed(2) + "% di P₁";
+    document.getElementById("barP1").textContent = P1_bar.toFixed(3);
+    document.getElementById("barP2").textContent = P2_bar.toFixed(3);
+
+    // Alert velocità
+    const vWarn = document.getElementById("velocityWarn");
+    vWarn.style.display = v > 20 ? "block" : "none";
+
+    // Mostra risultati
+    const sec = document.getElementById("resultsSection");
+    sec.classList.remove("results-hidden");
+    sec.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function showError(msg) {
+    const el = document.getElementById("errorBox");
+    el.textContent = "⚠ " + msg;
+    el.style.display = "block";
+    document.getElementById("resultsSection").classList.add("results-hidden");
+}
+function hideError() {
+    document.getElementById("errorBox").style.display = "none";
+}
+</script>
+</body>
+</html>

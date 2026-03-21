@@ -1,0 +1,338 @@
+Elenco del percorso delle cartelle
+Numero di serie del volume: 4C8F-A229
+C:\DOCUMENTI\04_PROGETTI PERSONALI\05_SITO_GITHUB - CARTELLA DI LAVORO\EMANUELE - 2026-03-21 V00
+|   index.html
+|   struttura.txt
+|   
++---assets
+|       Cute Bird Flapping Animation.webm
+|       favicon-180.png
+|       favicon-32.png
+|       favicon-48.png
+|       favicon-64.png
+|       favicon.png
+|       logo.png
+|       theme_moon.svg.webm
+|       
++---components
++---css
+|   |   style.css
+|   |   
+|   \---hold
+|           style.css
+|           
++---engineering
+|   |   index.html
+|   |   
+|   +---appunti
+|   |   |   index.html
+|   |   |   
+|   |   +---fluidodinamica
+|   |   |   |   fluidodinamica-mathjax.css
+|   |   |   |   index.html
+|   |   |   |   
+|   |   |   +---combustione
+|   |   |   |       index.html
+|   |   |   |       
+|   |   |   +---conservazione-energia
+|   |   |   |       index.html
+|   |   |   |       
+|   |   |   +---conservazione-massa
+|   |   |   |       index.html
+|   |   |   |       
+|   |   |   \---gas-perfetti
+|   |   |           index.html
+|   |   |           
+|   |   +---piping
+|   |   |       index.html
+|   |   |       
+|   |   +---sistemi-energetici
+|   |   |   |   index.html
+|   |   |   |   Sistemi Energetici 1 by M. Bianchi, A. Peretto, G. Negri di Montenegro (z-lib.org).pdf
+|   |   |   |   
+|   |   |   \---turbogas
+|   |   |           index.html
+|   |   |           
+|   |   +---stress-analysis
+|   |   |       index.html
+|   |   |       
+|   |   \---termodinamica
+|   |       |   index.html
+|   |       |   
+|   |       \---vapore
+|   |           |   index.html
+|   |           |   
+|   |           +---pressione
+|   |           |       data.js
+|   |           |       index.html
+|   |           |       saturated_by_pressure_V1.4.json
+|   |           |       
+|   |           +---surriscaldato
+|   |           |       compressed_liquid_and_superheated_steam_V1.3.json
+|   |           |       data.js
+|   |           |       index.html
+|   |           |       
+|   |           \---temperatura
+|   |                   data.js
+|   |                   index.html
+|   |                   saturated_by_temperature_V1.5.json
+|   |                   
+|   \---tools
+|       |   condizioni-utilizzo.html
+|       |   files.zip
+|       |   index.html
+|       |   
+|       +---dimensionamenti
+|       |   |   index.html
+|       |   |   
+|       |   +---acqua
+|       |   |   |   index.html
+|       |   |   |   
+|       |   |   +---progettazione
+|       |   |   |       acqua-dim-perdita-pressione.html
+|       |   |   |       acqua-dim-velocita.html
+|       |   |   |       acqua-perdita-pressione.html
+|       |   |   |       acqua-portata-acqua.html
+|       |   |   |       acqua-spessore-isolamento.html
+|       |   |   |       acqua-velocita-acqua.html
+|       |   |   |       
+|       |   |   \---vasi-espansione
+|       |   |           calcolo-volume-vaso.html
+|       |   |           
+|       |   +---aria
+|       |   |   |   index.html
+|       |   |   |   
+|       |   |   \---progettazione
+|       |   |           aria-dim-perdita-pressione.html
+|       |   |           aria-dim-velocita.html
+|       |   |           aria-perdita-pressione.html
+|       |   |           aria-portata.html
+|       |   |           aria-velocita.html
+|       |   |           
+|       |   +---condensa
+|       |   |   |   index.html
+|       |   |   |   
+|       |   |   +---analisi-economica
+|       |   |   |       scambiatore-calore.html
+|       |   |   |       sistema-aperto.html
+|       |   |   |       sistema-chiuso.html
+|       |   |   |       vapore-flash.html
+|       |   |   |       
+|       |   |   \---tubazioni
+|       |   |           linea-uscita-pompa.html
+|       |   |           recupero-perdita-pressione.html
+|       |   |           recupero-velocita.html
+|       |   |           tra-apparecchiatura-scaricatore.html
+|       |   |           
+|       |   +---metano
+|       |   |   |   index.html
+|       |   |   |   
+|       |   |   \---progettazione
+|       |   |           metano-perdita-pressione.html
+|       |   |           
+|       |   \---vapore
+|       |       |   index.html
+|       |       |   
+|       |       +---condensa
+|       |       |       aria-riscaldamento.html
+|       |       |       liquido-batch.html
+|       |       |       liquido-continuo.html
+|       |       |       perdita-radiante.html
+|       |       |       punto-stallo.html
+|       |       |       tubazione-avviamento.html
+|       |       |       
+|       |       +---costo
+|       |       |       costo-energia.html
+|       |       |       costo-vapore.html
+|       |       |       
+|       |       \---progettazione
+|       |               dim-perdita-pressione.html
+|       |               dim-sfiato.html
+|       |               dim-velocita.html
+|       |               perdita-pressione.html
+|       |               portata-vapore.html
+|       |               spessore-isolamento.html
+|       |               velocita-vapore.html
+|       |               
+|       +---energy
+|       |   |   index.html
+|       |   |   
+|       |   \---Turbogas
+|       |       |   index.html
+|       |       |   
+|       |       \---T_compressione_espansione
+|       |               index.html
+|       |               
+|       +---fluidodinamica
+|       |       index.html
+|       |       
+|       +---piping
+|       |   |   index.html
+|       |   |   
+|       |   +---fittings
+|       |   |   |   files.zip
+|       |   |   |   index.html
+|       |   |   |   
+|       |   |   +---cap
+|       |   |   |       index.html
+|       |   |   |       
+|       |   |   +---curva-45
+|       |   |   |       index.html
+|       |   |   |       
+|       |   |   +---curva-90
+|       |   |   |       index.html
+|       |   |   |       
+|       |   |   +---riduzione-concentrica
+|       |   |   |       index.html
+|       |   |   |       
+|       |   |   +---riduzione-eccentrica
+|       |   |   |       index.html
+|       |   |   |       
+|       |   |   +---tee-ridotto
+|       |   |   |       index.html
+|       |   |   |       
+|       |   |   \---tee-uguale
+|       |   |           index.html
+|       |   |           
+|       |   +---flange
+|       |   |   |   index.html
+|       |   |   |   
+|       |   |   +---asme
+|       |   |   |   |   index.html
+|       |   |   |   |   
+|       |   |   |   \---weldneck
+|       |   |   |       |   data.js
+|       |   |   |       |   flange.svg
+|       |   |   |       |   index.html
+|       |   |   |       |   
+|       |   |   |       \---Nuova cartella
+|       |   |   |               data.js
+|       |   |   |               
+|       |   |   \---en
+|       |   |           en-flange-data.js
+|       |   |           en_flange_index.html
+|       |   |           
+|       |   +---tubazioni
+|       |   |   |   index.html
+|       |   |   |   
+|       |   |   +---dilatazione_termica
+|       |   |   +---isolamento_termico
+|       |   |   |   |   files.zip
+|       |   |   |   |   index.html
+|       |   |   |   |   
+|       |   |   |   +---spessore_isolante
+|       |   |   |   |       index.html
+|       |   |   |   |       
+|       |   |   |   \---temperatura_superficiale
+|       |   |   |           index.html
+|       |   |   |           
+|       |   |   +---Spessore_Peso_metro
+|       |   |   |   |   index.html
+|       |   |   |   |   
+|       |   |   |   +---ASME
+|       |   |   |   |       index.html
+|       |   |   |   |       pipe-tool.js
+|       |   |   |   |       
+|       |   |   |   +---EN
+|       |   |   |   |       index.html
+|       |   |   |   |       pipe-tool.js
+|       |   |   |   |       
+|       |   |   |   +---INOX
+|       |   |   |   |       inox-tool.js
+|       |   |   |   |       inox_index.html
+|       |   |   |   |       
+|       |   |   |   \---POLIETILENE
+|       |   |   |           pe-tool.js
+|       |   |   |           pe_index.html
+|       |   |   |           
+|       |   |   +---strutturale
+|       |   |   |   |   files.zip
+|       |   |   |   |   index.html
+|       |   |   |   |   
+|       |   |   |   +---pressione_ammissibile
+|       |   |   |   |       index.html
+|       |   |   |   |       
+|       |   |   |   \---spessore_minimo
+|       |   |   |           index.html
+|       |   |   |           
+|       |   |   \---Supporti
+|       |   \---valvole
+|       |           index.html
+|       |           
+|       +---stress
+|       |       index.html
+|       |       
+|       \---termodinamica
+|           |   index.html
+|           |   
+|           +---aria-umida
+|           |       index.html
+|           |       
+|           +---proprieta-fluido
+|           |       index.html
+|           |       
+|           +---saturazione
+|           |       files.zip
+|           |       index.html
+|           |       
+|           \---vapore
+|                   index.html
+|                   vapore_saturo_pressione.html
+|                   vapore_saturo_temperatura.html
+|                   vapore_surriscaldato.html
+|                   
++---finanza
+|   |   index.html
+|   |   
+|   +---interesse
+|   |       index.html
+|   |       script.js
+|   |       
+|   +---mutuo
+|   |       index.html
+|   |       
+|   \---portafoglio
+|           index.html
+|           
++---js
+|       footer.js
+|       main.js
+|       main.js.bak
+|       navbar.js
+|       sidebar.js
+|       xsteam2.js
+|       
+\---personale
+    |   cv immagine.jpg
+    |   index.html
+    |   
+    +---accademico
+    |       index.html
+    |       
+    \---progetti
+        |   index.html
+        |   
+        +---magistrale
+        |   |   index.html
+        |   |   Presentazione ppt magistrale.pptx
+        |   |   Tesi magistrale.pdf
+        |   |   
+        |   \---assets
+        |           PR_magistrale.png
+        |           ROI_con_accumulo.png
+        |           ROI_senza_accumulo.png
+        |           video.mp4
+        |           
+        \---triennale
+            |   index.html
+            |   Presentazione di Laurea triennale.pptx
+            |   Tesi triennale.pdf
+            |   triennale_conclusions.txt
+            |   triennale_summary.txt
+            |   
+            +---assets
+            |       image12.png
+            |       
+            \---media_extracted
+                \---ppt
+                    \---media

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Analisi Economica — Sistema Chiuso | Emanuele Zanella</title>
+    <script>(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();</script>
+    <link rel="stylesheet" href="../../../../../css/style.css">
+    <style>
+        :root{--eng:var(--color-engineering,#c8a03c);--eng-rgb:var(--color-engineering-rgb,200,160,60)}
+        .tw{max-width:860px;margin:0 auto}.card{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:14px;padding:24px 28px;margin-bottom:20px}.ct{font-size:.75rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--eng);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.07))}.ig{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}.grp{display:flex;flex-direction:column;gap:5px}.grp label{font-size:.78rem;color:var(--text-secondary);font-weight:500;display:flex;align-items:center;gap:4px}.ir{display:flex;align-items:stretch;border:1px solid var(--border-color,rgba(255,255,255,.12));border-radius:8px;overflow:hidden;background:var(--input-bg,rgba(255,255,255,.04));transition:border-color .2s}.ir:focus-within{border-color:var(--eng)}.ir input,.ir select{flex:1;border:none;background:transparent;padding:9px 12px;font-size:.88rem;color:var(--text-primary);outline:none;width:100%;min-width:0}.ir select{cursor:pointer;color-scheme:dark}html.light-mode .ir select{color-scheme:light}.ir select option{background:#1e1e1e;color:#f0f0f0}html.light-mode .ir select option{background:#fff;color:#111}.ir .un{padding:9px 10px;font-size:.75rem;color:var(--text-secondary);background:var(--unit-bg,rgba(255,255,255,.06));border-left:1px solid var(--border-color,rgba(255,255,255,.08));white-space:nowrap;user-select:none;display:flex;align-items:center}.hint{font-size:.7rem;color:var(--text-secondary);margin-top:3px;opacity:.8;line-height:1.4}.hint em{color:var(--eng);font-style:normal}.ii{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;border:1px solid var(--text-secondary);font-size:.6rem;color:var(--text-secondary);cursor:help;flex-shrink:0}.btn{display:inline-flex;align-items:center;gap:8px;background:var(--eng);color:#fff;border:none;padding:11px 32px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:opacity .2s,transform .15s}html.light-mode .btn{color:#1a1a1a}.btn:hover{opacity:.88;transform:translateY(-1px)}.rh{display:none}.rs{animation:fu .3s ease}@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:18px}.rb{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}.rb.pri{border-color:var(--eng);background:rgba(var(--eng-rgb,200,160,60),.07)}.rb.pos{border-color:rgba(80,200,120,.5);background:rgba(80,200,120,.07)}.rl{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600}.rv{font-size:1.3rem;font-weight:700;color:var(--text-primary);line-height:1.1}.rb.pri .rv{color:var(--eng)}.rb.pos .rv{color:#50c878}.ru{font-size:.76rem;color:var(--text-secondary)}.fb{border-left:3px solid var(--eng);border-radius:0 8px 8px 0;padding:12px 16px;font-size:.79rem;color:var(--text-secondary);line-height:1.7;margin-top:14px}.fb strong{color:var(--text-primary)}.eb{background:rgba(220,60,60,.08);border:1px solid rgba(220,60,60,.3);border-radius:8px;padding:10px 14px;font-size:.82rem;color:#e05050;margin-bottom:16px;display:none}
+        .split2{display:grid;grid-template-columns:1fr 1fr;gap:20px}@media(max-width:600px){.split2{grid-template-columns:1fr}.card{padding:18px 14px}}
+        .chart-bars{display:flex;align-items:flex-end;gap:8px;height:120px;padding:0 4px;margin-top:8px}.bar-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}.bar-rect{width:100%;border-radius:4px 4px 0 0;transition:height .5s ease;min-height:2px}.bar-lbl{font-size:.68rem;color:var(--text-secondary);text-align:center;line-height:1.2}.bar-val{font-size:.72rem;font-weight:700;color:var(--eng)}
+        .compare-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:10px}.compare-table th{text-align:left;padding:8px 12px;font-size:.72rem;color:var(--text-secondary);font-weight:600;letter-spacing:.8px;text-transform:uppercase;border-bottom:1px solid var(--border-color,rgba(255,255,255,.08))}.compare-table td{padding:9px 12px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.05));color:var(--text-primary)}.compare-table tr:last-child td{border-bottom:none}.compare-table td.pos{color:#50c878;font-weight:700}.compare-table td.neg{color:#e05050}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <header id="main-navbar"></header>
+    <main class="main"><div class="tw">
+        <h2 style="color:var(--eng);text-align:center;margin-bottom:10px;font-size:2rem;">Analisi Economica — Sistema Chiuso</h2>
+        <p style="text-align:center;margin-bottom:30px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+            <a href="../../../index.html" style="color:var(--eng);text-decoration:none;">Tools</a> <span style="margin:0 6px;">/</span>
+            <a href="../../index.html" style="color:var(--eng);text-decoration:none;">Dimensionamenti</a> <span style="margin:0 6px;">/</span>
+            <a href="../index.html" style="color:var(--eng);text-decoration:none;">Recupero Condensa</a> <span style="margin:0 6px;">/</span>
+            <span style="color:var(--text-primary);">Sistema Chiuso</span>
+        </p>
+        <div class="card" style="border-left:3px solid var(--eng);border-radius:0 14px 14px 14px;padding:14px 20px;margin-bottom:22px;">
+            <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.6;margin:0;">
+                In un <strong style="color:var(--text-primary);">sistema chiuso</strong> la condensa viene raccolta in un serbatoio pressurizzato e restituita alla caldaia senza contatto con l'atmosfera. Si ha un risparmio sulla pressurizzazione del serbatoio e si mantiene parte dell'entalpia del vapore di flash. Rispetto al sistema aperto, si riduce la perdita di calore per degasaggio e si elimina la necessità di pompa di rilancio in pressione.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="ct">1 · Dati di processo</div>
+            <div class="ig">
+                <div class="grp"><label>Portata condensa</label><div class="ir"><input type="number" id="condFlow" value="500" step="10" min="1"><span class="un">kg/h</span></div><div class="hint">Tipico: <em>200–2000 kg/h</em></div></div>
+                <div class="grp"><label>Temperatura condensa</label><div class="ir"><input type="number" id="condTemp" value="140" step="5" min="50" max="200"><span class="un">°C</span></div></div>
+                <div class="grp"><label>Temperatura acqua reintegro</label><div class="ir"><input type="number" id="makeupTemp" value="15" step="1"><span class="un">°C</span></div><div class="hint">Tipicamente <em>10–20°C</em></div></div>
+                <div class="grp"><label>Pressione serbatoio condensa <span class="ii" title="Pressione a cui il serbatoio di raccolta è mantenuto">i</span></label><div class="ir"><input type="number" id="tankPressure" value="0.5" step="0.1" min="0"><span class="un">bar (g)</span></div><div class="hint">Sistema chiuso: <em>0.3–2 bar(g)</em></div></div>
+                <div class="grp"><label>Rendimento caldaia</label><div class="ir"><input type="number" id="boilerEff" value="85" step="1" min="50" max="99"><span class="un">%</span></div><div class="hint">Tipicamente <em>80–92%</em></div></div>
+                <div class="grp"><label>Ore operative annue</label><div class="ir"><input type="number" id="hours" value="7000" step="100" min="100" max="8760"><span class="un">h/anno</span></div><div class="hint"><em>5000</em>=1 turno · <em>6500</em>=2 turni · <em>8000</em>=continuo</div></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="ct">2 · Costi</div>
+            <div class="ig">
+                <div class="grp"><label>Costo combustibile</label><div class="ir"><input type="number" id="fuelCost" value="0.045" step="0.001"><span class="un">€/kWh</span></div><div class="hint">Gas naturale: <em>0.030–0.060 €/kWh</em></div></div>
+                <div class="grp"><label>Costo acqua reintegro</label><div class="ir"><input type="number" id="waterCost" value="2.5" step="0.1"><span class="un">€/m³</span></div><div class="hint">Con trattamento: <em>1.5–4.0 €/m³</em></div></div>
+                <div class="grp"><label>Costo trattamento chimico</label><div class="ir"><input type="number" id="chemCost" value="1.2" step="0.1"><span class="un">€/m³</span></div><div class="hint">Tipicamente <em>0.5–2.0 €/m³</em></div></div>
+                <div class="grp"><label>Costo elettrico pompa <span class="ii" title="Costo energia elettrica per pompa di condensato">i</span></label><div class="ir"><input type="number" id="elecCost" value="0.18" step="0.01"><span class="un">€/kWh</span></div><div class="hint">Energia elettrica IT: <em>0.12–0.25 €/kWh</em></div></div>
+                <div class="grp"><label>Potenza pompa condensato</label><div class="ir"><input type="number" id="pumpPow" value="1.5" step="0.1" min="0"><span class="un">kW</span></div><div class="hint">Pompa tipica: <em>0.5–5 kW</em></div></div>
+            </div>
+        </div>
+
+        <div class="eb" id="errorBox"></div>
+        <div style="display:flex;justify-content:center;margin-bottom:28px;">
+            <button class="btn" onclick="calculate()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/><path d="M9 15h3l8-8-3-3-8 8v3z"/></svg>
+                Calcola Risparmio
+            </button>
+        </div>
+
+        <div id="resultsSection" class="rh rs">
+            <div class="card">
+                <div class="ct">3 · Risultati</div>
+                <div class="rg">
+                    <div class="rb pri"><div class="rl">Risparmio netto annuo</div><div class="rv" id="rNet">—</div><div class="ru">€/anno</div></div>
+                    <div class="rb pos"><div class="rl">Risparmio energetico</div><div class="rv" id="rEnergy">—</div><div class="ru">€/anno</div></div>
+                    <div class="rb pos"><div class="rl">Risparmio acqua+chimici</div><div class="rv" id="rWater">—</div><div class="ru">€/anno</div></div>
+                    <div class="rb"><div class="rl">Costo pompa elettrica</div><div class="rv" id="rPump">—</div><div class="ru">€/anno</div></div>
+                    <div class="rb"><div class="rl">Calore recuperato</div><div class="rv" id="rHeat">—</div><div class="ru">kW</div></div>
+                    <div class="rb"><div class="rl">Flash steam generato</div><div class="rv" id="rFlash">—</div><div class="ru">% della portata</div></div>
+                </div>
+                <!-- Confronto tabellare -->
+                <div style="font-size:.78rem;color:var(--text-secondary);font-weight:600;margin-bottom:6px;">Confronto con sistema aperto</div>
+                <table class="compare-table">
+                    <thead><tr><th>Voce</th><th>Sistema aperto</th><th>Sistema chiuso</th><th>Differenza</th></tr></thead>
+                    <tbody id="compareBody"></tbody>
+                </table>
+                <div class="split2" style="margin-top:18px;">
+                    <div>
+                        <div style="font-size:.78rem;color:var(--text-secondary);margin-bottom:8px;font-weight:600;">Risparmio annuo breakdown</div>
+                        <div class="chart-bars" id="chartBars"></div>
+                    </div>
+                    <div>
+                        <div style="font-size:.78rem;color:var(--text-secondary);margin-bottom:8px;font-weight:600;">Payback</div>
+                        <div class="grp"><label>Investimento sistema chiuso</label><div class="ir"><input type="number" id="investment" value="25000" step="500" onchange="updatePayback()"><span class="un">€</span></div><div class="hint">Sistema chiuso completo: <em>15.000–80.000 €</em></div></div>
+                        <div id="pbDisplay" style="margin-top:14px;text-align:center;">
+                            <div id="pbVal" style="font-size:1.8rem;font-weight:700;color:var(--eng);">—</div>
+                            <div id="pbLbl" style="font-size:.78rem;color:var(--text-secondary);">di payback</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fb" style="margin-top:14px;">
+                    <strong>Sistema chiuso vs aperto:</strong> Il sistema chiuso mantiene la condensa in pressione, evitando la formazione di vapore di flash all'atmosfera e recuperando anche l'entalpia aggiuntiva.
+                    Il calcolo considera la percentuale di flash steam (dipendente dalla pressione del serbatoio) e il costo della pompa di rilancio.<br>
+                    Flash steam % ≈ (h<sub>f,alta P</sub> − h<sub>f,bassa P</sub>) / h<sub>fg,bassa P</sub>
+                </div>
+            </div>
+        </div>
+    </div></main>
+</div>
+<script src="../../../../../js/navbar.js"></script><script src="../../../../../js/main.js"></script><script src="../../../../../js/footer.js"></script>
+<script>
+// Entalpia acqua satura approssimata (kJ/kg) in funzione di T (°C)
+function hf(T){ return 4.186*T + 0.001*T*T; } // approssimazione lineare estesa
+// Entalpia di vaporizzazione approssimata
+function hfg(T){ return 2501 - 2.365*T; }
+const CP=4.186;
+let savedNet=0;
+function fmt(v){return v>=10000?(v/1000).toFixed(1)+"k":Math.round(v).toLocaleString("it");}
+function calculate(){
+    const F=parseFloat(document.getElementById("condFlow").value),Tc=parseFloat(document.getElementById("condTemp").value),Tm=parseFloat(document.getElementById("makeupTemp").value);
+    const Ptank=parseFloat(document.getElementById("tankPressure").value),eta=parseFloat(document.getElementById("boilerEff").value)/100;
+    const H=parseFloat(document.getElementById("hours").value),fc=parseFloat(document.getElementById("fuelCost").value),wc=parseFloat(document.getElementById("waterCost").value),cc=parseFloat(document.getElementById("chemCost").value);
+    const ec=parseFloat(document.getElementById("elecCost").value),pp=parseFloat(document.getElementById("pumpPow").value);
+    if([F,Tc,Tm,eta,H,fc].some(v=>isNaN(v)||v<=0)){showErr("Valori non validi.");return;}hideErr();
+    // Temperatura di saturazione a pressione serbatoio (approssimazione)
+    const Tsat=100+28.2*Ptank-1.3*Ptank*Ptank; // °C approx
+    // Flash steam %
+    const flashPct=Math.max(0,((hf(Tc)-hf(Tsat))/hfg(Tsat))*100);
+    // Condensa recuperata (non flash)
+    const condRecovered=F*(1-flashPct/100);
+    // Calore recuperato (condensa a Tsat vs acqua makeup)
+    const heatKW=(condRecovered*CP*(Tsat-Tm))/3600;
+    // Risparmio energia
+    const energySaving=(heatKW*H/eta)*fc;
+    const volM3=(condRecovered*H)/1000;
+    const waterSaving=volM3*(wc+cc);
+    // Costo pompa
+    const pumpCost=pp*H*ec;
+    const net=energySaving+waterSaving-pumpCost;
+    savedNet=net;
+    // Open system reference
+    const heatKWopen=(F*CP*(Tc-Tm))/3600;
+    const energyOpen=(heatKWopen*H/eta)*fc;
+    const waterOpen=(F*H/1000)*(wc+cc);
+    const totalOpen=energyOpen+waterOpen;
+    document.getElementById("rNet").textContent=fmt(net);
+    document.getElementById("rEnergy").textContent=fmt(energySaving);
+    document.getElementById("rWater").textContent=fmt(waterSaving);
+    document.getElementById("rPump").textContent=fmt(pumpCost);
+    document.getElementById("rHeat").textContent=heatKW.toFixed(1);
+    document.getElementById("rFlash").textContent=flashPct.toFixed(1);
+    // Compare table
+    const tb=document.getElementById("compareBody"); tb.innerHTML="";
+    const rows=[
+        ["Risparmio energetico (€/a)",fmt(energyOpen),fmt(energySaving),energySaving>energyOpen?"+":""],
+        ["Risparmio acqua+chimici (€/a)",fmt(waterOpen),fmt(waterSaving),""],
+        ["Costo pompa (€/a)","—",fmt(pumpCost),""],
+        ["<strong>Totale netto (€/a)</strong>","<strong>"+fmt(totalOpen)+"</strong>","<strong>"+fmt(net)+"</strong>",""],
+    ];
+    rows.forEach(r=>{
+        const diff=r[3];
+        tb.innerHTML+=`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="${diff?'pos':''}">${diff||"—"}</td></tr>`;
+    });
+    renderBarChart(energySaving,waterSaving,pumpCost);
+    updatePayback();
+    document.getElementById("resultsSection").classList.remove("rh");
+    document.getElementById("resultsSection").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function renderBarChart(e,w,p){
+    const items=[{lbl:"Energia",val:e,color:"var(--eng)"},{lbl:"Acqua",val:w,color:"#5bb8f5"},{lbl:"Pompa (costo)",val:-p,color:"#e05050"}];
+    const maxV=Math.max(...items.map(i=>Math.abs(i.val)),1);
+    const bars=document.getElementById("chartBars"); bars.innerHTML="";
+    items.forEach(item=>{const pct=Math.max((Math.abs(item.val)/maxV)*100,2);bars.innerHTML+=`<div class="bar-col"><div class="bar-val">${item.val<0?"-":"+"}${Math.round(Math.abs(item.val)).toLocaleString("it")}</div><div class="bar-rect" style="height:${pct}%;background:${item.color};opacity:.85"></div><div class="bar-lbl">${item.lbl}</div></div>`;});
+}
+function updatePayback(){
+    const inv=parseFloat(document.getElementById("investment").value)||0;
+    if(savedNet<=0||inv<=0){document.getElementById("pbVal").textContent="—";return;}
+    const pb=inv/savedNet;
+    document.getElementById("pbVal").textContent=pb<1?(pb*12).toFixed(1)+" mesi":pb.toFixed(1)+" anni";
+    document.getElementById("pbLbl").textContent=pb<=1?"Eccellente":pb<=2?"Molto buono":pb<=3?"Buono":"Da valutare";
+    document.getElementById("pbVal").style.color=pb<=1?"#50c878":pb<=2?"var(--eng)":"#e05050";
+}
+function showErr(m){const e=document.getElementById("errorBox");e.textContent="⚠ "+m;e.style.display="block";}
+function hideErr(){document.getElementById("errorBox").style.display="none";}
+</script>
+</body></html>

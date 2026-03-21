@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dim. Tubazione per Perdita di Pressione — Aria | Emanuele Zanella</title>
+    <script>
+(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
+    </script>
+    <link rel="stylesheet" href="../../../../../css/style.css">
+    <style>
+        .tool-wrapper { max-width: 820px; margin: 0 auto; }
+        .card { background: var(--card-bg,rgba(255,255,255,0.04)); border: 1px solid var(--border-color,rgba(255,255,255,0.09)); border-radius: 14px; padding: 24px 28px; margin-bottom: 20px; }
+        .card-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-engineering); margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color,rgba(255,255,255,0.07)); }
+        .input-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(210px,1fr)); gap: 16px; }
+        .input-group { display: flex; flex-direction: column; gap: 6px; }
+        .input-group label { font-size: 0.78rem; color: var(--text-secondary); font-weight: 500; display:flex; align-items:center; gap:4px; }
+        .input-row { display: flex; align-items: stretch; border: 1px solid var(--border-color,rgba(255,255,255,0.12)); border-radius: 8px; overflow: hidden; background: var(--input-bg,rgba(255,255,255,0.04)); transition: border-color 0.2s; }
+        .input-row:focus-within { border-color: var(--color-engineering); }
+        .input-row input, .input-row select { flex:1; border:none; background:transparent; padding:9px 12px; font-size:0.88rem; color:var(--text-primary); outline:none; width:100%; min-width:0; }
+        .input-row select { cursor:pointer; color-scheme:dark; }
+        html.light-mode .input-row select { color-scheme:light; }
+        .input-row select option { background:#1e1e1e; color:#f0f0f0; }
+        html.light-mode .input-row select option { background:#fff; color:#111; }
+        .input-row .unit { padding:9px 10px; font-size:0.75rem; color:var(--text-secondary); background:var(--unit-bg,rgba(255,255,255,0.06)); border-left:1px solid var(--border-color,rgba(255,255,255,0.08)); white-space:nowrap; user-select:none; display:flex; align-items:center; }
+        .info-i { display:inline-flex; align-items:center; justify-content:center; width:14px; height:14px; border-radius:50%; border:1px solid var(--text-secondary); font-size:0.6rem; color:var(--text-secondary); cursor:help; flex-shrink:0; }
+        .btn-calc { display:inline-flex; align-items:center; gap:8px; background:var(--color-engineering); color:#fff; border:none; padding:11px 32px; border-radius:8px; font-size:0.88rem; font-weight:700; cursor:pointer; letter-spacing:0.5px; transition:opacity 0.2s,transform 0.15s; }
+        html.light-mode .btn-calc { color:#1a1a1a; }
+        .btn-calc:hover { opacity:0.88; transform:translateY(-1px); }
+        .results-hidden { display:none; }
+        .results-section { animation: fadeUp 0.3s ease; }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+        .results-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(165px,1fr)); gap:12px; margin-bottom:14px; }
+        .result-box { background:var(--card-bg,rgba(255,255,255,0.04)); border:1px solid var(--border-color,rgba(255,255,255,0.09)); border-radius:10px; padding:14px 16px; display:flex; flex-direction:column; gap:4px; }
+        .result-box.primary { border-color:var(--color-engineering); background:rgba(var(--color-engineering-rgb,200,160,60),0.07); }
+        .r-label { font-size:0.7rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-secondary); font-weight:600; }
+        .r-value { font-size:1.35rem; font-weight:700; color:var(--text-primary); line-height:1.1; }
+        .result-box.primary .r-value { color:var(--color-engineering); }
+        .r-unit { font-size:0.76rem; color:var(--text-secondary); }
+        .formula-box { border-left:3px solid var(--color-engineering); border-radius:0 8px 8px 0; padding:12px 16px; font-size:0.79rem; color:var(--text-secondary); line-height:1.7; margin-top:14px; }
+        .formula-box strong { color:var(--text-primary); }
+        .error-box { background:rgba(220,60,60,0.08); border:1px solid rgba(220,60,60,0.3); border-radius:8px; padding:10px 14px; font-size:0.82rem; color:#e05050; margin-bottom:16px; display:none; }
+        .pipe-table { width:100%; border-collapse:collapse; font-size:0.82rem; margin-top:8px; }
+        .pipe-table th { text-align:left; padding:8px 10px; font-size:0.7rem; color:var(--text-secondary); font-weight:600; letter-spacing:0.8px; text-transform:uppercase; border-bottom:1px solid var(--border-color,rgba(255,255,255,0.08)); }
+        .pipe-table td { padding:8px 10px; color:var(--text-primary); border-bottom:1px solid var(--border-color,rgba(255,255,255,0.05)); }
+        .pipe-table tr:last-child td { border-bottom:none; }
+        .pipe-table tr.best td { background:rgba(var(--color-engineering-rgb,200,160,60),0.07); }
+        .pipe-table td.em { color:var(--color-engineering); font-weight:700; }
+    </style>
+</head>
+<body>
+<div class="layout">
+    <header id="main-navbar"></header>
+    <main class="main">
+    <div class="tool-wrapper">
+
+        <h2 style="color:var(--color-engineering);text-align:center;margin-bottom:10px;font-size:2rem;">Dim. Tubazione — Perdita di Pressione</h2>
+        <p style="text-align:center;margin-bottom:30px;font-size:0.9rem;color:var(--text-secondary);letter-spacing:1px;">
+            <a href="../../../index.html" style="color:var(--color-engineering);text-decoration:none;">Tools</a> <span style="margin:0 6px;">/</span>
+            <a href="../../index.html" style="color:var(--color-engineering);text-decoration:none;">Dimensionamenti</a> <span style="margin:0 6px;">/</span>
+            <a href="../index.html" style="color:var(--color-engineering);text-decoration:none;">Aria</a> <span style="margin:0 6px;">/</span>
+            <span style="color:var(--text-primary);">Dimensionamento in base alla perdita di pressione</span>
+        </p>
+
+        <div class="card">
+            <div class="card-title">Parametri di progetto</div>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>Portata volumetrica <span class="info-i" title="Portata alle condizioni operative">i</span></label>
+                    <div class="input-row"><input type="number" id="flowRate" value="100" step="1" min="0.01"><span class="unit">m³/h</span></div>
+                </div>
+                <div class="input-group">
+                    <label>Pressione di esercizio <span class="info-i" title="Pressione assoluta dell'aria compressa">i</span></label>
+                    <div class="input-row"><input type="number" id="pressure" value="7" step="0.1" min="0.1"><span class="unit">bar (g)</span></div>
+                </div>
+                <div class="input-group">
+                    <label>Temperatura dell'aria</label>
+                    <div class="input-row"><input type="number" id="temp" value="20" step="1"><span class="unit">°C</span></div>
+                </div>
+                <div class="input-group">
+                    <label>Lunghezza tubazione</label>
+                    <div class="input-row"><input type="number" id="length" value="50" step="1" min="0.1"><span class="unit">m</span></div>
+                </div>
+                <div class="input-group">
+                    <label>Lungh. equiv. accessori</label>
+                    <div class="input-row"><input type="number" id="fittings" value="0" step="1" min="0"><span class="unit">m</span></div>
+                </div>
+                <div class="input-group">
+                    <label>Perdita di pressione max <span class="info-i" title="Perdita di pressione ammissibile nel tratto">i</span></label>
+                    <div class="input-row"><input type="number" id="dpMax" value="0.1" step="0.01" min="0.001"><span class="unit">bar</span></div>
+                </div>
+                <div class="input-group">
+                    <label>Rugosità tubazione (ε)</label>
+                    <div class="input-row">
+                        <select id="roughness">
+                            <option value="0.046">Acciaio nuovo — 0.046 mm</option>
+                            <option value="0.15">Acciaio usato — 0.15 mm</option>
+                            <option value="0.007">PE/PVC — 0.007 mm</option>
+                            <option value="0.0015">Rame — 0.0015 mm</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="error-box" id="errorBox"></div>
+        <div style="display:flex;justify-content:center;margin-bottom:28px;">
+            <button class="btn-calc" onclick="calculate()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/><path d="M9 15h3l8-8-3-3-8 8v3z"/></svg>
+                Calcola DN Ottimale
+            </button>
+        </div>
+
+        <div id="resultsSection" class="results-hidden results-section">
+            <div class="card">
+                <div class="card-title">DN consigliato</div>
+                <div class="results-grid">
+                    <div class="result-box primary"><div class="r-label">DN consigliato</div><div class="r-value" id="rDN">—</div><div class="r-unit">nominale</div></div>
+                    <div class="result-box primary"><div class="r-label">Diametro interno</div><div class="r-value" id="rDi">—</div><div class="r-unit">mm</div></div>
+                    <div class="result-box"><div class="r-label">ΔP effettiva</div><div class="r-value" id="rDp">—</div><div class="r-unit">bar</div></div>
+                    <div class="result-box"><div class="r-label">Velocità aria</div><div class="r-value" id="rVel">—</div><div class="r-unit">m/s</div></div>
+                    <div class="result-box"><div class="r-label">Portata Nm³/h</div><div class="r-value" id="rQn">—</div><div class="r-unit">Nm³/h</div></div>
+                    <div class="result-box"><div class="r-label">Reynolds</div><div class="r-value" id="rRe">—</div><div class="r-unit"></div></div>
+                </div>
+                <div style="margin-top:4px;font-size:0.78rem;color:var(--text-secondary);margin-bottom:12px;">Confronto tra taglie disponibili:</div>
+                <table class="pipe-table" id="pipeTable">
+                    <thead><tr><th>DN</th><th>Ø int. (mm)</th><th>ΔP (bar)</th><th>Velocità (m/s)</th><th>Esito</th></tr></thead>
+                    <tbody id="pipeTableBody"></tbody>
+                </table>
+                <div class="formula-box">
+                    <strong>Metodo:</strong> Darcy-Weisbach — f·(L/D)·(ρ·v²)/2<br>
+                    Coefficiente d'attrito f via Colebrook-White. Densità operativa corretta per P e T.<br>
+                    Portata operativa = Q<sub>nm³/h</sub> × P<sub>atm</sub>/(P<sub>ass</sub>) × (273+T)/273
+                </div>
+            </div>
+        </div>
+    </div>
+    </main>
+</div>
+<script src="../../../../../js/navbar.js"></script>
+<script src="../../../../../js/main.js"></script>
+<script src="../../../../../js/footer.js"></script>
+<script>
+const PIPE_SIZES = [
+    {dn:"DN 15",di:16.1},{dn:"DN 20",di:21.7},{dn:"DN 25",di:27.3},{dn:"DN 32",di:36.0},
+    {dn:"DN 40",di:41.8},{dn:"DN 50",di:53.1},{dn:"DN 65",di:68.9},{dn:"DN 80",di:82.5},
+    {dn:"DN 100",di:105.3},{dn:"DN 125",di:130.8},{dn:"DN 150",di:155.4},{dn:"DN 200",di:206.0}
+];
+const P_ATM=1.01325, RHO_AIR_STD=1.2041, MU_AIR=1.81e-5;
+
+function colebrook(Re,D,eps){
+    if(Re<2300) return 64/Re;
+    const r=eps/D; let f=0.25/Math.pow(Math.log10(r/3.7+5.74/Math.pow(Re,0.9)),2);
+    for(let i=0;i<50;i++){const fn=1/Math.pow(-2*Math.log10(r/3.7+2.51/(Re*Math.sqrt(f))),2); if(Math.abs(fn-f)<1e-10) break; f=fn;}
+    return f;
+}
+
+function calcPipe(di_mm, Q_m3h_op, rho_op, L_tot, eps_mm){
+    const D=di_mm/1e3, eps=eps_mm/1e3, A=Math.PI*D*D/4;
+    const v=(Q_m3h_op/3600)/A;
+    const Re=rho_op*v*D/MU_AIR;
+    const f=colebrook(Re,D,eps);
+    const dP_Pa=f*(L_tot/D)*(rho_op*v*v)/2;
+    return {v,Re,f,dP_bar:dP_Pa/1e5,dP_Pa};
+}
+
+function calculate(){
+    const Q_m3h=parseFloat(document.getElementById("flowRate").value);
+    const P_g=parseFloat(document.getElementById("pressure").value);
+    const T=parseFloat(document.getElementById("temp").value);
+    const L=parseFloat(document.getElementById("length").value);
+    const Lf=parseFloat(document.getElementById("fittings").value)||0;
+    const dpMax=parseFloat(document.getElementById("dpMax").value);
+    const eps=parseFloat(document.getElementById("roughness").value);
+    if([Q_m3h,P_g,T,L,dpMax].some(v=>isNaN(v)||v<=0)){showErr("Valori non validi."); return;}
+    hideErr();
+
+    const P_abs=P_g+P_ATM;
+    const rho_op=RHO_AIR_STD*(P_abs/P_ATM)*(273.15/(273.15+T));
+    const Q_op=Q_m3h*(P_ATM/P_abs)*((273.15+T)/273.15);
+    const Ltot=L+Lf;
+    const Q_nm3h=Q_m3h*(P_abs/P_ATM)*(273.15/(273.15+T));
+
+    const tbody=document.getElementById("pipeTableBody"); tbody.innerHTML="";
+    let bestIdx=-1;
+
+    PIPE_SIZES.forEach((p,i)=>{
+        const r=calcPipe(p.di,Q_op,rho_op,Ltot,eps);
+        const ok=r.dP_bar<=dpMax && r.v<=25;
+        if(ok && bestIdx<0) bestIdx=i;
+        const tr=document.createElement("tr");
+        if(ok && bestIdx===i) tr.classList.add("best");
+        tr.innerHTML=`<td${ok&&bestIdx===i?' class="em"':''}>${p.dn}</td><td>${p.di}</td>
+            <td${r.dP_bar>dpMax?' style="color:#e05050"':''}>${r.dP_bar.toFixed(4)}</td>
+            <td${r.v>25?' style="color:#e05050"':''}>${r.v.toFixed(2)}</td>
+            <td>${ok?(bestIdx===i?'✔ Consigliato':'✔ OK'):'✗'}</td>`;
+        tbody.appendChild(tr);
+    });
+
+    if(bestIdx<0){showErr("Nessun DN idoneo trovato con i parametri inseriti. Aumentare ΔP ammissibile o ridurre la portata."); return;}
+    const best=PIPE_SIZES[bestIdx];
+    const br=calcPipe(best.di,Q_op,rho_op,Ltot,eps);
+    document.getElementById("rDN").textContent=best.dn;
+    document.getElementById("rDi").textContent=best.di;
+    document.getElementById("rDp").textContent=br.dP_bar.toFixed(4);
+    document.getElementById("rVel").textContent=br.v.toFixed(2);
+    document.getElementById("rQn").textContent=Q_nm3h.toFixed(1);
+    document.getElementById("rRe").textContent=Math.round(br.Re).toLocaleString("it");
+    document.getElementById("resultsSection").classList.remove("results-hidden");
+    document.getElementById("resultsSection").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function showErr(m){const e=document.getElementById("errorBox");e.textContent="⚠ "+m;e.style.display="block";document.getElementById("resultsSection").classList.add("results-hidden");}
+function hideErr(){document.getElementById("errorBox").style.display="none";}
+</script>
+</body>
+</html>

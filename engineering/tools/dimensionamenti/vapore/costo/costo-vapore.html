@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Costo Unitario del Vapore | Emanuele Zanella</title>
+<script>(function(){var p=localStorage.getItem('themePref');if(p==='light'){document.documentElement.classList.add('light-mode')}else if(!p){try{var d=JSON.parse(localStorage.getItem('themeData'));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add('light-mode')}}catch(e){}}})();</script>
+<link rel="stylesheet" href="../../../../../css/style.css">
+<style>:root{--eng:var(--color-engineering,#c8a03c);--eng-rgb:var(--color-engineering-rgb,200,160,60)}.tw{max-width:860px;margin:0 auto}.card{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:14px;padding:24px 28px;margin-bottom:20px}.ct{font-size:.75rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--eng);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.07))}.ig{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}.grp{display:flex;flex-direction:column;gap:5px}.grp label{font-size:.78rem;color:var(--text-secondary);font-weight:500;display:flex;align-items:center;gap:4px}.ir{display:flex;align-items:stretch;border:1px solid var(--border-color,rgba(255,255,255,.12));border-radius:8px;overflow:hidden;background:var(--input-bg,rgba(255,255,255,.04));transition:border-color .2s}.ir:focus-within{border-color:var(--eng)}.ir input,.ir select{flex:1;border:none;background:transparent;padding:9px 12px;font-size:.88rem;color:var(--text-primary);outline:none;width:100%;min-width:0}.ir select{cursor:pointer;color-scheme:dark}html.light-mode .ir select{color-scheme:light}.ir select option{background:#1e1e1e;color:#f0f0f0}html.light-mode .ir select option{background:#fff;color:#111}.ir .un{padding:9px 10px;font-size:.75rem;color:var(--text-secondary);background:var(--unit-bg,rgba(255,255,255,.06));border-left:1px solid var(--border-color,rgba(255,255,255,.08));white-space:nowrap;user-select:none;display:flex;align-items:center}.hint{font-size:.7rem;color:var(--text-secondary);margin-top:3px;opacity:.8;line-height:1.4}.hint em{color:var(--eng);font-style:normal}.ii{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;border:1px solid var(--text-secondary);font-size:.6rem;color:var(--text-secondary);cursor:help;flex-shrink:0}.btn{display:inline-flex;align-items:center;gap:8px;background:var(--eng);color:#fff;border:none;padding:11px 32px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:opacity .2s,transform .15s}html.light-mode .btn{color:#1a1a1a}.btn:hover{opacity:.88;transform:translateY(-1px)}.rh{display:none}.rs{animation:fu .3s ease}@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:18px}.rb{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}.rb.pri{border-color:var(--eng);background:rgba(var(--eng-rgb,200,160,60),.07)}.rb.pos{border-color:rgba(80,200,120,.5);background:rgba(80,200,120,.07)}.rl{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600}.rv{font-size:1.3rem;font-weight:700;color:var(--text-primary);line-height:1.1}.rb.pri .rv{color:var(--eng)}.rb.pos .rv{color:#50c878}.ru{font-size:.76rem;color:var(--text-secondary)}.formula-section{margin-top:24px}.formula-title{font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--eng);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.07))}.formula-block{background:rgba(var(--eng-rgb,200,160,60),.04);border:1px solid rgba(var(--eng-rgb,200,160,60),.15);border-radius:10px;padding:16px 18px;font-size:.8rem;color:var(--text-secondary);line-height:1.9}.formula-block strong{color:var(--text-primary)}.formula-block .frow{display:flex;gap:10px;padding:1px 0}.formula-block .fsym{color:var(--eng);font-weight:700;min-width:80px}.eb{background:rgba(220,60,60,.08);border:1px solid rgba(220,60,60,.3);border-radius:8px;padding:10px 14px;font-size:.82rem;color:#e05050;margin-bottom:16px;display:none}.bar-chart{display:flex;align-items:flex-end;gap:10px;height:120px;padding:0 4px;margin-top:8px}.bar-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}.bar-rect{width:100%;border-radius:4px 4px 0 0;transition:height .5s ease;min-height:3px}.bar-lbl{font-size:.68rem;color:var(--text-secondary);text-align:center;line-height:1.2}.bar-val{font-size:.72rem;font-weight:700;color:var(--eng)}@media(max-width:580px){.card{padding:18px 14px}}</style>
+</head>
+<body>
+<div class="layout"><header id="main-navbar"></header><main class="main"><div class="tw">
+<h2 style="color:var(--eng);text-align:center;margin-bottom:10px;font-size:2rem;">Costo Unitario del Vapore</h2>
+<p style="text-align:center;margin-bottom:30px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+<a href="../../../../../index.html" style="color:var(--eng);text-decoration:none;">Tools</a>
+<span style="margin:0 6px;">/</span>
+<a href="../../../../../engineering/tools/dimensionamenti/index.html" style="color:var(--eng);text-decoration:none;">Dimensionamenti</a>
+<span style="margin:0 6px;">/</span>
+<a href="../../../../../engineering/tools/dimensionamenti/vapore/index.html" style="color:var(--eng);text-decoration:none;">Vapore</a>
+<span style="margin:0 6px;">/</span>
+<span style="color:var(--text-primary);">Costo unitario del vapore</span>
+</p>
+<div class="card" style="border-left:3px solid var(--eng);border-radius:0 14px 14px 14px;padding:14px 20px;margin-bottom:22px;"><p style="font-size:.82rem;color:var(--text-secondary);line-height:1.6;margin:0;">Calcola il costo per tonnellata di vapore prodotta, considerando il costo del combustibile, dell'acqua di alimento, del trattamento, degli ausiliari e dell'impatto della condensa recuperata. Strumento chiave per giustificare economicamente il recupero condensa.</p></div>
+<div class="card"><div class="ct">Parametri vapore e condensa</div><div class="ig">
+<div class="grp"><label>Pressione vapore prodotto</label><div class="ir"><input type="number" id="steamP" value="7" step="0.5" min="0.5"><span class="un">bar (g)</span></div></div>
+<div class="grp"><label>Portata vapore</label><div class="ir"><input type="number" id="steamFlow" value="5000" step="100" min="1"><span class="un">kg/h</span></div></div>
+<div class="grp"><label>% condensa recuperata <span class="ii" title="Percentuale della condensa che ritorna alla caldaia">i</span></label><div class="ir"><input type="number" id="condensateReturn" value="60" step="5" min="0" max="100"><span class="un">%</span></div><div class="hint">Con recupero: <em>60–90%</em> · Senza recupero: <em>0%</em></div></div>
+<div class="grp"><label>Temperatura condensa ritorno</label><div class="ir"><input type="number" id="Tcond" value="90" step="5" min="20"><span class="un">°C</span></div><div class="hint">Sistema aperto: <em>60–80°C</em> · Chiuso: <em>80–120°C</em></div></div>
+<div class="grp"><label>Temperatura acqua makeup</label><div class="ir"><input type="number" id="Tmakeup" value="15" step="1"><span class="un">°C</span></div></div>
+<div class="grp"><label>Ore operative annue</label><div class="ir"><input type="number" id="hours" value="7000" step="100" min="100" max="8760"><span class="un">h/anno</span></div><div class="hint"><em>5000</em>=1t · <em>6500</em>=2t · <em>8000</em>=continuo</div></div>
+</div></div>
+<div class="card"><div class="ct">Costi unitari</div><div class="ig">
+<div class="grp"><label>Costo energia termica <span class="ii" title="Dal tool Costo Energia Termica">i</span></label><div class="ir"><input type="number" id="energyCost" value="55" step="1" min="1"><span class="un">€/MWh</span></div><div class="hint">Gas naturale IT: <em>40–80 €/MWh</em> termici · Gasolio: <em>80–120 €/MWh</em></div></div>
+<div class="grp"><label>Costo acqua makeup trattata</label><div class="ir"><input type="number" id="waterCost" value="3.0" step="0.1" min="0"><span class="un">€/m³</span></div><div class="hint">Acqua + addolcimento + additivi: <em>1.5–5.0 €/m³</em></div></div>
+<div class="grp"><label>Manutenzione caldaia</label><div class="ir"><input type="number" id="maintCost" value="5000" step="500" min="0"><span class="un">€/anno</span></div><div class="hint"><em>2.000–15.000 €/anno</em></div></div>
+<div class="grp"><label>Ausiliari elettrici</label><div class="ir"><input type="number" id="elecCost" value="2000" step="200" min="0"><span class="un">€/anno</span></div></div>
+</div></div>
+<div class="eb" id="errorBox"></div>
+<div style="display:flex;justify-content:center;margin-bottom:28px;"><button class="btn" onclick="calculate()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/><path d="M9 15h3l8-8-3-3-8 8v3z"/></svg>Calcola</button></div>
+<div id="resultsSection" class="rh rs"><div class="card"><div class="ct">Risultati — Costo Vapore</div>
+<div class="rg">
+<div class="rb pri"><div class="rl">Costo vapore totale</div><div class="rv" id="rCostT">—</div><div class="ru">€/t vapore</div></div>
+<div class="rb pri"><div class="rl">Costo per kg</div><div class="rv" id="rCostKg">—</div><div class="ru">€/kg</div></div>
+<div class="rb pos"><div class="rl">Solo combustibile</div><div class="rv" id="rCostFuel">—</div><div class="ru">€/t</div></div>
+<div class="rb"><div class="rl">Costo acqua makeup</div><div class="rv" id="rCostWater">—</div><div class="ru">€/t</div></div>
+<div class="rb"><div class="rl">Costo totale annuo</div><div class="rv" id="rTotalAnnual">—</div><div class="ru">€/anno</div></div>
+<div class="rb"><div class="rl">Vapore annuo prodotto</div><div class="rv" id="rSteamAnnual">—</div><div class="ru">t/anno</div></div>
+</div>
+<div style="font-size:.78rem;color:var(--text-secondary);font-weight:600;margin-bottom:8px;">Composizione costo €/t vapore</div>
+<div class="bar-chart" id="steamCostChart"></div>
+<div style="margin-top:18px;padding:14px 16px;background:rgba(80,200,120,.06);border:1px solid rgba(80,200,120,.3);border-radius:10px;" id="condensateSavingBox">
+<div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#50c878;margin-bottom:6px;">Beneficio recupero condensa</div>
+<div style="font-size:.82rem;color:var(--text-secondary);line-height:1.6;" id="rCondensateSaving">—</div>
+</div>
+<div class="formula-section"><div class="formula-title">Formule utilizzate</div><div class="formula-block">
+<strong>Entalpia vapore saturo (appross. per P &lt; 15 bar g):</strong><br>
+<div class="frow"><span class="fsym">h<sub>g</sub></span><span>≈ 2675 + 0.5 · P<sub>gauge</sub> &nbsp;[kJ/kg]</span></div><br>
+<strong>Entalpia acqua di alimento (misto makeup + condensa):</strong><br>
+<div class="frow"><span class="fsym">h<sub>feed</sub></span><span>= x · Cp · T<sub>cond</sub> + (1−x) · Cp · T<sub>makeup</sub></span></div>
+<div class="frow"><span class="fsym">x</span><span>= frazione condensa recuperata [0–1]</span></div><br>
+<strong>Calore netto per produrre 1 kg di vapore:</strong><br>
+<div class="frow"><span class="fsym">q<sub>netto</sub></span><span>= h<sub>g</sub> − h<sub>feed</sub> &nbsp;[kJ/kg]</span></div><br>
+<strong>Costo combustibile per tonnellata di vapore:</strong><br>
+<div class="frow"><span class="fsym">C<sub>comb</sub></span><span>= q<sub>netto</sub> [kJ/kg] / 3600 × C<sub>energia</sub>[€/kWh] × 1000 &nbsp;[€/t]</span></div>
+</div></div>
+</div></div>
+<script>
+var CP=4.186;
+function hg(Pg){return 2675+0.5*Pg;}
+function calculate(){
+    var Pg=+document.getElementById("steamP").value, F=+document.getElementById("steamFlow").value;
+    var condRet=+document.getElementById("condensateReturn").value/100;
+    var Tc=+document.getElementById("Tcond").value, Tm=+document.getElementById("Tmakeup").value;
+    var hours=+document.getElementById("hours").value, ec=+document.getElementById("energyCost").value;
+    var wc=+document.getElementById("waterCost").value, maint=+document.getElementById("maintCost").value||0, elec=+document.getElementById("elecCost").value||0;
+    if([Pg,F,Tc,Tm,hours,ec,wc].some(function(v){return isNaN(v)||v<=0;})){showErr("Valori non validi.");return;}
+    hideErr();
+    var hSteam=hg(Pg), hFeed=condRet*CP*Tc+(1-condRet)*CP*Tm, qNet=hSteam-hFeed;
+    var ecPerKJ=ec/3600/1000;
+    var fuelPerKg=qNet*ecPerKJ, fuelPerT=fuelPerKg*1000;
+    var waterPerKg=(1-condRet)*wc/1000, waterPerT=waterPerKg*1000;
+    var steamTonsAnnual=(F*hours)/1000;
+    var fixedPerT=(maint+elec)/steamTonsAnnual;
+    var totalPerT=fuelPerT+waterPerT+fixedPerT;
+    // Saving vs 0% return
+    var hFeed0=CP*Tm, qNet0=hSteam-hFeed0;
+    var fuelPerT0=qNet0*ecPerKJ*1000, waterPerT0=wc;
+    var savingPerT=(fuelPerT0+waterPerT0)-(fuelPerT+waterPerT);
+    var savingAnnual=savingPerT*steamTonsAnnual;
+    document.getElementById("rCostT").textContent=totalPerT.toFixed(2);
+    document.getElementById("rCostKg").textContent=(totalPerT/1000).toFixed(4);
+    document.getElementById("rCostFuel").textContent=fuelPerT.toFixed(2);
+    document.getElementById("rCostWater").textContent=waterPerT.toFixed(2);
+    document.getElementById("rTotalAnnual").textContent=Math.round(totalPerT*steamTonsAnnual).toLocaleString("it");
+    document.getElementById("rSteamAnnual").textContent=Math.round(steamTonsAnnual).toLocaleString("it");
+    var items=[{lbl:"Combustibile",val:fuelPerT,color:"var(--eng)"},{lbl:"Acqua makeup",val:waterPerT,color:"#5bb8f5"},{lbl:"Fissi",val:fixedPerT,color:"#a78bfa"}];
+    var maxV=Math.max.apply(null,items.map(function(i){return i.val;}).concat([1]));
+    document.getElementById("steamCostChart").innerHTML=items.map(function(i){
+        return '<div class="bar-col"><div class="bar-val">'+i.val.toFixed(2)+' €/t</div><div class="bar-rect" style="height:'+Math.max(i.val/maxV*100,3)+'%;background:'+i.color+';opacity:.85"></div><div class="bar-lbl">'+i.lbl+'</div></div>';
+    }).join("");
+    if(condRet>0){
+        document.getElementById("rCondensateSaving").innerHTML='Con il <strong>'+(condRet*100).toFixed(0)+'%</strong> di condensa recuperata: risparmio <strong style="color:#50c878;">'+savingPerT.toFixed(1)+' €/t vapore</strong> — pari a circa <strong style="color:#50c878;">'+Math.round(savingAnnual).toLocaleString("it")+' €/anno</strong>.';
+    } else {
+        document.getElementById("rCondensateSaving").textContent="Nessun recupero condensa. Implementare un sistema di recupero può ridurre il costo del vapore del 10–25%.";
+    }
+    document.getElementById("resultsSection").classList.remove("rh");
+    document.getElementById("resultsSection").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function showErr(m){document.getElementById("errorBox").textContent="⚠ "+m;document.getElementById("errorBox").style.display="block";}
+function hideErr(){document.getElementById("errorBox").style.display="none";}
+</script>
+</div></main></div>
+<script src="../../../../../js/navbar.js"></script>
+<script src="../../../../../js/main.js"></script>
+<script src="../../../../../js/footer.js"></script>
+</body></html>

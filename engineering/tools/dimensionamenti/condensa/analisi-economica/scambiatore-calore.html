@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Analisi Economica — Scambiatore di Calore | Emanuele Zanella</title>
+    <script>(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();</script>
+    <link rel="stylesheet" href="../../../../../css/style.css">
+    <style>:root{--eng:var(--color-engineering,#c8a03c);--eng-rgb:var(--color-engineering-rgb,200,160,60)}.tw{max-width:860px;margin:0 auto}.card{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:14px;padding:24px 28px;margin-bottom:20px}.ct{font-size:.75rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--eng);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.07))}.ig{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}.grp{display:flex;flex-direction:column;gap:5px}.grp label{font-size:.78rem;color:var(--text-secondary);font-weight:500;display:flex;align-items:center;gap:4px}.ir{display:flex;align-items:stretch;border:1px solid var(--border-color,rgba(255,255,255,.12));border-radius:8px;overflow:hidden;background:var(--input-bg,rgba(255,255,255,.04));transition:border-color .2s}.ir:focus-within{border-color:var(--eng)}.ir input,.ir select{flex:1;border:none;background:transparent;padding:9px 12px;font-size:.88rem;color:var(--text-primary);outline:none;width:100%;min-width:0}.ir select{cursor:pointer;color-scheme:dark}html.light-mode .ir select{color-scheme:light}.ir select option{background:#1e1e1e;color:#f0f0f0}html.light-mode .ir select option{background:#fff;color:#111}.ir .un{padding:9px 10px;font-size:.75rem;color:var(--text-secondary);background:var(--unit-bg,rgba(255,255,255,.06));border-left:1px solid var(--border-color,rgba(255,255,255,.08));white-space:nowrap;user-select:none;display:flex;align-items:center}.hint{font-size:.7rem;color:var(--text-secondary);margin-top:3px;opacity:.8;line-height:1.4}.hint em{color:var(--eng);font-style:normal}.ii{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;border:1px solid var(--text-secondary);font-size:.6rem;color:var(--text-secondary);cursor:help;flex-shrink:0}.btn{display:inline-flex;align-items:center;gap:8px;background:var(--eng);color:#fff;border:none;padding:11px 32px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:opacity .2s,transform .15s}html.light-mode .btn{color:#1a1a1a}.btn:hover{opacity:.88;transform:translateY(-1px)}.rh{display:none}.rs{animation:fu .3s ease}@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:18px}.rb{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}.rb.pri{border-color:var(--eng);background:rgba(var(--eng-rgb,200,160,60),.07)}.rb.pos{border-color:rgba(80,200,120,.5);background:rgba(80,200,120,.07)}.rl{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600}.rv{font-size:1.3rem;font-weight:700;color:var(--text-primary);line-height:1.1}.rb.pri .rv{color:var(--eng)}.rb.pos .rv{color:#50c878}.ru{font-size:.76rem;color:var(--text-secondary)}.fb{border-left:3px solid var(--eng);border-radius:0 8px 8px 0;padding:12px 16px;font-size:.79rem;color:var(--text-secondary);line-height:1.7;margin-top:14px}.fb strong{color:var(--text-primary)}.eb{background:rgba(220,60,60,.08);border:1px solid rgba(220,60,60,.3);border-radius:8px;padding:10px 14px;font-size:.82rem;color:#e05050;margin-bottom:16px;display:none}
+    .hx-diagram{display:flex;justify-content:center;align-items:center;gap:0;margin:16px 0}
+    .hx-side{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:.72rem;color:var(--text-secondary)}
+    .hx-body{background:rgba(var(--eng-rgb,200,160,60),.1);border:1.5px solid var(--eng);border-radius:10px;padding:16px 22px;text-align:center;min-width:120px}
+    .hx-arrow{font-size:1.4rem;color:var(--eng);opacity:.6;padding:0 8px}
+    @media(max-width:580px){.card{padding:18px 14px}}</style>
+</head>
+<body>
+<div class="layout"><header id="main-navbar"></header><main class="main"><div class="tw">
+    <h2 style="color:var(--eng);text-align:center;margin-bottom:10px;font-size:2rem;">Analisi Economica — Scambiatore di Calore</h2>
+    <p style="text-align:center;margin-bottom:30px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+        <a href="../../../index.html" style="color:var(--eng);text-decoration:none;">Tools</a> <span style="margin:0 6px;">/</span>
+        <a href="../../index.html" style="color:var(--eng);text-decoration:none;">Dimensionamenti</a> <span style="margin:0 6px;">/</span>
+        <a href="../index.html" style="color:var(--eng);text-decoration:none;">Recupero Condensa</a> <span style="margin:0 6px;">/</span>
+        <span style="color:var(--text-primary);">Scambiatore di Calore</span>
+    </p>
+    <div class="card" style="border-left:3px solid var(--eng);border-radius:0 14px 14px 14px;padding:14px 20px;margin-bottom:22px;">
+        <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.6;margin:0;">
+            Un <strong style="color:var(--text-primary);">scambiatore di calore</strong> trasferisce il calore della condensa calda ad un fluido di processo (es. acqua di alimentazione caldaia, acqua di processo, aria), evitando di disperdere l'energia recuperabile. Questo tool calcola il risparmio economico derivante dall'installazione dello scambiatore.
+        </p>
+    </div>
+    <!-- Schema -->
+    <div class="hx-diagram">
+        <div class="hx-side"><span>Condensa calda →</span><span style="color:var(--eng);font-weight:600;" id="dTin">—°C</span></div>
+        <div class="hx-body">
+            <div style="font-size:.8rem;font-weight:700;color:var(--eng);">Scambiatore</div>
+            <div style="font-size:.68rem;color:var(--text-secondary);margin-top:4px;">ε = <span id="dEff">—</span></div>
+        </div>
+        <div class="hx-side"><span>→ Condensa fredda</span><span style="color:#5bb8f5;font-weight:600;" id="dTout">—°C</span></div>
+        <div class="hx-arrow">↕</div>
+        <div class="hx-side"><span>Fluido riscaldato</span><span style="color:#6ee7b7;font-weight:600;" id="dTfluid">—°C</span></div>
+    </div>
+
+    <div class="card">
+        <div class="ct">1 · Dati processo</div>
+        <div class="ig">
+            <div class="grp"><label>Portata condensa</label><div class="ir"><input type="number" id="condFlow" value="500" step="10" min="1"><span class="un">kg/h</span></div><div class="hint">Tipico: <em>200–2000 kg/h</em></div></div>
+            <div class="grp"><label>Temperatura ingresso condensa</label><div class="ir"><input type="number" id="condTin" value="140" step="5" min="50"><span class="un">°C</span></div></div>
+            <div class="grp"><label>Temperatura uscita condensa <span class="ii" title="Temperatura a cui la condensa esce dallo scambiatore">i</span></label><div class="ir"><input type="number" id="condTout" value="50" step="5" min="20"><span class="un">°C</span></div><div class="hint">Differenza minima con fluido freddo: <em>5–15°C</em></div></div>
+            <div class="grp"><label>Efficienza scambiatore (ε) <span class="ii" title="Efficienza termica dello scambiatore 0.6–0.9">i</span></label><div class="ir"><input type="number" id="hxEff" value="0.80" step="0.05" min="0.3" max="1.0"><span class="un">—</span></div><div class="hint">Tipicamente <em>0.70–0.90</em></div></div>
+            <div class="grp"><label>Rendimento caldaia</label><div class="ir"><input type="number" id="boilerEff" value="85" step="1" min="50" max="99"><span class="un">%</span></div><div class="hint">Tipicamente <em>80–92%</em></div></div>
+            <div class="grp"><label>Ore operative annue</label><div class="ir"><input type="number" id="hours" value="7000" step="100" min="100" max="8760"><span class="un">h/anno</span></div><div class="hint"><em>5000</em>=1t · <em>6500</em>=2t · <em>8000</em>=continuo</div></div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="ct">2 · Costi</div>
+        <div class="ig">
+            <div class="grp"><label>Costo combustibile</label><div class="ir"><input type="number" id="fuelCost" value="0.045" step="0.001"><span class="un">€/kWh</span></div><div class="hint">Gas naturale: <em>0.030–0.060 €/kWh</em></div></div>
+            <div class="grp"><label>Investimento scambiatore</label><div class="ir"><input type="number" id="investment" value="12000" step="500" min="0" onchange="updatePayback()"><span class="un">€</span></div><div class="hint">Scambiatore a piastre: <em>5.000–30.000 €</em></div></div>
+        </div>
+    </div>
+    <div class="eb" id="errorBox"></div>
+    <div style="display:flex;justify-content:center;margin-bottom:28px;">
+        <button class="btn" onclick="calculate()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/><path d="M9 15h3l8-8-3-3-8 8v3z"/></svg>Calcola Risparmio</button>
+    </div>
+    <div id="resultsSection" class="rh rs">
+        <div class="card">
+            <div class="ct">3 · Risultati</div>
+            <div class="rg">
+                <div class="rb pri"><div class="rl">Risparmio annuo</div><div class="rv" id="rSaving">—</div><div class="ru">€/anno</div></div>
+                <div class="rb pos"><div class="rl">Potenza recuperata</div><div class="rv" id="rPower">—</div><div class="ru">kW</div></div>
+                <div class="rb"><div class="rl">Energia recuperata</div><div class="rv" id="rEnergy">—</div><div class="ru">MWh/anno</div></div>
+                <div class="rb"><div class="rl">Payback</div><div class="rv" id="rPB" style="color:var(--eng)">—</div><div class="ru" id="rPBlbl"></div></div>
+                <div class="rb"><div class="rl">ROI a 10 anni</div><div class="rv" id="rROI">—</div><div class="ru">%</div></div>
+                <div class="rb"><div class="rl">ΔT condensa</div><div class="rv" id="rDT">—</div><div class="ru">°C</div></div>
+            </div>
+            <div class="fb"><strong>Formula:</strong> Q = ṁ · c<sub>p</sub> · ε · (T<sub>in</sub> − T<sub>out</sub>) &nbsp;|&nbsp; Risparmio = (Q·H) / η · C<sub>fuel</sub></div>
+        </div>
+    </div>
+</div></main></div>
+<script src="../../../../../js/navbar.js"></script><script src="../../../../../js/main.js"></script><script src="../../../../../js/footer.js"></script>
+<script>
+const CP=4.186; let savedAnnual=0;
+function fmt(v){return v>=10000?(v/1000).toFixed(1)+"k":Math.round(v).toLocaleString("it");}
+function calculate(){
+    const F=parseFloat(document.getElementById("condFlow").value),Tin=parseFloat(document.getElementById("condTin").value),Tout=parseFloat(document.getElementById("condTout").value);
+    const eff=parseFloat(document.getElementById("hxEff").value),eta=parseFloat(document.getElementById("boilerEff").value)/100;
+    const H=parseFloat(document.getElementById("hours").value),fc=parseFloat(document.getElementById("fuelCost").value);
+    if([F,Tin,Tout,eff,eta,H,fc].some(v=>isNaN(v)||v<=0)){showErr("Valori non validi.");return;}
+    if(Tout>=Tin){showErr("T uscita deve essere < T ingresso.");return;}
+    hideErr();
+    const dT=Tin-Tout;
+    const heatKW=(F*CP*eff*dT)/3600;
+    const energyKWh=heatKW*H;
+    const saving=(energyKWh/eta)*fc;
+    savedAnnual=saving;
+    const inv=parseFloat(document.getElementById("investment").value)||0;
+    const pb=inv>0?inv/saving:0;
+    const roi10=inv>0?((saving*10-inv)/inv)*100:0;
+    document.getElementById("rSaving").textContent=fmt(saving);
+    document.getElementById("rPower").textContent=heatKW.toFixed(1);
+    document.getElementById("rEnergy").textContent=(energyKWh/1000).toFixed(1);
+    document.getElementById("rDT").textContent=dT.toFixed(0);
+    document.getElementById("rPB").textContent=pb>0?(pb<1?(pb*12).toFixed(1)+" mesi":pb.toFixed(1)+" anni"):"—";
+    document.getElementById("rPBlbl").textContent=pb>0?(pb<=1?"Eccellente":pb<=2?"Molto buono":"Buono"):"";
+    document.getElementById("rPB").style.color=pb<=1?"#50c878":pb<=2?"var(--eng)":"#e05050";
+    document.getElementById("rROI").textContent=roi10>0?roi10.toFixed(0):"—";
+    // Update diagram
+    document.getElementById("dTin").textContent=Tin+"°C";
+    document.getElementById("dTout").textContent=Tout+"°C";
+    document.getElementById("dEff").textContent=(eff*100).toFixed(0)+"%";
+    const Tfluid=Tin-eff*dT; document.getElementById("dTfluid").textContent="→ "+Tfluid.toFixed(0)+"°C riscaldato";
+    document.getElementById("resultsSection").classList.remove("rh");
+    document.getElementById("resultsSection").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function updatePayback(){if(savedAnnual>0)calculate();}
+function showErr(m){const e=document.getElementById("errorBox");e.textContent="⚠ "+m;e.style.display="block";}
+function hideErr(){document.getElementById("errorBox").style.display="none";}
+</script>
+</body></html>

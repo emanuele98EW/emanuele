@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calcolo Volume Vaso di Espansione | Emanuele Zanella</title>
+    <meta name="description" content="Calcolo del volume del vaso di espansione per circuiti chiusi di riscaldamento e raffrescamento.">
+    <script>
+(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
+    </script>
+    <link rel="stylesheet" href="../../../../../css/style.css">
+    <style>
+        /* ── Layout tool ── */
+        .tool-wrapper {
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        /* ── Sezioni card ── */
+        .card {
+            background: var(--card-bg, rgba(255,255,255,0.04));
+            border: 1px solid var(--border-color, rgba(255,255,255,0.09));
+            border-radius: 14px;
+            padding: 24px 28px;
+            margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: var(--color-engineering);
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.07));
+        }
+
+        /* ── Grid input ── */
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .input-group label {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            border: 1px solid var(--border-color, rgba(255,255,255,0.12));
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--input-bg, rgba(255,255,255,0.04));
+            transition: border-color 0.2s;
+        }
+        .input-row:focus-within {
+            border-color: var(--color-engineering);
+        }
+        .input-row input, .input-row select {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 9px 12px;
+            font-size: 0.88rem;
+            color: var(--text-primary);
+            outline: none;
+            width: 100%;
+        }
+        .input-row .unit {
+            padding: 9px 10px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: var(--unit-bg, rgba(255,255,255,0.06));
+            border-left: 1px solid var(--border-color, rgba(255,255,255,0.08));
+            white-space: nowrap;
+            user-select: none;
+        }
+        .input-row select {
+            cursor: pointer;
+            color-scheme: dark;
+        }
+        html.light-mode .input-row select {
+            color-scheme: light;
+        }
+        /* Fix select dropdown: opzioni leggibili in dark mode */
+        .input-row select option {
+            background: #1e1e1e;
+            color: #f0f0f0;
+        }
+        html.light-mode .input-row select option {
+            background: #ffffff;
+            color: #111111;
+        }
+        /* Stesso fix per select tubazioni generati via JS */
+        .components-table select {
+            color-scheme: dark;
+        }
+        html.light-mode .components-table select {
+            color-scheme: light;
+        }
+        .components-table select option {
+            background: #1e1e1e;
+            color: #f0f0f0;
+        }
+        html.light-mode .components-table select option {
+            background: #ffffff;
+            color: #111111;
+        }
+
+        /* ── Componenti circuito ── */
+        .components-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.84rem;
+        }
+        .components-table th {
+            text-align: left;
+            padding: 8px 10px;
+            font-size: 0.74rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.08));
+        }
+        .components-table td {
+            padding: 7px 10px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.05));
+            vertical-align: middle;
+        }
+        .components-table tr:last-child td { border-bottom: none; }
+        .components-table input[type="number"] {
+            width: 80px;
+            border: 1px solid var(--border-color, rgba(255,255,255,0.12));
+            border-radius: 6px;
+            padding: 5px 8px;
+            background: var(--input-bg, rgba(255,255,255,0.04));
+            color: var(--text-primary);
+            font-size: 0.84rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .components-table input[type="number"]:focus {
+            border-color: var(--color-engineering);
+        }
+        .comp-vol-total {
+            color: var(--color-engineering);
+            font-weight: 600;
+        }
+
+        /* ── Volume circuito summary ── */
+        .vol-summary {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+        .vol-chip {
+            background: rgba(var(--color-engineering-rgb, 200,160,60), 0.1);
+            border: 1px solid rgba(var(--color-engineering-rgb, 200,160,60), 0.25);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 0.84rem;
+            color: var(--text-primary);
+        }
+        .vol-chip span {
+            color: var(--color-engineering);
+            font-weight: 700;
+        }
+
+        /* ── Bottone calcola ── */
+        .btn-calc {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--color-engineering);
+            color: #fff;
+            border: none;
+            padding: 11px 28px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: opacity 0.2s, transform 0.15s;
+            margin-top: 6px;
+        }
+        /* In light mode il colore engineering è chiaro: testo scuro */
+        html.light-mode .btn-calc {
+            color: #1a1a1a;
+        }
+        .btn-calc:hover { opacity: 0.88; transform: translateY(-1px); }
+        .btn-calc:active { transform: translateY(0); }
+
+        /* ── Risultati ── */
+        .results-hidden { display: none; }
+        .results-section {
+            animation: fadeIn 0.35s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .result-box {
+            background: var(--card-bg, rgba(255,255,255,0.04));
+            border: 1px solid var(--border-color, rgba(255,255,255,0.09));
+            border-radius: 10px;
+            padding: 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .result-box.highlight {
+            border-color: var(--color-engineering);
+            background: rgba(var(--color-engineering-rgb, 200,160,60), 0.07);
+        }
+        .result-box .r-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        .result-box .r-value {
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.1;
+        }
+        .result-box.highlight .r-value { color: var(--color-engineering); }
+        .result-box .r-unit {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        /* ── Vaso commerciale ── */
+        .vessel-card {
+            border: 1.5px solid var(--color-engineering);
+            border-radius: 14px;
+            padding: 22px 26px;
+            background: rgba(var(--color-engineering-rgb, 200,160,60), 0.05);
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+        .vessel-icon {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .vessel-svg-wrap svg {
+            display: block;
+        }
+        .vessel-badge {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .vessel-info {
+            flex: 1;
+            min-width: 200px;
+        }
+        .vessel-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--color-engineering);
+            margin-bottom: 4px;
+        }
+        .vessel-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+        .vessel-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .spec-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.9px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        .spec-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .spec-value.em { color: var(--color-engineering); }
+
+        /* ── Note / formula ── */
+        .formula-box {
+            background: var(--card-bg, rgba(255,255,255,0.03));
+            border-left: 3px solid var(--color-engineering);
+            border-radius: 0 8px 8px 0;
+            padding: 12px 16px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-top: 14px;
+        }
+        .formula-box strong { color: var(--text-primary); }
+
+        /* ── Warning ── */
+        .warning-box {
+            background: rgba(220, 100, 60, 0.08);
+            border: 1px solid rgba(220, 100, 60, 0.3);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 12px;
+        }
+        .warning-box strong { color: #e07050; }
+
+        /* ── Tooltip ── */
+        .info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 15px; height: 15px;
+            border-radius: 50%;
+            border: 1px solid var(--text-secondary);
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            cursor: help;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 600px) {
+            .card { padding: 18px 16px; }
+            .vessel-card { flex-direction: column; gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+<div class="layout">
+    <header id="main-navbar"></header>
+    <main class="main">
+
+        <div class="tool-wrapper">
+
+            <!-- Breadcrumb + Titolo -->
+            <h2 style="color: var(--color-engineering); text-align: center; margin-bottom: 10px; font-size: 2rem;">
+                Vaso di Espansione
+            </h2>
+            <p style="text-align: center; margin-bottom: 30px; font-size: 0.9rem; color: var(--text-secondary); letter-spacing: 1px;">
+                <a href="../../../index.html" style="color: var(--color-engineering); text-decoration: none;">Tools</a>
+                <span style="margin: 0 6px;">/</span>
+                <a href="../../index.html" style="color: var(--color-engineering); text-decoration: none;">Dimensionamenti</a>
+                <span style="margin: 0 6px;">/</span>
+                <a href="../index.html" style="color: var(--color-engineering); text-decoration: none;">Acqua</a>
+                <span style="margin: 0 6px;">/</span>
+                <span style="color: var(--text-primary);">Calcolo Volume Vaso</span>
+            </p>
+
+            <!-- ── 1. PARAMETRI SISTEMA ── -->
+            <div class="card">
+                <div class="card-title">1 · Parametri del sistema</div>
+                <div class="input-grid">
+
+                    <div class="input-group">
+                        <label>Tipo di sistema</label>
+                        <div class="input-row">
+                            <select id="systemType" onchange="onSystemTypeChange()">
+                                <option value="heating">Riscaldamento</option>
+                                <option value="cooling">Raffrescamento / Chiller</option>
+                                <option value="custom">Personalizzato</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Temperatura minima <span class="info-icon" title="Temp. min del fluido (es. ritorno invernale o spegnimento impianto)">i</span></label>
+                        <div class="input-row">
+                            <input type="number" id="tempMin" value="10" step="1">
+                            <span class="unit">°C</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Temperatura massima <span class="info-icon" title="Temp. max del fluido in esercizio">i</span></label>
+                        <div class="input-row">
+                            <input type="number" id="tempMax" value="80" step="1">
+                            <span class="unit">°C</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Pressione statica impianto <span class="info-icon" title="Prevalenza statica: quota geodeta × 0.0981 bar/m">i</span></label>
+                        <div class="input-row">
+                            <input type="number" id="pStat" value="1.5" step="0.1">
+                            <span class="unit">bar</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Pressione massima ammessa <span class="info-icon" title="Solitamente taratura valvola di sicurezza − 0.5 bar">i</span></label>
+                        <div class="input-row">
+                            <input type="number" id="pMax" value="3.0" step="0.1">
+                            <span class="unit">bar ass.</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Coefficiente di sicurezza</label>
+                        <div class="input-row">
+                            <input type="number" id="safetyFactor" value="1.1" step="0.05" min="1.0" max="1.5">
+                            <span class="unit">—</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ── 2. VOLUME CIRCUITO ── -->
+            <div class="card">
+                <div class="card-title">2 · Calcolo volume del circuito chiuso</div>
+
+                <!-- Tubazioni -->
+                <div style="font-size:0.8rem; font-weight:600; color:var(--text-secondary); margin-bottom:8px; text-transform:uppercase; letter-spacing:1px;">
+                    Tubazioni
+                </div>
+                <table class="components-table" id="pipeTable">
+                    <thead>
+                        <tr>
+                            <th>Tratto / Descrizione</th>
+                            <th>DN</th>
+                            <th>Lunghezza (m)</th>
+                            <th>Vol. specifico (l/m)</th>
+                            <th>Volume (l)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="pipeBody">
+                        <!-- righe dinamiche -->
+                    </tbody>
+                </table>
+                <button class="btn-calc" style="background:transparent; color:var(--color-engineering); border:1px solid var(--color-engineering); padding:7px 18px; margin-top:10px; font-size:0.8rem;"
+                    onclick="addPipeRow()">+ Aggiungi tratto</button>
+
+                <!-- Componenti impianto -->
+                <div style="font-size:0.8rem; font-weight:600; color:var(--text-secondary); margin:22px 0 8px; text-transform:uppercase; letter-spacing:1px;">
+                    Componenti impianto
+                </div>
+                <table class="components-table">
+                    <thead>
+                        <tr>
+                            <th>Componente</th>
+                            <th>Quantità</th>
+                            <th>Vol. unit. (l)</th>
+                            <th>Vol. totale (l)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="compBody">
+                        <!-- riga per ogni componente -->
+                    </tbody>
+                </table>
+
+                <div class="vol-summary" id="volSummary">
+                    <div class="vol-chip">Tubazioni: <span id="sumPipes">0.0</span> l</div>
+                    <div class="vol-chip">Componenti: <span id="sumComps">0.0</span> l</div>
+                    <div class="vol-chip" style="font-weight:700;">Volume totale circuito: <span id="sumTotal">0.0</span> l &nbsp;|&nbsp; <span id="sumTotalM3">0.000</span> m³</div>
+                </div>
+            </div>
+
+            <!-- ── 3. CALCOLA ── -->
+            <div style="display:flex; justify-content:center; margin-bottom:28px;">
+                <button class="btn-calc" onclick="calculate()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/><path d="M9 15h3l8-8-3-3-8 8v3z"/></svg>
+                    Calcola Vaso di Espansione
+                </button>
+            </div>
+
+            <!-- ── 4. RISULTATI ── -->
+            <div id="resultsSection" class="results-hidden results-section">
+
+                <div class="card">
+                    <div class="card-title">3 · Risultati calcolo</div>
+
+                    <div class="results-grid">
+                        <div class="result-box">
+                            <div class="r-label">Volume circuito</div>
+                            <div class="r-value" id="rVCirc">—</div>
+                            <div class="r-unit">litri</div>
+                        </div>
+                        <div class="result-box">
+                            <div class="r-label">Coefficiente dilatazione</div>
+                            <div class="r-value" id="rDelta">—</div>
+                            <div class="r-unit">Δn (adim.)</div>
+                        </div>
+                        <div class="result-box">
+                            <div class="r-label">Volume dilatazione</div>
+                            <div class="r-value" id="rVDil">—</div>
+                            <div class="r-unit">litri</div>
+                        </div>
+                        <div class="result-box">
+                            <div class="r-label">Pressione precarica</div>
+                            <div class="r-value" id="rP0">—</div>
+                            <div class="r-unit">bar (ass.)</div>
+                        </div>
+                        <div class="result-box">
+                            <div class="r-label">Coefficiente utile</div>
+                            <div class="r-value" id="rEta">—</div>
+                            <div class="r-unit">e (adim.)</div>
+                        </div>
+                        <div class="result-box highlight">
+                            <div class="r-label">Volume vaso calcolato</div>
+                            <div class="r-value" id="rVaso">—</div>
+                            <div class="r-unit">litri</div>
+                        </div>
+                        <div class="result-box highlight">
+                            <div class="r-label">Volume vaso calcolato</div>
+                            <div class="r-value" id="rVasoM3">—</div>
+                            <div class="r-unit">m³</div>
+                        </div>
+                    </div>
+
+                    <div class="formula-box">
+                        <strong>Formula EN 12828:</strong><br>
+                        V<sub>t</sub> = (V<sub>c</sub> · Δn + V<sub>min</sub>) / e<br><br>
+                        Δn = (ρ<sub>freddo</sub> / ρ<sub>caldo</sub>) − 1 &nbsp;·&nbsp; 
+                        e = 1 − (P<sub>0</sub> / P<sub>max</sub>) &nbsp;·&nbsp;
+                        P<sub>0</sub> = pressione precarica = pressione statica + 0.2 bar
+                    </div>
+                </div>
+
+                <!-- ── Vaso commerciale consigliato ── -->
+                <div class="card">
+                    <div class="card-title">4 · Vaso commerciale consigliato</div>
+                    <div class="vessel-card" id="vesselCard">
+                        <!-- compilato da JS -->
+                    </div>
+                    <div class="warning-box">
+                        <strong>⚠ Nota:</strong> Il vaso commerciale selezionato è il primo modello standardizzato con volume nominale ≥ volume calcolato con coefficiente di sicurezza.
+                        Verificare sempre la pressione massima del vaso rispetto alla pressione di esercizio dell'impianto. Per volumi &gt; 500 l valutare vasi in serie o soluzioni su misura.
+                    </div>
+                </div>
+
+            </div>
+            <!-- fine results -->
+
+        </div><!-- tool-wrapper -->
+
+    </main>
+</div>
+
+<script src="../../../../../js/navbar.js"></script>
+<script src="../../../../../js/main.js"></script>
+<script src="../../../../../js/footer.js"></script>
+<script>
+// ─────────────────────────────────────────────
+//  DATI
+// ─────────────────────────────────────────────
+
+// Volume specifico tubazioni (l/m) per DN nominale - valori medi acciaio
+const pipeVolumes = {
+    "DN15":  0.177, "DN20":  0.314, "DN25":  0.491, "DN32":  0.804,
+    "DN40":  1.257, "DN50":  1.963, "DN65":  3.318, "DN80":  5.027,
+    "DN100": 7.854, "DN125": 12.27, "DN150": 17.67, "DN200": 31.42
+};
+
+// Componenti standard impianto
+const defaultComponents = [
+    { name: "Generatore di calore / caldaia",      qty: 1, vol: 15  },
+    { name: "Scambiatore a piastre",                qty: 0, vol: 4   },
+    { name: "Bollitore / accumulo",                 qty: 0, vol: 50  },
+    { name: "Unità fan-coil (per unità)",           qty: 0, vol: 1.5 },
+    { name: "Radiatori (per elemento)",             qty: 0, vol: 0.5 },
+    { name: "Collettori di zona (per circuito)",    qty: 0, vol: 0.3 },
+    { name: "Pompe di circolazione",                qty: 1, vol: 0.3 },
+    { name: "Corpi riscaldanti a pavimento (m²)",   qty: 0, vol: 0.8 },
+    { name: "Chiller / UTA (per kW)",               qty: 0, vol: 0.3 },
+    { name: "Volume aggiuntivo personalizzato",     qty: 0, vol: 1   },
+];
+
+// Catalogo vasi commerciali (Reflex, Varem, Zilmet, Caleffi) — volumi nominali standard
+const commercialVessels = [
+    { vol: 8,   p: 3, name: "Reflex N 8",     diam: 270, h: 248,  precharge: 1.5, conn: "3/4\"", weight: 1.8,  brand: "Reflex",  series: "N",   color: "rosso" },
+    { vol: 12,  p: 3, name: "Reflex N 12",    diam: 270, h: 338,  precharge: 1.5, conn: "3/4\"", weight: 2.4,  brand: "Reflex",  series: "N",   color: "rosso" },
+    { vol: 18,  p: 3, name: "Reflex N 18",    diam: 270, h: 453,  precharge: 1.5, conn: "3/4\"", weight: 3.1,  brand: "Reflex",  series: "N",   color: "rosso" },
+    { vol: 24,  p: 3, name: "Reflex N 24",    diam: 270, h: 558,  precharge: 1.5, conn: "3/4\"", weight: 3.8,  brand: "Reflex",  series: "N",   color: "rosso" },
+    { vol: 35,  p: 3, name: "Reflex N 35",    diam: 350, h: 490,  precharge: 1.5, conn: "3/4\"", weight: 5.1,  brand: "Reflex",  series: "N",   color: "rosso" },
+    { vol: 50,  p: 6, name: "Reflex N 50",    diam: 350, h: 618,  precharge: 1.5, conn: "3/4\"", weight: 6.8,  brand: "Reflex",  series: "N",   color: "rosso" },
+    { vol: 80,  p: 6, name: "Reflex N 80",    diam: 430, h: 662,  precharge: 1.5, conn: "1\"",   weight: 10.5, brand: "Reflex",  series: "N",   color: "rosso" },
+    { vol: 100, p: 6, name: "Reflex N 100",   diam: 430, h: 791,  precharge: 1.5, conn: "1\"",   weight: 12.5, brand: "Reflex",  series: "N",   color: "rosso" },
+    { vol: 150, p: 6, name: "Reflex N 150",   diam: 500, h: 858,  precharge: 1.5, conn: "1\"",   weight: 17.5, brand: "Reflex",  series: "N",   color: "rosso" },
+    { vol: 200, p: 6, name: "Reflex N 200",   diam: 500, h: 1078, precharge: 1.5, conn: "1\"",   weight: 22.0, brand: "Reflex",  series: "N",   color: "rosso" },
+    { vol: 250, p: 6, name: "Reflex N 250",   diam: 600, h: 1025, precharge: 1.5, conn: "1 1/4\"",weight:27.0, brand: "Reflex",  series: "N",   color: "rosso" },
+    { vol: 300, p: 6, name: "Reflex N 300",   diam: 600, h: 1183, precharge: 1.5, conn: "1 1/4\"",weight:32.0, brand: "Reflex",  series: "N",   color: "rosso" },
+    { vol: 400, p: 6, name: "Reflex N 400",   diam: 700, h: 1217, precharge: 1.5, conn: "1 1/2\"",weight:42.0, brand: "Reflex",  series: "N",   color: "rosso" },
+    { vol: 500, p: 6, name: "Reflex N 500",   diam: 700, h: 1464, precharge: 1.5, conn: "1 1/2\"",weight:52.0, brand: "Reflex",  series: "N",   color: "rosso" },
+    { vol: 600, p: 6, name: "Reflex N 600",   diam: 800, h: 1401, precharge: 1.5, conn: "2\"",   weight: 65.0, brand: "Reflex",  series: "N",   color: "rosso" },
+    { vol: 800, p: 6, name: "Reflex N 800",   diam: 800, h: 1774, precharge: 1.5, conn: "2\"",   weight: 82.0, brand: "Reflex",  series: "N",   color: "rosso" },
+    { vol:1000, p: 6, name: "Reflex N 1000",  diam: 950, h: 1715, precharge: 1.5, conn: "2\"",   weight:105.0, brand: "Reflex",  series: "N",   color: "rosso" },
+];
+
+// Densità acqua (kg/m³) in funzione della temperatura
+function waterDensity(T) {
+    // Polinomio approssimato valido tra 0°C e 100°C
+    return 1000 - 0.0025 * Math.pow(T - 4, 2) - 0.0000012 * Math.pow(T - 4, 4);
+}
+
+// ─────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────
+window.addEventListener("DOMContentLoaded", () => {
+    buildComponents();
+    addPipeRow();
+    addPipeRow(); // due righe default
+    updateTotals();
+});
+
+function onSystemTypeChange() {
+    const t = document.getElementById("systemType").value;
+    if (t === "heating") {
+        document.getElementById("tempMin").value = 10;
+        document.getElementById("tempMax").value = 80;
+    } else if (t === "cooling") {
+        document.getElementById("tempMin").value = 5;
+        document.getElementById("tempMax").value = 18;
+    }
+}
+
+// ─────────────────────────────────────────────
+//  COMPONENTI
+// ─────────────────────────────────────────────
+function buildComponents() {
+    const tbody = document.getElementById("compBody");
+    tbody.innerHTML = "";
+    defaultComponents.forEach((c, i) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${c.name}</td>
+            <td><input type="number" id="cq_${i}" value="${c.qty}" min="0" step="1" onchange="updateTotals()"></td>
+            <td><input type="number" id="cv_${i}" value="${c.vol}" min="0" step="0.1" onchange="updateTotals()"></td>
+            <td class="comp-vol-total" id="ct_${i}">${(c.qty * c.vol).toFixed(1)}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// ─────────────────────────────────────────────
+//  TUBAZIONI
+// ─────────────────────────────────────────────
+let pipeRowCount = 0;
+function addPipeRow() {
+    const tbody = document.getElementById("pipeBody");
+    const id = pipeRowCount++;
+    const dnOptions = Object.keys(pipeVolumes).map(k =>
+        `<option value="${k}">${k}</option>`).join("");
+    const tr = document.createElement("tr");
+    tr.id = `prow_${id}`;
+    tr.innerHTML = `
+        <td><input type="text" id="pdesc_${id}" placeholder="es. Mandata principale" style="width:100%;border:1px solid var(--border-color,rgba(255,255,255,0.12));border-radius:6px;padding:5px 8px;background:var(--input-bg,rgba(255,255,255,0.04));color:var(--text-primary);font-size:0.84rem;outline:none;"></td>
+        <td>
+            <select id="pdn_${id}" onchange="updatePipeVol(${id})" style="border:1px solid var(--border-color,rgba(255,255,255,0.12));border-radius:6px;padding:5px 8px;background:var(--input-bg,rgba(255,255,255,0.04));color:var(--text-primary);font-size:0.84rem;outline:none;cursor:pointer;" class="components-table-select">
+                ${dnOptions}
+            </select>
+        </td>
+        <td><input type="number" id="plen_${id}" value="0" min="0" step="1" onchange="updatePipeVol(${id})"></td>
+        <td id="pvspec_${id}" style="color:var(--text-secondary);font-size:0.82rem;">${pipeVolumes["DN15"].toFixed(3)}</td>
+        <td class="comp-vol-total" id="pvol_${id}">0.0</td>
+        <td><button onclick="removePipeRow(${id})" style="background:none;border:none;cursor:pointer;color:var(--text-secondary);font-size:1.1rem;padding:2px 6px;" title="Rimuovi">×</button></td>
+    `;
+    tbody.appendChild(tr);
+}
+
+function removePipeRow(id) {
+    const el = document.getElementById(`prow_${id}`);
+    if (el) el.remove();
+    updateTotals();
+}
+
+function updatePipeVol(id) {
+    const dn = document.getElementById(`pdn_${id}`).value;
+    const len = parseFloat(document.getElementById(`plen_${id}`).value) || 0;
+    const vSpec = pipeVolumes[dn];
+    document.getElementById(`pvspec_${id}`).textContent = vSpec.toFixed(3);
+    document.getElementById(`pvol_${id}`).textContent = (vSpec * len).toFixed(1);
+    updateTotals();
+}
+
+// ─────────────────────────────────────────────
+//  TOTALI LIVE
+// ─────────────────────────────────────────────
+function updateTotals() {
+    // Tubazioni
+    let sumP = 0;
+    for (let i = 0; i < pipeRowCount; i++) {
+        const el = document.getElementById(`pvol_${i}`);
+        if (el) sumP += parseFloat(el.textContent) || 0;
+    }
+    // Componenti
+    let sumC = 0;
+    defaultComponents.forEach((_, i) => {
+        const q = parseFloat(document.getElementById(`cq_${i}`)?.value) || 0;
+        const v = parseFloat(document.getElementById(`cv_${i}`)?.value) || 0;
+        const tot = q * v;
+        const el = document.getElementById(`ct_${i}`);
+        if (el) el.textContent = tot.toFixed(1);
+        sumC += tot;
+    });
+    const total = sumP + sumC;
+    document.getElementById("sumPipes").textContent = sumP.toFixed(1);
+    document.getElementById("sumComps").textContent = sumC.toFixed(1);
+    document.getElementById("sumTotal").textContent = total.toFixed(1);
+    document.getElementById("sumTotalM3").textContent = (total / 1000).toFixed(3);
+}
+
+// ─────────────────────────────────────────────
+//  CALCOLO PRINCIPALE
+// ─────────────────────────────────────────────
+function calculate() {
+    updateTotals();
+
+    const tMin     = parseFloat(document.getElementById("tempMin").value);
+    const tMax     = parseFloat(document.getElementById("tempMax").value);
+    const pStat    = parseFloat(document.getElementById("pStat").value);
+    const pMax     = parseFloat(document.getElementById("pMax").value);
+    const safety   = parseFloat(document.getElementById("safetyFactor").value);
+
+    if (tMax <= tMin) { alert("La temperatura massima deve essere maggiore di quella minima."); return; }
+    if (pMax <= pStat + 0.5) { alert("La pressione massima ammessa deve essere superiore alla pressione statica + 0.5 bar."); return; }
+
+    const Vc = parseFloat(document.getElementById("sumTotal").textContent);
+    if (Vc <= 0) { alert("Inserire il volume del circuito nei componenti o nelle tubazioni."); return; }
+
+    // Densità acqua
+    const rhoC  = waterDensity(tMin);  // freddo
+    const rhoH  = waterDensity(tMax);  // caldo
+    const deltaN = (rhoC / rhoH) - 1; // coefficiente di dilatazione
+
+    // Volume dilatazione (incluso volume minimo iniziale ~5% per sicurezza)
+    const Vmin  = 0.005 * Vc;          // volume minimo accettazione = 0.5% Vc (EN 12828)
+    const Vdil  = Vc * deltaN + Vmin;
+
+    // Pressioni (assolute: + 1 bar atm)
+    const p0    = pStat + 0.2 + 1;     // precarica = pressione statica + 0.2 bar + atm
+    const pFin  = pMax;                 // pressione massima assoluta
+
+    // Coefficiente di utilizzazione
+    const eta   = 1 - (p0 / pFin);
+
+    if (eta <= 0) { alert("La pressione di precarica è maggiore o uguale alla pressione massima. Rivedere i parametri."); return; }
+
+    // Volume vaso netto
+    const Vt_netto = Vdil / eta;
+    // Con coefficiente di sicurezza
+    const Vt = Vt_netto * safety;
+
+    // Display risultati
+    document.getElementById("rVCirc").textContent   = Vc.toFixed(1);
+    document.getElementById("rDelta").textContent   = deltaN.toFixed(4);
+    document.getElementById("rVDil").textContent    = Vdil.toFixed(2);
+    document.getElementById("rP0").textContent      = p0.toFixed(2);
+    document.getElementById("rEta").textContent     = eta.toFixed(3);
+    document.getElementById("rVaso").textContent    = Vt.toFixed(1);
+    document.getElementById("rVasoM3").textContent  = (Vt / 1000).toFixed(3);
+
+    // Selezione vaso commerciale
+    const vessel = commercialVessels.find(v => v.vol >= Vt);
+    renderVessel(vessel, Vt, p0 - 1); // p0 gauge per display
+
+    // Mostra sezione risultati
+    const sec = document.getElementById("resultsSection");
+    sec.classList.remove("results-hidden");
+    sec.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// ─────────────────────────────────────────────
+//  RENDER VASO COMMERCIALE
+// ─────────────────────────────────────────────
+function renderVessel(v, Vt, p0gauge) {
+    const card = document.getElementById("vesselCard");
+    if (!v) {
+        card.innerHTML = `<p style="color:var(--text-secondary);font-size:0.9rem;">
+            Nessun vaso commerciale in catalogo per questo volume (${Vt.toFixed(1)} l).<br>
+            Valutare soluzioni su misura o più vasi in parallelo.</p>`;
+        return;
+    }
+
+    const svgVessel = `
+    <svg width="70" height="120" viewBox="0 0 70 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- corpo -->
+      <rect x="10" y="18" width="50" height="88" rx="25" fill="rgba(var(--color-engineering-rgb,200,160,60),0.15)" stroke="var(--color-engineering)" stroke-width="1.5"/>
+      <!-- divisorio membrana (centro) -->
+      <line x1="10" y1="62" x2="60" y2="62" stroke="var(--color-engineering)" stroke-width="1" stroke-dasharray="4 3" opacity="0.6"/>
+      <!-- etichetta gas -->
+      <text x="35" y="46" text-anchor="middle" font-size="9" fill="var(--text-secondary)" font-family="sans-serif">N₂</text>
+      <!-- etichetta acqua -->
+      <text x="35" y="90" text-anchor="middle" font-size="9" fill="var(--text-secondary)" font-family="sans-serif">H₂O</text>
+      <!-- tappo superiore -->
+      <rect x="28" y="8" width="14" height="12" rx="4" fill="var(--color-engineering)" opacity="0.7"/>
+      <!-- attacco inferiore -->
+      <rect x="28" y="104" width="14" height="12" rx="4" fill="var(--color-engineering)" opacity="0.7"/>
+      <!-- freccia connessione -->
+      <line x1="35" y1="116" x2="35" y2="124" stroke="var(--color-engineering)" stroke-width="1.5" opacity="0.6"/>
+    </svg>`;
+
+    card.innerHTML = `
+        <div class="vessel-icon">
+            <div class="vessel-svg-wrap">${svgVessel}</div>
+            <div class="vessel-badge">${v.brand} · Serie ${v.series}</div>
+        </div>
+        <div class="vessel-info">
+            <div class="vessel-name">${v.name}</div>
+            <div class="vessel-subtitle">Vaso di espansione chiuso a membrana fissa — impianti idrotermici</div>
+            <div class="vessel-specs">
+                <div class="spec-item">
+                    <div class="spec-label">Volume nominale</div>
+                    <div class="spec-value em">${v.vol} litri</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Volume calcolato</div>
+                    <div class="spec-value">${Vt.toFixed(1)} litri</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Pressione max (PS)</div>
+                    <div class="spec-value">${v.p} bar</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Precarica N₂</div>
+                    <div class="spec-value">${p0gauge.toFixed(2)} bar → impost. a ${v.precharge} bar std</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Diametro (Ø)</div>
+                    <div class="spec-value">${v.diam} mm</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Altezza totale</div>
+                    <div class="spec-value">${v.h} mm</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Connessione</div>
+                    <div class="spec-value">${v.conn} M</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Peso a vuoto</div>
+                    <div class="spec-value">${v.weight} kg</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Colore</div>
+                    <div class="spec-value">${v.color.charAt(0).toUpperCase() + v.color.slice(1)}</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Temperatura max</div>
+                    <div class="spec-value">120 °C</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Norma di riferimento</div>
+                    <div class="spec-value">EN 13831 · CE</div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+</script>
+</body>
+</html>

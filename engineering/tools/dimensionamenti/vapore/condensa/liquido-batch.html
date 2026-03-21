@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carico Condensa — Liquido (Batch) | Emanuele Zanella</title>
+<script>(function(){var p=localStorage.getItem('themePref');if(p==='light'){document.documentElement.classList.add('light-mode')}else if(!p){try{var d=JSON.parse(localStorage.getItem('themeData'));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add('light-mode')}}catch(e){}}})();</script>
+<link rel="stylesheet" href="../../../../../css/style.css">
+<style>:root{--eng:var(--color-engineering,#c8a03c);--eng-rgb:var(--color-engineering-rgb,200,160,60)}.tw{max-width:860px;margin:0 auto}.card{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:14px;padding:24px 28px;margin-bottom:20px}.ct{font-size:.75rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--eng);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.07))}.ig{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}.grp{display:flex;flex-direction:column;gap:5px}.grp label{font-size:.78rem;color:var(--text-secondary);font-weight:500;display:flex;align-items:center;gap:4px}.ir{display:flex;align-items:stretch;border:1px solid var(--border-color,rgba(255,255,255,.12));border-radius:8px;overflow:hidden;background:var(--input-bg,rgba(255,255,255,.04));transition:border-color .2s}.ir:focus-within{border-color:var(--eng)}.ir input,.ir select{flex:1;border:none;background:transparent;padding:9px 12px;font-size:.88rem;color:var(--text-primary);outline:none;width:100%;min-width:0}.ir select{cursor:pointer;color-scheme:dark}html.light-mode .ir select{color-scheme:light}.ir select option{background:#1e1e1e;color:#f0f0f0}html.light-mode .ir select option{background:#fff;color:#111}.ir .un{padding:9px 10px;font-size:.75rem;color:var(--text-secondary);background:var(--unit-bg,rgba(255,255,255,.06));border-left:1px solid var(--border-color,rgba(255,255,255,.08));white-space:nowrap;user-select:none;display:flex;align-items:center}.hint{font-size:.7rem;color:var(--text-secondary);margin-top:3px;opacity:.8;line-height:1.4}.hint em{color:var(--eng);font-style:normal}.ii{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;border:1px solid var(--text-secondary);font-size:.6rem;color:var(--text-secondary);cursor:help;flex-shrink:0}.btn{display:inline-flex;align-items:center;gap:8px;background:var(--eng);color:#fff;border:none;padding:11px 32px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:opacity .2s,transform .15s}html.light-mode .btn{color:#1a1a1a}.btn:hover{opacity:.88;transform:translateY(-1px)}.rh{display:none}.rs{animation:fu .3s ease}@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:18px}.rb{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}.rb.pri{border-color:var(--eng);background:rgba(var(--eng-rgb,200,160,60),.07)}.rb.pos{border-color:rgba(80,200,120,.5);background:rgba(80,200,120,.07)}.rl{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600}.rv{font-size:1.3rem;font-weight:700;color:var(--text-primary);line-height:1.1}.rb.pri .rv{color:var(--eng)}.rb.pos .rv{color:#50c878}.ru{font-size:.76rem;color:var(--text-secondary)}.formula-section{margin-top:24px}.formula-title{font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--eng);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.07))}.formula-block{background:rgba(var(--eng-rgb,200,160,60),.04);border:1px solid rgba(var(--eng-rgb,200,160,60),.15);border-radius:10px;padding:16px 18px;font-size:.8rem;color:var(--text-secondary);line-height:1.9}.formula-block strong{color:var(--text-primary)}.formula-block .frow{display:flex;gap:10px;padding:1px 0}.formula-block .fsym{color:var(--eng);font-weight:700;min-width:80px}.eb{background:rgba(220,60,60,.08);border:1px solid rgba(220,60,60,.3);border-radius:8px;padding:10px 14px;font-size:.82rem;color:#e05050;margin-bottom:16px;display:none}.bar-chart{display:flex;align-items:flex-end;gap:10px;height:120px;padding:0 4px;margin-top:8px}.bar-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}.bar-rect{width:100%;border-radius:4px 4px 0 0;transition:height .5s ease;min-height:3px}.bar-lbl{font-size:.68rem;color:var(--text-secondary);text-align:center;line-height:1.2}.bar-val{font-size:.72rem;font-weight:700;color:var(--eng)}@media(max-width:580px){.card{padding:18px 14px}}</style>
+</head>
+<body>
+<div class="layout"><header id="main-navbar"></header><main class="main"><div class="tw">
+<h2 style="color:var(--eng);text-align:center;margin-bottom:10px;font-size:2rem;">Carico Condensa — Liquido (Batch)</h2>
+<p style="text-align:center;margin-bottom:30px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+<a href="../../../../../index.html" style="color:var(--eng);text-decoration:none;">Tools</a>
+<span style="margin:0 6px;">/</span>
+<a href="../../../../../engineering/tools/dimensionamenti/index.html" style="color:var(--eng);text-decoration:none;">Dimensionamenti</a>
+<span style="margin:0 6px;">/</span>
+<a href="../../../../../engineering/tools/dimensionamenti/vapore/index.html" style="color:var(--eng);text-decoration:none;">Vapore</a>
+<span style="margin:0 6px;">/</span>
+<span style="color:var(--text-primary);">Dal liquido di riscaldamento (batch)</span>
+</p>
+<div class="card" style="border-left:3px solid var(--eng);border-radius:0 14px 14px 14px;padding:14px 20px;margin-bottom:22px;"><p style="font-size:.82rem;color:var(--text-secondary);line-height:1.6;margin:0;">In un processo batch il liquido è riscaldato da T<sub>0</sub> a T<sub>f</sub> in un tempo prestabilito. Il carico medio è utile per la valvola di controllo, il carico di picco determina il dimensionamento dello scaricatore.</p></div>
+<div class="card"><div class="ct">Parametri processo</div><div class="ig">
+<div class="grp"><label>Massa liquido</label><div class="ir"><input type="number" id="massLiq" value="2000" step="100" min="0.1"><span class="un">kg</span></div></div>
+<div class="grp"><label>Temperatura iniziale T<sub>0</sub></label><div class="ir"><input type="number" id="T0" value="20" step="1"><span class="un">°C</span></div></div>
+<div class="grp"><label>Temperatura finale T<sub>f</sub></label><div class="ir"><input type="number" id="Tf" value="90" step="1"><span class="un">°C</span></div></div>
+<div class="grp"><label>Tempo riscaldamento</label><div class="ir"><input type="number" id="tBatch" value="45" step="5" min="1"><span class="un">min</span></div><div class="hint">Tipicamente <em>30–120 minuti</em> per batch industriali</div></div>
+<div class="grp"><label>Fluido</label><div class="ir"><select id="cpLiq" onchange="onFluidChange()"><option value="4.186">Acqua</option><option value="2.0">Olio minerale</option><option value="2.4">Glicol/acqua 50%</option><option value="custom">Personalizzato</option></select></div></div>
+<div class="grp"><label>Cp personalizzato</label><div class="ir"><input type="number" id="cpCustom" value="4.186" step="0.01" disabled><span class="un">kJ/(kg·K)</span></div></div>
+<div class="grp"><label>Calore latente h<sub>fg</sub></label><div class="ir"><input type="number" id="hfg" value="2090" step="10" min="500"><span class="un">kJ/kg</span></div><div class="hint">A 6 bar(g)≈2085 · A 10 bar(g)≈2000 kJ/kg</div></div>
+<div class="grp"><label>Fattore di picco <span class="ii" title="Rapporto picco/medio. ON/OFF: 2–3× — con modulazione: 1.3–1.5×">i</span></label><div class="ir"><input type="number" id="peakFactor" value="2.0" step="0.1" min="1"><span class="un">—</span></div><div class="hint">Controllo ON/OFF: <em>2–3×</em> · Con modulazione: <em>1.3–1.5×</em></div></div>
+</div></div>
+<div class="eb" id="errorBox"></div>
+<div style="display:flex;justify-content:center;margin-bottom:28px;"><button class="btn" onclick="calculate()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/><path d="M9 15h3l8-8-3-3-8 8v3z"/></svg>Calcola</button></div>
+<div id="resultsSection" class="rh rs"><div class="card"><div class="ct">Risultati</div>
+<div class="rg">
+<div class="rb pri"><div class="rl">Carico condensa medio</div><div class="rv" id="rAvg">—</div><div class="ru">kg/h</div></div>
+<div class="rb pri"><div class="rl">Carico condensa di picco</div><div class="rv" id="rPeak">—</div><div class="ru">kg/h</div></div>
+<div class="rb"><div class="rl">Energia totale batch</div><div class="rv" id="rQ">—</div><div class="ru">kJ</div></div>
+<div class="rb"><div class="rl">Potenza media</div><div class="rv" id="rPow">—</div><div class="ru">kW</div></div>
+<div class="rb"><div class="rl">Condensa totale</div><div class="rv" id="rCondTot">—</div><div class="ru">kg</div></div>
+<div class="rb"><div class="rl">ΔT riscaldamento</div><div class="rv" id="rDT">—</div><div class="ru">°C</div></div>
+</div>
+<div style="font-size:.78rem;color:var(--text-secondary);font-weight:600;margin-bottom:8px;">Carico medio vs picco</div>
+<div class="bar-chart" id="peakChart" style="height:100px;"></div>
+<div class="formula-section"><div class="formula-title">Formule utilizzate</div><div class="formula-block">
+<strong>Energia totale del batch:</strong><br>
+<div class="frow"><span class="fsym">Q</span><span>= M · Cp · (T<sub>f</sub> − T<sub>0</sub>) &nbsp;[kJ]</span></div><br>
+<strong>Carico condensa medio:</strong><br>
+<div class="frow"><span class="fsym">ṁ<sub>med</sub></span><span>= Q / (h<sub>fg</sub> · t<sub>batch</sub>[h]) &nbsp;[kg/h]</span></div><br>
+<strong>Carico di picco:</strong><br>
+<div class="frow"><span class="fsym">ṁ<sub>picco</sub></span><span>= ṁ<sub>med</sub> × f<sub>picco</sub></span></div><br>
+<strong>Nota:</strong> Lo scaricatore va dimensionato sul picco. La valvola di controllo sul carico medio × margine apertura massima.
+</div></div>
+</div></div>
+<script>
+function onFluidChange(){var v=document.getElementById("cpLiq").value;document.getElementById("cpCustom").disabled=(v!=="custom");}
+function getCp(){var s=document.getElementById("cpLiq").value;return s==="custom"?+document.getElementById("cpCustom").value:+s;}
+function calculate(){
+    var M=+document.getElementById("massLiq").value, T0=+document.getElementById("T0").value, Tf=+document.getElementById("Tf").value;
+    var t=+document.getElementById("tBatch").value, cp=getCp(), hfg=+document.getElementById("hfg").value, pf=+document.getElementById("peakFactor").value;
+    if([M,T0,Tf,t,cp,hfg,pf].some(function(v){return isNaN(v)||v<=0;})){showErr("Valori non validi.");return;}
+    if(Tf<=T0){showErr("T finale deve essere > T iniziale.");return;}
+    hideErr();
+    var dT=Tf-T0, Q=M*cp*dT, tH=t/60, condTot=Q/hfg, avg=condTot/tH, peak=avg*pf;
+    document.getElementById("rAvg").textContent=avg.toFixed(1);
+    document.getElementById("rPeak").textContent=peak.toFixed(1);
+    document.getElementById("rQ").textContent=Math.round(Q).toLocaleString("it");
+    document.getElementById("rPow").textContent=(Q/(t*60)).toFixed(2);
+    document.getElementById("rCondTot").textContent=condTot.toFixed(1);
+    document.getElementById("rDT").textContent=dT.toFixed(0);
+    var maxV=Math.max(avg,peak,1);
+    document.getElementById("peakChart").innerHTML=
+        '<div class="bar-col"><div class="bar-val">'+avg.toFixed(1)+' kg/h</div><div class="bar-rect" style="height:'+((avg/maxV)*100)+'%;background:var(--eng);opacity:.85"></div><div class="bar-lbl">Medio</div></div>'+
+        '<div class="bar-col"><div class="bar-val">'+peak.toFixed(1)+' kg/h</div><div class="bar-rect" style="height:'+((peak/maxV)*100)+'%;background:#e07050;opacity:.85"></div><div class="bar-lbl">Picco</div></div>';
+    document.getElementById("resultsSection").classList.remove("rh");
+    document.getElementById("resultsSection").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function showErr(m){document.getElementById("errorBox").textContent="⚠ "+m;document.getElementById("errorBox").style.display="block";}
+function hideErr(){document.getElementById("errorBox").style.display="none";}
+</script>
+</div></main></div>
+<script src="../../../../../js/navbar.js"></script>
+<script src="../../../../../js/main.js"></script>
+<script src="../../../../../js/footer.js"></script>
+</body></html>

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dimensionamenti Vapore | Emanuele Zanella</title>
-    <meta name="description" content="Dimensionamento tubazioni vapore: perdite di carico e progettazione.">
+    <title>Dimensionamenti Metano | Emanuele Zanella</title>
+    <meta name="description" content="Dimensionamento tubazioni gas metano: perdite di carico, velocità, portata e progettazione.">
     <script>
 (function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
     </script>
@@ -78,14 +78,6 @@
             color: var(--color-engineering);
             padding-left: 6px;
         }
-        .section-title {
-            font-size: 0.72rem;
-            letter-spacing: 0.1em;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            margin: 32px 0 8px;
-            opacity: 0.7;
-        }
     </style>
 </head>
 <body>
@@ -94,14 +86,14 @@
         <main class="main">
 
             <h2 style="color: var(--color-engineering); text-align: center; margin-bottom: 10px; font-size: 2rem;">
-                Dimensionamenti Vapore
+                Dimensionamenti Metano
             </h2>
             <p style="text-align: center; margin-bottom: 30px; font-size: 0.9rem; color: var(--text-secondary); letter-spacing: 1px;">
                 <a href="../../index.html" style="color: var(--color-engineering); text-decoration: none;">Tools</a>
                 <span style="margin: 0 6px;">/</span>
                 <a href="../index.html" style="color: var(--color-engineering); text-decoration: none;">Dimensionamenti</a>
                 <span style="margin: 0 6px;">/</span>
-                <span style="color: var(--text-primary);">Vapore</span>
+                <span style="color: var(--text-primary);">Metano</span>
             </p>
 
             <div class="accordion-list">
@@ -113,41 +105,7 @@
                         <span class="accordion-title">Progettazione di tubazioni</span>
                     </div>
                     <div class="accordion-body">
-                        <a class="accordion-sub" href="progettazione/dim-perdita-pressione.html">Dimensionamento della tubazione in base alla perdita di pressione</a>
-                        <a class="accordion-sub" href="progettazione/dim-velocita.html">Dimensionamento della tubazione in base alla velocità</a>
-                        <a class="accordion-sub" href="progettazione/dim-sfiato.html">Dimensionamento della tubazione in base allo sfiato del vapore</a>
-                        <a class="accordion-sub" href="progettazione/perdita-pressione.html">Perdita di pressione nella tubazione</a>
-                        <a class="accordion-sub" href="progettazione/velocita-vapore.html">Velocità del vapore nella tubazione</a>
-                        <a class="accordion-sub" href="progettazione/portata-vapore.html">Portata del vapore nella tubazione</a>
-                        <a class="accordion-sub" href="progettazione/spessore-isolamento.html">Spessore ottimale dell'isolamento</a>
-                    </div>
-                </div>
-
-                <!-- 2. Carico condensa -->
-                <div class="accordion-item">
-                    <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <div class="accordion-icon">+</div>
-                        <span class="accordion-title">Carico condensa</span>
-                    </div>
-                    <div class="accordion-body">
-                        <a class="accordion-sub" href="condensa/tubazione-avviamento.html">Dalla tubazione all'avviamento</a>
-                        <a class="accordion-sub" href="condensa/liquido-continuo.html">Dal liquido di riscaldamento (continuo)</a>
-                        <a class="accordion-sub" href="condensa/liquido-batch.html">Dal liquido di riscaldamento (batch)</a>
-                        <a class="accordion-sub" href="condensa/aria-riscaldamento.html">Dall'aria di riscaldamento</a>
-                        <a class="accordion-sub" href="condensa/perdita-radiante.html">Dalla perdita di calore radiante</a>
-                        <a class="accordion-sub" href="condensa/punto-stallo.html">Punto di stallo</a>
-                    </div>
-                </div>
-
-                <!-- 3. Costo unitario del vapore e dell'energia -->
-                <div class="accordion-item">
-                    <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <div class="accordion-icon">+</div>
-                        <span class="accordion-title">Costo unitario del vapore e dell'energia</span>
-                    </div>
-                    <div class="accordion-body">
-                        <a class="accordion-sub" href="costo/costo-vapore.html">Costo unitario del vapore</a>
-                        <a class="accordion-sub" href="costo/costo-energia.html">Costo unitario dell'energia termica</a>
+                        <a class="accordion-sub" href="progettazione/metano-perdita-pressione.html">Perdita di pressione nella tubazione</a>
                     </div>
                 </div>
 
@@ -164,12 +122,8 @@
         const icon = header.querySelector('.accordion-icon');
         const body = header.nextElementSibling;
         const isOpen = body.classList.contains('open');
-
-        // Close all
         document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
         document.querySelectorAll('.accordion-icon').forEach(i => i.classList.remove('open'));
-
-        // Open clicked if it was closed
         if (!isOpen) {
             body.classList.add('open');
             icon.classList.add('open');

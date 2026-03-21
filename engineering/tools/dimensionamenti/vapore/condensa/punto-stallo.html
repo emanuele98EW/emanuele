@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Punto di Stallo | Emanuele Zanella</title>
+<script>(function(){var p=localStorage.getItem('themePref');if(p==='light'){document.documentElement.classList.add('light-mode')}else if(!p){try{var d=JSON.parse(localStorage.getItem('themeData'));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add('light-mode')}}catch(e){}}})();</script>
+<link rel="stylesheet" href="../../../../../css/style.css">
+<style>:root{--eng:var(--color-engineering,#c8a03c);--eng-rgb:var(--color-engineering-rgb,200,160,60)}.tw{max-width:860px;margin:0 auto}.card{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:14px;padding:24px 28px;margin-bottom:20px}.ct{font-size:.75rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--eng);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.07))}.ig{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}.grp{display:flex;flex-direction:column;gap:5px}.grp label{font-size:.78rem;color:var(--text-secondary);font-weight:500;display:flex;align-items:center;gap:4px}.ir{display:flex;align-items:stretch;border:1px solid var(--border-color,rgba(255,255,255,.12));border-radius:8px;overflow:hidden;background:var(--input-bg,rgba(255,255,255,.04));transition:border-color .2s}.ir:focus-within{border-color:var(--eng)}.ir input,.ir select{flex:1;border:none;background:transparent;padding:9px 12px;font-size:.88rem;color:var(--text-primary);outline:none;width:100%;min-width:0}.ir select{cursor:pointer;color-scheme:dark}html.light-mode .ir select{color-scheme:light}.ir select option{background:#1e1e1e;color:#f0f0f0}html.light-mode .ir select option{background:#fff;color:#111}.ir .un{padding:9px 10px;font-size:.75rem;color:var(--text-secondary);background:var(--unit-bg,rgba(255,255,255,.06));border-left:1px solid var(--border-color,rgba(255,255,255,.08));white-space:nowrap;user-select:none;display:flex;align-items:center}.hint{font-size:.7rem;color:var(--text-secondary);margin-top:3px;opacity:.8;line-height:1.4}.hint em{color:var(--eng);font-style:normal}.ii{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;border:1px solid var(--text-secondary);font-size:.6rem;color:var(--text-secondary);cursor:help;flex-shrink:0}.btn{display:inline-flex;align-items:center;gap:8px;background:var(--eng);color:#fff;border:none;padding:11px 32px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:opacity .2s,transform .15s}html.light-mode .btn{color:#1a1a1a}.btn:hover{opacity:.88;transform:translateY(-1px)}.rh{display:none}.rs{animation:fu .3s ease}@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:18px}.rb{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}.rb.pri{border-color:var(--eng);background:rgba(var(--eng-rgb,200,160,60),.07)}.rb.pos{border-color:rgba(80,200,120,.5);background:rgba(80,200,120,.07)}.rl{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600}.rv{font-size:1.3rem;font-weight:700;color:var(--text-primary);line-height:1.1}.rb.pri .rv{color:var(--eng)}.rb.pos .rv{color:#50c878}.ru{font-size:.76rem;color:var(--text-secondary)}.formula-section{margin-top:24px}.formula-title{font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--eng);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.07))}.formula-block{background:rgba(var(--eng-rgb,200,160,60),.04);border:1px solid rgba(var(--eng-rgb,200,160,60),.15);border-radius:10px;padding:16px 18px;font-size:.8rem;color:var(--text-secondary);line-height:1.9}.formula-block strong{color:var(--text-primary)}.formula-block .frow{display:flex;gap:10px;padding:1px 0}.formula-block .fsym{color:var(--eng);font-weight:700;min-width:80px}.eb{background:rgba(220,60,60,.08);border:1px solid rgba(220,60,60,.3);border-radius:8px;padding:10px 14px;font-size:.82rem;color:#e05050;margin-bottom:16px;display:none}.bar-chart{display:flex;align-items:flex-end;gap:10px;height:120px;padding:0 4px;margin-top:8px}.bar-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}.bar-rect{width:100%;border-radius:4px 4px 0 0;transition:height .5s ease;min-height:3px}.bar-lbl{font-size:.68rem;color:var(--text-secondary);text-align:center;line-height:1.2}.bar-val{font-size:.72rem;font-weight:700;color:var(--eng)}@media(max-width:580px){.card{padding:18px 14px}}</style>
+</head>
+<body>
+<div class="layout"><header id="main-navbar"></header><main class="main"><div class="tw">
+<h2 style="color:var(--eng);text-align:center;margin-bottom:10px;font-size:2rem;">Punto di Stallo</h2>
+<p style="text-align:center;margin-bottom:30px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+<a href="../../../../../index.html" style="color:var(--eng);text-decoration:none;">Tools</a>
+<span style="margin:0 6px;">/</span>
+<a href="../../../../../engineering/tools/dimensionamenti/index.html" style="color:var(--eng);text-decoration:none;">Dimensionamenti</a>
+<span style="margin:0 6px;">/</span>
+<a href="../../../../../engineering/tools/dimensionamenti/vapore/index.html" style="color:var(--eng);text-decoration:none;">Vapore</a>
+<span style="margin:0 6px;">/</span>
+<span style="color:var(--text-primary);">Punto di stallo</span>
+</p>
+<div class="card" style="border-left:3px solid var(--eng);border-radius:0 14px 14px 14px;padding:14px 20px;margin-bottom:22px;"><p style="font-size:.82rem;color:var(--text-secondary);line-height:1.6;margin:0;">Lo stallo si verifica quando la pressione nello scambiatore scende al valore della contropressione sulla linea condensa e lo scaricatore non può più evacuarla. Il waterlogging degrada le prestazioni e può causare colpi d'ariete.</p></div>
+<div class="card"><div class="ct">Parametri sistema</div><div class="ig">
+<div class="grp"><label>Pressione vapore a monte valvola P<sub>1</sub></label><div class="ir"><input type="number" id="P1" value="7" step="0.5" min="0.5"><span class="un">bar (g)</span></div></div>
+<div class="grp"><label>Contropressione linea condensa P<sub>back</sub> <span class="ii" title="Pressione sulla linea di ritorno condensa a valle dello scaricatore">i</span></label><div class="ir"><input type="number" id="Pback" value="0.5" step="0.1" min="0"><span class="un">bar (g)</span></div><div class="hint">Linea di ritorno: <em>0.2–2 bar(g)</em></div></div>
+<div class="grp"><label>Pressione minima processo P<sub>min</sub></label><div class="ir"><input type="number" id="Pmin" value="1.0" step="0.1" min="0"><span class="un">bar (g)</span></div><div class="hint">P minima per mantenere la temperatura di processo richiesta</div></div>
+<div class="grp"><label>Carico termico massimo Q<sub>max</sub></label><div class="ir"><input type="number" id="Qmax" value="500" step="10" min="1"><span class="un">kW</span></div></div>
+<div class="grp"><label>Calore latente a P<sub>1</sub> &nbsp;h<sub>fg</sub></label><div class="ir"><input type="number" id="hfg1" value="2085" step="5" min="500"><span class="un">kJ/kg</span></div><div class="hint">A 6 bar(g)≈2085 · A 10 bar(g)≈2000 kJ/kg</div></div>
+</div></div>
+<div class="eb" id="errorBox"></div>
+<div style="display:flex;justify-content:center;margin-bottom:28px;"><button class="btn" onclick="calculate()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/><path d="M9 15h3l8-8-3-3-8 8v3z"/></svg>Calcola</button></div>
+<div id="resultsSection" class="rh rs"><div class="card"><div class="ct">Risultati</div>
+<div class="rg">
+<div class="rb pri"><div class="rl">Pressione di stallo</div><div class="rv" id="rPstall">—</div><div class="ru">bar (g)</div></div>
+<div class="rb pri"><div class="rl">Carico al punto di stallo</div><div class="rv" id="rQstall">—</div><div class="ru">% del max</div></div>
+<div class="rb"><div class="rl">Carico kW allo stallo</div><div class="rv" id="rQkw">—</div><div class="ru">kW</div></div>
+<div class="rb"><div class="rl">Rischio stallo</div><div class="rv" id="rRisk">—</div><div class="ru"></div></div>
+<div class="rb"><div class="rl">T<sub>sat</sub> a P stallo</div><div class="rv" id="rTstall">—</div><div class="ru">°C</div></div>
+<div class="rb"><div class="rl">ΔP disponibile</div><div class="rv" id="rDeltaP">—</div><div class="ru">bar</div></div>
+</div>
+<div style="margin:10px 0 6px;font-size:.78rem;color:var(--text-secondary);font-weight:600;">Curva pressione vs carico (%)</div>
+<div style="position:relative;height:100px;" id="stallChart"></div>
+<div class="formula-section"><div class="formula-title">Formule utilizzate</div><div class="formula-block">
+<strong>Pressione di stallo:</strong><br>
+<div class="frow"><span class="fsym">P<sub>stallo</sub></span><span>= P<sub>back</sub> → quando P scambiatore eguaglia la contropressione</span></div><br>
+<strong>Carico relativo al punto di stallo:</strong><br>
+<div class="frow"><span class="fsym">Q<sub>%stallo</sub></span><span>= (P<sub>stallo</sub> / P<sub>1</sub>) × 100 [% del carico max]</span></div><br>
+<strong>Soluzioni anti-stallo:</strong> VRP a valle · pompa condensa · pressurizzare linea ritorno · scaricatori a pressione differenziale · DPCS (Differential Pressure Control System)
+</div></div>
+</div></div>
+<script>
+function Tsat(Pg){return 100+28.2*Pg-1.3*Pg*Pg;}
+function calculate(){
+    var P1g=+document.getElementById("P1").value, Pbg=+document.getElementById("Pback").value;
+    var Pmg=+document.getElementById("Pmin").value, Qmax=+document.getElementById("Qmax").value, hfg=+document.getElementById("hfg1").value;
+    if([P1g,Pbg,Qmax,hfg].some(function(v){return isNaN(v)||v<=0;})){showErr("Valori non validi.");return;}
+    hideErr();
+    var P1abs=P1g+1.01325, Pbabs=Pbg+1.01325;
+    var Pstall_g=Pbg, Qpct=(Pbabs/P1abs)*100, Qkw=Qmax*Pbabs/P1abs;
+    var Tstall=Tsat(Math.max(Pstall_g,0)), dP=P1abs-Pbabs;
+    var hasRisk=(Pmg<=Pbg+0.2);
+    document.getElementById("rPstall").textContent=Pstall_g.toFixed(2);
+    document.getElementById("rQstall").textContent=Qpct.toFixed(1);
+    document.getElementById("rQkw").textContent=Qkw.toFixed(1);
+    document.getElementById("rRisk").textContent=hasRisk?"⚠ RISCHIO STALLO":"✓ Operativo OK";
+    document.getElementById("rRisk").style.color=hasRisk?"#e05050":"#50c878";
+    document.getElementById("rTstall").textContent=Tstall.toFixed(1);
+    document.getElementById("rDeltaP").textContent=dP.toFixed(3);
+    var W=document.getElementById("stallChart").offsetWidth||500, H=100;
+    var pts=[]; for(var q=0;q<=100;q+=5){pts.push({q:q,P:Pbg+((P1g-Pbg)*q/100)});}
+    var pMax=P1g, pMin=0;
+    function toX(q){return(q/100)*(W-40)+20;}
+    function toY(P){return H-8-((P-pMin)/(pMax-pMin||1))*(H-20);}
+    var path="M"+toX(0)+","+toY(pts[0].P);
+    pts.forEach(function(p){path+=" L"+toX(p.q)+","+toY(p.P);});
+    var stallX=toX(Qpct), stallY=toY(Pstall_g), backY=toY(Pbg);
+    var xLabels=[0,25,50,75,100].map(function(q){return'<text x="'+toX(q)+'" y="'+H+'" font-size="8" fill="var(--text-secondary,#888)" text-anchor="middle" font-family="sans-serif">'+q+'%</text>';}).join("");
+    document.getElementById("stallChart").innerHTML='<svg width="100%" height="'+H+'" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none">'+
+        '<line x1="20" y1="'+backY+'" x2="'+(W-20)+'" y2="'+backY+'" stroke="rgba(220,80,60,.5)" stroke-width="1" stroke-dasharray="4 3"/>'+
+        '<path d="'+path+'" fill="none" stroke="var(--eng)" stroke-width="2" stroke-linejoin="round"/>'+
+        '<circle cx="'+stallX+'" cy="'+stallY+'" r="5" fill="#e05050"/>'+
+        '<text x="'+(stallX+8)+'" y="'+(stallY-4)+'" font-size="9" fill="#e05050" font-family="sans-serif">Stallo</text>'+
+        '<text x="25" y="'+(backY-4)+'" font-size="9" fill="rgba(220,80,60,.8)" font-family="sans-serif">P back</text>'+
+        xLabels+'</svg>';
+    document.getElementById("resultsSection").classList.remove("rh");
+    document.getElementById("resultsSection").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function showErr(m){document.getElementById("errorBox").textContent="⚠ "+m;document.getElementById("errorBox").style.display="block";}
+function hideErr(){document.getElementById("errorBox").style.display="none";}
+</script>
+</div></main></div>
+<script src="../../../../../js/navbar.js"></script>
+<script src="../../../../../js/main.js"></script>
+<script src="../../../../../js/footer.js"></script>
+</body></html>

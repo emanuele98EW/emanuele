@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dim. Tubazione per Velocità | Vapore | Emanuele Zanella</title>
+    <meta name="description" content="Dimensionamento tubazione vapore in base alla velocità - Calcolo DN ottimale.">
+    <script>
+(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
+    </script>
+    <link rel="stylesheet" href="../../../../../css/style.css">
+    <style>
+        .tool-wrap { max-width: 860px; margin: 0 auto; }
+        .norm-badge { display:inline-block;padding:2px 10px;border-radius:20px;font-size:.72rem;font-weight:600;border:1px solid var(--color-engineering);color:var(--color-engineering);margin:0 4px; }
+        .tool-grid { display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px; }
+        @media(max-width:640px){ .tool-grid { grid-template-columns:1fr; } }
+        .tool-panel { background:var(--bg-secondary,rgba(255,255,255,0.04));border:1px solid var(--border-color,rgba(255,255,255,0.1));border-radius:12px;padding:20px; }
+        .panel-title { font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-engineering);margin-bottom:16px;font-weight:600; }
+        .field-row { display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px; }
+        .field-label { font-size:0.83rem;color:var(--text-secondary);flex:1;min-width:0; }
+        .field-input-wrap { display:flex;gap:6px;align-items:center;flex-shrink:0; }
+        .field-input-wrap input[type="number"] { width:90px;background:#1a1f2e;border:1px solid rgba(255,255,255,0.25);border-radius:6px;padding:6px 8px;font-size:0.83rem;color:#e8d88a;text-align:right; }
+        .light-mode .field-input-wrap input[type="number"] { background:#f5f5f0;border-color:rgba(0,0,0,0.2);color:#3a3000; }
+        .field-input-wrap input[type="number"]:focus { outline:none;border-color:var(--color-engineering); }
+        .field-unit { font-size:0.75rem;color:var(--text-secondary);min-width:42px; }
+        .field-select { background:#1a1f2e;border:1px solid rgba(255,255,255,0.25);border-radius:6px;padding:6px 8px;font-size:0.83rem;color:#e8d88a;min-width:100px; }
+        .field-select option { background:#1a1f2e;color:#e8d88a; }
+        .light-mode .field-select { background:#f5f5f0;border-color:rgba(0,0,0,0.2);color:#3a3000; }
+        .light-mode .field-select option { background:#f5f5f0;color:#3a3000; }
+        .btn-calc { display:block;width:100%;padding:12px;margin-top:20px;background:var(--color-engineering);color:#0d1117;border:none;border-radius:8px;font-size:0.9rem;font-weight:700;cursor:pointer;letter-spacing:0.04em;transition:opacity 0.2s; }
+        .btn-calc:hover { opacity:0.88; }
+        .results-panel { margin-top:24px;background:var(--bg-secondary,rgba(255,255,255,0.04));border:1px solid var(--color-engineering);border-radius:12px;padding:20px;display:none; }
+        .results-panel.visible { display:block; }
+        .results-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:12px; }
+        .result-card { background:var(--bg-card,rgba(255,255,255,0.03));border:1px solid var(--border-color,rgba(255,255,255,0.08));border-radius:8px;padding:12px 14px; }
+        .result-label { font-size:0.72rem;color:var(--text-secondary);margin-bottom:4px; }
+        .result-value { font-size:1.3rem;font-weight:600;color:var(--color-engineering); }
+        .result-unit { font-size:0.72rem;color:var(--text-secondary);margin-left:3px; }
+        .dn-table-wrap { margin-top:20px;overflow-x:auto; }
+        .dn-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
+        .dn-table th { text-align:center;padding:8px;border-bottom:2px solid var(--color-engineering);color:var(--color-engineering);font-size:0.72rem;letter-spacing:0.05em;white-space:nowrap; }
+        .dn-table th.left { text-align:left; }
+        .dn-table td { padding:7px 8px;text-align:center;color:var(--text-primary);border-bottom:1px solid var(--border-color,rgba(255,255,255,0.06)); }
+        .dn-table td.left { text-align:left;font-weight:600; }
+        .dn-table tr.recommended td { background:rgba(var(--color-engineering-rgb,200,160,60),0.12); }
+        .dn-table tr.recommended td.left { color:var(--color-engineering); }
+        .badge-ok  { background:rgba(50,200,100,0.15);color:#3dc878;padding:2px 8px;border-radius:10px;font-size:0.72rem; }
+        .badge-hi  { background:rgba(220,80,60,0.15);color:#e05544;padding:2px 8px;border-radius:10px;font-size:0.72rem; }
+        .badge-lo  { background:rgba(255,180,0,0.15);color:#d4a017;padding:2px 8px;border-radius:10px;font-size:0.72rem; }
+        .note-block { background:var(--bg-secondary,rgba(255,255,255,0.03));border-left:3px solid var(--color-engineering);border-radius:0 8px 8px 0;padding:12px 16px;margin-top:24px;font-size:0.80rem;color:var(--text-secondary);line-height:1.7; }
+        .note-block strong { color:var(--text-primary); }
+        .divider { border:none;border-top:1px solid var(--border-color,rgba(255,255,255,0.07));margin:16px 0; }
+        .velocity-gauge { width:100%;margin-top:12px; }
+        .gauge-bar { height:12px;border-radius:6px;background:rgba(255,255,255,0.07);overflow:hidden;position:relative; }
+        .gauge-fill { height:100%;border-radius:6px;transition:width 0.5s ease; }
+        .gauge-labels { display:flex;justify-content:space-between;font-size:0.7rem;color:var(--text-secondary);margin-top:4px; }
+    </style>
+</head>
+<body>
+<div class="layout">
+    <header id="main-navbar"></header>
+    <main class="main">
+    <div class="tool-wrap">
+
+        <h2 style="color:var(--color-engineering);text-align:center;margin-bottom:10px;font-size:1.9rem;">
+            Dimensionamento per Velocità
+        </h2>
+        <p style="text-align:center;margin-bottom:6px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+            <a href="../../../index.html" style="color:var(--color-engineering);text-decoration:none;">Tools</a>
+            <span style="margin:0 6px;">/</span>
+            <a href="../../index.html" style="color:var(--color-engineering);text-decoration:none;">Dimensionamenti</a>
+            <span style="margin:0 6px;">/</span>
+            <a href="../index.html" style="color:var(--color-engineering);text-decoration:none;">Vapore</a>
+            <span style="margin:0 6px;">/</span>
+            <span style="color:var(--text-primary);">Per velocità</span>
+        </p>
+        <p style="text-align:center;margin-bottom:28px;font-size:.82rem;">
+            <span class="norm-badge">EN 13480</span>
+            <span class="norm-badge">ISO 4006</span>
+        </p>
+
+        <div class="tool-grid">
+            <!-- INPUT -->
+            <div class="tool-panel">
+                <div class="panel-title">Dati di ingresso</div>
+
+                <div class="field-row">
+                    <span class="field-label">Tipo di vapore</span>
+                    <select class="field-select" id="steam-type" onchange="updateSteamType()">
+                        <option value="sat">Saturo</option>
+                        <option value="sup">Surriscaldato</option>
+                    </select>
+                </div>
+
+                <div class="field-row">
+                    <span class="field-label">Pressione di esercizio</span>
+                    <div class="field-input-wrap">
+                        <input type="number" id="pressure" value="6" min="0.1" max="100" step="0.1">
+                        <span class="field-unit">bar g</span>
+                    </div>
+                </div>
+
+                <div class="field-row" id="row-superheat" style="display:none;">
+                    <span class="field-label">Temperatura vapore</span>
+                    <div class="field-input-wrap">
+                        <input type="number" id="temp-sup" value="200" min="100" max="500" step="1">
+                        <span class="field-unit">°C</span>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <div class="field-row">
+                    <span class="field-label">Portata massica vapore</span>
+                    <div class="field-input-wrap">
+                        <input type="number" id="flow-mass" value="500" min="1" step="1">
+                        <span class="field-unit">kg/h</span>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <div class="field-row">
+                    <span class="field-label">Velocità massima ammessa</span>
+                    <div class="field-input-wrap">
+                        <input type="number" id="v-max" value="30" min="5" max="80" step="1">
+                        <span class="field-unit">m/s</span>
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <span class="field-label">Lunghezza tubazione</span>
+                    <div class="field-input-wrap">
+                        <input type="number" id="pipe-length" value="50" min="1" step="1">
+                        <span class="field-unit">m</span>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <div class="field-row">
+                    <span class="field-label">Rugosità parete (ε)</span>
+                    <div class="field-input-wrap">
+                        <input type="number" id="roughness" value="0.046" min="0.001" max="5" step="0.001">
+                        <span class="field-unit">mm</span>
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <span class="field-label">Materiale</span>
+                    <select class="field-select" id="material" onchange="setRoughness()">
+                        <option value="0.046">Acciaio al carbonio</option>
+                        <option value="0.015">Acciaio inossidabile</option>
+                        <option value="0.025">Acciaio galvanizzato</option>
+                        <option value="0.003">Rame</option>
+                    </select>
+                </div>
+
+                <hr class="divider">
+
+                <div class="field-row">
+                    <span class="field-label">Classe tubazione</span>
+                    <select class="field-select" id="pipe-class" onchange="updateClassInfo()" style="min-width:150px;">
+                        <option value="DIN2448">DIN 2448 / EN 10216-2</option>
+                        <option value="ANSI40" selected>ANSI Sch40</option>
+                        <option value="ANSI80">ANSI Sch80</option>
+                        <option value="ANSI160">ANSI Sch160</option>
+                        <option value="JIS_SGP">JIS-SGP</option>
+                        <option value="JIS40">JIS-STPG Sch40</option>
+                        <option value="JIS80">JIS-STPG Sch80</option>
+                    </select>
+                </div>
+                <div id="class-info" style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:14px;line-height:1.6;"></div>
+
+                <button class="btn-calc" onclick="calculate()">Calcola DN ottimale</button>
+            </div>
+
+            <!-- DESTRA: PROPRIETÀ VAPORE -->
+            <div class="tool-panel">
+                <div class="panel-title">Proprietà vapore</div>
+
+                <div class="field-row">
+                    <span class="field-label">Pressione assoluta</span>
+                    <div class="field-input-wrap">
+                        <span id="disp-pabs" style="font-size:.85rem;color:var(--text-primary);min-width:70px;text-align:right;">7.013</span>
+                        <span class="field-unit">bar a</span>
+                    </div>
+                </div>
+                <div class="field-row">
+                    <span class="field-label">Temperatura di saturazione</span>
+                    <div class="field-input-wrap">
+                        <span id="disp-tsat" style="font-size:.85rem;color:var(--text-primary);min-width:70px;text-align:right;">165.0</span>
+                        <span class="field-unit">°C</span>
+                    </div>
+                </div>
+                <div class="field-row">
+                    <span class="field-label">Densità vapore (ρ)</span>
+                    <div class="field-input-wrap">
+                        <span id="disp-rho" style="font-size:.85rem;color:var(--text-primary);min-width:70px;text-align:right;">3.65</span>
+                        <span class="field-unit">kg/m³</span>
+                    </div>
+                </div>
+                <div class="field-row">
+                    <span class="field-label">Viscosità dinamica (μ)</span>
+                    <div class="field-input-wrap">
+                        <span id="disp-mu" style="font-size:.85rem;color:var(--text-primary);min-width:70px;text-align:right;">14.2</span>
+                        <span class="field-unit">μPa·s</span>
+                    </div>
+                </div>
+
+                <hr class="divider">
+                <div class="panel-title" style="margin-top:8px;">Limiti velocità consigliati</div>
+                <div style="font-size:.8rem;color:var(--text-secondary);line-height:1.8;">
+                    Vapore saturo: <strong style="color:var(--text-primary);">25 – 35 m/s</strong><br>
+                    Vapore surriscaldato: <strong style="color:var(--text-primary);">30 – 50 m/s</strong><br>
+                    Vapore a bassa pressione: <strong style="color:var(--text-primary);">15 – 25 m/s</strong><br>
+                    <span style="font-size:.74rem;margin-top:6px;display:block;">Fonte: EN 13480 / ISPESL</span>
+                </div>
+
+                <hr class="divider">
+                <div class="panel-title" style="margin-top:8px;">Velocità nel DN consigliato</div>
+                <div class="velocity-gauge">
+                    <div class="gauge-bar">
+                        <div class="gauge-fill" id="v-gauge-fill" style="width:0%;background:var(--color-engineering);"></div>
+                    </div>
+                    <div class="gauge-labels">
+                        <span>0</span>
+                        <span id="v-gauge-label" style="color:var(--color-engineering);font-weight:600;">— m/s</span>
+                        <span id="v-max-label">50 m/s</span>
+                    </div>
+                </div>
+                <div style="margin-top:10px;">
+                    <div class="field-row" style="margin-bottom:0;">
+                        <span class="field-label">ΔP totale sulla linea</span>
+                        <div class="field-input-wrap">
+                            <span id="disp-dptot" style="font-size:1.1rem;font-weight:600;color:var(--color-engineering);min-width:70px;text-align:right;">—</span>
+                            <span class="field-unit">bar</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RISULTATI -->
+        <div class="results-panel" id="results-panel">
+            <div class="panel-title">DN consigliato</div>
+            <div class="results-grid" id="results-grid"></div>
+
+            <div style="margin-top:20px;">
+                <div class="panel-title">Tabella DN confronto</div>
+                <div class="dn-table-wrap">
+                    <table class="dn-table">
+                        <thead>
+                            <tr>
+                                <th class="left">DN</th>
+                                <th>De [mm]</th>
+                                <th>Di [mm]</th>
+                                <th>T [mm]</th>
+                                <th>Velocità [m/s]</th>
+                                <th>ΔP [bar/m]</th>
+                                <th>Re</th>
+                                <th>Stato</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dn-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="note-block">
+            <strong>Metodo di calcolo</strong> — Il DN minimo viene selezionato garantendo che la velocità del vapore
+            non superi il valore massimo impostato. La perdita di pressione è calcolata con Darcy-Weisbach e
+            fattore d'attrito di Colebrook-White.<br>
+            <strong>Velocità consigliata</strong> — Per vapore saturo 25÷35 m/s, per vapore surriscaldato 30÷50 m/s.
+            Velocità eccessive causano rumore, erosione e perdite di carico elevate.
+        </div>
+
+    </div>
+    </main>
+</div>
+
+<script src="../../../../../js/navbar.js"></script>
+<script src="../../../../../js/main.js"></script>
+<script src="../../../../../js/footer.js"></script>
+<script>
+const PIPE_SCHEDULES = {
+    DIN2448: { label:'DIN 2448 / EN 10216-2', norm:'Norma europea — acciaio al carbonio per servizi in pressione', data:[[15,21.3,2.6],[20,26.9,2.6],[25,33.7,3.2],[32,42.4,3.2],[40,48.3,3.2],[50,60.3,3.6],[65,76.1,3.6],[80,88.9,4.0],[100,114.3,4.5],[125,139.7,5.0],[150,168.3,5.6],[200,219.1,6.3],[250,273.0,6.3],[300,323.9,7.1],[350,355.6,8.0],[400,406.4,8.8]] },
+    ANSI40:  { label:'ANSI / ASME Sch40',      norm:'ASME B36.10M — Schedule 40, uso generale',                  data:[[15,21.3,2.77],[20,26.7,2.87],[25,33.4,3.38],[32,42.2,3.56],[40,48.3,3.68],[50,60.3,3.91],[65,73.0,5.16],[80,88.9,5.49],[100,114.3,6.02],[125,141.3,6.55],[150,168.3,7.11],[200,219.1,8.18],[250,273.1,9.27],[300,323.9,10.31],[350,355.6,11.13],[400,406.4,12.70]] },
+    ANSI80:  { label:'ANSI / ASME Sch80',      norm:'ASME B36.10M — Schedule 80, alta pressione',               data:[[15,21.3,3.73],[20,26.7,3.91],[25,33.4,4.55],[32,42.2,4.85],[40,48.3,5.08],[50,60.3,5.54],[65,73.0,7.01],[80,88.9,7.62],[100,114.3,8.56],[125,141.3,9.53],[150,168.3,10.97],[200,219.1,12.70],[250,273.1,15.09],[300,323.9,17.48],[350,355.6,19.05],[400,406.4,21.44]] },
+    ANSI160: { label:'ANSI / ASME Sch160',     norm:'ASME B36.10M — Schedule 160, alta/altissima pressione',    data:[[15,21.3,4.78],[20,26.7,5.56],[25,33.4,6.35],[32,42.2,6.35],[40,48.3,7.14],[50,60.3,8.74],[65,73.0,9.53],[80,88.9,11.13],[100,114.3,13.49],[125,141.3,15.88],[150,168.3,18.26],[200,219.1,23.01],[250,273.1,28.58],[300,323.9,33.32],[350,355.6,35.71],[400,406.4,40.49]] },
+    JIS_SGP: { label:'JIS-SGP',               norm:'JIS G3452 — tubi acciaio al carbonio per distribuzione gas',data:[[15,21.7,2.8],[20,27.2,2.8],[25,34.0,3.2],[32,42.7,3.5],[40,48.6,3.5],[50,60.5,3.8],[65,76.3,4.2],[80,89.1,4.2],[100,114.3,4.5],[125,139.8,4.5],[150,165.2,5.0],[200,216.3,5.8],[250,267.4,6.0],[300,318.5,6.9],[350,355.6,7.9],[400,406.4,9.5]] },
+    JIS40:   { label:'JIS-STPG Sch40',        norm:'JIS G3454 — tubi acciaio per servizi in pressione, Sch40',  data:[[15,21.7,2.8],[20,27.2,2.9],[25,34.0,3.4],[32,42.7,3.6],[40,48.6,3.7],[50,60.5,3.9],[65,76.3,5.2],[80,89.1,5.5],[100,114.3,6.0],[125,139.8,6.6],[150,165.2,7.1],[200,216.3,8.2],[250,267.4,9.3],[300,318.5,10.3],[350,355.6,11.1],[400,406.4,12.7]] },
+    JIS80:   { label:'JIS-STPG Sch80',        norm:'JIS G3454 — tubi acciaio per servizi in pressione, Sch80',  data:[[15,21.7,3.7],[20,27.2,3.9],[25,34.0,4.5],[32,42.7,4.9],[40,48.6,5.1],[50,60.5,5.5],[65,76.3,7.0],[80,89.1,7.6],[100,114.3,8.6],[125,139.8,9.5],[150,165.2,11.0],[200,216.3,12.7],[250,267.4,15.1],[300,318.5,17.5],[350,355.6,19.0],[400,406.4,21.4]] },
+};
+
+function getDNTable() { return PIPE_SCHEDULES[document.getElementById('pipe-class').value].data; }
+function updateClassInfo() {
+    const s = PIPE_SCHEDULES[document.getElementById('pipe-class').value];
+    document.getElementById('class-info').innerHTML = `<span style="color:var(--color-engineering);font-weight:600;">${s.label}</span> &mdash; ${s.norm}`;
+}
+function satProps(P_bar_g) {
+    const P = P_bar_g + 1.01325;
+    const Tsat = -42.6776*Math.log(P)*Math.log(P) + 209.576*Math.log(P) + 100.559;
+    const rho = 0.003*P*P + 0.578*P + 0.042;
+    const mu = 11.5 + 0.4*Math.log(P+1);
+    return { Tsat: Tsat.toFixed(1), rho: rho.toFixed(3), mu: mu.toFixed(1) };
+}
+function supProps(P_bar_g, T_sup) {
+    const P = P_bar_g + 1.01325;
+    const Tsat = -42.6776*Math.log(P)*Math.log(P) + 209.576*Math.log(P) + 100.559;
+    const rho = (P*1e5) / (461.5*(T_sup+273.15));
+    const mu = 11.5 + 0.4*Math.log(P+1) + 0.02*(T_sup-Tsat);
+    return { Tsat: Tsat.toFixed(1), rho: rho.toFixed(3), mu: mu.toFixed(1) };
+}
+function frictionFactor(Re, Di_m, eps_m) {
+    if (Re < 2300) return 64/Re;
+    let f = 0.02;
+    for (let i=0;i<50;i++) { const r = -2*Math.log10(eps_m/(3.7*Di_m)+2.51/(Re*Math.sqrt(f))); f=1/(r*r); }
+    return f;
+}
+function calcDP(Di_m, rho, mu_Pa_s, Q_m3s, eps_m) {
+    const A = Math.PI*Di_m*Di_m/4;
+    const v = Q_m3s/A;
+    const Re = rho*v*Di_m/mu_Pa_s;
+    const f = frictionFactor(Re, Di_m, eps_m);
+    return { v, Re, dp_per_m: f*(rho*v*v)/(2*Di_m)/1e5 };
+}
+function setRoughness() { document.getElementById('roughness').value = document.getElementById('material').value; }
+function updateSteamType() {
+    document.getElementById('row-superheat').style.display = document.getElementById('steam-type').value==='sup' ? 'flex' : 'none';
+    updateSteamProps();
+}
+function updateSteamProps() {
+    const P = parseFloat(document.getElementById('pressure').value)||6;
+    const type = document.getElementById('steam-type').value;
+    const props = type==='sup' ? supProps(P, parseFloat(document.getElementById('temp-sup').value)||200) : satProps(P);
+    document.getElementById('disp-pabs').textContent = (P+1.013).toFixed(3);
+    document.getElementById('disp-tsat').textContent = props.Tsat;
+    document.getElementById('disp-rho').textContent  = props.rho;
+    document.getElementById('disp-mu').textContent   = props.mu;
+    return props;
+}
+function calculate() {
+    const P      = parseFloat(document.getElementById('pressure').value)||6;
+    const G      = parseFloat(document.getElementById('flow-mass').value)||500;
+    const vMax   = parseFloat(document.getElementById('v-max').value)||30;
+    const L      = parseFloat(document.getElementById('pipe-length').value)||50;
+    const eps    = parseFloat(document.getElementById('roughness').value)||0.046;
+    const type   = document.getElementById('steam-type').value;
+    const props  = type==='sup' ? supProps(P, parseFloat(document.getElementById('temp-sup').value)||200) : satProps(P);
+    updateSteamProps();
+    const rho   = parseFloat(props.rho);
+    const mu    = parseFloat(props.mu)*1e-6;
+    const eps_m = eps/1000;
+    const Q_m3s = (G/3600)/rho;
+    const vRecMax = type==='sat' ? 35 : 50;
+    const vRecMin = type==='sat' ? 25 : 30;
+
+    const DN_TABLE = getDNTable();
+    let bestDN = null;
+    const rows = DN_TABLE.map(([dn,de,t]) => {
+        const di_m = (de-2*t)/1000;
+        const { v, Re, dp_per_m } = calcDP(di_m, rho, mu, Q_m3s, eps_m);
+        let stato, cls;
+        if (v <= vMax && v >= vRecMin*0.7) { stato='Ottimale'; cls='badge-ok'; if(!bestDN) bestDN={dn,de,di:(de-2*t).toFixed(1),v,Re,dp_per_m}; }
+        else if (v > vMax) { stato='v alta'; cls='badge-hi'; }
+        else { stato='v bassa'; cls='badge-lo'; }
+        return {dn,de,di:(de-2*t).toFixed(1),t,v,Re,dp_per_m,stato,cls};
+    });
+    if (!bestDN) {
+        const sorted=[...rows].sort((a,b)=>Math.abs(a.v-vMax)-Math.abs(b.v-vMax));
+        bestDN=sorted[0];
+    }
+
+    const dpTot=(bestDN.dp_per_m*L).toFixed(3);
+    document.getElementById('disp-dptot').textContent=dpTot;
+
+    // Gauge velocità
+    const vMaxGauge = Math.max(vMax*1.5, 60);
+    const pct = Math.min(100, bestDN.v/vMaxGauge*100);
+    const gaugeColor = bestDN.v <= vMax ? '#3dc878' : '#e05544';
+    document.getElementById('v-gauge-fill').style.width=pct+'%';
+    document.getElementById('v-gauge-fill').style.background=gaugeColor;
+    document.getElementById('v-gauge-label').textContent=bestDN.v.toFixed(1)+' m/s';
+    document.getElementById('v-gauge-label').style.color=gaugeColor;
+    document.getElementById('v-max-label').textContent=vMaxGauge.toFixed(0)+' m/s';
+
+    document.getElementById('results-grid').innerHTML = `
+        <div class="result-card"><div class="result-label">DN consigliato</div><div class="result-value">DN ${bestDN.dn}</div></div>
+        <div class="result-card"><div class="result-label">Velocità vapore</div><div class="result-value">${bestDN.v.toFixed(1)}<span class="result-unit">m/s</span></div></div>
+        <div class="result-card"><div class="result-label">ΔP unitaria</div><div class="result-value">${bestDN.dp_per_m.toFixed(4)}<span class="result-unit">bar/m</span></div></div>
+        <div class="result-card"><div class="result-label">ΔP totale (${L} m)</div><div class="result-value">${dpTot}<span class="result-unit">bar</span></div></div>
+        <div class="result-card"><div class="result-label">Diametro interno</div><div class="result-value">${bestDN.di}<span class="result-unit">mm</span></div></div>
+        <div class="result-card"><div class="result-label">Reynolds</div><div class="result-value">${Math.round(bestDN.Re).toLocaleString('it-IT')}</div></div>
+    `;
+
+    const bestIdx=rows.findIndex(r=>r.dn===bestDN.dn);
+    const subset=rows.slice(Math.max(0,bestIdx-2),Math.min(rows.length-1,bestIdx+3)+1);
+    document.getElementById('dn-tbody').innerHTML=subset.map(r=>`
+        <tr${r.dn===bestDN.dn?' class="recommended"':''}>
+            <td class="left">DN ${r.dn}</td><td>${r.de}</td><td>${r.di}</td><td>${r.t}</td>
+            <td>${r.v.toFixed(2)}</td><td>${r.dp_per_m.toFixed(4)}</td>
+            <td>${Math.round(r.Re).toLocaleString('it-IT')}</td>
+            <td><span class="${r.cls}">${r.stato}</span></td>
+        </tr>`).join('');
+    document.getElementById('results-panel').classList.add('visible');
+}
+document.getElementById('pressure').addEventListener('input', updateSteamProps);
+document.getElementById('temp-sup').addEventListener('input', updateSteamProps);
+updateSteamProps();
+updateClassInfo();
+</script>
+</body>
+</html>

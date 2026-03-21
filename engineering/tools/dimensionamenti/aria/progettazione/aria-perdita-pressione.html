@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Perdita di Pressione — Aria | Emanuele Zanella</title>
+    <script>
+(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
+    </script>
+    <link rel="stylesheet" href="../../../../../css/style.css">
+    <style>
+        .tool-wrapper{max-width:820px;margin:0 auto}
+        .card{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:14px;padding:24px 28px;margin-bottom:20px}
+        .card-title{font-size:.75rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--color-engineering);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.07))}
+        .input-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+        .input-group{display:flex;flex-direction:column;gap:6px}
+        .input-group label{font-size:.78rem;color:var(--text-secondary);font-weight:500;display:flex;align-items:center;gap:4px}
+        .input-row{display:flex;align-items:stretch;border:1px solid var(--border-color,rgba(255,255,255,.12));border-radius:8px;overflow:hidden;background:var(--input-bg,rgba(255,255,255,.04));transition:border-color .2s}
+        .input-row:focus-within{border-color:var(--color-engineering)}
+        .input-row input,.input-row select{flex:1;border:none;background:transparent;padding:9px 12px;font-size:.88rem;color:var(--text-primary);outline:none;width:100%;min-width:0}
+        .input-row select{cursor:pointer;color-scheme:dark}
+        html.light-mode .input-row select{color-scheme:light}
+        .input-row select option{background:#1e1e1e;color:#f0f0f0}
+        html.light-mode .input-row select option{background:#fff;color:#111}
+        .input-row .unit{padding:9px 10px;font-size:.75rem;color:var(--text-secondary);background:var(--unit-bg,rgba(255,255,255,.06));border-left:1px solid var(--border-color,rgba(255,255,255,.08));white-space:nowrap;user-select:none;display:flex;align-items:center}
+        .info-i{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;border:1px solid var(--text-secondary);font-size:.6rem;color:var(--text-secondary);cursor:help;flex-shrink:0}
+        .btn-calc{display:inline-flex;align-items:center;gap:8px;background:var(--color-engineering);color:#fff;border:none;padding:11px 32px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:opacity .2s,transform .15s}
+        html.light-mode .btn-calc{color:#1a1a1a}
+        .btn-calc:hover{opacity:.88;transform:translateY(-1px)}
+        .results-hidden{display:none}
+        .results-section{animation:fadeUp .3s ease}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+        .results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:12px;margin-bottom:14px}
+        .result-box{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+        .result-box.primary{border-color:var(--color-engineering);background:rgba(var(--color-engineering-rgb,200,160,60),.07)}
+        .r-label{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600}
+        .r-value{font-size:1.35rem;font-weight:700;color:var(--text-primary);line-height:1.1}
+        .result-box.primary .r-value{color:var(--color-engineering)}
+        .r-unit{font-size:.76rem;color:var(--text-secondary)}
+        .formula-box{border-left:3px solid var(--color-engineering);border-radius:0 8px 8px 0;padding:12px 16px;font-size:.79rem;color:var(--text-secondary);line-height:1.7;margin-top:14px}
+        .formula-box strong{color:var(--text-primary)}
+        .error-box{background:rgba(220,60,60,.08);border:1px solid rgba(220,60,60,.3);border-radius:8px;padding:10px 14px;font-size:.82rem;color:#e05050;margin-bottom:16px;display:none}
+        .bar-track{height:8px;border-radius:4px;background:var(--border-color,rgba(255,255,255,.1));overflow:hidden;margin-bottom:6px}
+        .bar-fill{height:100%;border-radius:4px;background:var(--color-engineering);transition:width .6s ease}
+        .bar-labels{display:flex;justify-content:space-between;font-size:.75rem;color:var(--text-secondary)}
+        .bar-labels .hi{color:var(--color-engineering);font-weight:600}
+        .regime-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:.78rem;font-weight:600;border:1px solid}
+        .lam{background:rgba(80,200,120,.12);border-color:rgba(80,200,120,.4);color:#50c878}
+        .trans{background:rgba(240,180,50,.12);border-color:rgba(240,180,50,.4);color:#f0b432}
+        .turb{background:rgba(220,80,60,.12);border-color:rgba(220,80,60,.4);color:#dc503c}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <header id="main-navbar"></header>
+    <main class="main">
+    <div class="tool-wrapper">
+        <h2 style="color:var(--color-engineering);text-align:center;margin-bottom:10px;font-size:2rem;">Perdita di Pressione nella Tubazione</h2>
+        <p style="text-align:center;margin-bottom:30px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+            <a href="../../../index.html" style="color:var(--color-engineering);text-decoration:none;">Tools</a> <span style="margin:0 6px;">/</span>
+            <a href="../../index.html" style="color:var(--color-engineering);text-decoration:none;">Dimensionamenti</a> <span style="margin:0 6px;">/</span>
+            <a href="../index.html" style="color:var(--color-engineering);text-decoration:none;">Aria</a> <span style="margin:0 6px;">/</span>
+            <span style="color:var(--text-primary);">Perdita di pressione nella tubazione</span>
+        </p>
+
+        <!-- Diagramma tubazione -->
+        <div style="display:flex;justify-content:center;margin-bottom:22px;">
+            <svg width="500" height="80" viewBox="0 0 500 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="50" y="28" width="400" height="24" rx="4" fill="rgba(var(--color-engineering-rgb,200,160,60),.08)" stroke="var(--color-engineering)" stroke-width="1.5"/>
+                <line x1="110" y1="40" x2="370" y2="40" stroke="var(--color-engineering)" stroke-width="1.2" stroke-dasharray="6 4" opacity=".5"/>
+                <polygon points="370,36 380,40 370,44" fill="var(--color-engineering)" opacity=".7"/>
+                <rect x="40" y="22" width="13" height="36" rx="3" fill="var(--color-engineering)" opacity=".55"/>
+                <rect x="447" y="22" width="13" height="36" rx="3" fill="var(--color-engineering)" opacity=".55"/>
+                <text x="46" y="14" text-anchor="middle" font-size="11" fill="var(--color-engineering)" font-family="sans-serif" font-weight="600">P₁</text>
+                <text x="454" y="14" text-anchor="middle" font-size="11" fill="var(--color-engineering)" font-family="sans-serif" font-weight="600">P₂</text>
+                <text x="250" y="68" text-anchor="middle" font-size="10" fill="var(--text-secondary,#aaa)" font-family="sans-serif">L (lunghezza)</text>
+                <text x="250" y="40" text-anchor="middle" font-size="9" fill="var(--color-engineering)" font-family="sans-serif" opacity=".8">ΔP</text>
+            </svg>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Parametri tubazione e flusso</div>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>DN nominale</label>
+                    <div class="input-row">
+                        <select id="pipeSize" onchange="onDNChange()">
+                            <option value="custom">— Inserisci Ø interno —</option>
+                            <option value="16.1">DN 15 — Ø 16.1 mm</option>
+                            <option value="21.7">DN 20 — Ø 21.7 mm</option>
+                            <option value="27.3">DN 25 — Ø 27.3 mm</option>
+                            <option value="36.0">DN 32 — Ø 36.0 mm</option>
+                            <option value="41.8">DN 40 — Ø 41.8 mm</option>
+                            <option value="53.1" selected>DN 50 — Ø 53.1 mm</option>
+                            <option value="68.9">DN 65 — Ø 68.9 mm</option>
+                            <option value="82.5">DN 80 — Ø 82.5 mm</option>
+                            <option value="105.3">DN 100 — Ø 105.3 mm</option>
+                            <option value="130.8">DN 125 — Ø 130.8 mm</option>
+                            <option value="155.4">DN 150 — Ø 155.4 mm</option>
+                            <option value="206.0">DN 200 — Ø 206.0 mm</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Diametro interno</label>
+                    <div class="input-row"><input type="number" id="innerDiam" value="53.1" step="0.1" min="1"><span class="unit">mm</span></div>
+                </div>
+                <div class="input-group">
+                    <label>Lunghezza tubazione</label>
+                    <div class="input-row"><input type="number" id="length" value="50" step="1" min="0.1"><span class="unit">m</span></div>
+                </div>
+                <div class="input-group">
+                    <label>Lungh. equiv. accessori</label>
+                    <div class="input-row"><input type="number" id="fittings" value="0" step="1" min="0"><span class="unit">m</span></div>
+                </div>
+                <div class="input-group">
+                    <label>Portata volumetrica</label>
+                    <div class="input-row"><input type="number" id="flowRate" value="100" step="1" min="0.01"><span class="unit">m³/h</span></div>
+                </div>
+                <div class="input-group">
+                    <label>Pressione di esercizio <span class="info-i" title="Pressione manometrica">i</span></label>
+                    <div class="input-row"><input type="number" id="pressure" value="7" step="0.1" min="0.1"><span class="unit">bar (g)</span></div>
+                </div>
+                <div class="input-group">
+                    <label>Temperatura dell'aria</label>
+                    <div class="input-row"><input type="number" id="temp" value="20" step="1"><span class="unit">°C</span></div>
+                </div>
+                <div class="input-group">
+                    <label>Rugosità tubazione</label>
+                    <div class="input-row">
+                        <select id="roughness">
+                            <option value="0.046">Acciaio nuovo — 0.046 mm</option>
+                            <option value="0.15">Acciaio usato — 0.15 mm</option>
+                            <option value="0.007">PE/PVC — 0.007 mm</option>
+                            <option value="0.0015">Rame — 0.0015 mm</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="error-box" id="errorBox"></div>
+        <div style="display:flex;justify-content:center;margin-bottom:28px;">
+            <button class="btn-calc" onclick="calculate()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/><path d="M9 15h3l8-8-3-3-8 8v3z"/></svg>
+                Calcola Perdita di Pressione
+            </button>
+        </div>
+
+        <div id="resultsSection" class="results-hidden results-section">
+            <div class="card">
+                <div class="card-title">Risultati</div>
+                <div style="margin-bottom:14px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                        <span style="font-size:.78rem;color:var(--text-secondary);">Perdita rispetto a P₁</span>
+                        <span id="rPct" style="font-size:.82rem;font-weight:700;color:var(--color-engineering);"></span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill" id="barFill" style="width:0%"></div></div>
+                    <div class="bar-labels"><span>P₁ = <span id="barP1">—</span> bar</span><span class="hi">P₂ = <span id="barP2">—</span> bar</span></div>
+                </div>
+                <div class="results-grid">
+                    <div class="result-box primary"><div class="r-label">Perdita di pressione ΔP</div><div class="r-value" id="rDeltaP">—</div><div class="r-unit">bar</div></div>
+                    <div class="result-box primary"><div class="r-label">ΔP</div><div class="r-value" id="rDeltaPmbar">—</div><div class="r-unit">mbar</div></div>
+                    <div class="result-box"><div class="r-label">Pressione uscita P₂</div><div class="r-value" id="rP2">—</div><div class="r-unit">bar (g)</div></div>
+                    <div class="result-box"><div class="r-label">Velocità aria</div><div class="r-value" id="rVel">—</div><div class="r-unit">m/s</div></div>
+                    <div class="result-box"><div class="r-label">Reynolds</div><div class="r-value" id="rRe">—</div><div class="r-unit"></div></div>
+                    <div class="result-box"><div class="r-label">Fattore d'attrito f</div><div class="r-value" id="rF">—</div><div class="r-unit">Darcy-Weisbach</div></div>
+                    <div class="result-box"><div class="r-label">ΔP / metro</div><div class="r-value" id="rDpM">—</div><div class="r-unit">Pa/m</div></div>
+                    <div class="result-box"><div class="r-label">Portata massica</div><div class="r-value" id="rMass">—</div><div class="r-unit">kg/h</div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font-size:.78rem;color:var(--text-secondary);">Regime:</span>
+                    <span id="regimeChip" class="regime-chip">—</span>
+                </div>
+                <div class="formula-box">
+                    <strong>Darcy-Weisbach:</strong> ΔP = f · (L<sub>tot</sub>/D) · (ρ<sub>op</sub>·v²)/2<br>
+                    f calcolato con Colebrook-White (turbolento) o Hagen-Poiseuille (laminare).<br>
+                    ρ<sub>op</sub> = ρ<sub>std</sub> · (P<sub>ass</sub>/P<sub>atm</sub>) · (273.15/(273.15+T))
+                </div>
+            </div>
+        </div>
+    </div>
+    </main>
+</div>
+<script src="../../../../../js/navbar.js"></script>
+<script src="../../../../../js/main.js"></script>
+<script src="../../../../../js/footer.js"></script>
+<script>
+const P_ATM=1.01325,RHO_AIR_STD=1.2041,MU_AIR=1.81e-5;
+function colebrook(Re,D,eps){if(Re<2300)return 64/Re;const r=eps/D;let f=0.25/Math.pow(Math.log10(r/3.7+5.74/Math.pow(Re,.9)),2);for(let i=0;i<50;i++){const fn=1/Math.pow(-2*Math.log10(r/3.7+2.51/(Re*Math.sqrt(f))),2);if(Math.abs(fn-f)<1e-10)break;f=fn;}return f;}
+function onDNChange(){const v=document.getElementById("pipeSize").value;if(v!=="custom")document.getElementById("innerDiam").value=v;}
+function calculate(){
+    const D_mm=parseFloat(document.getElementById("innerDiam").value),L=parseFloat(document.getElementById("length").value),Lf=parseFloat(document.getElementById("fittings").value)||0,Q=parseFloat(document.getElementById("flowRate").value),Pg=parseFloat(document.getElementById("pressure").value),T=parseFloat(document.getElementById("temp").value),eps=parseFloat(document.getElementById("roughness").value);
+    if([D_mm,L,Q,Pg,T,eps].some(v=>isNaN(v)||v<=0)){showErr("Valori non validi.");return;}hideErr();
+    const Pabs=Pg+P_ATM,rho_op=RHO_AIR_STD*(Pabs/P_ATM)*(273.15/(273.15+T)),Q_op=Q*(P_ATM/Pabs)*((273.15+T)/273.15),Ltot=L+Lf;
+    const D=D_mm/1e3,eps_m=eps/1e3,A=Math.PI*D*D/4,v=(Q_op/3600)/A,Re=rho_op*v*D/MU_AIR,f=colebrook(Re,D,eps_m),dP_Pa=f*(Ltot/D)*(rho_op*v*v)/2,dP_bar=dP_Pa/1e5,dP_mbar=dP_Pa/100;
+    const P2_g=Pg-dP_bar;
+    if(P2_g<0){showErr("ΔP supera P₁. Ridurre la portata o aumentare il diametro.");return;}
+    const mass_kgh=(Q_op/3600)*rho_op*3600;
+    const pct=(dP_bar/Pabs)*100;
+    document.getElementById("rDeltaP").textContent=dP_bar.toFixed(4);
+    document.getElementById("rDeltaPmbar").textContent=dP_mbar.toFixed(1);
+    document.getElementById("rP2").textContent=P2_g.toFixed(3);
+    document.getElementById("rVel").textContent=v.toFixed(2);
+    document.getElementById("rRe").textContent=Math.round(Re).toLocaleString("it");
+    document.getElementById("rF").textContent=f.toFixed(5);
+    document.getElementById("rDpM").textContent=(dP_Pa/Ltot).toFixed(2);
+    document.getElementById("rMass").textContent=mass_kgh.toFixed(2);
+    document.getElementById("barFill").style.width=Math.min(pct,100)+"%";
+    document.getElementById("rPct").textContent=pct.toFixed(2)+"% di P₁";
+    document.getElementById("barP1").textContent=Pg.toFixed(2);
+    document.getElementById("barP2").textContent=P2_g.toFixed(3);
+    const chip=document.getElementById("regimeChip");
+    if(Re<2300){chip.textContent="Laminare";chip.className="regime-chip lam";}
+    else if(Re<4000){chip.textContent="Transitorio";chip.className="regime-chip trans";}
+    else{chip.textContent="Turbolento";chip.className="regime-chip turb";}
+    document.getElementById("resultsSection").classList.remove("results-hidden");
+    document.getElementById("resultsSection").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function showErr(m){const e=document.getElementById("errorBox");e.textContent="⚠ "+m;e.style.display="block";document.getElementById("resultsSection").classList.add("results-hidden");}
+function hideErr(){document.getElementById("errorBox").style.display="none";}
+</script>
+</body>
+</html>
