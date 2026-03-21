@@ -1,210 +1,336 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Home | Emanuele Zanella</title>
   <meta name="description" content="Portale personale di Emanuele Zanella - Ingegnere Energetico. Tool ingegneristici, finanza e portfolio.">
   <script>
-// Anti-flash: applica il tema PRIMA del render CSS
 (function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
-</script>
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    .main { padding-top: 0 !important; }
+
+    /* ── HERO ─────────────────────────────────────────── */
+    .home-hero {
+      display: flex; align-items: center; gap: 28px;
+      max-width: 900px; margin: 28px auto 32px;
+      padding: 26px 30px;
+      background: var(--card-bg, rgba(255,255,255,0.03));
+      border: 1px solid var(--border-color, rgba(255,255,255,0.08));
+      border-radius: 18px; position: relative; overflow: hidden;
+      animation: fadeUp 0.45s ease both;
+    }
+    .home-hero::before {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background: radial-gradient(ellipse at 0% 50%,
+        rgba(var(--color-engineering-rgb,200,160,60),0.08) 0%, transparent 60%);
+    }
+    .hero-logo-wrap {
+      flex-shrink:0; width:80px; height:80px; border-radius:50%;
+      border:2px solid rgba(var(--color-engineering-rgb,200,160,60),0.35);
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(var(--color-engineering-rgb,200,160,60),0.06);
+      box-shadow:0 0 28px rgba(var(--color-engineering-rgb,200,160,60),0.15);
+    }
+    .hero-logo-wrap img { width:52px; height:52px; object-fit:contain;
+      filter:drop-shadow(0 0 10px rgba(var(--color-engineering-rgb,200,160,60),0.4)); }
+    .hero-text { flex:1; }
+    .hero-name {
+      font-family:'Orbitron',sans-serif; font-size:1.5rem; font-weight:700;
+      color:var(--color-engineering); letter-spacing:2px; line-height:1.1; margin:0 0 5px;
+    }
+    .hero-role {
+      font-size:0.75rem; font-weight:600; letter-spacing:2px; text-transform:uppercase;
+      color:var(--text-secondary); margin:0 0 11px;
+    }
+    .hero-desc { font-size:0.87rem; color:var(--text-secondary); line-height:1.65; margin:0; max-width:520px; }
+    .hero-desc strong { color:var(--text-primary); }
+    .hero-actions { display:flex; gap:10px; margin-top:15px; flex-wrap:wrap; }
+    .hero-btn {
+      display:inline-flex; align-items:center; gap:7px;
+      padding:8px 18px; border-radius:8px; font-size:0.78rem; font-weight:600;
+      text-decoration:none; letter-spacing:0.3px;
+      transition:opacity .2s, transform .15s;
+    }
+    .hero-btn:hover { opacity:.85; transform:translateY(-1px); }
+    .hero-btn.primary { background:var(--color-engineering); color:#111; }
+    .hero-btn.secondary {
+      background:rgba(var(--color-engineering-rgb,200,160,60),0.1);
+      border:1px solid rgba(var(--color-engineering-rgb,200,160,60),0.3);
+      color:var(--color-engineering);
+    }
+
+    /* ── GRID 3 colonne ───────────────────────────────── */
+    .home-grid {
+      display:grid; grid-template-columns:210px 1fr 210px;
+      gap:18px; max-width:1080px; margin:0 auto; padding:0 0 48px;
+      align-items:start;
+    }
+    .col-left  { display:flex; flex-direction:column; gap:14px; animation:fadeUp .5s ease .1s both; }
+    .col-center { display:flex; flex-direction:column; gap:13px; animation:fadeUp .5s ease .05s both; }
+    .col-right { display:flex; flex-direction:column; gap:14px; animation:fadeUp .5s ease .15s both; }
+
+    /* ── Widget card ──────────────────────────────────── */
+    .widget-card {
+      background:var(--card-bg,rgba(255,255,255,0.03));
+      border:1px solid var(--border-color,rgba(255,255,255,0.08));
+      border-radius:14px; padding:15px 17px;
+    }
+    .wc-title {
+      font-family:'Orbitron',sans-serif; font-size:0.63rem; letter-spacing:2px;
+      text-transform:uppercase; color:var(--color-engineering);
+      margin:0 0 12px; display:flex; align-items:center; gap:8px;
+    }
+    .wc-title::after { content:''; flex:1; height:1px; background:rgba(var(--color-engineering-rgb,200,160,60),0.2); }
+
+    /* Meteo */
+    .weather-row {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:6px 0; border-bottom:1px solid var(--border-color,rgba(255,255,255,0.06));
+      font-size:0.81rem;
+    }
+    .weather-row:last-child { border-bottom:none; }
+    .weather-day { font-weight:600; color:var(--text-primary); min-width:80px; }
+    .weather-icon { flex:1; font-size:0.75rem; color:var(--text-secondary); padding-left:5px; }
+    .weather-temps { display:flex; gap:3px; align-items:center; }
+    .temp-max { color:#ef4444; font-weight:700; font-size:0.8rem; }
+    .temp-min { color:#3b82f6; font-size:0.78rem; }
+
+    /* ── Nav cards ────────────────────────────────────── */
+    .nav-card {
+      display:flex; align-items:center; gap:16px; padding:17px 20px;
+      border-radius:14px; text-decoration:none;
+      background:var(--card-bg,rgba(255,255,255,0.03));
+      border:1px solid var(--border-color,rgba(255,255,255,0.08));
+      transition:background .2s, border-color .2s, transform .2s;
+      position:relative; overflow:hidden;
+    }
+    .nav-card::before { content:''; position:absolute; inset:0; opacity:0; transition:opacity .2s; pointer-events:none; }
+    .nav-card:hover { transform:translateX(4px); }
+    .nav-card:hover::before { opacity:1; }
+
+    /* Finance */
+    .nav-card.finance:hover { border-color:rgba(16,185,129,.4); background:rgba(16,185,129,.05); }
+    .nav-card.finance::before { background:radial-gradient(ellipse at left,rgba(16,185,129,.08),transparent 70%); }
+    .nav-card.finance .nc-icon { background:rgba(16,185,129,.1); border-color:rgba(16,185,129,.3); }
+    .nav-card.finance .nc-icon svg, .nav-card.finance .nc-arrow { color:#10b981; }
+    /* Engineering */
+    .nav-card.engineering:hover { border-color:rgba(var(--color-engineering-rgb,200,160,60),.4); background:rgba(var(--color-engineering-rgb,200,160,60),.05); }
+    .nav-card.engineering::before { background:radial-gradient(ellipse at left,rgba(var(--color-engineering-rgb,200,160,60),.08),transparent 70%); }
+    .nav-card.engineering .nc-icon { background:rgba(var(--color-engineering-rgb,200,160,60),.1); border-color:rgba(var(--color-engineering-rgb,200,160,60),.3); }
+    .nav-card.engineering .nc-icon svg, .nav-card.engineering .nc-arrow { color:var(--color-engineering); }
+    /* Personal */
+    .nav-card.personal:hover { border-color:rgba(139,92,246,.4); background:rgba(139,92,246,.05); }
+    .nav-card.personal::before { background:radial-gradient(ellipse at left,rgba(139,92,246,.08),transparent 70%); }
+    .nav-card.personal .nc-icon { background:rgba(139,92,246,.1); border-color:rgba(139,92,246,.3); }
+    .nav-card.personal .nc-icon svg, .nav-card.personal .nc-arrow { color:#a78bfa; }
+
+    .nc-icon {
+      width:44px; height:44px; border-radius:11px; border:1px solid;
+      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    }
+    .nc-icon svg { filter:drop-shadow(0 0 5px currentColor); }
+    .nc-text { flex:1; }
+    .nc-title { font-size:.95rem; font-weight:700; color:var(--text-primary); margin:0 0 2px; line-height:1.2; }
+    .nc-desc  { font-size:.76rem; color:var(--text-secondary); margin:0; }
+    .nc-arrow { opacity:.4; flex-shrink:0; transition:opacity .2s, transform .2s; }
+    .nav-card:hover .nc-arrow { opacity:1; transform:translateX(2px); }
+
+    /* Contatti inline */
+    .contact-inline {
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      padding:13px 18px; border-radius:12px;
+      background:var(--card-bg,rgba(255,255,255,0.03));
+      border:1px solid var(--border-color,rgba(255,255,255,0.08));
+    }
+    .ci-label { font-size:.72rem; color:var(--text-secondary); font-weight:500; letter-spacing:.5px; flex:0 0 auto; }
+    .ci-email {
+      display:inline-flex; align-items:center; gap:6px; padding:6px 12px;
+      border-radius:7px; background:rgba(var(--color-engineering-rgb,200,160,60),.09);
+      border:1px solid rgba(var(--color-engineering-rgb,200,160,60),.25);
+      color:var(--color-engineering); text-decoration:none; font-size:.75rem; font-weight:600;
+      transition:background .2s;
+    }
+    .ci-email:hover { background:rgba(var(--color-engineering-rgb,200,160,60),.16); }
+    .ci-linkedin {
+      display:inline-flex; align-items:center; gap:6px; padding:6px 12px;
+      border-radius:7px; background:rgba(10,102,194,.1); border:1px solid rgba(10,102,194,.3);
+      color:#60a5fa; text-decoration:none; font-size:.75rem; font-weight:600;
+      transition:background .2s;
+    }
+    .ci-linkedin:hover { background:rgba(10,102,194,.18); }
+
+    /* NASA */
+    #nasa-content img { width:100%; border-radius:8px; border:1px solid rgba(139,92,246,.35); margin-bottom:8px; display:block; cursor:pointer; }
+    .apod-title { font-size:.74rem; color:var(--text-secondary); line-height:1.4; margin:0; }
+
+    /* Animations */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+
+    /* Responsive */
+    @media(max-width:980px){
+      .home-grid{grid-template-columns:1fr 1fr;grid-template-areas:"center center""left right";}
+      .col-left{grid-area:left;} .col-center{grid-area:center;} .col-right{grid-area:right;}
+    }
+    @media(max-width:620px){
+      .home-hero{flex-direction:column;text-align:center;padding:20px 16px;margin:14px 0 22px;}
+      .hero-actions{justify-content:center;} .hero-name{font-size:1.2rem;}
+      .home-grid{grid-template-columns:1fr;grid-template-areas:"center""left""right";gap:14px;padding:0 0 28px;}
+      .contact-inline{flex-direction:column;align-items:flex-start;}
+    }
+  </style>
 </head>
-
 <body>
+<div class="layout">
+  <header id="main-navbar"></header>
+  <main class="main" style="padding:0 16px;">
 
-  <div class="layout">
-
-    <!-- NAVBAR (generated by js/navbar.js) -->
-    <header id="main-navbar"></header>
-
-    <!-- MAIN CONTENT -->
-    <main class="main">
-
-      <!-- 3D CENTRAL LOGO -->
-      <div class="hero-logo-container" id="hero-container">
-        <img src="assets/logo.png" alt="Central Core" class="hero-logo" id="hero-logo">
+    <!-- HERO -->
+    <div class="home-hero">
+      <div class="hero-logo-wrap">
+        <img src="assets/logo.png" alt="Logo Emanuele Zanella">
       </div>
-
-      <!-- CARDS (Floating below the logo) -->
-      <section class="cards" style="margin-bottom: 40px;">
-
-        <a class="card finance" href="finanza/index.html">
-          <div class="card-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" >
-              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
-              <polyline points="16 7 22 7 22 13"></polyline>
-            </svg>
-          </div>
-          <h3>Finanza</h3>
-          <p>Analisi, Investimenti e Simulazioni</p>
-        </a>
-
-        <a class="card engineering" href="engineering/index.html">
-          <div class="card-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" >
-              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
-            </svg>
-          </div>
-          <h3>Ingegneria</h3>
-          <p>Tool Tecnici, Simulazioni e Stress Test</p>
-        </a>
-
-        <a class="card personal card-full" href="personale/index.html">
-          <div class="card-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" >
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          </div>
-          <h3>Personale</h3>
-          <p>Curriculum e Progetti</p>
-        </a>
-
-      </section>
-
-      <!-- CONTACT SECTION -->
-      <section class="cards" style="max-width: 600px; width: 100%; margin-bottom: 40px;">
-        <div class="card contact-card">
-          <h3 >Contatti</h3>
-          <p >Hai un progetto in mente o semplicemente vuoi metterti in contatto?</p>
-          <a href="mailto:emanuele.zanella@outlook.it" class="contact-btn">
-            ✉️ emanuele.zanella@outlook.it
+      <div class="hero-text">
+        <h1 class="hero-name">Emanuele Zanella</h1>
+        <p class="hero-role">Ingegnere Energetico &nbsp;·&nbsp; Project Engineer</p>
+        <p class="hero-desc">
+          Progettazione di <strong>impianti industriali</strong>, tool tecnici per
+          <strong>piping e dimensionamenti</strong>, analisi finanziarie e portfolio personale.
+        </p>
+        <div class="hero-actions">
+          <a class="hero-btn primary" href="engineering/tools/index.html">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            Apri i Tool
           </a>
-          <div>
-            <a href="https://linkedin.com/in/emanuele-zanella" target="_blank" rel="noopener noreferrer"
-              class="linkedin-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
-                <path
-                  d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-              </svg>
-            </a>
+          <a class="hero-btn secondary" href="personale/index.html">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            CV &amp; Progetti
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="home-grid">
+
+      <!-- SINISTRA: Meteo -->
+      <div class="col-left">
+        <div class="widget-card">
+          <p class="wc-title">Bologna</p>
+          <div id="weather-content">
+            <div class="weather-row"><span class="weather-day" style="color:var(--text-secondary);font-size:.76rem;font-weight:400;">Caricamento…</span></div>
           </div>
         </div>
-      </section>
+      </div>
 
-    </main>
+      <!-- CENTRO: Navigazione -->
+      <div class="col-center">
 
-  </div>
+        <a class="nav-card finance" href="finanza/index.html">
+          <div class="nc-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+            </svg>
+          </div>
+          <div class="nc-text"><p class="nc-title">Finanza</p><p class="nc-desc">Analisi, Investimenti e Simulazioni</p></div>
+          <svg class="nc-arrow" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </a>
 
-  <!-- WEATHER WIDGET -->
-  <div id="weather-widget" class="weather-widget">
-    <h3 class="widget-title">Bologna</h3>
-    <div id="weather-content" class="widget-content">
-      <!-- Caricamento in corso... -->
-      <span style="text-align: center;">Caricamento...</span>
-    </div>
-  </div>
+        <a class="nav-card engineering" href="engineering/index.html">
+          <div class="nc-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </div>
+          <div class="nc-text"><p class="nc-title">Ingegneria</p><p class="nc-desc">Tool Tecnici, Simulazioni e Stress Test</p></div>
+          <svg class="nc-arrow" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </a>
 
-  <!-- NASA APOD WIDGET -->
-  <div id="nasa-widget" class="nasa-widget">
-    <h3 class="widget-title">NASA APOD 🚀</h3>
-    <div id="nasa-content" class="widget-content">
-      <span style="text-align: center;">Caricamento...</span>
-    </div>
-  </div>
+        <a class="nav-card personal" href="personale/index.html">
+          <div class="nc-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <div class="nc-text"><p class="nc-title">Personale</p><p class="nc-desc">Curriculum e Progetti</p></div>
+          <svg class="nc-arrow" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </a>
 
-  <script src="js/navbar.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/footer.js"></script>
+        <!-- Contatti -->
+        <div class="contact-inline">
+          <span class="ci-label">Contatti</span>
+          <a href="mailto:emanuele.zanella@outlook.it" class="ci-email">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            emanuele.zanella@outlook.it
+          </a>
+          <a href="https://linkedin.com/in/emanuele-zanella-299ba01a9" target="_blank" rel="noopener noreferrer" class="ci-linkedin">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            LinkedIn
+          </a>
+        </div>
 
-  <!-- SCRIPT WIDGET METEO -->
-  <script>
-    async function fetchWeather() {
-      // Coordinate di Bologna: 44.4949, 11.3426
-      const url = "https://api.open-meteo.com/v1/forecast?latitude=44.4949&longitude=11.3426&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Europe%2FRome&forecast_days=3";
+      </div>
 
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
+      <!-- DESTRA: NASA APOD -->
+      <div class="col-right">
+        <div class="widget-card">
+          <p class="wc-title">NASA APOD 🚀</p>
+          <div id="nasa-content">
+            <div style="height:130px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:.76rem;">Caricamento…</div>
+          </div>
+        </div>
+      </div>
 
-        const weatherDesc = {
-          0: "Soleggiato ☀️", 1: "Poco Nuv. 🌤️", 2: "Nuvoloso ⛅", 3: "Coperto ☁️",
-          45: "Nebbia 🌫️", 48: "Nebbia 🌫️",
-          51: "Pioggerella 🌦️", 53: "Pioggerella 🌦️", 55: "Pioggerella 🌦️",
-          61: "Pioggia 🌧️", 63: "Pioggia 🌧️", 65: "Pioggia Forte 🌧️",
-          71: "Neve ❄️", 73: "Neve ❄️", 75: "Neve ❄️",
-          95: "Temporale 🌩️"
-        };
+    </div><!-- /home-grid -->
+  </main>
+</div>
 
-        const daily = data.daily;
-        const days = ["Oggi", "Domani", "Dopodomani"];
+<script src="js/navbar.js"></script>
+<script src="js/main.js"></script>
+<script src="js/footer.js"></script>
 
-        let htmlContent = "";
-
-        for (let i = 0; i < 3; i++) {
-          const maxT = Math.round(daily.temperature_2m_max[i]);
-          const minT = Math.round(daily.temperature_2m_min[i]);
-          const code = daily.weathercode[i];
-          const icon = weatherDesc[code] || "Misto ☁️";
-
-          htmlContent += `
-              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 4px;">
-                <span style="font-weight: bold; color: var(--text-primary); width: 105px;">${days[i]}</span>
-                <span style="flex: 1; text-align: left; padding-left: 5px;">${icon}</span>
-                <span style="color: #ef4444; font-weight: bold; margin-left:10px;">${maxT}°</span> / <span style="color: #3b82f6;">${minT}°</span>
-              </div>
-            `;
-        }
-
-        document.getElementById('weather-content').innerHTML = htmlContent;
-        document.getElementById('weather-widget').style.display = 'block';
-
-      } catch (error) {
-        console.error("Errore meteo: ", error);
-        document.getElementById('weather-content').innerHTML = "<span style='color: #ef4444;'>Errore API Meteo</span>";
-        document.getElementById('weather-widget').style.display = 'block';
-      }
+<script>
+async function fetchWeather() {
+  try {
+    const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=44.4949&longitude=11.3426&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Europe%2FRome&forecast_days=3");
+    const d = await r.json();
+    const desc = {0:"Soleggiato ☀️",1:"Poco nuvolo 🌤️",2:"Nuvoloso ⛅",3:"Coperto ☁️",45:"Nebbia 🌫️",48:"Nebbia 🌫️",51:"Pioggerella 🌦️",53:"Pioggerella 🌦️",55:"Pioggerella 🌦️",61:"Pioggia 🌧️",63:"Pioggia 🌧️",65:"Pioggia forte 🌧️",71:"Neve ❄️",73:"Neve ❄️",75:"Neve ❄️",95:"Temporale 🌩️"};
+    const days = ["Oggi","Domani","Dopodomani"];
+    let html = "";
+    for (let i=0;i<3;i++) {
+      const max=Math.round(d.daily.temperature_2m_max[i]), min=Math.round(d.daily.temperature_2m_min[i]);
+      html += `<div class="weather-row"><span class="weather-day">${days[i]}</span><span class="weather-icon">${desc[d.daily.weathercode[i]]||"Misto ☁️"}</span><span class="weather-temps"><span class="temp-max">${max}°</span><span style="color:var(--text-secondary);opacity:.4;margin:0 2px;">/</span><span class="temp-min">${min}°</span></span></div>`;
     }
+    document.getElementById('weather-content').innerHTML = html;
+  } catch(e) {
+    document.getElementById('weather-content').innerHTML = "<span style='color:#ef4444;font-size:.76rem;'>Errore API Meteo</span>";
+  }
+}
 
-    // Eseguiamo i widget sempre (hanno già il loro layout gestito dal CSS mobile/desktop)
-    fetchWeather();
-    fetchNasaApod();
-
-    async function fetchNasaApod() {
-      const url = "https://api.nasa.gov/planetary/apod?api_key=N1SVRVEJ7hzo9T76bgMldhMCwCfbZLAUZRIkqj8I";
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (!response.ok || data.error) {
-          throw new Error(data.error?.message || data.error?.code || "Rate limit superato");
-        }
-
-        let mediaHtml = "";
-        if (data.media_type === "image") {
-          mediaHtml = `<img src="${data.url}" alt="${data.title}" style="width: 100%; border-radius: 4px; border: 1px solid rgba(139, 92, 246, 0.5); margin-bottom: 5px; cursor: pointer;" onclick="window.open('${data.hdurl || data.url}', '_blank')">`;
-        } else if (data.media_type === "video") {
-          const thumbUrl = data.thumbnail_url || 'https://via.placeholder.com/300x150/111827/a78bfa?text=Video+APOD';
-          mediaHtml = `<a href="${data.url}" target="_blank" style="text-decoration: none;"><img src="${thumbUrl}" alt="Video Thumbnail" style="width: 100%; border-radius: 4px; border: 1px solid rgba(139, 92, 246, 0.5); margin-bottom: 5px;"><div style="color: #a78bfa; font-weight: bold; margin-bottom: 5px;">▶️ Guarda il Video</div></a>`;
-        } else {
-          mediaHtml = `<div style="color: #a78bfa; padding: 20px 0;">Contenuto non disponibile</div>`;
-        }
-
-        const htmlContent = `
-          ${mediaHtml}
-          <span style="font-weight: bold; color: var(--text-primary); font-size: 0.8rem;">${data.title || "Immagine del giorno"}</span>
-        `;
-
-        document.getElementById('nasa-content').innerHTML = htmlContent;
-        document.getElementById('nasa-widget').style.display = 'block';
-
-      } catch (error) {
-        console.error("Errore NASA API: ", error);
-        document.getElementById('nasa-content').innerHTML = `
-            <span style='color: #ef4444; font-size: 0.8rem;'>Errore di Rete o Chiave in attivazione. Riprova tra poco. (Ctrl+F5)</span>
-        `;
-        document.getElementById('nasa-widget').style.display = 'block';
-      }
+async function fetchNasaApod() {
+  try {
+    const r = await fetch("https://api.nasa.gov/planetary/apod?api_key=N1SVRVEJ7hzo9T76bgMldhMCwCfbZLAUZRIkqj8I");
+    const data = await r.json();
+    if (!r.ok || data.error) throw new Error();
+    let media = "";
+    if (data.media_type === "image") {
+      media = `<img src="${data.url}" alt="${data.title}" onclick="window.open('${data.hdurl||data.url}','_blank')">`;
+    } else if (data.media_type === "video") {
+      media = data.thumbnail_url ? `<a href="${data.url}" target="_blank"><img src="${data.thumbnail_url}" alt="Video"><div style="color:#a78bfa;font-size:.72rem;margin-top:5px;">▶ Guarda il video</div></a>` : '';
     }
-  </script>
+    document.getElementById('nasa-content').innerHTML = `${media}<p class="apod-title">${data.title||""}</p>`;
+  } catch(e) {
+    document.getElementById('nasa-content').innerHTML = "<span style='color:#ef4444;font-size:.74rem;'>Errore API NASA — riprova (Ctrl+F5)</span>";
+  }
+}
+
+fetchWeather();
+fetchNasaApod();
+</script>
 </body>
-
 </html>

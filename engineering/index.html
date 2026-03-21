@@ -1,274 +1,308 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ingegneria | Emanuele Zanella</title>
-  <meta name="description" content="Sezione Ingegneria - Tool tecnici, appunti e calcolatori per ingegneri energetici e meccanici.">
-  <script>
-// Anti-flash: applica il tema PRIMA del render CSS
-(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
-</script>
+  <meta name="description" content="Sezione Ingegneria - Tool tecnici, appunti e calcolatori per ingegneri energetici.">
+  <script>(function(){var p=localStorage.getItem('themePref');if(p==='light'){document.documentElement.classList.add('light-mode')}else if(!p){try{var d=JSON.parse(localStorage.getItem('themeData'));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add('light-mode')}}catch(e){}}})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+        /* ══ SHARED PAGE STYLES (same language as home) ══════ */
+    .main { padding-top: 0 !important; }
+
+    /* Hero strip */
+    .page-hero {
+      display: flex; align-items: center; gap: 24px;
+      max-width: 900px; margin: 28px auto 30px;
+      padding: 22px 28px;
+      background: var(--card-bg, rgba(255,255,255,0.03));
+      border: 1px solid var(--border-color, rgba(255,255,255,0.08));
+      border-radius: 16px; position: relative; overflow: hidden;
+      animation: fadeUp 0.4s ease both;
+    }
+    .page-hero::before {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background: radial-gradient(ellipse at 0% 50%,
+        rgba(var(--hero-rgb,200,160,60),0.07) 0%, transparent 60%);
+    }
+    .hero-icon {
+      flex-shrink:0; width:56px; height:56px; border-radius:14px;
+      border:1px solid rgba(var(--hero-rgb,200,160,60),0.35);
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(var(--hero-rgb,200,160,60),0.08);
+      box-shadow:0 0 20px rgba(var(--hero-rgb,200,160,60),0.12);
+    }
+    .hero-icon svg { filter:drop-shadow(0 0 8px rgba(var(--hero-rgb,200,160,60),0.5)); }
+    .hero-info { flex:1; }
+    .hero-title {
+      font-family:'Orbitron',sans-serif; font-weight:700;
+      color:var(--hero-color,var(--color-engineering));
+      font-size:1.35rem; letter-spacing:1.5px; margin:0 0 4px; line-height:1.1;
+    }
+    .hero-sub {
+      font-size:0.76rem; color:var(--text-secondary);
+      letter-spacing:1.5px; text-transform:uppercase; margin:0 0 2px;
+    }
+    .hero-breadcrumb {
+      font-size:0.78rem; color:var(--text-secondary); margin:8px 0 0;
+    }
+    .hero-breadcrumb a { color:var(--hero-color,var(--color-engineering)); text-decoration:none; }
+    .hero-breadcrumb a:hover { text-decoration:underline; }
+    .hero-breadcrumb span { margin:0 5px; opacity:.5; }
+
+    /* Grid */
+    .page-grid {
+      display:grid; grid-template-columns:1fr 260px;
+      gap:18px; max-width:960px; margin:0 auto; padding:0 0 48px;
+      align-items:start;
+    }
+    .page-grid.wide { grid-template-columns:1fr; max-width:900px; }
+    .page-main { display:flex; flex-direction:column; gap:14px; }
+    .page-side  { display:flex; flex-direction:column; gap:14px; }
+
+    /* Nav cards (same as home) */
+    .nav-card {
+      display:flex; align-items:center; gap:16px; padding:17px 20px;
+      border-radius:14px; text-decoration:none;
+      background:var(--card-bg,rgba(255,255,255,0.03));
+      border:1px solid var(--border-color,rgba(255,255,255,0.08));
+      transition:background .2s, border-color .2s, transform .2s;
+      position:relative; overflow:hidden;
+    }
+    .nav-card::before { content:''; position:absolute; inset:0; opacity:0; transition:opacity .2s; pointer-events:none; }
+    .nav-card:hover { transform:translateX(4px); }
+    .nav-card:hover::before { opacity:1; }
+    .nav-card.finance:hover    { border-color:rgba(16,185,129,.4);  background:rgba(16,185,129,.05); }
+    .nav-card.finance::before  { background:radial-gradient(ellipse at left,rgba(16,185,129,.08),transparent 70%); }
+    .nav-card.finance .nc-icon { background:rgba(16,185,129,.1); border-color:rgba(16,185,129,.3); }
+    .nav-card.finance .nc-icon svg, .nav-card.finance .nc-arrow { color:#10b981; }
+    .nav-card.engineering:hover    { border-color:rgba(var(--color-engineering-rgb,200,160,60),.4); background:rgba(var(--color-engineering-rgb,200,160,60),.05); }
+    .nav-card.engineering::before  { background:radial-gradient(ellipse at left,rgba(var(--color-engineering-rgb,200,160,60),.08),transparent 70%); }
+    .nav-card.engineering .nc-icon { background:rgba(var(--color-engineering-rgb,200,160,60),.1); border-color:rgba(var(--color-engineering-rgb,200,160,60),.3); }
+    .nav-card.engineering .nc-icon svg, .nav-card.engineering .nc-arrow { color:var(--color-engineering); }
+    .nav-card.personal:hover    { border-color:rgba(139,92,246,.4); background:rgba(139,92,246,.05); }
+    .nav-card.personal::before  { background:radial-gradient(ellipse at left,rgba(139,92,246,.08),transparent 70%); }
+    .nav-card.personal .nc-icon { background:rgba(139,92,246,.1); border-color:rgba(139,92,246,.3); }
+    .nav-card.personal .nc-icon svg, .nav-card.personal .nc-arrow { color:#a78bfa; }
+    .nav-card.muted:hover    { border-color:rgba(var(--color-engineering-rgb,200,160,60),.2); }
+    .nav-card.muted .nc-icon { background:rgba(255,255,255,.04); border-color:rgba(255,255,255,.12); }
+    .nav-card.muted .nc-icon svg, .nav-card.muted .nc-arrow { color:var(--text-secondary); }
+    .nc-icon {
+      width:44px; height:44px; border-radius:11px; border:1px solid;
+      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    }
+    .nc-icon svg { filter:drop-shadow(0 0 5px currentColor); }
+    .nc-text { flex:1; }
+    .nc-title { font-size:.93rem; font-weight:700; color:var(--text-primary); margin:0 0 2px; line-height:1.2; }
+    .nc-desc  { font-size:.75rem; color:var(--text-secondary); margin:0; }
+    .nc-badge {
+      font-size:.6rem; font-weight:700; letter-spacing:.8px; text-transform:uppercase;
+      padding:2px 8px; border-radius:20px;
+      background:rgba(var(--color-engineering-rgb,200,160,60),.1);
+      border:1px solid rgba(var(--color-engineering-rgb,200,160,60),.25);
+      color:var(--color-engineering); flex-shrink:0;
+    }
+    .nc-arrow { opacity:.4; flex-shrink:0; transition:opacity .2s, transform .2s; }
+    .nav-card:hover .nc-arrow { opacity:1; transform:translateX(2px); }
+
+    /* Widget card */
+    .widget-card {
+      background:var(--card-bg,rgba(255,255,255,0.03));
+      border:1px solid var(--border-color,rgba(255,255,255,0.08));
+      border-radius:14px; padding:15px 17px;
+    }
+    .wc-title {
+      font-family:'Orbitron',sans-serif; font-size:0.63rem; letter-spacing:2px;
+      text-transform:uppercase; color:var(--color-engineering);
+      margin:0 0 12px; display:flex; align-items:center; gap:8px;
+    }
+    .wc-title::after { content:''; flex:1; height:1px; background:rgba(var(--color-engineering-rgb,200,160,60),0.2); }
+
+    /* Section separator */
+    .section-sep {
+      font-size:.65rem; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+      color:var(--text-secondary); padding:10px 0 6px;
+      border-bottom:1px solid var(--border-color,rgba(255,255,255,.07));
+      margin-bottom:4px; opacity:.7;
+    }
+
+    .hero-logo-container{width:64px;height:64px;position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .hero-logo{width:100%;height:100%;object-fit:contain;animation:logospin 12s linear infinite;filter:drop-shadow(0 0 10px rgba(var(--color-engineering-rgb,200,160,60),0.5));}
+    @keyframes logospin{from{transform:rotateY(0deg)}to{transform:rotateY(360deg)}}
+    .hero-logo-container::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(var(--color-engineering-rgb,200,160,60),0.25);animation:pulse 3s ease-in-out infinite;}
+    @keyframes pulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.7;transform:scale(1.04)}}
+    @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+
+    @media(max-width:700px){
+      .page-grid { grid-template-columns:1fr; }
+      .page-hero { flex-direction:column; text-align:center; padding:18px 16px; margin:14px 0 22px; }
+      .hero-breadcrumb { text-align:center; }
+    }
+
+    /* ISS map */
+    #iss-map { width:100%; height:150px; border-radius:8px; margin-bottom:10px; background:#000; z-index:10; }
+    .iss-stats { display:flex; gap:0; border-top:1px solid var(--border-color,rgba(255,255,255,.06)); padding-top:10px; margin-top:4px; }
+    .iss-stat { flex:1; text-align:center; }
+    .iss-stat-label { font-size:.68rem; color:var(--text-secondary); }
+    .iss-stat-val { font-size:.88rem; font-weight:700; }
+    /* NEO */
+    .neo-count { font-family:'Orbitron',sans-serif; font-size:2rem; font-weight:700; color:#f87171; text-align:center; margin:6px 0 2px; text-shadow:0 0 10px rgba(248,113,113,.5); }
+    /* Energy */
+    .energy-val { font-family:'Orbitron',sans-serif; font-size:2rem; font-weight:700; text-align:center; margin:6px 0 2px; }
+    .energy-bar { height:8px; border-radius:4px; background:var(--border-color,rgba(255,255,255,.1)); overflow:hidden; margin:8px 0 4px; }
+    .energy-fill { height:100%; border-radius:4px; transition:width .6s ease; }
+
+    /* ── Logo rotante ─────────────────────────────────── */
+    .logo-spin-wrap {
+      display:flex; justify-content:center; align-items:center;
+      flex-shrink:0;
+    }
+    .hero-logo-container {
+      width:100px; height:100px; position:relative;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .hero-logo {
+      width:100%; height:100%; object-fit:contain;
+      animation:logospin 12s linear infinite;
+    }
+    .hero-logo-container::after {
+      content:''; position:absolute; inset:-8px; border-radius:50%;
+      border:1px solid rgba(var(--hero-ring-rgb,200,160,60),0.25);
+      animation:pulse 3s ease-in-out infinite;
+    }
+    @keyframes logospin { from{transform:rotateY(0deg)} to{transform:rotateY(360deg)} }
+    @keyframes pulse { 0%,100%{opacity:.3;transform:scale(1)} 50%{opacity:.7;transform:scale(1.04)} }
+  </style>
 </head>
-
 <body>
+<div class="layout">
+  <header id="main-navbar"></header>
+  <main class="main" style="padding:0 16px;">
 
-  <div class="layout">
+    <!-- HERO -->
+    <div class="page-hero">
+      <div class="hero-logo-container" id="hero-container"><img src="../assets/logo.png" alt="Logo" class="hero-logo" id="hero-logo"></div>
+      <div class="hero-info">
+        <p class="hero-sub">Sezione</p>
+        <h1 class="hero-title">Ingegneria</h1>
+        <p class="hero-breadcrumb">
+          <a href="../index.html">Home</a><span>/</span>
+          <span style="color:var(--text-primary);">Ingegneria</span>
+        </p>
+      </div>
+    </div>
 
-    <!-- NAVBAR (generated by js/navbar.js) -->
-    <header id="main-navbar"></header>
+    <!-- GRID -->
+    <div class="page-grid">
 
-    <!-- MAIN CONTENT -->
-    <main class="main">
-
-      <!-- 3D CENTRAL LOGO -->
-      <div class="hero-logo-container" id="hero-container">
-        <img src="../assets/logo.png" alt="Central Core" class="hero-logo" id="hero-logo">
+      <!-- MAIN -->
+      <div class="page-main" style="animation:fadeUp .45s ease .05s both;">
+        <div class="section-sep">Sezioni</div>
+        <a class="nav-card engineering" href="tools/index.html"><div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><div class="nc-text"><p class="nc-title">Tool Ingegneristici</p><p class="nc-desc">Calcoli tecnici, simulazioni e utility</p></div><svg class="nc-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a>
+        <a class="nav-card engineering" href="appunti/index.html"><div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="nc-text"><p class="nc-title">Appunti Tecnici</p><p class="nc-desc">Formule, note e riferimenti</p></div><svg class="nc-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a>
       </div>
 
-      <!-- CARDS (Floating below the logo) -->
-      <section class="cards">
-        <a class="card engineering" href="tools/index.html">
-          <div class="card-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-              >
-              <path
-                d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z">
-              </path>
-            </svg>
+      <!-- SIDE: widget live -->
+      <div class="page-side" style="animation:fadeUp .45s ease .15s both;">
+
+        <!-- ISS -->
+        <div class="widget-card" id="iss-card">
+          <p class="wc-title">ISS Live 🛰️</p>
+          <div id="iss-map"></div>
+          <div id="iss-stats">
+            <div style="text-align:center;color:var(--text-secondary);font-size:.76rem;">Caricamento…</div>
           </div>
-          <h3>Tool ingegneristici</h3>
-          <p>Calcoli tecnici, simulazioni e utility</p>
-        </a>
+        </div>
 
-        <a class="card engineering" href="appunti/index.html">
-          <div class="card-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-              >
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-            </svg>
+        <!-- NEO -->
+        <div class="widget-card">
+          <p class="wc-title">Asteroidi Oggi ☄️</p>
+          <div id="neo-content">
+            <div style="text-align:center;color:var(--text-secondary);font-size:.76rem;padding:8px 0;">Caricamento…</div>
           </div>
-          <h3>Appunti tecnici</h3>
-          <p>Formule, note e riferimenti</p>
-        </a>
-      </section>
+        </div>
 
-    </main>
+        <!-- Rete elettrica -->
+        <div class="widget-card">
+          <p class="wc-title">Rete Elettrica IT ⚡</p>
+          <div id="energy-content">
+            <div style="text-align:center;color:var(--text-secondary);font-size:.76rem;padding:8px 0;">Caricamento…</div>
+          </div>
+        </div>
 
-  </div>
-
-  <!-- ISS TRACKER WIDGET -->
-  <div id="iss-widget" class="side-widget gold top-left" style="width: 280px;">
-    <h3
-      class="widget-header gold">
-      ISS Live Map 🛰️</h3>
-    <div id="iss-map"
-      style="width: 100%; height: 160px; border-radius: 4px; margin-bottom: 10px; background: #000; z-index: 10;"></div>
-    <div id="iss-content" class="widget-body">
-      <span style="text-align: center;">Caricamento mappa...</span>
+      </div>
     </div>
-  </div>
 
-  <!-- NEO TRACKER WIDGET -->
-  <div id="neo-widget" class="side-widget red mid-left" style="width: 150px;">
-    <h3
-      class="widget-header red">
-      Asteroidi Oggi ☄️</h3>
-    <div id="neo-content" class="widget-body centered">
-      <span style="text-align: center;">Caricamento...</span>
-    </div>
-  </div>
+  </main>
+</div>
+<script src="../js/navbar.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/footer.js"></script>
+<script>
+let issMap=null, issMarker=null;
 
-  <!-- ENERGY WIDGET -->
-  <div id="energy-widget" class="side-widget green top-right" style="width: 220px;">
-    <h3
-      class="widget-header green">
-      Rete Elettrica IT ⚡</h3>
-    <div id="energy-content" class="widget-body centered">
-      <span style="text-align: center;">Caricamento dati...</span>
-    </div>
-  </div>
-
-  <script src="../js/navbar.js"></script>
-  <script src="../js/main.js"></script>
-  <script src="../js/footer.js"></script>
-
-  <!-- SCRIPT ISS TRACKER E ENERGY WIDGET -->
-  <script>
-    if (window.innerWidth > 1024) {
-      fetchISS();
-      setInterval(fetchISS, 5000); // Aggiorna posizione ISS ogni 5 secondi
-      fetchEnergy();
-      fetchNEO();
+async function fetchISS() {
+  try {
+    const r = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
+    if (!r.ok) throw new Error();
+    const d = await r.json();
+    const lat=d.latitude, lon=d.longitude, alt=Math.round(d.altitude), vel=Math.round(d.velocity);
+    if (!issMap) {
+      issMap = L.map('iss-map',{zoomControl:false,attributionControl:false}).setView([lat,lon],2);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19}).addTo(issMap);
+      const ico = L.divIcon({html:'<span style="font-size:20px;text-shadow:0 0 8px rgba(250,204,21,.8);">🛰️</span>',className:'',iconSize:[20,20],iconAnchor:[10,10]});
+      issMarker = L.marker([lat,lon],{icon:ico}).addTo(issMap);
+    } else {
+      issMarker.setLatLng([lat,lon]);
+      issMap.panTo([lat,lon],{animate:true,duration:1.5});
     }
+    document.getElementById('iss-stats').innerHTML = `<div class="iss-stats"><div class="iss-stat"><div class="iss-stat-label">Altitudine</div><div class="iss-stat-val" style="color:#facc15;">${alt.toLocaleString('it-IT')} km</div></div><div class="iss-stat"><div class="iss-stat-label">Velocità</div><div class="iss-stat-val" style="color:#f87171;">${vel.toLocaleString('it-IT')} km/h</div></div></div>`;
+    setTimeout(()=>issMap.invalidateSize(),200);
+  } catch(e) {
+    document.getElementById('iss-stats').innerHTML = "<span style='color:#ef4444;font-size:.74rem;'>API non disponibile</span>";
+  }
+}
 
-    async function fetchNEO() {
-      // Ottieni la data di oggi in formato YYYY-MM-DD
-      const today = new Date().toISOString().split('T')[0];
-      const url = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${today}&end_date=${today}&api_key=N1SVRVEJ7hzo9T76bgMldhMCwCfbZLAUZRIkqj8I`;
+async function fetchNEO() {
+  const today = new Date().toISOString().split('T')[0];
+  try {
+    const r = await fetch(`https://api.nasa.gov/neo/rest/v1/feed?start_date=${today}&end_date=${today}&api_key=N1SVRVEJ7hzo9T76bgMldhMCwCfbZLAUZRIkqj8I`);
+    const d = await r.json();
+    if (!r.ok || d.error) throw new Error();
+    const count = d.element_count;
+    const neos = d.near_earth_objects[today];
+    const closest = neos.reduce((a,b)=>parseFloat(a.close_approach_data[0].miss_distance.kilometers)<parseFloat(b.close_approach_data[0].miss_distance.kilometers)?a:b);
+    const dist = Math.round(closest.close_approach_data[0].miss_distance.kilometers).toLocaleString('it-IT');
+    document.getElementById('neo-content').innerHTML = `<div class="neo-count">${count}</div><div style="font-size:.72rem;color:var(--text-secondary);text-align:center;line-height:1.5;">in passaggio oggi<br><span style="color:var(--text-primary);">Più vicino: </span><strong style="color:#facc15;">${dist} km</strong></div>`;
+  } catch(e) {
+    document.getElementById('neo-content').innerHTML = "<span style='color:#ef4444;font-size:.74rem;'>Errore API NASA</span>";
+  }
+}
 
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
+async function fetchEnergy() {
+  try {
+    const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=41.90&longitude=12.49&current=direct_radiation");
+    const d = await r.json();
+    const rad = d.current.direct_radiation;
+    let pct = Math.round(25 + Math.min((rad/800)*18, 18));
+    let col = pct > 40 ? '#4ade80' : pct > 30 ? '#facc15' : '#ef4444';
+    document.getElementById('energy-content').innerHTML = `
+      <div class="energy-val" style="color:${col}">${pct}% 🍃</div>
+      <div class="energy-bar"><div class="energy-fill" style="width:${pct}%;background:${col};"></div></div>
+      <div style="font-size:.72rem;color:var(--text-secondary);text-align:center;">fonti rinnovabili stimato</div>`;
+  } catch(e) {
+    document.getElementById('energy-content').innerHTML = "<span style='color:#ef4444;font-size:.74rem;'>Errore API</span>";
+  }
+}
 
-        if (!response.ok || data.error) {
-          throw new Error("Rate limit NEO");
-        }
-
-        const count = data.element_count;
-        // Prendi il primo tra quelli trovati come esempio (il più vicino o casuale)
-        const neos = data.near_earth_objects[today];
-        let closestNeo = neos[0];
-        for (let neo of neos) {
-          if (parseFloat(neo.close_approach_data[0].miss_distance.kilometers) < parseFloat(closestNeo.close_approach_data[0].miss_distance.kilometers)) {
-            closestNeo = neo;
-          }
-        }
-
-        const distKm = Math.round(closestNeo.close_approach_data[0].miss_distance.kilometers).toLocaleString('it-IT');
-
-        const htmlContent = `
-          <div style="font-size: 2rem; font-weight: bold; color: #f87171; margin: 5px 0; text-shadow: 0 0 10px rgba(248, 113, 113, 0.6);">
-            ${count}
-          </div>
-          <div style="font-size: 0.75rem; color: #94a3b8; line-height: 1.3;">
-            in passaggio.<br>
-            <span style="color: #cbd5e1;">Più vicino:</span><br>
-            <b style="color: #facc15;">${distKm} km</b>
-          </div>
-        `;
-
-        document.getElementById('neo-content').innerHTML = htmlContent;
-        document.getElementById('neo-widget').style.display = 'block';
-
-      } catch (error) {
-        console.error("Errore NASA NEO: ", error);
-        document.getElementById('neo-content').innerHTML = `
-            <span style='color: #ef4444; font-size: 0.75rem;'>Errore di Rete o Chiave in attivazione. (Ctrl+F5)</span>
-        `;
-        document.getElementById('neo-widget').style.display = 'block';
-      }
-    }
-
-    async function fetchEnergy() {
-      // API Pubbliche di ENTSO-E / ElectricityMap necessitano di API KEY personali o bloccano per CORS.
-      // Eseguiamo una chiamata all'API Open-Meteo per ottenere la radiazione solare reale attuale su Roma per stimare un "Mix Pulito" verosimile basato sul sole.
-      try {
-        const url = "https://api.open-meteo.com/v1/forecast?latitude=41.90&longitude=12.49&current=direct_radiation";
-        const response = await fetch(url);
-        const data = await response.json();
-
-        const radiation = data.current.direct_radiation;
-
-        // Calcolo stimato: base rinnovabile (idro/geotermico ~25%) + contributo solare/eolico (fino a +20%) se c'è sole forte (>600 W/m2)
-        let baseRinnovabile = 25;
-        let extraSolare = (radiation / 800) * 18; // Max ~18% in più con pieno sole
-        if (extraSolare > 18) extraSolare = 18;
-
-        const percentualeRinnovabile = Math.round(baseRinnovabile + extraSolare);
-
-        let color = "#ef4444"; // Rosso
-        if (percentualeRinnovabile > 30) color = "#facc15"; // Giallo
-        if (percentualeRinnovabile > 40) color = "#4ade80"; // Verde
-
-        const htmlContent = `
-          <div style="font-size: 2rem; font-weight: bold; color: ${color}; margin: 5px 0; text-shadow: 0 0 10px ${color}80;">
-            ${percentualeRinnovabile}% 🍃
-          </div>
-          <p style="font-size: 0.8rem; color: #94a3b8; line-height: 1.4; margin-top: 5px;">
-            Attualmente l'Italia è alimentata al <b>${percentualeRinnovabile}%</b> da fonti rinnovabili.
-          </p>
-        `;
-
-        document.getElementById('energy-content').innerHTML = htmlContent;
-        document.getElementById('energy-widget').style.display = 'block';
-
-      } catch (error) {
-        // Fallback realistico se l'API non risponde
-        const fallbackPerc = 38;
-        const htmlContent = `
-          <div style="font-size: 2rem; font-weight: bold; color: #4ade80; margin: 5px 0; text-shadow: 0 0 10px rgba(74, 222, 128, 0.5);">
-            ${fallbackPerc}% 🍃
-          </div>
-          <p style="font-size: 0.8rem; color: #94a3b8; line-height: 1.4; margin-top: 5px;">
-            Attualmente l'Italia è alimentata al <b>${fallbackPerc}%</b> da fonti rinnovabili.
-          </p>
-        `;
-        document.getElementById('energy-content').innerHTML = htmlContent;
-        document.getElementById('energy-widget').style.display = 'block';
-      }
-    }
-
-    let issMap = null;
-    let issMarker = null;
-
-    async function fetchISS() {
-      const url = "https://api.wheretheiss.at/v1/satellites/25544";
-      try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("Rate limit / Network Error");
-        const data = await response.json();
-
-        const lat = data.latitude;
-        const lon = data.longitude;
-        const alt = Math.round(data.altitude);
-        const vel = Math.round(data.velocity);
-
-        // Seleziona o crea mappa
-        if (!issMap) {
-          issMap = L.map('iss-map', {
-            zoomControl: false,
-            attributionControl: false
-          }).setView([lat, lon], 3);
-
-          // Aggiungi tile layer dark (CartoDB Dark Matter)
-          L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            maxZoom: 19
-          }).addTo(issMap);
-
-          // Icona custom per ISS 
-          const issIcon = L.divIcon({
-            html: '<span style="font-size: 24px; text-shadow: 0 0 10px rgba(250, 204, 21, 0.8);">🛰️</span>',
-            className: 'dummy-transparent-class',
-            iconSize: [24, 24],
-            iconAnchor: [12, 12]
-          });
-
-          // Aggiungi marker
-          issMarker = L.marker([lat, lon], { icon: issIcon }).addTo(issMap);
-        } else {
-          // Aggiorna posizione marker e centra mappa
-          issMarker.setLatLng([lat, lon]);
-          issMap.panTo([lat, lon], { animate: true, duration: 2.0 });
-        }
-
-        const htmlContent = `
-          <div style="display: flex; gap: 15px; width: 100%; justify-content: space-evenly; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 5px;">
-            <div style="text-align: center;"><span style="color:#94a3b8; font-size:0.75rem;">Altitudine</span><br><b style="color:#facc15;">${alt.toLocaleString('it-IT')} km</b></div>
-            <div style="text-align: center;"><span style="color:#94a3b8; font-size:0.75rem;">Velocità</span><br><b style="color:#f87171;">${vel.toLocaleString('it-IT')} km/h</b></div>
-          </div>
-        `;
-
-        document.getElementById('iss-content').innerHTML = htmlContent;
-        document.getElementById('iss-widget').style.display = 'block';
-
-        // Fix Leaflet resize bug inside hidden div
-        setTimeout(() => { issMap.invalidateSize(); }, 300);
-
-      } catch (error) {
-        console.error("Errore ISS API: ", error);
-        document.getElementById('iss-content').innerHTML = "<span style='color: #ef4444; width:100%; text-align:center;'>Mappa/API non disponibile</span>";
-        document.getElementById('iss-widget').style.display = 'block';
-      }
-    }
-  </script>
-</body>
-
-</html>
+fetchISS();
+setInterval(fetchISS, 5000);
+fetchNEO();
+fetchEnergy();
+</script>
+</body></html>

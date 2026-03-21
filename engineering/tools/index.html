@@ -30,7 +30,29 @@
     .tos-desc{font-size:.80rem;color:var(--text-secondary)}
     .tos-arrow{color:var(--color-engineering);opacity:.7;flex-shrink:0;transition:transform .2s}
     .tos-banner:hover .tos-arrow{transform:translateX(4px);opacity:1}
-    </style>
+    
+        /* ── Search bar ── */
+        .search-wrap{max-width:640px;margin:16px auto 18px;position:relative}
+        .search-box{display:flex;align-items:center;gap:10px;padding:0 14px;border:1px solid var(--border-color,rgba(255,255,255,0.15));border-radius:10px;background:var(--input-bg,rgba(255,255,255,0.04));transition:border-color .2s}
+        .search-box:focus-within{border-color:var(--color-engineering)}
+        .search-icon{color:var(--text-secondary);flex-shrink:0}
+        #toolSearch{flex:1;border:none;background:transparent;padding:12px 0;font-size:.9rem;color:var(--text-primary);outline:none}
+        #toolSearch::placeholder{color:var(--text-secondary);opacity:.7}
+        .search-clear{background:none;border:none;cursor:pointer;color:var(--text-secondary);padding:4px;border-radius:4px;display:none;flex-shrink:0;transition:color .15s}
+        .search-clear:hover{color:var(--text-primary)}
+        .search-results{display:none;flex-direction:column;border:1px solid var(--border-color,rgba(255,255,255,0.1));border-radius:12px;overflow:hidden;margin-top:8px;background:var(--card-bg,rgba(255,255,255,0.03))}
+        .search-results.open{display:flex}
+        .sr-item{display:flex;align-items:center;gap:14px;padding:12px 18px;text-decoration:none;border-bottom:1px solid var(--border-color,rgba(255,255,255,0.06));transition:background .15s}
+        .sr-item:last-child{border-bottom:none}
+        .sr-item:hover{background:rgba(var(--color-engineering-rgb,200,160,60),0.07)}
+        .sr-icon{width:34px;height:34px;border-radius:8px;background:rgba(var(--color-engineering-rgb,200,160,60),0.08);border:1px solid rgba(var(--color-engineering-rgb,200,160,60),0.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.75rem;color:var(--color-engineering);font-weight:700}
+        .sr-main{flex:1;display:flex;flex-direction:column;gap:2px}
+        .sr-title{font-size:.85rem;font-weight:700;color:var(--text-primary)}
+        .sr-title mark{background:rgba(var(--color-engineering-rgb,200,160,60),.25);color:var(--color-engineering);border-radius:2px;padding:0 2px}
+        .sr-path{font-size:.72rem;color:var(--text-secondary)}
+        .sr-empty{padding:20px;text-align:center;font-size:.84rem;color:var(--text-secondary)}
+        .sr-category{padding:6px 18px 4px;font-size:.62rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--text-secondary);background:rgba(var(--color-engineering-rgb,200,160,60),.03);border-bottom:1px solid var(--border-color,rgba(255,255,255,0.05))}
+</style>
 </head>
 <body>
 <div class="layout"><header id="main-navbar"></header><main class="main">
@@ -42,7 +64,225 @@
         </div>
         <svg class="tos-arrow" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
     </a>
+
+    <!-- ═══ BARRA DI RICERCA TOOL ═══ -->
+    <div class="search-wrap">
+        <div class="search-box">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="toolSearch" placeholder="Cerca tra tutti i tool…" autocomplete="off" spellcheck="false">
+            <button class="search-clear" id="searchClear" aria-label="Cancella">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+    </div>
+    <!-- ════════════════════════════════ -->
+
     <div class="dim-list"><a class="dim-item" href="dimensionamenti/index.html"><div class="dim-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><div class="dim-text"><span class="dim-title">Dimensionamenti</span><span class="dim-desc">Calcoli e strumenti di dimensionamento fluidi</span></div><svg class="dim-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a><a class="dim-item" href="piping/index.html"><div class="dim-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="6" rx="3"/><path d="M3 12h2M19 12h2"/></svg></div><div class="dim-text"><span class="dim-title">Piping</span><span class="dim-desc">Tubazioni, flange, fittings, isolamento</span></div><svg class="dim-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a><a class="dim-item" href="termodinamica/index.html"><div class="dim-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><div class="dim-text"><span class="dim-title">Termodinamica</span><span class="dim-desc">Proprietà vapore, aria umida, saturazione</span></div><svg class="dim-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a><a class="dim-item" href="fluidodinamica/index.html"><div class="dim-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 1 7 7c0 4-4 8-7 13C9 17 2 13 2 9a7 7 0 0 1 7-7h3z"/><path d="M8 9h8M10 12h4"/></svg></div><div class="dim-text"><span class="dim-title">Fluidodinamica</span><span class="dim-desc">Dinamica dei fluidi, perdite, reti</span></div><svg class="dim-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a><a class="dim-item" href="energy/index.html"><div class="dim-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/><path d="M18 2v4h4"/></svg></div><div class="dim-text"><span class="dim-title">Sistemi Energetici</span><span class="dim-desc">Cicli termodinamici, rendimenti, diagrammi</span></div><svg class="dim-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a><a class="dim-item" href="stress/index.html"><div class="dim-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20M12 2v20"/><circle cx="12" cy="12" r="4"/></svg></div><div class="dim-text"><span class="dim-title">Stress Analysis</span><span class="dim-desc">Tensioni, verifiche e criteri</span></div><svg class="dim-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a></div>
 </main></div>
 <script src="../../js/navbar.js"></script><script src="../../js/main.js"></script><script src="../../js/footer.js"></script>
+
+    <script>
+    // ═══════════════════════════════════════════════════════════════
+    //  CATALOGO COMPLETO DEI TOOL  (titolo, url, keywords, categoria)
+    // ═══════════════════════════════════════════════════════════════
+    const TOOLS = [
+      // ── Dimensionamenti → Vapore → Progettazione ──
+      {t:"Dim. tubazione per perdita di pressione (Vapore)", u:"dimensionamenti/vapore/progettazione/dim-perdita-pressione.html", k:"vapore dimensionamento tubazione perdita pressione carico", cat:"Dimensionamenti › Vapore"},
+      {t:"Dim. tubazione per velocità (Vapore)",             u:"dimensionamenti/vapore/progettazione/dim-velocita.html",          k:"vapore dimensionamento tubazione velocità", cat:"Dimensionamenti › Vapore"},
+      {t:"Dim. tubazione sfiato vapore",                     u:"dimensionamenti/vapore/progettazione/dim-sfiato.html",            k:"vapore sfiato dimensionamento tubazione vent", cat:"Dimensionamenti › Vapore"},
+      {t:"Perdita di pressione (Vapore)",                    u:"dimensionamenti/vapore/progettazione/perdita-pressione.html",     k:"vapore perdita pressione carico tubazione", cat:"Dimensionamenti › Vapore"},
+      {t:"Velocità del vapore nella tubazione",              u:"dimensionamenti/vapore/progettazione/velocita-vapore.html",       k:"vapore velocità tubazione", cat:"Dimensionamenti › Vapore"},
+      {t:"Portata del vapore nella tubazione",               u:"dimensionamenti/vapore/progettazione/portata-vapore.html",        k:"vapore portata tubazione flusso massico", cat:"Dimensionamenti › Vapore"},
+      {t:"Spessore ottimale isolamento (Vapore)",            u:"dimensionamenti/vapore/progettazione/spessore-isolamento.html",   k:"vapore isolamento spessore ottimale termico", cat:"Dimensionamenti › Vapore"},
+      // ── Dimensionamenti → Vapore → Carico condensa ──
+      {t:"Carico condensa — Avviamento tubazione",           u:"dimensionamenti/vapore/condensa/tubazione-avviamento.html",       k:"condensa avviamento startup carico vapore tubazione", cat:"Dimensionamenti › Vapore › Condensa"},
+      {t:"Carico condensa — Liquido continuo",               u:"dimensionamenti/vapore/condensa/liquido-continuo.html",           k:"condensa liquido continuo riscaldamento carico vapore scambiatore", cat:"Dimensionamenti › Vapore › Condensa"},
+      {t:"Carico condensa — Liquido batch",                  u:"dimensionamenti/vapore/condensa/liquido-batch.html",              k:"condensa liquido batch riscaldamento carico vapore processo picco", cat:"Dimensionamenti › Vapore › Condensa"},
+      {t:"Carico condensa — Aria di riscaldamento",          u:"dimensionamenti/vapore/condensa/aria-riscaldamento.html",         k:"condensa aria riscaldamento aerotermo batteria carico vapore", cat:"Dimensionamenti › Vapore › Condensa"},
+      {t:"Carico condensa — Perdita radiante",               u:"dimensionamenti/vapore/condensa/perdita-radiante.html",           k:"condensa perdita radiante calore isolamento tubazione carico", cat:"Dimensionamenti › Vapore › Condensa"},
+      {t:"Punto di stallo",                                  u:"dimensionamenti/vapore/condensa/punto-stallo.html",               k:"stallo waterlogging condensa scaricatore pressione contropressione", cat:"Dimensionamenti › Vapore › Condensa"},
+      // ── Dimensionamenti → Vapore → Costo ──
+      {t:"Costo unitario del vapore",                        u:"dimensionamenti/vapore/costo/costo-vapore.html",                  k:"costo vapore unitario tonnellata produzione caldaia combustibile", cat:"Dimensionamenti › Vapore › Costo"},
+      {t:"Costo unitario energia termica",                   u:"dimensionamenti/vapore/costo/costo-energia.html",                 k:"costo energia termica MWh caldaia combustibile gas naturale rendimento", cat:"Dimensionamenti › Vapore › Costo"},
+      // ── Dimensionamenti → Acqua ──
+      {t:"Dim. tubazione per perdita di pressione (Acqua)",  u:"dimensionamenti/acqua/progettazione/acqua-dim-perdita-pressione.html", k:"acqua dimensionamento tubazione perdita pressione", cat:"Dimensionamenti › Acqua"},
+      {t:"Dim. tubazione per velocità (Acqua)",              u:"dimensionamenti/acqua/progettazione/acqua-dim-velocita.html",         k:"acqua dimensionamento tubazione velocità", cat:"Dimensionamenti › Acqua"},
+      {t:"Perdita di pressione (Acqua)",                     u:"dimensionamenti/acqua/progettazione/acqua-perdita-pressione.html",     k:"acqua perdita pressione carico tubazione", cat:"Dimensionamenti › Acqua"},
+      {t:"Velocità dell'acqua nella tubazione",              u:"dimensionamenti/acqua/progettazione/acqua-velocita-acqua.html",        k:"acqua velocità tubazione idrico", cat:"Dimensionamenti › Acqua"},
+      {t:"Portata dell'acqua nella tubazione",               u:"dimensionamenti/acqua/progettazione/acqua-portata-acqua.html",         k:"acqua portata tubazione flusso idrico", cat:"Dimensionamenti › Acqua"},
+      {t:"Spessore ottimale isolamento (Acqua)",             u:"dimensionamenti/acqua/progettazione/acqua-spessore-isolamento.html",   k:"acqua isolamento spessore ottimale termico", cat:"Dimensionamenti › Acqua"},
+      {t:"Calcolo volume vaso di espansione",                u:"dimensionamenti/acqua/vasi-espansione/calcolo-volume-vaso.html",       k:"vaso espansione volume calcolo pressione impianto riscaldamento", cat:"Dimensionamenti › Acqua › Vasi Espansione"},
+      // ── Dimensionamenti → Aria ──
+      {t:"Dim. tubazione per perdita di pressione (Aria)",   u:"dimensionamenti/aria/progettazione/aria-dim-perdita-pressione.html", k:"aria compressa dimensionamento tubazione perdita pressione", cat:"Dimensionamenti › Aria"},
+      {t:"Dim. tubazione per velocità (Aria)",               u:"dimensionamenti/aria/progettazione/aria-dim-velocita.html",          k:"aria compressa dimensionamento tubazione velocità", cat:"Dimensionamenti › Aria"},
+      {t:"Perdita di pressione (Aria)",                      u:"dimensionamenti/aria/progettazione/aria-perdita-pressione.html",      k:"aria compressa perdita pressione carico tubazione", cat:"Dimensionamenti › Aria"},
+      {t:"Velocità dell'aria nella tubazione",               u:"dimensionamenti/aria/progettazione/aria-velocita.html",              k:"aria velocità tubazione compressa", cat:"Dimensionamenti › Aria"},
+      {t:"Portata dell'aria nella tubazione",                u:"dimensionamenti/aria/progettazione/aria-portata.html",               k:"aria portata tubazione compressa flusso volumetrico", cat:"Dimensionamenti › Aria"},
+      // ── Dimensionamenti → Metano ──
+      {t:"Perdita di pressione (Metano/Gas)",                u:"dimensionamenti/metano/progettazione/metano-perdita-pressione.html", k:"metano gas naturale perdita pressione tubazione rete", cat:"Dimensionamenti › Metano"},
+      // ── Dimensionamenti → Recupero Condensa ──
+      {t:"Analisi economica — Sistema aperto",               u:"dimensionamenti/condensa/analisi-economica/sistema-aperto.html",     k:"condensa recupero sistema aperto analisi economica risparmio", cat:"Dimensionamenti › Recupero Condensa"},
+      {t:"Analisi economica — Sistema chiuso",               u:"dimensionamenti/condensa/analisi-economica/sistema-chiuso.html",     k:"condensa recupero sistema chiuso analisi economica payback", cat:"Dimensionamenti › Recupero Condensa"},
+      {t:"Analisi economica — Scambiatore di calore",        u:"dimensionamenti/condensa/analisi-economica/scambiatore-calore.html", k:"condensa scambiatore calore analisi economica risparmio energia", cat:"Dimensionamenti › Recupero Condensa"},
+      {t:"Recupero vapore di flash",                         u:"dimensionamenti/condensa/analisi-economica/vapore-flash.html",       k:"vapore flash recupero condensa camera flash analisi economica", cat:"Dimensionamenti › Recupero Condensa"},
+      {t:"Tubazione tra apparecchiatura e scaricatore",      u:"dimensionamenti/condensa/tubazioni/tra-apparecchiatura-scaricatore.html", k:"condensa tubazione scaricatore steam trap apparecchiatura", cat:"Dimensionamenti › Recupero Condensa › Tubazioni"},
+      {t:"Dim. linea recupero condensa per ΔP",             u:"dimensionamenti/condensa/tubazioni/recupero-perdita-pressione.html",  k:"condensa linea recupero dimensionamento perdita pressione", cat:"Dimensionamenti › Recupero Condensa › Tubazioni"},
+      {t:"Dim. linea recupero condensa per velocità",        u:"dimensionamenti/condensa/tubazioni/recupero-velocita.html",          k:"condensa linea recupero dimensionamento velocità", cat:"Dimensionamenti › Recupero Condensa › Tubazioni"},
+      {t:"Linea di uscita della pompa condensato",           u:"dimensionamenti/condensa/tubazioni/linea-uscita-pompa.html",         k:"condensa pompa linea uscita mandata dimensionamento", cat:"Dimensionamenti › Recupero Condensa › Tubazioni"},
+      // ── Piping ──
+      {t:"Spessori e pesi per metro — EN",                   u:"piping/tubazioni/Spessore_Peso_metro/EN/index.html",     k:"tubazione spessore peso metro EN acciaio", cat:"Piping › Tubazioni"},
+      {t:"Spessori e pesi per metro — ASME",                 u:"piping/tubazioni/Spessore_Peso_metro/ASME/index.html",   k:"tubazione spessore peso metro ASME schedule", cat:"Piping › Tubazioni"},
+      {t:"Spessori e pesi per metro — Inox",                 u:"piping/tubazioni/Spessore_Peso_metro/INOX/inox_index.html", k:"tubazione acciaio inox spessore peso metro AISI 304 316", cat:"Piping › Tubazioni"},
+      {t:"Spessori e pesi per metro — Polietilene PE",       u:"piping/tubazioni/Spessore_Peso_metro/POLIETILENE/pe_index.html", k:"tubazione polietilene PE SDR PN spessore peso", cat:"Piping › Tubazioni"},
+      {t:"Spessore minimo di parete (strutturale)",          u:"piping/tubazioni/strutturale/spessore_minimo/index.html", k:"spessore minimo parete pressione interna ASME B31.3 EN 13480 strutturale", cat:"Piping › Strutturale"},
+      {t:"Pressione ammissibile MAP",                        u:"piping/tubazioni/strutturale/pressione_ammissibile/index.html", k:"pressione ammissibile MAP ASME B31.3 EN 13480 schedule", cat:"Piping › Strutturale"},
+      {t:"Spessore isolante tubazioni",                      u:"piping/tubazioni/isolamento_termico/spessore_isolante/index.html",  k:"isolamento spessore isolante tubazione perdita calore EN ISO 12241", cat:"Piping › Isolamento"},
+      {t:"Temperatura superficiale tubazione isolata",       u:"piping/tubazioni/isolamento_termico/temperatura_superficiale/index.html", k:"temperatura superficiale tubazione isolamento bruciatura EN ISO 12241", cat:"Piping › Isolamento"},
+      {t:"Flange ASME B16.5",                               u:"piping/flange/asme/index.html",  k:"flangia ASME B16.5 classe 150 300 600 900 1500 2500 weldneck raised face", cat:"Piping › Flange"},
+      {t:"Flange EN 1092-1",                                u:"piping/flange/en/index.html",    k:"flangia EN 1092-1 PN6 PN10 PN16 PN25 PN40", cat:"Piping › Flange"},
+      {t:"Curva 90° (fittings)",                            u:"piping/fittings/curva-90/index.html",              k:"curva 90 gradi LR SR raggio lungo corto EN 10253 ASME B16.9 fitting raccordo", cat:"Piping › Fittings"},
+      {t:"Curva 45° (fittings)",                            u:"piping/fittings/curva-45/index.html",              k:"curva 45 gradi LR raggio lungo EN 10253 ASME B16.9 fitting raccordo", cat:"Piping › Fittings"},
+      {t:"Riduzione concentrica",                           u:"piping/fittings/riduzione-concentrica/index.html", k:"riduzione concentrica fitting raccordo EN 10253 ASME B16.9", cat:"Piping › Fittings"},
+      {t:"Riduzione eccentrica",                            u:"piping/fittings/riduzione-eccentrica/index.html",  k:"riduzione eccentrica flat top bottom fitting raccordo EN 10253 ASME B16.9", cat:"Piping › Fittings"},
+      {t:"Tee uguale",                                      u:"piping/fittings/tee-uguale/index.html",            k:"tee uguale fitting raccordo EN 10253 ASME B16.9", cat:"Piping › Fittings"},
+      {t:"Tee ridotto",                                     u:"piping/fittings/tee-ridotto/index.html",           k:"tee ridotto derivazione fitting raccordo EN 10253 ASME B16.9", cat:"Piping › Fittings"},
+      {t:"Cap / Tappo",                                     u:"piping/fittings/cap/index.html",                   k:"cap tappo fondo bombato ellittico fitting EN 10253 ASME B16.9", cat:"Piping › Fittings"},
+      // ── Termodinamica ──
+      {t:"Vapore saturo per pressione",                     u:"termodinamica/vapore/vapore_saturo_pressione.html",    k:"vapore saturo pressione tabella termodinamica proprietà entalpia entropia", cat:"Termodinamica › Vapore"},
+      {t:"Vapore saturo per temperatura",                   u:"termodinamica/vapore/vapore_saturo_temperatura.html",  k:"vapore saturo temperatura tabella termodinamica proprietà entalpia entropia", cat:"Termodinamica › Vapore"},
+      {t:"Vapore surriscaldato",                            u:"termodinamica/vapore/vapore_surriscaldato.html",       k:"vapore surriscaldato tabella termodinamica proprietà pressione temperatura", cat:"Termodinamica › Vapore"},
+      {t:"Proprietà fluido (CoolProp)",                     u:"termodinamica/proprieta-fluido/index.html",            k:"proprietà fluido CoolProp refrigerante temperatura pressione densità viscosità entalpia", cat:"Termodinamica"},
+      {t:"Tavole di saturazione",                           u:"termodinamica/saturazione/index.html",                 k:"saturazione tavole tabelle termodinamica fluido liquido saturo vapore", cat:"Termodinamica"},
+      {t:"Aria umida — psicrometria",                       u:"termodinamica/aria-umida/index.html",                  k:"aria umida psicrometria punto rugiada umidità relativa entalpia bulbo umido", cat:"Termodinamica"},
+      // ── Sistemi Energetici ──
+      {t:"Turbogas — calcolo ciclo",                        u:"energy/Turbogas/index.html", k:"turbogas ciclo brayton rendimento compressore turbina gas calcolo", cat:"Sistemi Energetici"},
+    ];
+
+    // ── Motore di ricerca ──────────────────────────────────────────
+    const inp = document.getElementById("toolSearch");
+    const clr = document.getElementById("searchClear");
+    const res = document.getElementById("searchResults");
+    const lst = document.querySelector(".dim-list");
+
+    function normalize(s){
+        return s.toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+                .replace(/[àáâã]/g,"a").replace(/[èéêë]/g,"e")
+                .replace(/[ìíîï]/g,"i").replace(/[òóôõ]/g,"o")
+                .replace(/[ùúûü]/g,"u");
+    }
+
+    function highlight(text, terms){
+        let out = text;
+        terms.forEach(t => {
+            if(!t) return;
+            const re = new RegExp('(' + t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+            out = out.replace(re, '<mark>$1</mark>');
+        });
+        return out;
+    }
+
+    function score(tool, terms){
+        const title = normalize(tool.t);
+        const keys  = normalize(tool.k);
+        let s = 0;
+        terms.forEach(term => {
+            if(!term) return;
+            if(title.startsWith(term)) s += 10;
+            else if(title.includes(term)) s += 6;
+            if(keys.includes(term)) s += 3;
+        });
+        return s;
+    }
+
+    function search(){
+        const raw = inp.value.trim();
+        clr.style.display = raw ? "flex" : "none";
+
+        if(raw.length < 2){
+            res.classList.remove("open");
+            lst.style.display = "";
+            return;
+        }
+
+        lst.style.display = "none";
+        const terms = normalize(raw).split(/\s+/).filter(Boolean);
+
+        const scored = TOOLS
+            .map(t => ({...t, s: score(t, terms)}))
+            .filter(t => t.s > 0)
+            .sort((a,b) => b.s - a.s);
+
+        res.innerHTML = "";
+
+        if(scored.length === 0){
+            res.innerHTML = '<div class="sr-empty">Nessun tool trovato per "<strong>' + raw + '</strong>"</div>';
+            res.classList.add("open");
+            return;
+        }
+
+        // Group by category
+        const cats = {};
+        scored.forEach(t => {
+            if(!cats[t.cat]) cats[t.cat] = [];
+            cats[t.cat].push(t);
+        });
+
+        Object.entries(cats).forEach(([cat, items]) => {
+            res.innerHTML += '<div class="sr-category">' + cat + '</div>';
+            items.forEach(tool => {
+                const abbr = tool.t.split(/[\s—–-]/)[0].substring(0,3).toUpperCase();
+                const highlighted = highlight(tool.t, terms);
+                res.innerHTML += `<a class="sr-item" href="${tool.u}">
+                    <div class="sr-icon">${abbr}</div>
+                    <div class="sr-main">
+                        <span class="sr-title">${highlighted}</span>
+                        <span class="sr-path">${cat}</span>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-engineering);opacity:.5;flex-shrink:0"><path d="M9 18l6-6-6-6"/></svg>
+                </a>`;
+            });
+        });
+
+        res.classList.add("open");
+    }
+
+    inp.addEventListener("input", search);
+    clr.addEventListener("click", () => {
+        inp.value = "";
+        clr.style.display = "none";
+        res.classList.remove("open");
+        lst.style.display = "";
+        inp.focus();
+    });
+
+    // Close results when clicking outside
+    document.addEventListener("click", e => {
+        if(!e.target.closest(".search-wrap")){
+            res.classList.remove("open");
+            lst.style.display = "";
+            inp.value = "";
+            clr.style.display = "none";
+        }
+    });
+
+    // Keyboard navigation
+    inp.addEventListener("keydown", e => {
+        const items = res.querySelectorAll(".sr-item");
+        const active = res.querySelector(".sr-item:focus");
+        if(e.key === "ArrowDown"){
+            e.preventDefault();
+            if(!active && items.length) items[0].focus();
+            else if(active){
+                const idx = [...items].indexOf(active);
+                if(idx < items.length-1) items[idx+1].focus();
+            }
+        }
+        if(e.key === "Escape"){
+            clr.click();
+        }
+    });
+    </script>
+
 </body></html>

@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="../../../../../../css/style.css">
   <style>
 
-    /* ── Layout principale ───────────────────────────────── */
     .asme-wrapper {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -24,7 +23,6 @@
       .asme-wrapper { grid-template-columns: 1fr; }
     }
 
-    /* ── Card generica ───────────────────────────────────── */
     .asme-card {
       background: var(--card-bg);
       border: 1px solid rgba(59,130,246,0.22);
@@ -42,7 +40,6 @@
       pointer-events: none;
     }
 
-    /* ── Card label ──────────────────────────────────────── */
     .card-label {
       font-family: 'Orbitron', sans-serif;
       font-size: 0.65rem;
@@ -61,7 +58,6 @@
       background: rgba(59,130,246,0.18);
     }
 
-    /* ── Selects / inputs ────────────────────────────────── */
     .field {
       display: flex;
       flex-direction: column;
@@ -100,7 +96,6 @@
     }
     .field select option { background: #0d1117; }
 
-    /* ── Norma badge ─────────────────────────────────────── */
     .norm-badge {
       display: inline-flex;
       align-items: center;
@@ -117,7 +112,6 @@
       margin-bottom: 18px;
     }
 
-    /* ── Risultati ───────────────────────────────────────── */
     .result-list {
       list-style: none;
       padding: 0; margin: 0;
@@ -146,7 +140,6 @@
     .r-value.red    { color: #f43f5e; }
     .r-value.yellow { color: #facc15; }
 
-    /* ── Canvas ──────────────────────────────────────────── */
     .canvas-wrap {
       display: flex;
       justify-content: center;
@@ -158,14 +151,12 @@
       margin-top: 4px;
     }
 
-    /* ── Separatore ──────────────────────────────────────── */
     .sep {
       border: none;
       border-top: 1px solid rgba(59,130,246,0.13);
       margin: 16px 0 14px;
     }
 
-    /* ── Breadcrumb ──────────────────────────────────────── */
     .breadcrumb {
       text-align: center;
       margin-bottom: 30px;
@@ -177,7 +168,6 @@
     .breadcrumb a:hover { text-decoration: underline; }
     .breadcrumb span { margin: 0 6px; }
 
-    /* ── Tabella rapida ──────────────────────────────────── */
     .ref-table {
       width: 100%;
       border-collapse: collapse;
@@ -207,7 +197,6 @@
     }
     .t-num { text-align: right; }
 
-    /* ── Link esterno ────────────────────────────────────── */
     .ext-link {
       display: inline-flex;
       align-items: center;
@@ -229,7 +218,41 @@
       box-shadow: 0 6px 20px rgba(56,189,248,0.5);
     }
 
-  </style>
+  
+    /* ══════════ MOBILE RESPONSIVE PATCH ══════════ */
+    @media (max-width: 700px) {
+      .asme-wrapper, .en-wrapper, .pe-wrapper, .inox-wrapper {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+      }
+      #pipeCanvas { width: 100% !important; max-width: 280px !important; height: auto !important; }
+      .canvas-wrap { padding: 8px !important; min-height: unset !important; }
+      .asme-card, .en-card, .pe-card, .inox-card { padding: 16px 14px !important; }
+      .card-label { font-size: 0.7rem !important; letter-spacing: 1.5px !important; }
+      .r-label { font-size: 0.68rem !important; letter-spacing: 0.5px !important; }
+      .r-value { font-size: 0.9rem !important; }
+      .field label { font-size: 0.68rem !important; }
+      .field select, .field input[type="number"] {
+        font-size: 0.85rem !important; padding: 10px 12px !important; min-height: 44px !important;
+      }
+      .ref-table { font-size: 0.68rem !important; }
+      .ref-table th, .ref-table td { padding: 7px 6px !important; white-space: nowrap !important; }
+      .norm-badge { font-size: 0.62rem !important; padding: 5px 10px !important; }
+      .grade-info, .sdr-info { font-size: 0.68rem !important; line-height: 1.6 !important; padding: 10px 12px !important; }
+      .breadcrumb { font-size: 0.78rem !important; line-height: 1.8 !important; word-break: break-word !important; }
+      .col-left  { order: 1; }
+      .col-right { order: 2; }
+      .result-list li { padding: 8px 0 !important; }
+      h2 { font-size: 1.6rem !important; }
+      .ext-link {
+        font-size: 0.65rem !important; padding: 10px 16px !important;
+        width: 100% !important; box-sizing: border-box !important; justify-content: center !important;
+      }
+    }
+    .field select, .field input[type="number"] { min-height: 42px; }
+    /* ══════════════════════════════════════════════ */
+
+    </style>
 </head>
 
 <body>
@@ -253,134 +276,86 @@
 
       <div class="asme-wrapper">
 
-        <!-- ── COLONNA SINISTRA ── -->
-        <div style="display:flex; flex-direction:column; gap:22px;">
+        <div class="col-left" style="display:flex; flex-direction:column; gap:22px;">
 
-          <!-- Selezione -->
           <div class="asme-card">
             <p class="card-label">⚙ Selezione</p>
-
             <div class="norm-badge">✦ ASME B36.10M / B36.19M</div>
-
             <div class="field">
               <label>DN</label>
               <select id="dnSelect">
                 <option value="">— Seleziona DN —</option>
               </select>
             </div>
-
             <div class="field">
               <label>Schedule</label>
               <select id="schSelect">
                 <option value="">— Prima seleziona DN —</option>
               </select>
             </div>
-
             <hr class="sep">
-
             <div class="field">
               <label>Densità fluido (kg/m³)</label>
-              <input type="number" id="fluid-density" value="1000" min="0" step="1"
-                placeholder="es. 1000 per acqua">
+              <input type="number" id="fluid-density" value="1000" min="0" step="1" placeholder="es. 1000 per acqua">
             </div>
           </div>
 
-          <!-- Risultati dimensionali -->
           <div class="asme-card">
             <p class="card-label">📐 Dimensioni</p>
             <ul class="result-list">
-              <li>
-                <span class="r-label">NPS</span>
-                <span class="r-value yellow" id="nps">–</span>
-              </li>
-              <li>
-                <span class="r-label">Ø Esterno (OD)</span>
-                <span class="r-value accent" id="od">–</span>
-              </li>
-              <li>
-                <span class="r-label">Ø Interno (ID)</span>
-                <span class="r-value accent" id="id">–</span>
-              </li>
-              <li>
-                <span class="r-label">Spessore (t)</span>
-                <span class="r-value warm" id="thk">–</span>
-              </li>
-              <li>
-                <span class="r-label">Sezione interna</span>
-                <span class="r-value blue" id="area-int">–</span>
-              </li>
-              <li>
-                <span class="r-label">Rapporto OD/t</span>
-                <span class="r-value" id="dt-ratio">–</span>
-              </li>
+              <li><span class="r-label">NPS</span><span class="r-value yellow" id="nps">–</span></li>
+              <li><span class="r-label">Ø Esterno (OD)</span><span class="r-value accent" id="od">–</span></li>
+              <li><span class="r-label">Ø Interno (ID)</span><span class="r-value accent" id="id">–</span></li>
+              <li><span class="r-label">Spessore (t)</span><span class="r-value warm" id="thk">–</span></li>
+              <li><span class="r-label">Sezione interna</span><span class="r-value blue" id="area-int">–</span></li>
+              <li><span class="r-label">Rapporto OD/t</span><span class="r-value" id="dt-ratio">–</span></li>
             </ul>
-
             <hr class="sep">
             <p class="card-label">⚖ Pesi lineari</p>
             <ul class="result-list">
-              <li>
-                <span class="r-label">Tubo (vuoto)</span>
-                <span class="r-value accent" id="kgm">–</span>
-              </li>
-              <li>
-                <span class="r-label">Fluido interno</span>
-                <span class="r-value blue" id="fluid-weight">–</span>
-              </li>
-              <li>
-                <span class="r-label">Totale (tubo + fluido)</span>
-                <span class="r-value red" id="total-weight">–</span>
-              </li>
+              <li><span class="r-label">Tubo (vuoto)</span><span class="r-value accent" id="kgm">–</span></li>
+              <li><span class="r-label">Fluido interno</span><span class="r-value blue" id="fluid-weight">–</span></li>
+              <li><span class="r-label">Totale (tubo + fluido)</span><span class="r-value red" id="total-weight">–</span></li>
             </ul>
           </div>
 
-        </div><!-- /colonna sinistra -->
+        </div>
 
-        <!-- ── COLONNA DESTRA ── -->
-        <div style="display:flex; flex-direction:column; gap:22px;">
+        <div class="col-right" style="display:flex; flex-direction:column; gap:22px;">
 
-          <!-- Canvas sezione -->
           <div class="asme-card">
             <p class="card-label">📏 Sezione trasversale</p>
             <div class="canvas-wrap">
-              <canvas id="pipeCanvas" width="300" height="280"></canvas>
+              <canvas id="pipeCanvas" width="300" height="280" style="max-width:100%;height:auto;"></canvas>
             </div>
           </div>
 
-          <!-- Tabella rapida -->
           <div class="asme-card">
             <p class="card-label">📋 Tabella Schedule — DN selezionato</p>
             <div style="overflow-x:auto;">
               <table class="ref-table">
                 <thead>
                   <tr>
-                    <th>Schedule</th>
-                    <th>t (mm)</th>
-                    <th>ID (mm)</th>
-                    <th class="t-num">Sez. (cm²)</th>
-                    <th class="t-num">kg/m</th>
-                    <th class="t-num">OD/t</th>
+                    <th>Schedule</th><th>t (mm)</th><th>ID (mm)</th>
+                    <th class="t-num">Sez. (cm²)</th><th class="t-num">kg/m</th><th class="t-num">OD/t</th>
                   </tr>
                 </thead>
                 <tbody id="ref-tbody">
-                  <tr><td colspan="6" style="color:#444;padding:14px;text-align:center;">
-                    Seleziona un DN
-                  </td></tr>
+                  <tr><td colspan="6" style="color:#444;padding:14px;text-align:center;">Seleziona un DN</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
 
-          <!-- Link esterno -->
           <div style="display:flex; justify-content:center; padding: 8px 0;">
-            <a class="ext-link" href="https://www.oppo.it/tabelle/tabella-dim-spess-astm.html"
-              target="_blank" rel="noopener noreferrer">
+            <a class="ext-link" href="https://www.oppo.it/tabelle/tabella-dim-spess-astm.html" target="_blank" rel="noopener noreferrer">
               ↗ Tabella ASTM Oppo — Dimensioni e Spessori
             </a>
           </div>
 
-        </div><!-- /colonna destra -->
+        </div>
 
-      </div><!-- /asme-wrapper -->
+      </div>
 
     </main>
   </div>
@@ -395,7 +370,6 @@
       initPipeTool();
     });
 
-    /* Aggiorna tabella rapida al cambio DN */
     document.addEventListener('change', (e) => {
       if (e.target.id === 'dnSelect') updateRefTable();
       if (e.target.id === 'schSelect') highlightRefTable();
@@ -415,12 +389,8 @@
         const A   = (Math.PI * Math.pow(parseFloat(ID) / 2000, 2) * 1e4).toFixed(3);
         const dt  = (OD / v.t).toFixed(1);
         rows += `<tr data-sch="${sch}">
-          <td>${sch}</td>
-          <td>${v.t}</td>
-          <td>${ID}</td>
-          <td class="t-num">${A}</td>
-          <td class="t-num">${v.kgm.toFixed(2)}</td>
-          <td class="t-num">${dt}</td>
+          <td>${sch}</td><td>${v.t}</td><td>${ID}</td>
+          <td class="t-num">${A}</td><td class="t-num">${v.kgm.toFixed(2)}</td><td class="t-num">${dt}</td>
         </tr>`;
       });
       tbody.innerHTML = rows;
