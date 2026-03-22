@@ -218,3 +218,122 @@ async function initTheme() {
 
 // Inizializza il tema dopo che il DOM e' pronto
 document.addEventListener('DOMContentLoaded', initTheme);
+
+// ==============================
+// GLOBAL WOW EFFECTS INJECTION
+// ==============================
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Ambient Background Orbs
+  const ambientDiv = document.createElement('div');
+  ambientDiv.className = 'ambient-bg';
+  ambientDiv.innerHTML = `
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  `;
+  document.body.prepend(ambientDiv);
+
+  // 2. Custom Hover Magnetic Cursor
+  // Abilitiamo il cursore solo sui PC fisici veri (non su telefoni o tablet touch)
+  if (window.matchMedia("(pointer: fine)").matches) {
+    const cursor = document.createElement('div');
+    cursor.id = 'custom-cursor';
+    cursor.className = 'custom-cursor';
+    cursor.innerHTML = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L2 20 L7 15 L17 12 Z" /></svg>`;
+    
+    const follower = document.createElement('div');
+    follower.id = 'cursor-follower';
+    follower.className = 'cursor-follower';
+    
+    // Nascondiamo il cursore prima del primissimo movimento
+    cursor.style.opacity = '0';
+    follower.style.opacity = '0';
+
+    document.body.appendChild(cursor);
+    document.body.appendChild(follower);
+
+    let isInitialized = false;
+    let mouseX = 0;
+    let mouseY = 0;
+    let followerX = 0;
+    let followerY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isInitialized) {
+        // Al primo movimento: attiviamo il css globale che scarta il true cursore e mostriamo il render
+        document.body.classList.add('has-custom-cursor');
+        cursor.style.opacity = '1';
+        follower.style.opacity = '1';
+        followerX = e.clientX;
+        followerY = e.clientY;
+        isInitialized = true;
+      }
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      // Il punto centrale segue esattamente il mouse istantaneamente (senza ritardo, per mantenere precisione)
+      cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+    });
+
+    // Anello inseguitore con ritardo (Easing/Spring physics)
+    function render() {
+      if (isInitialized) {
+        followerX += (mouseX - followerX) * 0.15;
+        followerY += (mouseY - followerY) * 0.15;
+        follower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0)`;
+      }
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+
+    // Gestione Over / Hover su elementi cliccabili tramite Event Delegation
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest('a, button, .fin-tab, .nav-card, .menu-link, .menu-toggle, .theme-toggle-btn, input, select')) {
+        cursor.classList.add('active');
+        follower.classList.add('active');
+      } else {
+        cursor.classList.remove('active');
+        follower.classList.remove('active');
+      }
+    });
+  }
+
+  // 3. Magnetic Hover Buttons (Fisica stile iPad OS)
+  const magnetics = document.querySelectorAll('.magnetic');
+  magnetics.forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      
+      // La calamita sposta il bottone verso il mouse di una frazione della distanza
+      btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+      if(btn.children.length > 0) {
+        for(let i=0; i<btn.children.length; i++){
+          btn.children[i].style.transform = `translate(${x * 0.12}px, ${y * 0.12}px)`; // Parallasse interno
+          btn.children[i].style.transition = 'none';
+        }
+      }
+    });
+    
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+      btn.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; // Rimbalzo elastico
+      if(btn.children.length > 0) {
+        for(let i=0; i<btn.children.length; i++){
+          btn.children[i].style.transform = '';
+          btn.children[i].style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        }
+      }
+    });
+
+    btn.addEventListener('mouseenter', () => {
+      btn.style.transition = 'transform 0.1s linear';
+      if(btn.children.length > 0) {
+        for(let i=0; i<btn.children.length; i++){
+          btn.children[i].style.transition = 'transform 0.1s linear';
+        }
+      }
+    });
+  });
+});
+

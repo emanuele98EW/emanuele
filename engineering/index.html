@@ -186,7 +186,9 @@
 
     <!-- HERO -->
     <div class="page-hero">
-      <div class="hero-logo-container" id="hero-container"><img src="../assets/logo.png" alt="Logo" class="hero-logo" id="hero-logo"></div>
+      <div class="hero-logo-container" id="hero-container" style="perspective: 800px; cursor: crosshair;">
+        <canvas id="hero-3d-canvas" style="width: 100%; height: 100%; display: block; filter: drop-shadow(0 0 10px rgba(201,168,76,0.6)); touch-action: none;"></canvas>
+      </div>
       <div class="hero-info">
         <p class="hero-sub">Sezione</p>
         <h1 class="hero-title">Ingegneria</h1>
@@ -227,13 +229,6 @@
           </div>
         </div>
 
-        <!-- Rete elettrica -->
-        <div class="widget-card">
-          <p class="wc-title">Rete Elettrica IT ⚡</p>
-          <div id="energy-content">
-            <div style="text-align:center;color:var(--text-secondary);font-size:.76rem;padding:8px 0;">Caricamento…</div>
-          </div>
-        </div>
 
       </div>
     </div>
@@ -244,6 +239,110 @@
 <script src="../js/main.js"></script>
 <script src="../js/footer.js"></script>
 <script>
+// ==========================================
+// 3D INTERACTIVE WIREFRAME GLOBE (HERO)
+// ==========================================
+const canvas3D = document.getElementById('hero-3d-canvas');
+if (canvas3D) {
+  const ctx = canvas3D.getContext('2d', { alpha: true });
+  const size = 180; // Render resolution (CSS scales it to 100px)
+  canvas3D.width = size;
+  canvas3D.height = size;
+  
+  let nodes = [];
+  const numNodes = 65;
+  const radius = 70;
+
+  // Generate points on a sphere
+  for (let i = 0; i < numNodes; i++) {
+    const phi = Math.acos(1 - 2 * (i + 0.5) / numNodes);
+    const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+    nodes.push({
+      x: radius * Math.cos(theta) * Math.sin(phi),
+      y: radius * Math.sin(theta) * Math.sin(phi),
+      z: radius * Math.cos(phi)
+    });
+  }
+
+  let angleX = 0, angleY = 0;
+  let targetAngleX = 0, targetAngleY = 0;
+  let isHover = false;
+  
+  canvas3D.addEventListener('pointermove', e => {
+    const rect = canvas3D.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    targetAngleY = x * 4; 
+    targetAngleX = y * 4;
+    isHover = true;
+  });
+  
+  canvas3D.addEventListener('pointerleave', () => { isHover = false; });
+
+  function draw3D() {
+    ctx.clearRect(0, 0, size, size);
+    
+    // Smooth transition
+    if (isHover) {
+      angleX += (targetAngleX - angleX) * 0.08;
+      angleY += (targetAngleY - angleY) * 0.08;
+    } else {
+      angleX += (0 - angleX) * 0.05;
+      angleY -= 0.015; // Constant slow auto-rotation
+    }
+
+    const cosX = Math.cos(angleX), sinX = Math.sin(angleX);
+    const cosY = Math.cos(angleY), sinY = Math.sin(angleY);
+
+    const projected = nodes.map(n => {
+      let y1 = n.y * cosX - n.z * sinX;
+      let z1 = n.y * sinX + n.z * cosX;
+      let x2 = n.x * cosY + z1 * sinY;
+      let z2 = -n.x * sinY + z1 * cosY;
+      
+      let pDistance = 200;
+      let perspective = pDistance / (pDistance + z2);
+      
+      return {
+        x: x2 * perspective + size / 2,
+        y: y1 * perspective + size / 2,
+        z: z2,
+        p: perspective
+      };
+    });
+
+    // Draw connecting lines
+    ctx.lineWidth = 1;
+    for (let i = 0; i < projected.length; i++) {
+      for (let j = i + 1; j < projected.length; j++) {
+        let dx = projected[i].x - projected[j].x;
+        let dy = projected[i].y - projected[j].y;
+        if ((dx * dx + dy * dy) < 1400) {
+          let zDepth = (projected[i].z + projected[j].z) / 2;
+          let opacity = Math.max(0.05, 1 - (zDepth + radius) / (radius * 1.8));
+          ctx.strokeStyle = `rgba(201, 168, 76, ${opacity * 0.4})`;
+          ctx.beginPath();
+          ctx.moveTo(projected[i].x, projected[i].y);
+          ctx.lineTo(projected[j].x, projected[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    
+    // Draw dots
+    projected.forEach(p => {
+      let opacity = Math.max(0.1, 1 - (p.z + radius) / (radius * 1.8));
+      ctx.fillStyle = `rgba(201, 168, 76, ${opacity})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, Math.max(0.5, 2.2 * p.p), 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    requestAnimationFrame(draw3D);
+  }
+  draw3D();
+}
+
 let issMap=null, issMarker=null;
 
 async function fetchISS() {
@@ -284,25 +383,9 @@ async function fetchNEO() {
   }
 }
 
-async function fetchEnergy() {
-  try {
-    const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=41.90&longitude=12.49&current=direct_radiation");
-    const d = await r.json();
-    const rad = d.current.direct_radiation;
-    let pct = Math.round(25 + Math.min((rad/800)*18, 18));
-    let col = pct > 40 ? '#4ade80' : pct > 30 ? '#facc15' : '#ef4444';
-    document.getElementById('energy-content').innerHTML = `
-      <div class="energy-val" style="color:${col}">${pct}% 🍃</div>
-      <div class="energy-bar"><div class="energy-fill" style="width:${pct}%;background:${col};"></div></div>
-      <div style="font-size:.72rem;color:var(--text-secondary);text-align:center;">fonti rinnovabili stimato</div>`;
-  } catch(e) {
-    document.getElementById('energy-content').innerHTML = "<span style='color:#ef4444;font-size:.74rem;'>Errore API</span>";
-  }
-}
 
 fetchISS();
 setInterval(fetchISS, 5000);
 fetchNEO();
-fetchEnergy();
 </script>
 </body></html>

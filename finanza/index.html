@@ -1,330 +1,1274 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Finanza | Emanuele Zanella</title>
   <meta name="description" content="Sezione Finanza - Analisi, investimenti e simulazioni finanziarie.">
-  <script>(function(){var p=localStorage.getItem('themePref');if(p==='light'){document.documentElement.classList.add('light-mode')}else if(!p){try{var d=JSON.parse(localStorage.getItem('themeData'));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add('light-mode')}}catch(e){}}})();</script>
+  <script>(function () { var p = localStorage.getItem('themePref'); if (p === 'light') { document.documentElement.classList.add('light-mode') } else if (!p) { try { var d = JSON.parse(localStorage.getItem('themeData')); if (d) { var n = Date.now(); if (n >= d.sunrise && n < d.sunset) document.documentElement.classList.add('light-mode') } } catch (e) { } } })();</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <style>
-    --hero-rgb: 16,185,129;
-        /* ══ SHARED PAGE STYLES (same language as home) ══════ */
-    .main { padding-top: 0 !important; }
+    --hero-rgb: 16,
+    185,
+    129;
+
+    /* ══ SHARED PAGE STYLES (same language as home) ══════ */
+    .main {
+      padding-top: 0 !important;
+    }
 
     /* Hero strip */
     .page-hero {
-      display: flex; align-items: center; gap: 24px;
-      max-width: 900px; margin: 28px auto 30px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      max-width: 960px;
+      margin: 28px auto 30px;
       padding: 22px 28px;
-      background: var(--card-bg, rgba(255,255,255,0.03));
-      border: 1px solid var(--border-color, rgba(255,255,255,0.08));
-      border-radius: 16px; position: relative; overflow: hidden;
+      background: var(--card-bg, rgba(255, 255, 255, 0.03));
+      border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
       animation: fadeUp 0.4s ease both;
     }
+
     .page-hero::before {
-      content:''; position:absolute; inset:0; pointer-events:none;
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
       background: radial-gradient(ellipse at 0% 50%,
-        rgba(var(--hero-rgb,200,160,60),0.07) 0%, transparent 60%);
+          rgba(var(--hero-rgb, 200, 160, 60), 0.07) 0%, transparent 60%);
     }
+
     .hero-icon {
-      flex-shrink:0; width:56px; height:56px; border-radius:14px;
-      border:1px solid rgba(var(--hero-rgb,200,160,60),0.35);
-      display:flex; align-items:center; justify-content:center;
-      background:rgba(var(--hero-rgb,200,160,60),0.08);
-      box-shadow:0 0 20px rgba(var(--hero-rgb,200,160,60),0.12);
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      border: 1px solid rgba(var(--hero-rgb, 200, 160, 60), 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(var(--hero-rgb, 200, 160, 60), 0.08);
+      box-shadow: 0 0 20px rgba(var(--hero-rgb, 200, 160, 60), 0.12);
     }
-    .hero-icon svg { filter:drop-shadow(0 0 8px rgba(var(--hero-rgb,200,160,60),0.5)); }
-    .hero-info { flex:1; }
+
+    .hero-icon svg {
+      filter: drop-shadow(0 0 8px rgba(var(--hero-rgb, 200, 160, 60), 0.5));
+    }
+
+    .hero-info {
+      flex: 1;
+    }
+
     .hero-title {
-      font-family:'Orbitron',sans-serif; font-weight:700;
-      color:var(--hero-color,var(--color-engineering));
-      font-size:1.35rem; letter-spacing:1.5px; margin:0 0 4px; line-height:1.1;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      color: var(--hero-color, var(--color-engineering));
+      font-size: 1.35rem;
+      letter-spacing: 1.5px;
+      margin: 0 0 4px;
+      line-height: 1.1;
     }
+
     .hero-sub {
-      font-size:0.76rem; color:var(--text-secondary);
-      letter-spacing:1.5px; text-transform:uppercase; margin:0 0 2px;
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin: 0 0 2px;
     }
+
     .hero-breadcrumb {
-      font-size:0.78rem; color:var(--text-secondary); margin:8px 0 0;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin: 8px 0 0;
     }
-    .hero-breadcrumb a { color:var(--hero-color,var(--color-engineering)); text-decoration:none; }
-    .hero-breadcrumb a:hover { text-decoration:underline; }
-    .hero-breadcrumb span { margin:0 5px; opacity:.5; }
+
+    .hero-breadcrumb a {
+      color: var(--hero-color, var(--color-engineering));
+      text-decoration: none;
+    }
+
+    .hero-breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    .hero-breadcrumb span {
+      margin: 0 5px;
+      opacity: .5;
+    }
 
     /* Grid */
     .page-grid {
-      display:grid; grid-template-columns:1fr 260px;
-      gap:18px; max-width:960px; margin:0 auto; padding:0 0 48px;
-      align-items:start;
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 18px;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 0 48px;
+      align-items: start;
     }
-    .page-grid.wide { grid-template-columns:1fr; max-width:900px; }
-    .page-main { display:flex; flex-direction:column; gap:14px; }
-    .page-side  { display:flex; flex-direction:column; gap:14px; }
+
+    .page-grid.wide {
+      grid-template-columns: 1fr;
+      max-width: 900px;
+    }
+
+    .page-main {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .page-side {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
 
     /* Nav cards (same as home) */
     .nav-card {
-      display:flex; align-items:center; gap:16px; padding:17px 20px;
-      border-radius:14px; text-decoration:none;
-      background:var(--card-bg,rgba(255,255,255,0.03));
-      border:1px solid var(--border-color,rgba(255,255,255,0.08));
-      transition:background .2s, border-color .2s, transform .2s;
-      position:relative; overflow:hidden;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 17px 20px;
+      border-radius: 14px;
+      text-decoration: none;
+      background: var(--card-bg, rgba(255, 255, 255, 0.03));
+      border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+      transition: background .2s, border-color .2s, transform .2s;
+      position: relative;
+      overflow: hidden;
     }
-    .nav-card::before { content:''; position:absolute; inset:0; opacity:0; transition:opacity .2s; pointer-events:none; }
-    .nav-card:hover { transform:translateX(4px); }
-    .nav-card:hover::before { opacity:1; }
-    .nav-card.finance:hover    { border-color:rgba(16,185,129,.4);  background:rgba(16,185,129,.05); }
-    .nav-card.finance::before  { background:radial-gradient(ellipse at left,rgba(16,185,129,.08),transparent 70%); }
-    .nav-card.finance .nc-icon { background:rgba(16,185,129,.1); border-color:rgba(16,185,129,.3); }
-    .nav-card.finance .nc-icon svg, .nav-card.finance .nc-arrow { color:#10b981; }
-    .nav-card.engineering:hover    { border-color:rgba(var(--color-engineering-rgb,200,160,60),.4); background:rgba(var(--color-engineering-rgb,200,160,60),.05); }
-    .nav-card.engineering::before  { background:radial-gradient(ellipse at left,rgba(var(--color-engineering-rgb,200,160,60),.08),transparent 70%); }
-    .nav-card.engineering .nc-icon { background:rgba(var(--color-engineering-rgb,200,160,60),.1); border-color:rgba(var(--color-engineering-rgb,200,160,60),.3); }
-    .nav-card.engineering .nc-icon svg, .nav-card.engineering .nc-arrow { color:var(--color-engineering); }
-    .nav-card.personal:hover    { border-color:rgba(139,92,246,.4); background:rgba(139,92,246,.05); }
-    .nav-card.personal::before  { background:radial-gradient(ellipse at left,rgba(139,92,246,.08),transparent 70%); }
-    .nav-card.personal .nc-icon { background:rgba(139,92,246,.1); border-color:rgba(139,92,246,.3); }
-    .nav-card.personal .nc-icon svg, .nav-card.personal .nc-arrow { color:#a78bfa; }
-    .nav-card.muted:hover    { border-color:rgba(var(--color-engineering-rgb,200,160,60),.2); }
-    .nav-card.muted .nc-icon { background:rgba(255,255,255,.04); border-color:rgba(255,255,255,.12); }
-    .nav-card.muted .nc-icon svg, .nav-card.muted .nc-arrow { color:var(--text-secondary); }
+
+    .nav-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity .2s;
+      pointer-events: none;
+    }
+
+    .nav-card:hover {
+      transform: translateX(4px);
+    }
+
+    .nav-card:hover::before {
+      opacity: 1;
+    }
+
+    .nav-card.finance:hover {
+      border-color: rgba(16, 185, 129, .4);
+      background: rgba(16, 185, 129, .05);
+    }
+
+    .nav-card.finance::before {
+      background: radial-gradient(ellipse at left, rgba(16, 185, 129, .08), transparent 70%);
+    }
+
+    .nav-card.finance .nc-icon {
+      background: rgba(16, 185, 129, .1);
+      border-color: rgba(16, 185, 129, .3);
+    }
+
+    .nav-card.finance .nc-icon svg,
+    .nav-card.finance .nc-arrow {
+      color: #10b981;
+    }
+
+    .nav-card.engineering:hover {
+      border-color: rgba(var(--color-engineering-rgb, 200, 160, 60), .4);
+      background: rgba(var(--color-engineering-rgb, 200, 160, 60), .05);
+    }
+
+    .nav-card.engineering::before {
+      background: radial-gradient(ellipse at left, rgba(var(--color-engineering-rgb, 200, 160, 60), .08), transparent 70%);
+    }
+
+    .nav-card.engineering .nc-icon {
+      background: rgba(var(--color-engineering-rgb, 200, 160, 60), .1);
+      border-color: rgba(var(--color-engineering-rgb, 200, 160, 60), .3);
+    }
+
+    .nav-card.engineering .nc-icon svg,
+    .nav-card.engineering .nc-arrow {
+      color: var(--color-engineering);
+    }
+
+    .nav-card.personal:hover {
+      border-color: rgba(139, 92, 246, .4);
+      background: rgba(139, 92, 246, .05);
+    }
+
+    .nav-card.personal::before {
+      background: radial-gradient(ellipse at left, rgba(139, 92, 246, .08), transparent 70%);
+    }
+
+    .nav-card.personal .nc-icon {
+      background: rgba(139, 92, 246, .1);
+      border-color: rgba(139, 92, 246, .3);
+    }
+
+    .nav-card.personal .nc-icon svg,
+    .nav-card.personal .nc-arrow {
+      color: #a78bfa;
+    }
+
+    .nav-card.muted:hover {
+      border-color: rgba(var(--color-engineering-rgb, 200, 160, 60), .2);
+    }
+
+    .nav-card.muted .nc-icon {
+      background: rgba(255, 255, 255, .04);
+      border-color: rgba(255, 255, 255, .12);
+    }
+
+    .nav-card.muted .nc-icon svg,
+    .nav-card.muted .nc-arrow {
+      color: var(--text-secondary);
+    }
+
     .nc-icon {
-      width:44px; height:44px; border-radius:11px; border:1px solid;
-      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+      border: 1px solid;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
-    .nc-icon svg { filter:drop-shadow(0 0 5px currentColor); }
-    .nc-text { flex:1; }
-    .nc-title { font-size:.93rem; font-weight:700; color:var(--text-primary); margin:0 0 2px; line-height:1.2; }
-    .nc-desc  { font-size:.75rem; color:var(--text-secondary); margin:0; }
+
+    .nc-icon svg {
+      filter: drop-shadow(0 0 5px currentColor);
+    }
+
+    .nc-text {
+      flex: 1;
+    }
+
+    .nc-title {
+      font-size: .93rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 2px;
+      line-height: 1.2;
+    }
+
+    .nc-desc {
+      font-size: .75rem;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
     .nc-badge {
-      font-size:.6rem; font-weight:700; letter-spacing:.8px; text-transform:uppercase;
-      padding:2px 8px; border-radius:20px;
-      background:rgba(var(--color-engineering-rgb,200,160,60),.1);
-      border:1px solid rgba(var(--color-engineering-rgb,200,160,60),.25);
-      color:var(--color-engineering); flex-shrink:0;
+      font-size: .6rem;
+      font-weight: 700;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: rgba(var(--color-engineering-rgb, 200, 160, 60), .1);
+      border: 1px solid rgba(var(--color-engineering-rgb, 200, 160, 60), .25);
+      color: var(--color-engineering);
+      flex-shrink: 0;
     }
-    .nc-arrow { opacity:.4; flex-shrink:0; transition:opacity .2s, transform .2s; }
-    .nav-card:hover .nc-arrow { opacity:1; transform:translateX(2px); }
+
+    .nc-arrow {
+      opacity: .4;
+      flex-shrink: 0;
+      transition: opacity .2s, transform .2s;
+    }
+
+    .nav-card:hover .nc-arrow {
+      opacity: 1;
+      transform: translateX(2px);
+    }
 
     /* Widget card */
     .widget-card {
-      background:var(--card-bg,rgba(255,255,255,0.03));
-      border:1px solid var(--border-color,rgba(255,255,255,0.08));
-      border-radius:14px; padding:15px 17px;
+      background: var(--card-bg, rgba(255, 255, 255, 0.03));
+      border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+      border-radius: 14px;
+      padding: 15px 17px;
     }
+
     .wc-title {
-      font-family:'Orbitron',sans-serif; font-size:0.63rem; letter-spacing:2px;
-      text-transform:uppercase; color:var(--color-engineering);
-      margin:0 0 12px; display:flex; align-items:center; gap:8px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.63rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--color-engineering);
+      margin: 0 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .wc-title::after { content:''; flex:1; height:1px; background:rgba(var(--color-engineering-rgb,200,160,60),0.2); }
+
+    .wc-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(var(--color-engineering-rgb, 200, 160, 60), 0.2);
+    }
 
     /* Section separator */
     .section-sep {
-      font-size:.65rem; font-weight:700; letter-spacing:2px; text-transform:uppercase;
-      color:var(--text-secondary); padding:10px 0 6px;
-      border-bottom:1px solid var(--border-color,rgba(255,255,255,.07));
-      margin-bottom:4px; opacity:.7;
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      padding: 10px 0 6px;
+      border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, .07));
+      margin-bottom: 4px;
+      opacity: .7;
     }
 
-    .hero-logo-container{width:64px;height:64px;position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-    .hero-logo{width:100%;height:100%;object-fit:contain;animation:logospin 12s linear infinite;filter:drop-shadow(0 0 10px rgba(16,185,129,0.5));}
-    @keyframes logospin{from{transform:rotateY(0deg)}to{transform:rotateY(360deg)}}
-    .hero-logo-container::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(16,185,129,0.25);animation:pulse 3s ease-in-out infinite;}
-    @keyframes pulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.7;transform:scale(1.04)}}
-    @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+    .hero-logo-container {
+      width: 64px;
+      height: 64px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
 
-    @media(max-width:700px){
-      .page-grid { grid-template-columns:1fr; }
-      .page-hero { flex-direction:column; text-align:center; padding:18px 16px; margin:14px 0 22px; }
-      .hero-breadcrumb { text-align:center; }
+    .hero-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      animation: logospin 12s linear infinite;
+      filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.5));
+    }
+
+    @keyframes logospin {
+      from {
+        transform: rotateY(0deg)
+      }
+
+      to {
+        transform: rotateY(360deg)
+      }
+    }
+
+    .hero-logo-container::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: .3;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: .7;
+        transform: scale(1.04)
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    @media(max-width:700px) {
+      .page-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page-hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 18px 16px;
+        margin: 14px 0 22px;
+      }
+
+      .hero-breadcrumb {
+        text-align: center;
+      }
     }
 
     /* Finance accent overrides */
-    .page-hero { --hero-rgb:16,185,129; --hero-color:#10b981; }
-    .wc-title { color:#10b981; }
-    .wc-title::after { background:rgba(16,185,129,0.2); }
+    .page-hero {
+      --hero-rgb: 16, 185, 129;
+      --hero-color: #10b981;
+    }
+
+    .wc-title {
+      color: #10b981;
+    }
+
+    .wc-title::after {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
     /* Crypto table */
-    .crypto-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid var(--border-color,rgba(255,255,255,0.06)); font-size:.8rem; }
-    .crypto-row:last-child { border-bottom:none; }
-    .crypto-name { font-weight:600; color:var(--text-primary); }
-    .crypto-price { color:#10b981; font-weight:700; }
-    .crypto-change.pos { color:#4ade80; font-size:.72rem; }
-    .crypto-change.neg { color:#f87171; font-size:.72rem; }
+    .crypto-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.06));
+      font-size: .8rem;
+    }
+
+    .crypto-row:last-child {
+      border-bottom: none;
+    }
+
+    .crypto-name {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .crypto-price {
+      color: #10b981;
+      font-weight: 700;
+    }
+
+    .crypto-change.pos {
+      color: #4ade80;
+      font-size: .72rem;
+    }
+
+    .crypto-change.neg {
+      color: #f87171;
+      font-size: .72rem;
+    }
+
     /* Fear Greed gauge */
-    .fg-value { font-family:'Orbitron',sans-serif; font-size:2.2rem; font-weight:700; text-align:center; margin:8px 0 4px; }
-    .fg-label { font-size:.72rem; text-align:center; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1.5px; }
-    .fg-bar { height:8px; border-radius:4px; background:linear-gradient(90deg,#ef4444 0%,#f97316 25%,#facc15 50%,#86efac 75%,#22c55e 100%); position:relative; margin:10px 0 4px; }
-    .fg-needle { position:absolute; top:-3px; width:14px; height:14px; background:var(--text-primary); border-radius:50%; transform:translateX(-50%); transition:left .6s ease; border:2px solid var(--card-bg,#0d1117); }
+    .fg-value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      text-align: center;
+      margin: 8px 0 4px;
+    }
+
+    .fg-label {
+      font-size: .72rem;
+      text-align: center;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .fg-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #ef4444 0%, #f97316 25%, #facc15 50%, #86efac 75%, #22c55e 100%);
+      position: relative;
+      margin: 10px 0 4px;
+    }
+
+    .fg-needle {
+      position: absolute;
+      top: -3px;
+      width: 14px;
+      height: 14px;
+      background: var(--text-primary);
+      border-radius: 50%;
+      transform: translateX(-50%);
+      transition: left .6s ease;
+      border: 2px solid var(--card-bg, #0d1117);
+    }
+
     /* Markets */
-    .mkt-row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border-color,rgba(255,255,255,0.06)); font-size:.78rem; }
-    .mkt-row:last-child { border-bottom:none; }
-    .mkt-name { color:var(--text-secondary); }
-    .mkt-val { font-weight:600; color:var(--text-primary); }
-    .mkt-chg { font-size:.7rem; }
+    .mkt-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.06));
+      font-size: .78rem;
+    }
+
+    .mkt-row:last-child {
+      border-bottom: none;
+    }
+
+    .mkt-name {
+      color: var(--text-secondary);
+    }
+
+    .mkt-val {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .mkt-chg {
+      font-size: .7rem;
+    }
 
     /* ── Logo rotante ─────────────────────────────────── */
     .logo-spin-wrap {
-      display:flex; justify-content:center; align-items:center;
-      flex-shrink:0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
     }
+
     .hero-logo-container {
-      width:100px; height:100px; position:relative;
-      display:flex; align-items:center; justify-content:center;
+      width: 100px;
+      height: 100px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+
     .hero-logo {
-      width:100%; height:100%; object-fit:contain;
-      animation:logospin 12s linear infinite;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      animation: logospin 12s linear infinite;
     }
+
     .hero-logo-container::after {
-      content:''; position:absolute; inset:-8px; border-radius:50%;
-      border:1px solid rgba(var(--hero-ring-rgb,16,185,129),0.25);
-      animation:pulse 3s ease-in-out infinite;
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 1px solid rgba(var(--hero-ring-rgb, 16, 185, 129), 0.25);
+      animation: pulse 3s ease-in-out infinite;
     }
-    @keyframes logospin { from{transform:rotateY(0deg)} to{transform:rotateY(360deg)} }
-    @keyframes pulse { 0%,100%{opacity:.3;transform:scale(1)} 50%{opacity:.7;transform:scale(1.04)} }
+
+    @keyframes logospin {
+      from {
+        transform: rotateY(0deg)
+      }
+
+      to {
+        transform: rotateY(360deg)
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: .3;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: .7;
+        transform: scale(1.04)
+      }
+    }
+
+    /* ══ TAB SYSTEM ══════════════════════════════════════ */
+    .fin-tabs {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .fin-tab {
+      all: unset;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      background: var(--card-bg, rgba(255, 255, 255, 0.03));
+      border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+      border-radius: 10px;
+      transition: all 0.25s ease;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .fin-tab:hover {
+      color: #10b981;
+      border-color: rgba(16, 185, 129, 0.3);
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    .fin-tab.active {
+      color: #10b981;
+      border-color: rgba(16, 185, 129, 0.5);
+      background: rgba(16, 185, 129, 0.1);
+      box-shadow: 0 0 18px rgba(16, 185, 129, 0.12), inset 0 0 0 1px rgba(16, 185, 129, 0.1);
+    }
+
+    .fin-tab .tab-icon {
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .fin-tab .tab-count {
+      font-size: 0.55rem;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: #10b981;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    /* Light mode tab overrides */
+    html.light-mode .fin-tab.active {
+      color: #1B2E6B;
+      border-color: rgba(27, 46, 107, 0.4);
+      background: rgba(27, 46, 107, 0.08);
+      box-shadow: 0 0 14px rgba(27, 46, 107, 0.08);
+    }
+
+    html.light-mode .fin-tab:hover {
+      color: #1B2E6B;
+      border-color: rgba(27, 46, 107, 0.25);
+      background: rgba(27, 46, 107, 0.04);
+    }
+
+    html.light-mode .fin-tab .tab-count {
+      background: rgba(27, 46, 107, 0.1);
+      border-color: rgba(27, 46, 107, 0.2);
+      color: #1B2E6B;
+    }
+
+    /* Tab panels */
+    .fin-panel {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      animation: fadeUp 0.3s ease both;
+    }
+
+    .fin-panel.active {
+      display: flex;
+    }
+
+    .fin-panel .section-sep {
+      margin-top: 0;
+    }
+
+    /* Category header inside panel */
+    .cat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 0 2px;
+    }
+
+    .cat-header-icon {
+      font-size: 1.4rem;
+    }
+
+    .cat-header-info {
+      flex: 1;
+    }
+
+    .cat-header-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #10b981;
+      letter-spacing: 1px;
+      margin: 0 0 2px;
+    }
+
+    .cat-header-desc {
+      font-size: 0.73rem;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    html.light-mode .cat-header-title {
+      color: #1B2E6B;
+    }
+
+    @media(max-width:600px) {
+      .fin-tabs {
+        gap: 3px;
+      }
+
+      .fin-tab {
+        padding: 8px 12px;
+        font-size: 0.58rem;
+      }
+
+      .fin-tab .tab-icon {
+        font-size: 0.85rem;
+      }
+    }
   </style>
 </head>
+
 <body>
-<div class="layout">
-  <header id="main-navbar"></header>
-  <main class="main" style="padding:0 16px;">
+  <div class="layout">
+    <header id="main-navbar"></header>
+    <main class="main" style="padding:0 16px;">
 
-    <!-- HERO -->
-    <div class="page-hero" style="--hero-rgb:16,185,129;">
-      <div class="hero-logo-container" id="hero-container"><img src="../assets/logo.png" alt="Logo" class="hero-logo" id="hero-logo"></div>
-      <div class="hero-info">
-        <p class="hero-sub">Sezione</p>
-        <h1 class="hero-title" style="color:#10b981;">Finanza</h1>
-        <p class="hero-breadcrumb">
-          <a href="../index.html">Home</a><span>/</span>
-          <span style="color:var(--text-primary);">Finanza</span>
-        </p>
-      </div>
-    </div>
-
-    <!-- GRID -->
-    <div class="page-grid">
-
-      <!-- MAIN: tool di navigazione -->
-      <div class="page-main" style="animation:fadeUp .45s ease .05s both;">
-        <div class="section-sep">Calcolatori</div>
-        <a class="nav-card finance" href="interesse/index.html"><div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="nc-text"><p class="nc-title">Interesse Composto</p><p class="nc-desc">Crescita del capitale nel tempo</p></div><svg class="nc-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a>
-        <div class="nav-card finance muted"><div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div><div class="nc-text"><p class="nc-title">Portafoglio</p><p class="nc-desc">Asset allocation e diversificazione</p></div><span class="nc-badge">Presto</span></div>
-        <div class="nav-card finance muted"><div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div><div class="nc-text"><p class="nc-title">Mutui</p><p class="nc-desc">Rate, interessi e piani di ammortamento</p></div><span class="nc-badge">Presto</span></div>
+      <!-- HERO -->
+      <div class="page-hero" style="--hero-rgb:16,185,129;">
+        <div class="hero-logo-container" id="hero-container" style="perspective: 800px; cursor: crosshair;">
+          <canvas id="hero-3d-coin"
+            style="width: 100%; height: 100%; display: block; filter: drop-shadow(0 0 10px rgba(16,185,129,0.5)); touch-action: none;"></canvas>
+        </div>
+        <div class="hero-info">
+          <p class="hero-sub">Sezione</p>
+          <h1 class="hero-title" style="color:#10b981;">Finanza</h1>
+          <p class="hero-breadcrumb">
+            <a href="../index.html">Home</a><span>/</span>
+            <span style="color:var(--text-primary);">Finanza</span>
+          </p>
+        </div>
       </div>
 
-      <!-- SIDE: widget mercati -->
-      <div class="page-side" style="animation:fadeUp .45s ease .15s both;">
+      <!-- GRID -->
+      <div class="page-grid">
 
-        <!-- Fear & Greed -->
-        <div class="widget-card">
-          <p class="wc-title" style="color:#10b981;">Fear &amp; Greed ⚖️</p>
-          <div id="fg-content">
-            <div style="text-align:center;color:var(--text-secondary);font-size:.76rem;padding:12px 0;">Caricamento…</div>
+        <!-- MAIN: tab system -->
+        <div class="page-main" style="animation:fadeUp .45s ease .05s both;">
+
+          <!-- TAB BAR -->
+          <div class="fin-tabs" id="fin-tabs">
+            <button class="fin-tab active" data-tab="pianificazione">
+              <span class="tab-icon">🎯</span> Pianificazione
+              <span class="tab-count">4</span>
+            </button>
+            <button class="fin-tab" data-tab="portafoglio">
+              <span class="tab-icon">📊</span> Portafoglio
+              <span class="tab-count">4</span>
+            </button>
+            <button class="fin-tab" data-tab="credito">
+              <span class="tab-icon">🏠</span> Credito
+              <span class="tab-count">3</span>
+            </button>
+            <button class="fin-tab" data-tab="mercato">
+              <span class="tab-icon">📈</span> Mercato
+              <span class="tab-count">3</span>
+            </button>
           </div>
+
+          <!-- ═══ TAB 1: Pianificazione & Proiezioni ═══ -->
+          <div class="fin-panel active" id="panel-pianificazione">
+            <div class="cat-header">
+              <span class="cat-header-icon">🎯</span>
+              <div class="cat-header-info">
+                <p class="cat-header-title">Pianificazione & Proiezioni</p>
+                <p class="cat-header-desc">Scenario tools per proiettare il futuro finanziario</p>
+              </div>
+            </div>
+
+            <a class="nav-card finance" href="interesse/index.html">
+              <div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                  <polyline points="16 7 22 7 22 13" />
+                </svg></div>
+              <div class="nc-text">
+                <p class="nc-title">Interesse Composto</p>
+                <p class="nc-desc">Crescita del capitale nel tempo</p>
+              </div>
+              <svg class="nc-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </a>
+
+            <a class="nav-card finance" href="montecarlo/index.html">
+              <div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2" />
+                  <path d="M2 12h20" />
+                  <path
+                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg></div>
+              <div class="nc-text">
+                <p class="nc-title">Simulazione Monte Carlo</p>
+                <p class="nc-desc">Probabilità di successo del portafoglio</p>
+              </div>
+              <svg class="nc-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </a>
+
+            <a class="nav-card finance" href="target-savings/index.html">
+              <div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="19" y1="5" x2="5" y2="19" />
+                  <circle cx="6.5" cy="6.5" r="2.5" />
+                  <circle cx="17.5" cy="17.5" r="2.5" />
+                </svg></div>
+              <div class="nc-text">
+                <p class="nc-title">Target Savings</p>
+                <p class="nc-desc">Quanto risparmiare al mese per il tuo obiettivo</p>
+              </div>
+              <svg class="nc-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </a>
+
+            <a class="nav-card finance" href="fire/index.html">
+              <div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+                  <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+                  <line x1="6" y1="2" x2="6" y2="4" />
+                  <line x1="10" y1="2" x2="10" y2="4" />
+                  <line x1="14" y1="2" x2="14" y2="4" />
+                </svg></div>
+              <div class="nc-text">
+                <p class="nc-title">Calcolatore FIRE</p>
+                <p class="nc-desc">Quando puoi smettere di lavorare (Safe Withdrawal Rate)</p>
+              </div>
+              <svg class="nc-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </a>
+          </div>
+
+          <!-- ═══ TAB 2: Gestione Portafoglio ═══ -->
+          <div class="fin-panel" id="panel-portafoglio">
+            <div class="cat-header">
+              <span class="cat-header-icon">📊</span>
+              <div class="cat-header-info">
+                <p class="cat-header-title">Gestione Portafoglio & Asset Allocation</p>
+                <p class="cat-header-desc">Analisi della struttura e composizione degli investimenti</p>
+              </div>
+            </div>
+
+            <a href="../wip.html" class="nav-card finance muted" style="text-decoration:none;">
+              <div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="5" width="20" height="14" rx="2" />
+                  <path d="M2 10h20" />
+                </svg></div>
+              <div class="nc-text">
+                <p class="nc-title">Portafoglio</p>
+                <p class="nc-desc">Asset allocation e diversificazione</p>
+              </div>
+              <span class="nc-badge">Presto</span>
+            </a>
+
+            <a href="../wip.html" class="nav-card finance muted" style="text-decoration:none;">
+              <div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 3v18h18" />
+                  <path d="M7 16l4-8 4 4 4-6" />
+                </svg></div>
+              <div class="nc-text">
+                <p class="nc-title">Rebalancing Tool</p>
+                <p class="nc-desc">Quanto comprare/vendere per l'allocation ideale</p>
+              </div>
+              <span class="nc-badge">Presto</span>
+            </a>
+
+            <a href="../wip.html" class="nav-card finance muted" style="text-decoration:none;">
+              <div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <path d="M3 9h18" />
+                  <path d="M9 3v18" />
+                </svg></div>
+              <div class="nc-text">
+                <p class="nc-title">Correlazione Asset</p>
+                <p class="nc-desc">Matrice di correlazione tra i tuoi asset</p>
+              </div>
+              <span class="nc-badge">Presto</span>
+            </a>
+
+            <a href="../wip.html" class="nav-card finance muted" style="text-decoration:none;">
+              <div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 6v6l4 2" />
+                </svg></div>
+              <div class="nc-text">
+                <p class="nc-title">Analisi dei Costi (TER)</p>
+                <p class="nc-desc">Impatto delle commissioni sul rendimento</p>
+              </div>
+              <span class="nc-badge">Presto</span>
+            </a>
+          </div>
+
+          <!-- ═══ TAB 3: Credito & Finanziamenti ═══ -->
+          <div class="fin-panel" id="panel-credito">
+            <div class="cat-header">
+              <span class="cat-header-icon">🏠</span>
+              <div class="cat-header-info">
+                <p class="cat-header-title">Credito & Finanziamenti</p>
+                <p class="cat-header-desc">Gestione debiti e leva finanziaria</p>
+              </div>
+            </div>
+
+            <a class="nav-card finance" href="mutui/index.html">
+              <div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  <polyline points="9 22 9 12 15 12 15 22" />
+                </svg></div>
+              <div class="nc-text">
+                <p class="nc-title">Mutui</p>
+                <p class="nc-desc">Rate, interessi e andamento debito residuo</p>
+              </div>
+              <svg class="nc-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </a>
+
+            <a class="nav-card finance" href="rent-vs-buy/index.html">
+              <div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+                  <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+                  <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+                  <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+                  <path d="M12 7v10" />
+                  <path d="M7 12h10" />
+                </svg></div>
+              <div class="nc-text">
+                <p class="nc-title">Rent vs Buy</p>
+                <p class="nc-desc">Conviene affittare o comprare casa?</p>
+              </div>
+              <svg class="nc-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </a>
+
+            <a class="nav-card finance" href="ammortamento/index.html">
+              <div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                  <line x1="10" y1="9" x2="8" y2="9" />
+                </svg></div>
+              <div class="nc-text">
+                <p class="nc-title">Piani di Ammortamento</p>
+                <p class="nc-desc">Quota capitale e interessi nel tempo</p>
+              </div>
+              <svg class="nc-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </a>
+          </div>
+
+          <!-- ═══ TAB 4: Analisi di Mercato ═══ -->
+          <div class="fin-panel" id="panel-mercato">
+            <div class="cat-header">
+              <span class="cat-header-icon">📈</span>
+              <div class="cat-header-info">
+                <p class="cat-header-title">Analisi di Mercato & Valutazione</p>
+                <p class="cat-header-desc">Tool tecnici per analisi titoli e sentiment</p>
+              </div>
+            </div>
+
+            <a href="../wip.html" class="nav-card finance muted" style="text-decoration:none;">
+              <div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="1" x2="12" y2="23" />
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg></div>
+              <div class="nc-text">
+                <p class="nc-title">DCF Model</p>
+                <p class="nc-desc">Valore intrinseco tramite Discounted Cash Flow</p>
+              </div>
+              <span class="nc-badge">Presto</span>
+            </a>
+
+            <a href="../wip.html" class="nav-card finance muted" style="text-decoration:none;">
+              <div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg></div>
+              <div class="nc-text">
+                <p class="nc-title">Fair Value Calculator</p>
+                <p class="nc-desc">Stima fair value basata su multipli (P/E, P/S)</p>
+              </div>
+              <span class="nc-badge">Presto</span>
+            </a>
+
+            <a href="../wip.html" class="nav-card finance muted" style="text-decoration:none;">
+              <div class="nc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 6v6l4 2" />
+                  <path d="M16 8l2-2" />
+                </svg></div>
+              <div class="nc-text">
+                <p class="nc-title">Crypto Dashboard</p>
+                <p class="nc-desc">Analisi on-chain e dati storici crypto</p>
+              </div>
+              <span class="nc-badge">Presto</span>
+            </a>
+          </div>
+
         </div>
 
-        <!-- Crypto Live -->
-        <div class="widget-card">
-          <p class="wc-title" style="color:#10b981;">Crypto Live 📈</p>
-          <div id="crypto-content">
-            <div style="text-align:center;color:var(--text-secondary);font-size:.76rem;padding:12px 0;">Caricamento…</div>
-          </div>
-        </div>
+        <!-- SIDE: widget mercati -->
+        <div class="page-side" style="animation:fadeUp .45s ease .15s both;">
 
-        <!-- Materie prime & Indici -->
-        <div class="widget-card">
-          <p class="wc-title" style="color:#10b981;">Mercati 🌍</p>
-          <div id="market-content">
-            <div style="text-align:center;color:var(--text-secondary);font-size:.76rem;padding:12px 0;">Caricamento…</div>
+          <!-- Fear & Greed -->
+          <div class="widget-card">
+            <p class="wc-title" style="color:#10b981;">Fear &amp; Greed ⚖️</p>
+            <div id="fg-content">
+              <div style="text-align:center;color:var(--text-secondary);font-size:.76rem;padding:12px 0;">Caricamento…
+              </div>
+            </div>
           </div>
-        </div>
 
+          <!-- Crypto Live -->
+          <div class="widget-card">
+            <p class="wc-title" style="color:#10b981;">Crypto Live 📈</p>
+            <div id="crypto-content">
+              <div style="text-align:center;color:var(--text-secondary);font-size:.76rem;padding:12px 0;">Caricamento…
+              </div>
+            </div>
+          </div>
+
+          <!-- Materie prime & Indici -->
+          <div class="widget-card">
+            <p class="wc-title" style="color:#10b981;">Mercati 🌍</p>
+            <div id="market-content">
+              <div style="text-align:center;color:var(--text-secondary);font-size:.76rem;padding:12px 0;">Caricamento…
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
-    </div>
 
-  </main>
-</div>
-<script src="../js/navbar.js"></script>
-<script src="../js/main.js"></script>
-<script src="../js/footer.js"></script>
-<script>
-/* ── Fear & Greed ─────────────────────────────────── */
-async function fetchFearGreed() {
-  try {
-    const r = await fetch('https://api.alternative.me/fng/?limit=1');
-    const d = await r.json();
-    const val = parseInt(d.data[0].value);
-    const lbl = d.data[0].value_classification;
-    const colors = { 'Extreme Fear':'#ef4444','Fear':'#f97316','Neutral':'#facc15','Greed':'#86efac','Extreme Greed':'#22c55e' };
-    const col = colors[lbl] || '#facc15';
-    document.getElementById('fg-content').innerHTML = `
+    </main>
+  </div>
+  <script src="../js/navbar.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/footer.js"></script>
+  <script>
+    /* ── Tab switching ─────────────────────────────────── */
+    (function () {
+      const tabs = document.querySelectorAll('.fin-tab');
+      const panels = document.querySelectorAll('.fin-panel');
+
+      function switchTab(tabId) {
+        tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tabId));
+        panels.forEach(p => {
+          const isTarget = p.id === 'panel-' + tabId;
+          p.classList.toggle('active', isTarget);
+        });
+      }
+
+      tabs.forEach(t => t.addEventListener('click', () => switchTab(t.dataset.tab)));
+
+      // Hash support: #pianificazione, #portafoglio, #credito, #mercato
+      const hash = location.hash.replace('#', '');
+      if (hash && document.getElementById('panel-' + hash)) {
+        switchTab(hash);
+      }
+    })();
+
+    /* ── Fear & Greed ─────────────────────────────────── */
+    async function fetchFearGreed() {
+      try {
+        const r = await fetch('https://api.alternative.me/fng/?limit=1');
+        const d = await r.json();
+        const val = parseInt(d.data[0].value);
+        const lbl = d.data[0].value_classification;
+        const colors = { 'Extreme Fear': '#ef4444', 'Fear': '#f97316', 'Neutral': '#facc15', 'Greed': '#86efac', 'Extreme Greed': '#22c55e' };
+        const col = colors[lbl] || '#facc15';
+        document.getElementById('fg-content').innerHTML = `
       <div class="fg-bar"><div class="fg-needle" id="fg-needle" style="left:${val}%"></div></div>
       <div class="fg-value" style="color:${col}">${val}</div>
       <div class="fg-label">${lbl}</div>`;
-  } catch(e) {
-    document.getElementById('fg-content').innerHTML = "<span style='color:#ef4444;font-size:.74rem;'>Errore API</span>";
-  }
-}
-
-/* ── Crypto ───────────────────────────────────────── */
-async function fetchCrypto() {
-  try {
-    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=eur&include_24hr_change=true');
-    const d = await r.json();
-    const coins = [['bitcoin','BTC'],['ethereum','ETH'],['solana','SOL']];
-    let html = '';
-    coins.forEach(([id,sym]) => {
-      if (!d[id]) return;
-      const p = d[id].eur, ch = d[id].eur_24h_change?.toFixed(2);
-      const chCls = ch >= 0 ? 'pos' : 'neg';
-      const sign = ch >= 0 ? '+' : '';
-      html += `<div class="crypto-row"><span class="crypto-name">${sym}</span><span class="crypto-price">€${p?.toLocaleString('it-IT',{maximumFractionDigits:0})}</span><span class="crypto-change ${chCls}">${sign}${ch}%</span></div>`;
-    });
-    document.getElementById('crypto-content').innerHTML = html || '<span style="color:var(--text-secondary);font-size:.76rem;">Dati non disponibili</span>';
-  } catch(e) {
-    document.getElementById('crypto-content').innerHTML = "<span style='color:#ef4444;font-size:.74rem;'>Errore API</span>";
-  }
-}
-
-/* ── Markets (gold, oil, S&P) ──────────────────────── */
-async function fetchMarkets() {
-  // Open-Meteo non ha mercati finanziari — usiamo API gratuite disponibili
-  // Tentativo con Yahoo Finance via allorigins proxy
-  const assets = [
-    {sym:'GC=F', name:'Oro (/oz)'},
-    {sym:'CL=F', name:'Petrolio WTI'},
-    {sym:'^GSPC', name:'S&P 500'},
-  ];
-  let html = '';
-  try {
-    for (const a of assets) {
-      try {
-        const url = `https://query1.finance.yahoo.com/v8/finance/chart/${a.sym}?interval=1d&range=2d`;
-        const r = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);
-        const d = await r.json();
-        const meta = d.chart?.result?.[0]?.meta;
-        if (!meta) throw new Error();
-        const price = meta.regularMarketPrice;
-        const prev  = meta.previousClose;
-        const chg   = ((price-prev)/prev*100).toFixed(2);
-        const chCls = chg >= 0 ? 'pos' : 'neg';
-        const sign  = chg >= 0 ? '+' : '';
-        html += `<div class="mkt-row"><span class="mkt-name">${a.name}</span><span style="display:flex;gap:6px;align-items:center;"><span class="mkt-val">${price?.toLocaleString('it-IT',{maximumFractionDigits:1})}</span><span class="mkt-chg ${chCls}">${sign}${chg}%</span></span></div>`;
-      } catch { html += `<div class="mkt-row"><span class="mkt-name">${a.name}</span><span style="color:var(--text-secondary);font-size:.72rem;">N/D</span></div>`; }
+      } catch (e) {
+        document.getElementById('fg-content').innerHTML = "<span style='color:#ef4444;font-size:.74rem;'>Errore API</span>";
+      }
     }
-    document.getElementById('market-content').innerHTML = html;
-  } catch(e) {
-    document.getElementById('market-content').innerHTML = "<span style='color:#ef4444;font-size:.74rem;'>Errore API</span>";
-  }
-}
 
-fetchFearGreed();
-fetchCrypto();
-fetchMarkets();
-</script>
-</body></html>
+    /* ── Crypto ───────────────────────────────────────── */
+    async function fetchCrypto() {
+      try {
+        const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=eur&include_24hr_change=true');
+        const d = await r.json();
+        const coins = [['bitcoin', 'BTC'], ['ethereum', 'ETH'], ['solana', 'SOL']];
+        let html = '';
+        coins.forEach(([id, sym]) => {
+          if (!d[id]) return;
+          const p = d[id].eur, ch = d[id].eur_24h_change?.toFixed(2);
+          const chCls = ch >= 0 ? 'pos' : 'neg';
+          const sign = ch >= 0 ? '+' : '';
+          html += `<div class="crypto-row"><span class="crypto-name">${sym}</span><span class="crypto-price">€${p?.toLocaleString('it-IT', { maximumFractionDigits: 0 })}</span><span class="crypto-change ${chCls}">${sign}${ch}%</span></div>`;
+        });
+        document.getElementById('crypto-content').innerHTML = html || '<span style="color:var(--text-secondary);font-size:.76rem;">Dati non disponibili</span>';
+      } catch (e) {
+        document.getElementById('crypto-content').innerHTML = "<span style='color:#ef4444;font-size:.74rem;'>Errore API</span>";
+      }
+    }
+
+    /* ── Markets (gold, oil, S&P) ──────────────────────── */
+    async function fetchMarkets() {
+      const assets = [
+        { sym: 'GC=F', name: 'Oro (/oz)' },
+        { sym: 'CL=F', name: 'Petrolio WTI' },
+        { sym: '^GSPC', name: 'S&P 500' },
+      ];
+      let html = '';
+      try {
+        for (const a of assets) {
+          try {
+            const url = `https://query1.finance.yahoo.com/v8/finance/chart/${a.sym}?interval=1d&range=2d`;
+            const r = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);
+            const d = await r.json();
+            const meta = d.chart?.result?.[0]?.meta;
+            if (!meta) throw new Error();
+            const price = meta.regularMarketPrice;
+            const prev = meta.previousClose;
+            const chg = ((price - prev) / prev * 100).toFixed(2);
+            const chCls = chg >= 0 ? 'pos' : 'neg';
+            const sign = chg >= 0 ? '+' : '';
+            html += `<div class="mkt-row"><span class="mkt-name">${a.name}</span><span style="display:flex;gap:6px;align-items:center;"><span class="mkt-val">${price?.toLocaleString('it-IT', { maximumFractionDigits: 1 })}</span><span class="mkt-chg ${chCls}">${sign}${chg}%</span></span></div>`;
+          } catch { html += `<div class="mkt-row"><span class="mkt-name">${a.name}</span><span style="color:var(--text-secondary);font-size:.72rem;">N/D</span></div>`; }
+        }
+        document.getElementById('market-content').innerHTML = html;
+      } catch (e) {
+        document.getElementById('market-content').innerHTML = "<span style='color:#ef4444;font-size:.74rem;'>Errore API</span>";
+      }
+    }
+
+    // ==========================================
+    // 3D INTERACTIVE FINANCE COIN (TORUS HERO)
+    // ==========================================
+    const canvasFin = document.getElementById('hero-3d-coin');
+    if (canvasFin) {
+      const ctx = canvasFin.getContext('2d', { alpha: true });
+      const size = 180;
+      canvasFin.width = size;
+      canvasFin.height = size;
+
+      let nodes = [];
+      const R = 55; // Raggio esterno (Coin size)
+      const r = 22; // Spessore "ciambella / token"
+      const uSeg = 45; // Definizione bordo
+      const vSeg = 15; // Definizione facce
+
+      for (let u = 0; u < uSeg; u++) {
+        for (let v = 0; v < vSeg; v++) {
+          let aU = (u / uSeg) * Math.PI * 2;
+          let aV = (v / vSeg) * Math.PI * 2;
+          let x = (R + r * Math.cos(aV)) * Math.cos(aU);
+          let y = (R + r * Math.cos(aV)) * Math.sin(aU);
+          let z = r * Math.sin(aV);
+          nodes.push({ x, y, z, u, v });
+        }
+      }
+
+      let angleX = 0.5, angleY = 0;
+      let targetAngleX = 0.5, targetAngleY = 0;
+      let isHover = false;
+
+      canvasFin.addEventListener('pointermove', e => {
+        const rect = canvasFin.getBoundingClientRect();
+        const nx = (e.clientX - rect.left) / rect.width - 0.5;
+        const ny = (e.clientY - rect.top) / rect.height - 0.5;
+        targetAngleY = nx * 4;
+        targetAngleX = ny * 4;
+        isHover = true;
+      });
+
+      canvasFin.addEventListener('pointerleave', () => { isHover = false; });
+
+      function drawFin3D() {
+        ctx.clearRect(0, 0, size, size);
+
+        if (isHover) {
+          angleX += (targetAngleX - angleX) * 0.08;
+          angleY += (targetAngleY - angleY) * 0.08;
+        } else {
+          angleX += (0.6 - angleX) * 0.05; // tilt the coin slightly
+          angleY -= 0.018; // smooth spin
+        }
+
+        const cosX = Math.cos(angleX), sinX = Math.sin(angleX);
+        const cosY = Math.cos(angleY), sinY = Math.sin(angleY);
+
+        const projected = nodes.map((n, i) => {
+          let y1 = n.y * cosX - n.z * sinX;
+          let z1 = n.y * sinX + n.z * cosX;
+          let x2 = n.x * cosY + z1 * sinY;
+          let z2 = -n.x * sinY + z1 * cosY;
+          let perspective = 240 / (240 + z2);
+          return {
+            x: x2 * perspective + size / 2,
+            y: y1 * perspective + size / 2,
+            z: z2, u: n.u, v: n.v, i
+          };
+        });
+
+        // Draw the Torus Grid (Crypto Token geometry)
+        ctx.lineWidth = 1.2;
+        for (let i = 0; i < projected.length; i++) {
+          let p1 = projected[i];
+          let nextU = (p1.u + 1) % uSeg;
+          let nextV = (p1.v + 1) % vSeg;
+          let idxU = nextU * vSeg + p1.v;
+          let idxV = p1.u * vSeg + nextV;
+          let pU = projected[idxU];
+          let pV = projected[idxV];
+
+          // Depth-based opacity gives it 3D realism
+          let opacity = Math.max(0.05, 1 - (p1.z + R + r) / ((R + r) * 1.9));
+          ctx.strokeStyle = `rgba(16, 185, 129, ${opacity * 0.75})`;
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(pU.x, pU.y);
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(pV.x, pV.y);
+          ctx.stroke();
+        }
+        requestAnimationFrame(drawFin3D);
+      }
+      drawFin3D();
+    }
+
+    fetchFearGreed();
+    fetchCrypto();
+    fetchMarkets();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+{
+  "short_name": "EmanueleZ",
+  "name": "Emanuele Zanella - Engineering & Data",
+  "icons": [
+    {
+      "src": "assets/logo.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "index.html",
+  "background_color": "#050814",
+  "display": "standalone",
+  "scope": "./",
+  "theme_color": "#0284c7",
+  "description": "Portfolio Ingegneria ed Economia"
+}

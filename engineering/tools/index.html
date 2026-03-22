@@ -183,15 +183,25 @@
         return out;
     }
 
+    function isFuzzyMatch(str, pattern) {
+        // e.g. "prs" -> /p.*r.*s/
+        const regexStr = pattern.split('').join('.*');
+        try { return (new RegExp(regexStr)).test(str); } catch(e) { return false; }
+    }
+
     function score(tool, terms){
         const title = normalize(tool.t);
         const keys  = normalize(tool.k);
         let s = 0;
         terms.forEach(term => {
             if(!term) return;
+            // Matches Esatti
             if(title.startsWith(term)) s += 10;
             else if(title.includes(term)) s += 6;
-            if(keys.includes(term)) s += 3;
+            else if(keys.includes(term)) s += 3;
+            // Ricerca Fuzzy (Tolleranza Errori)
+            else if(isFuzzyMatch(title, term)) s += 2;
+            else if(isFuzzyMatch(keys, term)) s += 1;
         });
         return s;
     }

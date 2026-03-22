@@ -24,7 +24,7 @@
 
   const currentYear = new Date().getFullYear();
 
-  const footerHTML = `
+const footerHTML = `
     <div class="footer-inner">
 
       <div class="footer-brand">
@@ -32,7 +32,7 @@
           <img src="${basePath}assets/logo.png" alt="Logo" class="footer-logo-img">
         </a>
         <div class="footer-brand-text">
-          <span class="footer-name">EMANUELE ZANELLA</span>
+          <span class="footer-name">EMANUELE ZANELLA ·</span>
           <span class="footer-sub">Energy Engineer · Bologna, Italy</span>
         </div>
       </div>
@@ -48,6 +48,9 @@
           </svg>
           emanuele.zanella@outlook.it
         </a>
+
+      <span style="margin: 0 35px; color: #666;"> </span>
+
         <a href="https://linkedin.com/in/emanuele-zanella-299ba01a9" target="_blank" rel="noopener noreferrer"
           class="footer-contact-link">
           <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
