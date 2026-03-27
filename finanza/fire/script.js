@@ -19,21 +19,21 @@ function fmtShort(n) {
 }
 
 function calcola() {
-  const pv = parseFloat(document.getElementById('patrimonio').value) || 0;
-  const pmt = parseFloat(document.getElementById('risparmio').value) || 0;
-  const spese_mensili = parseFloat(document.getElementById('spese').value) || 0;
-  const swr = parseFloat(document.getElementById('swr').value) || 4.0;
-  const r_annuo = parseFloat(document.getElementById('rendimento').value) || 0;
+  const pv = parseItaNumber(document.getElementById('patrimonio').value) || 0;
+  const pmt = parseItaNumber(document.getElementById('risparmio').value) || 0;
+  const spese_mensili = parseItaNumber(document.getElementById('spese').value) || 0;
+  const swr = parseItaNumber(document.getElementById('swr').value) || 4.0;
+  const r_annuo = parseItaNumber(document.getElementById('rendimento').value) || 0;
 
   if (spese_mensili <= 0 || swr <= 0) return;
 
   const spese_annue = spese_mensili * 12;
   const fv_target = spese_annue / (swr / 100);
-  
+
   const r_mese = (r_annuo / 100) / 12;
-  
+
   let mesi_al_fire = 0;
-  
+
   if (pv >= fv_target) {
     mesi_al_fire = 0; // Già in FIRE
   } else {
@@ -54,7 +54,7 @@ function calcola() {
   const history = [];
   let current_val = pv;
   let N_anni = Math.ceil(mesi_al_fire / 12);
-  
+
   if (N_anni === Infinity || isNaN(N_anni)) {
     N_anni = 80; // limito il grafico
     // Rendi il calcolo come irraggiungibile graficamente, solo proietta per 80 anni
@@ -79,14 +79,17 @@ function calcola() {
 
   const cardsContainer = document.getElementById('cards-risultati');
   cardsContainer.innerHTML = `
-    <div class="card finance" style="padding:20px; text-align:center;">
-      <h3 style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:8px;">Target FIRE</h3>
-      <p style="font-size:1.6rem; color:#fff; font-family:'Orbitron',sans-serif;">${fmt(fv_target)}</p>
-      <p style="font-size:0.75rem; color:#10b981; margin-top:4px;">Copre ${fmt(spese_annue)}/anno</p>
+    <div class="card finance" style="padding:20px; text-align:center; border-top:3px solid #10b981; transform:scale(1.03); box-shadow:0 10px 25px rgba(16,185,129,0.15);">
+      <h3 style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:8px;">Capitale Target FIRE</h3>
+      <p style="font-size:1.8rem; color:var(--text-primary); font-family:'Orbitron',sans-serif; text-shadow:0 0 15px rgba(16,185,129,0.5);">${fmt(fv_target)}</p>
     </div>
-    <div class="card finance" style="padding:20px; text-align:center; border-top:3px solid #f59e0b; transform:scale(1.03); box-shadow:0 10px 25px rgba(245,158,11,0.15);">
-      <h3 style="font-size:0.95rem; color:#fcd34d; margin-bottom:8px;">Tempo Stimato</h3>
-      <p style="font-size:1.8rem; color:#fff; font-family:'Orbitron',sans-serif; text-shadow:0 0 15px rgba(245,158,11,0.8);">${anniDisplay} <span style="font-size:1rem;">Anni</span></p>
+    <div class="card finance" style="padding:20px; text-align:center;">
+      <h3 style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:8px;">Anni al FIRE</h3>
+      <p style="font-size:1.6rem; color:var(--text-primary); font-family:'Orbitron',sans-serif;">${anniDisplay}</p>
+    </div>
+    <div class="card finance" style="padding:20px; text-align:center;">
+      <h3 style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:8px;">Rendita Annua Post-FIRE</h3>
+      <p style="font-size:1.6rem; color:var(--color-finance); font-family:'Orbitron',sans-serif;">${fmt(spese_mensili * 12)} / anno</p>
     </div>
   `;
 
@@ -102,7 +105,7 @@ function disegnaGrafico(anni, history, target) {
   if (fireChart) { fireChart.destroy(); }
 
   const canvasCtx = document.getElementById('grafico').getContext('2d');
-  
+
   fireChart = new Chart(canvasCtx, {
     type: 'line',
     data: {
@@ -134,6 +137,7 @@ function disegnaGrafico(anni, history, target) {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       animation: { duration: 800, easing: 'easeOutQuart' },
       interaction: { mode: 'index', intersect: false },
       plugins: {
@@ -157,40 +161,54 @@ let _fsActive = false;
 let _fsScrollY = 0;
 
 function toggleFullscreen() {
-  const section   = document.getElementById('grafico-section');
-  const backdrop  = document.getElementById('fs-backdrop');
-  const iconExp   = document.getElementById('fs-icon-expand');
+  const section = document.getElementById('grafico-section');
+  const backdrop = document.getElementById('fs-backdrop');
+  const iconExp = document.getElementById('fs-icon-expand');
   const iconCompr = document.getElementById('fs-icon-compress');
-  const label     = document.getElementById('fs-label');
-  const canvas    = document.getElementById('grafico');
+  const label = document.getElementById('fs-label');
+  const canvas = document.getElementById('grafico');
 
   if (!_fsActive) {
     _fsScrollY = window.scrollY;
-    _fsActive  = true;
+    _fsActive = true;
     backdrop.style.display = 'block';
     section.classList.add('is-fullscreen');
     document.body.style.overflow = 'hidden';
-    iconExp.style.display   = 'none';
+    iconExp.style.display = 'none';
     iconCompr.style.display = 'block';
-    label.textContent       = 'ESCI';
+    label.textContent = 'ESCI';
 
-    requestAnimationFrame(() => {
-      if (fireChart) { canvas.style.height = ''; fireChart.resize(); fireChart.update('none'); }
-    });
+    if (fireChart) {
+      canvas.style.width = '0px';
+      canvas.style.height = '0px';
+      setTimeout(() => {
+        canvas.style.width = '';
+        canvas.style.height = '';
+        fireChart.resize();
+        fireChart.update('none');
+      }, 10);
+    }
     document.addEventListener('keydown', _onFsKeydown);
   } else {
     _fsActive = false;
     backdrop.style.display = 'none';
     section.classList.remove('is-fullscreen');
     document.body.style.overflow = '';
-    iconExp.style.display   = 'block';
+    iconExp.style.display = 'block';
     iconCompr.style.display = 'none';
-    label.textContent       = 'FULLSCREEN';
+    label.textContent = 'FULLSCREEN';
 
-    requestAnimationFrame(() => {
-      if (fireChart) { canvas.style.height = ''; fireChart.resize(); fireChart.update('none'); }
-      window.scrollTo({ top: _fsScrollY, behavior: 'instant' });
-    });
+    if (fireChart) {
+      canvas.style.width = '0px';
+      canvas.style.height = '0px';
+      setTimeout(() => {
+        canvas.style.width = '';
+        canvas.style.height = '';
+        fireChart.resize();
+        fireChart.update('none');
+        window.scrollTo({ top: _fsScrollY, behavior: 'instant' });
+      }, 10);
+    }
     document.removeEventListener('keydown', _onFsKeydown);
   }
 }

@@ -13,10 +13,10 @@ function fmt(n) {
 }
 
 function calcola() {
-  const capitale = parseFloat(document.getElementById('importo').value) || 0;
-  const anni = parseInt(document.getElementById('anni').value) || 0;
-  const tassoAnnuo = parseFloat(document.getElementById('tasso').value) || 0;
-  
+  const capitale = parseItaNumber(document.getElementById('importo').value) || 0;
+  const anni = Math.round(parseItaNumber(document.getElementById('anni').value)) || 0;
+  const tassoAnnuo = parseItaNumber(document.getElementById('tasso').value) || 0;
+
   const tipo = document.querySelector('input[name="tipo_amm"]:checked').value;
 
   if (capitale <= 0 || anni <= 0) return;
@@ -25,11 +25,11 @@ function calcola() {
   const rMonth = (tassoAnnuo / 100) / 12;
 
   let residuo = capitale;
-  
+
   let history_capitale = [];
   let history_interessi = [];
   let history_labels = [];
-  
+
   let tbodyHtml = '';
 
   if (tipo === 'francese') {
@@ -44,13 +44,13 @@ function calcola() {
     for (let i = 1; i <= N; i++) {
       let qInt = residuo * rMonth;
       let qCap = PMT - qInt;
-      
+
       // Ultima rata adjustment
       if (i === N) {
         qCap = residuo;
         PMT = qCap + qInt;
       }
-      
+
       residuo -= qCap;
       if (residuo < 0) residuo = 0;
 
@@ -74,8 +74,8 @@ function calcola() {
       tbodyHtml += `
         <tr>
           <td>${i}</td>
-          <td style="color:#38bdf8;">${fmt(qCap)}</td>
-          <td style="color:#f87171;">${fmt(qInt)}</td>
+          <td style="color:var(--color-finance); font-weight:500;">${fmt(qCap)}</td>
+          <td style="color:#ef4444; font-weight:500;">${fmt(qInt)}</td>
           <td>${fmt(PMT)}</td>
           <td>${fmt(residuo)}</td>
         </tr>
@@ -87,7 +87,7 @@ function calcola() {
     for (let i = 1; i <= N; i++) {
       let qInt = residuo * rMonth;
       let rata = qCap + qInt;
-      
+
       residuo -= qCap;
       if (residuo < 0.01) residuo = 0; // Floating point fix
 
@@ -108,8 +108,8 @@ function calcola() {
       tbodyHtml += `
         <tr>
           <td>${i}</td>
-          <td style="color:#38bdf8;">${fmt(qCap)}</td>
-          <td style="color:#f87171;">${fmt(qInt)}</td>
+          <td style="color:var(--color-finance); font-weight:500;">${fmt(qCap)}</td>
+          <td style="color:#ef4444; font-weight:500;">${fmt(qInt)}</td>
           <td>${fmt(rata)}</td>
           <td>${fmt(residuo)}</td>
         </tr>
@@ -129,7 +129,7 @@ function calcola() {
 
 function disegnaGrafico(labels, capData, intData) {
   if (ammChart) ammChart.destroy();
-  
+
   const ctx = document.getElementById('grafico').getContext('2d');
 
   ammChart = new Chart(ctx, {
@@ -161,15 +161,15 @@ function disegnaGrafico(labels, capData, intData) {
         tooltip: {
           backgroundColor: 'rgba(10,10,25,0.92)', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1,
           titleColor: '#e0f2fe', bodyColor: '#bae6fd', padding: 12,
-          callbacks: { 
+          callbacks: {
             stacked: true,
             label: item => ' ' + item.dataset.label + ': ' + fmt(item.parsed.y)
           }
         }
       },
       scales: {
-        x: { stacked: true, ticks: { color: '#666', font: { family: "'Orbitron', sans-serif", size: 9 }, maxTicksLimit: 20 }, grid: { display:false } },
-        y: { stacked: true, ticks: { color: '#666', font: { family: "'Orbitron', sans-serif", size: 9 }, callback: v => (v >= 1000 ? (v/1000).toFixed(0)+'k €' : v+' €') }, grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true }
+        x: { stacked: true, ticks: { color: '#666', font: { family: "'Orbitron', sans-serif", size: 9 }, maxTicksLimit: 20 }, grid: { display: false } },
+        y: { stacked: true, ticks: { color: '#666', font: { family: "'Orbitron', sans-serif", size: 9 }, callback: v => (v >= 1000 ? (v / 1000).toFixed(0) + 'k €' : v + ' €') }, grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true }
       }
     }
   });
@@ -180,40 +180,54 @@ let _fsActive = false;
 let _fsScrollY = 0;
 
 function toggleFullscreen() {
-  const section   = document.getElementById('grafico-section');
-  const backdrop  = document.getElementById('fs-backdrop');
-  const iconExp   = document.getElementById('fs-icon-expand');
+  const section = document.getElementById('grafico-section');
+  const backdrop = document.getElementById('fs-backdrop');
+  const iconExp = document.getElementById('fs-icon-expand');
   const iconCompr = document.getElementById('fs-icon-compress');
-  const label     = document.getElementById('fs-label');
-  const canvas    = document.getElementById('grafico');
+  const label = document.getElementById('fs-label');
+  const canvas = document.getElementById('grafico');
 
   if (!_fsActive) {
     _fsScrollY = window.scrollY;
-    _fsActive  = true;
+    _fsActive = true;
     backdrop.style.display = 'block';
     section.classList.add('is-fullscreen');
     document.body.style.overflow = 'hidden';
-    iconExp.style.display   = 'none';
+    iconExp.style.display = 'none';
     iconCompr.style.display = 'block';
-    label.textContent       = 'ESCI';
+    label.textContent = 'ESCI';
 
-    requestAnimationFrame(() => {
-      if (ammChart) { canvas.style.height = ''; ammChart.resize(); ammChart.update('none'); }
-    });
+    if (ammChart) {
+      canvas.style.width = '0px';
+      canvas.style.height = '0px';
+      setTimeout(() => {
+        canvas.style.width = '';
+        canvas.style.height = '';
+        ammChart.resize();
+        ammChart.update('none');
+      }, 10);
+    }
     document.addEventListener('keydown', _onFsKeydown);
   } else {
     _fsActive = false;
     backdrop.style.display = 'none';
     section.classList.remove('is-fullscreen');
     document.body.style.overflow = '';
-    iconExp.style.display   = 'block';
+    iconExp.style.display = 'block';
     iconCompr.style.display = 'none';
-    label.textContent       = 'FULLSCREEN';
+    label.textContent = 'FULLSCREEN';
 
-    requestAnimationFrame(() => {
-      if (ammChart) { canvas.style.height = ''; ammChart.resize(); ammChart.update('none'); }
-      window.scrollTo({ top: _fsScrollY, behavior: 'instant' });
-    });
+    if (ammChart) {
+      canvas.style.width = '0px';
+      canvas.style.height = '0px';
+      setTimeout(() => {
+        canvas.style.width = '';
+        canvas.style.height = '';
+        ammChart.resize();
+        ammChart.update('none');
+        window.scrollTo({ top: _fsScrollY, behavior: 'instant' });
+      }, 10);
+    }
     document.removeEventListener('keydown', _onFsKeydown);
   }
 }

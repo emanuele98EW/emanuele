@@ -5,15 +5,15 @@
 'use strict';
 
 // ── State ──────────────────────────────────────────────────────
-let graficoChart   = null;
-let extraInvCount  = 0;   // numero progressivo (non diminuisce mai)
+let graficoChart = null;
+let extraInvCount = 0;   // numero progressivo (non diminuisce mai)
 let annotationCount = 0;
-const MAX_EXTRA    = 3;
+const MAX_EXTRA = 3;
 const activeExtras = new Set(); // ids delle card attive
 
 const INV_COLORS = [
   { line: '#f59e0b', fill: 'rgba(245,158,11,0.10)', label: 'Invest. A' },
-  { line: '#22c55e', fill: 'rgba(34,197,94,0.10)',  label: 'Invest. B' },
+  { line: '#22c55e', fill: 'rgba(34,197,94,0.10)', label: 'Invest. B' },
   { line: '#ec4899', fill: 'rgba(236,72,153,0.10)', label: 'Invest. C' },
 ];
 
@@ -55,19 +55,19 @@ function addExtraInv() {
     </div>
     <div class="extra-inv-grid">
       <label>Importo (€)
-        <input type="number" id="xi-importo-${slot}"    value="5000"  min="0">
+        <input type="text" inputmode="numeric" class="format-currency" id="xi-importo-${slot}"    value="5.000">
       </label>
       <label>Versamento annuo (€)
-        <input type="number" id="xi-versamento-${slot}" value="0"     min="0">
+        <input type="text" inputmode="numeric" class="format-currency" id="xi-versamento-${slot}" value="0">
       </label>
       <label>Anno di inizio
-        <input type="number" id="xi-inizio-${slot}"     value="10"    min="1">
+        <input type="text" inputmode="numeric" class="format-currency" id="xi-inizio-${slot}"     value="10">
       </label>
       <label>Durata (anni)
-        <input type="number" id="xi-durata-${slot}"     value="10"    min="1">
+        <input type="text" inputmode="numeric" class="format-currency" id="xi-durata-${slot}"     value="10">
       </label>
       <label>Tasso annuo (%)
-        <input type="number" id="xi-tasso-${slot}"      value="5" step="0.1">
+        <input type="text" inputmode="numeric" class="format-currency" id="xi-tasso-${slot}"      value="5">
       </label>
     </div>`;
 
@@ -117,12 +117,12 @@ function readExtras(anniTotali) {
   const extras = [];
   activeExtras.forEach(slot => {
     const getVal = (key) => document.getElementById('xi-' + key + '-' + slot);
-    if (!getVal('importo')) return; // card rimossa
-    const importo    = parseFloat(getVal('importo').value)    || 0;
-    const versamento = parseFloat(getVal('versamento').value) || 0;
-    const inizio     = parseInt(getVal('inizio').value)       || 1;
-    const durata     = parseInt(getVal('durata').value)       || 1;
-    const tasso      = (parseFloat(getVal('tasso').value)     || 0) / 100;
+    if (!getVal('importo')) return; 
+    const importo = parseItaNumber(getVal('importo').value) || 0;
+    const versamento = parseItaNumber(getVal('versamento').value) || 0;
+    const inizio = Math.round(parseItaNumber(getVal('inizio').value)) || 1;
+    const durata = Math.round(parseItaNumber(getVal('durata').value)) || 1;
+    const tasso = (parseItaNumber(getVal('tasso').value) || 0) / 100;
     extras.push({ slot, importo, versamento, inizio, durata, tasso });
   });
   return extras;
@@ -132,11 +132,11 @@ function readExtras(anniTotali) {
 function readAnnotations() {
   const anns = [];
   document.querySelectorAll('.annotation-row').forEach(row => {
-    const id    = row.id.replace('ann-row-', '');
+    const id = row.id.replace('ann-row-', '');
     const annoEl = document.getElementById('ann-anno-' + id);
     const testoEl = document.getElementById('ann-testo-' + id);
     if (!annoEl || !testoEl) return;
-    const anno  = parseInt(annoEl.value) || 0;
+    const anno = Math.round(parseItaNumber(annoEl.value)) || 0;
     const testo = testoEl.value.trim();
     if (anno > 0 && testo) anns.push({ anno, testo });
   });
@@ -145,15 +145,15 @@ function readAnnotations() {
 
 // ── Simulazione anno per anno ──────────────────────────────────
 function simulate(C0, V, r, anniTotali, extras) {
-  const baseArr  = [];
+  const baseArr = [];
   const extraArrs = extras.map(() => []);
   const totaleArr = [];
 
-  let baseVal   = C0;
-  const eVal    = extras.map(() => 0);
+  let baseVal = C0;
+  const eVal = extras.map(() => 0);
 
-  let anni100k  = null;
-  let anni1M    = null;
+  let anni100k = null;
+  let anni1M = null;
 
   for (let t = 0; t <= anniTotali; t++) {
     if (t > 0) {
@@ -176,8 +176,8 @@ function simulate(C0, V, r, anniTotali, extras) {
     extras.forEach((_, i) => extraArrs[i].push(Math.round(eVal[i])));
     totaleArr.push(Math.round(totale));
 
-    if (!anni100k  && totale >= 100000)  anni100k  = t;
-    if (!anni1M    && totale >= 1000000) anni1M    = t;
+    if (!anni100k && totale >= 100000) anni100k = t;
+    if (!anni1M && totale >= 1000000) anni1M = t;
   }
 
   return { baseArr, extraArrs, totaleArr, anni100k, anni1M };
@@ -185,13 +185,13 @@ function simulate(C0, V, r, anniTotali, extras) {
 
 // ── Calcola ────────────────────────────────────────────────────
 function calcola() {
-  const C0   = parseFloat(document.getElementById('capitale').value)   || 0;
-  const V    = parseFloat(document.getElementById('versamento').value) || 0;
-  const r    = (parseFloat(document.getElementById('tasso').value)     || 0) / 100;
-  const anniTotali = parseInt(document.getElementById('anni').value)   || 0;
+  const C0 = parseItaNumber(document.getElementById('capitale').value) || 0;
+  const V = parseItaNumber(document.getElementById('versamento').value) || 0;
+  const r = (parseItaNumber(document.getElementById('tasso').value) || 0) / 100;
+  const anniTotali = Math.round(parseItaNumber(document.getElementById('anni').value)) || 0;
   if (anniTotali <= 0) return;
 
-  const extras      = readExtras(anniTotali);
+  const extras = readExtras(anniTotali);
   const annotations = readAnnotations();
 
   const { baseArr, extraArrs, totaleArr, anni100k, anni1M } =
@@ -208,12 +208,12 @@ function calcola() {
   const interessi = totaleFinale - versato;
 
   // ── UI: risultati ──
-  document.getElementById('finale').textContent    = fmt(totaleFinale);
+  document.getElementById('finale').textContent = fmt(totaleFinale);
   document.getElementById('interessi').textContent = fmt(Math.max(0, interessi));
-  document.getElementById('anni100k').textContent  =
+  document.getElementById('anni100k').textContent =
     anni100k !== null ? anni100k + ' anni' : '> ' + anniTotali + ' anni';
-  document.getElementById('anni1M').textContent    =
-    anni1M   !== null ? anni1M   + ' anni' : '> ' + anniTotali + ' anni';
+  document.getElementById('anni1M').textContent =
+    anni1M !== null ? anni1M + ' anni' : '> ' + anniTotali + ' anni';
 
   // ── Nuove card extra ──
   aggiornaCardExtra(C0, V, r, anniTotali, extras, interessi, versato, totaleFinale);
@@ -226,7 +226,7 @@ function calcola() {
 function aggiornaCardExtra(C0, V, r, anni, extras, interessi, versato, totale) {
   // CAGR
   const cagr = C0 > 0 ? (Math.pow(totale / C0, 1 / anni) - 1) * 100 : 0;
-  document.getElementById('cagr-val').textContent     = cagr.toFixed(2) + '%';
+  document.getElementById('cagr-val').textContent = cagr.toFixed(2) + '%';
 
   // Moltiplicatore
   const mult = versato > 0 ? (totale / versato).toFixed(2) + 'x' : '—';
@@ -234,11 +234,11 @@ function aggiornaCardExtra(C0, V, r, anni, extras, interessi, versato, totale) {
 
   // % interessi sul totale
   const pctInt = totale > 0 ? ((interessi / totale) * 100).toFixed(1) : 0;
-  document.getElementById('pct-int-val').textContent  = pctInt + '%';
+  document.getElementById('pct-int-val').textContent = pctInt + '%';
 
   // Interesse giornaliero medio (ultimo anno)
   const dailyAvg = totale * r / 365;
-  document.getElementById('daily-val').textContent    = fmt(dailyAvg) + '/g';
+  document.getElementById('daily-val').textContent = fmt(dailyAvg) + '/g';
 
   // Rendi visibile il blocco stats
   document.getElementById('stats-extra').style.display = 'flex';
@@ -334,9 +334,9 @@ function disegnaGrafico(anni, baseArr, extraArrs, totaleArr, extras, annotations
         const ti = ann.anno;
         if (ti < 0 || ti >= dataForAnnotations.length) return;
 
-        const xPx  = xScale.getPixelForValue(ti);
+        const xPx = xScale.getPixelForValue(ti);
         const yVal = dataForAnnotations[ti];
-        const yPx  = yScale.getPixelForValue(yVal);
+        const yPx = yScale.getPixelForValue(yVal);
 
         const ARROW_H = 42;
         const tipX = xPx, tipY = yPx - 8;
@@ -398,8 +398,8 @@ function disegnaGrafico(anni, baseArr, extraArrs, totaleArr, extras, annotations
       const xScale = chart.scales.x;
       const yMin = yScale.min, yMax = yScale.max;
       const milestones = [
-        { val: 100000,  color: '#22c55e', label: '100k' },
-        { val: 1000000, color: '#f59e0b', label: '1M'   },
+        { val: 100000, color: '#22c55e', label: '100k' },
+        { val: 1000000, color: '#f59e0b', label: '1M' },
       ];
       milestones.forEach(m => {
         if (m.val < yMin || m.val > yMax) return;
@@ -436,6 +436,7 @@ function disegnaGrafico(anni, baseArr, extraArrs, totaleArr, extras, annotations
     plugins: [arrowPlugin, milestonePlugin],
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       animation: { duration: 600, easing: 'easeInOutQuart' },
       interaction: { mode: 'index', intersect: false },
       plugins: {
@@ -456,7 +457,7 @@ function disegnaGrafico(anni, baseArr, extraArrs, totaleArr, extras, annotations
           bodyColor: '#e2e8f0',
           padding: 12,
           titleFont: { family: "'Orbitron', sans-serif", size: 10 },
-          bodyFont:  { family: "'Orbitron', sans-serif", size: 10 },
+          bodyFont: { family: "'Orbitron', sans-serif", size: 10 },
           callbacks: {
             title: items => 'Anno ' + items[0].dataIndex,
             label: item => '  ' + item.dataset.label + ':  ' + fmt(item.parsed.y),
@@ -492,34 +493,36 @@ let _fsActive = false;
 let _fsScrollY = 0;
 
 function toggleFullscreen() {
-  const section   = document.getElementById('grafico-section');
-  const backdrop  = document.getElementById('fs-backdrop');
-  const iconExp   = document.getElementById('fs-icon-expand');
+  const section = document.getElementById('grafico-section');
+  const backdrop = document.getElementById('fs-backdrop');
+  const iconExp = document.getElementById('fs-icon-expand');
   const iconCompr = document.getElementById('fs-icon-compress');
-  const label     = document.getElementById('fs-label');
-  const canvas    = document.getElementById('grafico');
+  const label = document.getElementById('fs-label');
+  const canvas = document.getElementById('grafico');
 
   if (!_fsActive) {
     // Entra in fullscreen
     _fsScrollY = window.scrollY;
-    _fsActive  = true;
+    _fsActive = true;
 
     backdrop.style.display = 'block';
     section.classList.add('is-fullscreen');
     document.body.style.overflow = 'hidden';
 
-    iconExp.style.display   = 'none';
+    iconExp.style.display = 'none';
     iconCompr.style.display = 'block';
-    label.textContent       = 'ESCI';
+    label.textContent = 'ESCI';
 
-    requestAnimationFrame(() => {
-      if (graficoChart) {
+    if (graficoChart) {
+      canvas.style.width = '0px';
+      canvas.style.height = '0px';
+      setTimeout(() => {
+        canvas.style.width = '';
         canvas.style.height = '';
         graficoChart.resize();
         graficoChart.update('none');
-      }
-    });
-
+      }, 10);
+    }
     document.addEventListener('keydown', _onFsKeydown);
 
   } else {
@@ -530,19 +533,21 @@ function toggleFullscreen() {
     section.classList.remove('is-fullscreen');
     document.body.style.overflow = '';
 
-    iconExp.style.display   = 'block';
+    iconExp.style.display = 'block';
     iconCompr.style.display = 'none';
-    label.textContent       = 'FULLSCREEN';
+    label.textContent = 'FULLSCREEN';
 
-    requestAnimationFrame(() => {
-      if (graficoChart) {
+    if (graficoChart) {
+      canvas.style.width = '0px';
+      canvas.style.height = '0px';
+      setTimeout(() => {
+        canvas.style.width = '';
         canvas.style.height = '';
         graficoChart.resize();
         graficoChart.update('none');
-      }
-      window.scrollTo({ top: _fsScrollY, behavior: 'instant' });
-    });
-
+        window.scrollTo({ top: _fsScrollY, behavior: 'instant' });
+      }, 10);
+    }
     document.removeEventListener('keydown', _onFsKeydown);
   }
 }

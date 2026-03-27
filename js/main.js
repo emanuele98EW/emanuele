@@ -240,11 +240,11 @@ document.addEventListener('DOMContentLoaded', () => {
     cursor.id = 'custom-cursor';
     cursor.className = 'custom-cursor';
     cursor.innerHTML = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L2 20 L7 15 L17 12 Z" /></svg>`;
-    
+
     const follower = document.createElement('div');
     follower.id = 'cursor-follower';
     follower.className = 'cursor-follower';
-    
+
     // Nascondiamo il cursore prima del primissimo movimento
     cursor.style.opacity = '0';
     follower.style.opacity = '0';
@@ -304,22 +304,22 @@ document.addEventListener('DOMContentLoaded', () => {
       const rect = btn.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
-      
+
       // La calamita sposta il bottone verso il mouse di una frazione della distanza
       btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
-      if(btn.children.length > 0) {
-        for(let i=0; i<btn.children.length; i++){
+      if (btn.children.length > 0) {
+        for (let i = 0; i < btn.children.length; i++) {
           btn.children[i].style.transform = `translate(${x * 0.12}px, ${y * 0.12}px)`; // Parallasse interno
           btn.children[i].style.transition = 'none';
         }
       }
     });
-    
+
     btn.addEventListener('mouseleave', () => {
       btn.style.transform = '';
       btn.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; // Rimbalzo elastico
-      if(btn.children.length > 0) {
-        for(let i=0; i<btn.children.length; i++){
+      if (btn.children.length > 0) {
+        for (let i = 0; i < btn.children.length; i++) {
           btn.children[i].style.transform = '';
           btn.children[i].style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
         }
@@ -328,8 +328,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btn.addEventListener('mouseenter', () => {
       btn.style.transition = 'transform 0.1s linear';
-      if(btn.children.length > 0) {
-        for(let i=0; i<btn.children.length; i++){
+      if (btn.children.length > 0) {
+        for (let i = 0; i < btn.children.length; i++) {
           btn.children[i].style.transition = 'transform 0.1s linear';
         }
       }
@@ -337,3 +337,31 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+
+// ── Funzione Globale di Parsing per i Tool Finanziari ────────────────
+window.parseItaNumber = function(valString) {
+  if (typeof valString === 'number') return valString;
+  if (!valString) return 0;
+  // Rimuove i punti e tutti i tipi di spazi (inclusi no-break space standard V8)
+  let cleanString = valString.replace(/[\.\s\u202F\u00A0]/g, '');
+  // Converte la virgola in punto
+  cleanString = cleanString.replace(',', '.');
+  const num = parseFloat(cleanString);
+  return isNaN(num) ? 0 : num;
+};
+
+// Formattazione in tempo reale usando la delegazione eventi per supportare input dinamici
+document.addEventListener('input', function(e) {
+  if (e.target.classList.contains('format-currency')) {
+    let raw = e.target.value.replace(/[^0-9,]/g, '');
+    let parts = raw.split(',');
+    
+    // Formatta solo la parte intera
+    if (parts[0]) {
+      parts[0] = parseInt(parts[0], 10).toLocaleString('it-IT');
+    }
+    
+    // Ricompone con i decimali
+    e.target.value = parts.join(',');
+  }
+});

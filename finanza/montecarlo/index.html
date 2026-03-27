@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Simulazione Monte Carlo | Finanza | Emanuele Zanella</title>
-  <meta name="description" content="Simulazione Monte Carlo per proiettare la probabilità di successo degli investimenti.">
+  <meta name="description"
+    content="Simulazione Monte Carlo per proiettare la probabilità di successo degli investimenti.">
   <script>
-(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
+    (function () { var p = localStorage.getItem("themePref"); if (p === "light") { document.documentElement.classList.add("light-mode") } else if (!p) { try { var d = JSON.parse(localStorage.getItem("themeData")); if (d) { var n = Date.now(); if (n >= d.sunrise && n < d.sunset) document.documentElement.classList.add("light-mode") } } catch (e) { } } })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="../../css/style.css">
   <style>
     /* ── Fullscreen button ───────────────────────────────────── */
@@ -23,31 +27,36 @@
       align-items: center;
       gap: 7px;
       padding: 7px 14px 7px 11px;
-      background: linear-gradient(135deg, rgba(37,99,235,0.18) 0%, rgba(37,99,235,0.08) 100%);
-      border: 1px solid rgba(37,99,235,0.55);
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.18) 0%, rgba(37, 99, 235, 0.08) 100%);
+      border: 1px solid rgba(37, 99, 235, 0.55);
       border-radius: 8px;
-      color: rgba(147,197,253,0.9);
+      color: rgba(147, 197, 253, 0.9);
       cursor: pointer;
       font-family: 'Orbitron', sans-serif;
       font-size: 0.62rem;
       letter-spacing: 1.5px;
       font-weight: 700;
-      transition: all 0.25s cubic-bezier(.4,0,.2,1);
+      transition: all 0.25s cubic-bezier(.4, 0, .2, 1);
       backdrop-filter: blur(6px);
     }
+
     #btn-fullscreen svg {
       width: 14px;
       height: 14px;
       flex-shrink: 0;
     }
+
     #btn-fullscreen:hover {
-      background: linear-gradient(135deg, rgba(37,99,235,0.35) 0%, rgba(37,99,235,0.18) 100%);
-      border-color: rgba(37,99,235,0.9);
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.35) 0%, rgba(37, 99, 235, 0.18) 100%);
+      border-color: rgba(37, 99, 235, 0.9);
       color: #bfdbfe;
-      box-shadow: 0 0 18px rgba(37,99,235,0.45), inset 0 1px 0 rgba(255,255,255,0.07);
+      box-shadow: 0 0 18px rgba(37, 99, 235, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.07);
       transform: translateY(-1px);
     }
-    #btn-fullscreen:active { transform: translateY(0); }
+
+    #btn-fullscreen:active {
+      transform: translateY(0);
+    }
 
     /* ── Fullscreen overlay ──────────────────────────────────── */
     #grafico-section.is-fullscreen {
@@ -68,7 +77,12 @@
       background: #050a18 !important;
       overflow: hidden;
     }
-    #grafico-section.is-fullscreen h3 { margin-bottom: 12px; font-size: 1rem; }
+
+    #grafico-section.is-fullscreen h3 {
+      margin-bottom: 12px;
+      font-size: 1rem;
+    }
+
     #grafico-section.is-fullscreen #grafico-wrapper {
       flex: 1 1 auto !important;
       height: 100% !important;
@@ -76,162 +90,226 @@
       padding: 18px 22px;
       display: flex;
       align-items: stretch;
-      background: rgba(5,10,28,0.95) !important;
-      border-color: rgba(37,99,235,0.3) !important;
-      box-shadow: inset 0 0 80px rgba(37,99,235,0.04);
+      background: rgba(5, 10, 28, 0.95) !important;
+      border-color: rgba(37, 99, 235, 0.3) !important;
+      box-shadow: inset 0 0 80px rgba(37, 99, 235, 0.04);
     }
+
     #grafico-section.is-fullscreen #grafico-wrapper canvas {
       width: 100% !important;
       height: 100% !important;
     }
+
     #grafico-section.is-fullscreen #btn-fullscreen {
       top: 24px;
       right: 28px;
     }
+
     /* Backdrop overlay */
     #fs-backdrop {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,5,0.6);
+      background: rgba(0, 0, 5, 0.6);
       backdrop-filter: blur(3px);
       z-index: 9998;
     }
+
     @keyframes fsPanelIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
-    #grafico-section.is-fullscreen { animation: fsPanelIn 0.28s ease-out forwards; }
+
+    #grafico-section.is-fullscreen {
+      animation: fsPanelIn 0.28s ease-out forwards;
+    }
 
     /* ── Calcola button ──────────────────────────────────── */
     .btn-calcola {
-      margin-top:20px; padding:12px 28px;
-      background:rgba(37,99,235,0.15); border:1px solid var(--color-finance);
-      color:var(--color-finance); border-radius:4px; cursor:pointer;
-      font-weight:bold; font-family:'Orbitron',sans-serif; font-size:0.9rem;
-      transition:all 0.3s; letter-spacing:1px;
+      margin-top: 20px;
+      padding: 12px 28px;
+      background: rgba(37, 99, 235, 0.15);
+      border: 1px solid var(--color-finance);
+      color: var(--color-finance);
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+      letter-spacing: 1px;
     }
+
     .btn-calcola:hover {
-      background:rgba(37,99,235,0.3);
-      box-shadow:0 0 18px rgba(37,99,235,0.45);
+      background: rgba(37, 99, 235, 0.3);
+      box-shadow: 0 0 18px rgba(37, 99, 235, 0.45);
+    }
+
+    /* Standard Responsive Grid */
+    .responsive-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    #grafico-section h3 {
+      padding-right: 50px; /* Prevent overlap with absolute button */
+    }
+
+    @media(max-width: 700px) {
+        .card.finance { padding: 20px 16px !important; }
+        #grafico-wrapper { min-height: 250px; padding: 8px !important; }
+        .responsive-grid { grid-template-columns: 1fr !important; }
     }
 
     /* ── Stat chip (for inputs/outputs) ────────────────────────── */
     .input-label {
-      display: flex; flex-direction: column; gap: 7px;
-      font-size: 0.85rem; font-weight: 500;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      font-size: 0.85rem;
+      font-weight: 500;
     }
+
     .input-box {
-      padding: 10px; background: var(--card-bg);
+      padding: 10px;
+      background: var(--card-bg);
       border: 1px solid var(--color-finance);
-      color: var(--text-primary); border-radius: 4px;
+      color: var(--text-primary);
+      border-radius: 4px;
       font-family: 'Orbitron', sans-serif;
     }
+
     .input-box:focus {
       outline: none;
       border-color: #38bdf8;
-      box-shadow: 0 0 8px rgba(56,189,248,0.4);
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
     }
   </style>
 </head>
+
 <body>
-<div id="fs-backdrop" onclick="toggleFullscreen()"></div>
-<div class="layout">
+  <div id="fs-backdrop" onclick="toggleFullscreen()"></div>
+  <div class="layout">
 
-  <!-- Dynamic Navbar -->
-  <header id="main-navbar"></header>
+    <!-- Dynamic Navbar -->
+    <header id="main-navbar"></header>
 
-  <!-- MAIN CONTENT -->
-  <main class="main">
+    <!-- MAIN CONTENT -->
+    <main class="main">
 
-    <div style="max-width:800px; width:100%; margin:0 auto 30px;">
-      <a href="../index.html#pianificazione" style="color:var(--text-secondary); text-decoration:none; font-size:0.85rem; display:inline-flex; align-items:center; gap:6px; margin-bottom:15px; transition:color 0.2s;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Torna alla Finanza
-      </a>
-      <h2 style="color:var(--color-finance); text-align:center; text-shadow:0 0 15px rgba(201,168,76,0.3);">
-        🎲 Simulazione Monte Carlo
-      </h2>
-      <p style="text-align:center; color:var(--text-secondary); font-size:0.9rem; margin-top:8px;">
-        Proietta migliaia di scenari casuali per analizzare la probabilità di successo del tuo portafoglio nel tempo,
-        in base a rendimento atteso e volatilità (deviazione standard).
-      </p>
-    </div>
-
-    <!-- ── PARAMETRI BASE ────────────────────────────────────── -->
-    <section class="card finance" style="max-width:800px;width:100%;margin:0 auto 30px;">
-      <h3 style="margin-bottom:18px;">Parametri di simulazione</h3>
-
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
-        <label class="input-label">
-          Capitale iniziale (€)
-          <input id="capitale" class="input-box" type="number" value="50000" min="0">
-        </label>
-        <label class="input-label">
-          Versamento annuo (€)
-          <input id="versamento" class="input-box" type="number" value="12000" min="0">
-        </label>
-        <label class="input-label">
-          Rendimento medio atteso (%)
-          <input id="rendimento" class="input-box" type="number" step="0.1" value="7.0">
-        </label>
-        <label class="input-label">
-          Volatilità attesa (Dev. Std. %)
-          <input id="volatilita" class="input-box" type="number" step="0.1" value="15.0" title="Più alta è la volatilità, più gli scenari saranno variabili. Azionario puro viaggia tra il 15% e il 20%.">
-        </label>
-        <label class="input-label">
-          Orizzonte temporale (Anni)
-          <input id="anni" class="input-box" type="number" value="30" min="1" max="100">
-        </label>
-        <label class="input-label">
-          Numero di scenari
-          <input id="simulazioni" class="input-box" type="number" value="5000" min="100" max="20000" title="Massimo 20000. Più è alto, più la statistica è accurata, ma il calcolo più lento.">
-        </label>
-        <label class="input-label" style="grid-column: 1 / -1;">
-          Numero di percentili da tracciare (es. 5, 10, 20)
-          <input id="percentili" class="input-box" type="number" value="5" min="1" max="100" title="Numero di percentili equidistanti da simulare e visualizzare nel grafico.">
-          <span style="font-size:0.7rem; color:var(--text-secondary); margin-top:2px;">Il sistema calcolerà in automatico i punti equidistanti. (es. 5 visualizzerà: P10, P30, P50, P70, P90). Il P50 rappresenta sempre il caso mediano più probabile.</span>
-        </label>
+      <div style="max-width:800px; width:100%; margin:0 auto 30px;">
+        <a href="../index.html#pianificazione"
+          style="color:var(--text-secondary); text-decoration:none; font-size:0.85rem; display:inline-flex; align-items:center; gap:6px; margin-bottom:15px; transition:color 0.2s;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          Torna alla Finanza
+        </a>
+        <h2 style="color:var(--color-finance); text-align:center; text-shadow:0 0 15px rgba(201,168,76,0.3);">
+          🎲 Simulazione Monte Carlo
+        </h2>
+        <p style="text-align:center; color:var(--text-secondary); font-size:0.9rem; margin-top:8px;">
+          Proietta migliaia di scenari casuali per analizzare la probabilità di successo del tuo portafoglio nel tempo,
+          in base a rendimento atteso e volatilità (deviazione standard).
+        </p>
       </div>
 
-      <button class="btn-calcola" onclick="calcola()">▶ Avvia Simulazione</button>
-    </section>
+      <!-- ── PARAMETRI BASE ────────────────────────────────────── -->
+      <section class="card finance" style="max-width:800px;width:100%;margin:0 auto 30px;">
+        <h3 style="margin-bottom:18px;">Parametri di simulazione</h3>
 
-    <!-- ── RISULTATI PRINCIPALI (CARDS) ──────────────────────── -->
-    <div id="risultati-container" style="display:none; max-width:800px; width:100%; margin:0 auto;">
-      <h3 style="color:var(--text-primary); margin-bottom:14px; font-size:1.1rem; text-align:center;">Proiezioni a fine periodo</h3>
-      <section class="cards" id="cards-risultati" style="margin-bottom:30px; display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px;">
-        <!-- Le card vengono generate dinamicamente da script.js -->
+        <div class="responsive-grid">
+          <label class="input-label">
+            Capitale iniziale (€)
+            <input id="capitale" class="input-box format-currency" type="text" inputmode="numeric" value="50.000">
+          </label>
+          <label class="input-label">
+            Versamento annuo (€)
+            <input id="versamento" class="input-box format-currency" type="text" inputmode="numeric" value="12.000">
+          </label>
+          <label class="input-label">
+            Rendimento medio atteso (%)
+            <input id="rendimento" class="input-box format-currency" type="text" inputmode="numeric" value="7,0">
+          </label>
+          <label class="input-label">
+            Volatilità attesa (Dev. Std. %)
+            <input id="volatilita" class="input-box format-currency" type="text" inputmode="numeric" value="15,0"
+              title="Più alta è la volatilità, più gli scenari saranno variabili. Azionario puro viaggia tra il 15% e il 20%.">
+          </label>
+          <label class="input-label">
+            Orizzonte temporale (Anni)
+            <input id="anni" class="input-box format-currency" type="text" inputmode="numeric" value="30">
+          </label>
+          <label class="input-label">
+            Numero di scenari
+            <input id="simulazioni" class="input-box format-currency" type="text" inputmode="numeric" value="5.000"
+              title="Massimo 20000. Più è alto, più la statistica è accurata, ma il calcolo più lento.">
+          </label>
+          <label class="input-label" style="grid-column: 1 / -1;">
+            Numero di percentili da tracciare (es. 5, 10, 20)
+            <input id="percentili" class="input-box" type="number" value="5" min="1" max="100"
+              title="Numero di percentili equidistanti da simulare e visualizzare nel grafico.">
+            <span style="font-size:0.7rem; color:var(--text-secondary); margin-top:2px;">Il sistema calcolerà in
+              automatico i punti equidistanti. (es. 5 visualizzerà: P10, P30, P50, P70, P90). Il P50 rappresenta sempre
+              il caso mediano più probabile.</span>
+          </label>
+        </div>
+
+        <button class="btn-calcola" onclick="calcola()">▶ Avvia Simulazione</button>
       </section>
-    </div>
 
-    <!-- ── GRAFICO ────────────────────────────────────────────── -->
-    <section class="card finance" id="grafico-section" style="max-width:800px;width:100%;position:relative;margin:0 auto;display:none;">
-      <h3 style="margin-bottom:14px;">Andamento Probabilistico Portafoglio</h3>
-      <!-- Pulsante fullscreen premium -->
-      <button id="btn-fullscreen" onclick="toggleFullscreen()" title="Apri a schermo intero" aria-label="Fullscreen">
-        <svg id="fs-icon-expand" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
-          <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
-        </svg>
-        <svg id="fs-icon-compress" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
-          <polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/>
-          <line x1="10" y1="14" x2="3" y2="21"/><line x1="21" y1="3" x2="14" y2="10"/>
-        </svg>
-        <span id="fs-label">FULLSCREEN</span>
-      </button>
-      <div id="grafico-wrapper" style="position:relative; background:var(--card-bg);border-radius:8px;padding:14px;border:1px solid rgba(37,99,235,0.18);">
-        <canvas id="grafico" height="130"></canvas>
+      <!-- ── RISULTATI PRINCIPALI (CARDS) ──────────────────────── -->
+      <div id="risultati-container" style="display:none; max-width:800px; width:100%; margin:0 auto;">
+        <h3 style="color:var(--text-primary); margin-bottom:14px; font-size:1.1rem; text-align:center;">Proiezioni a
+          fine periodo</h3>
+        <section class="cards responsive-grid" id="cards-risultati" style="margin-bottom:30px;">
+          <!-- Le card vengono generate dinamicamente da script.js -->
+        </section>
       </div>
-    </section>
 
-  </main>
-</div>
+      <!-- ── GRAFICO ────────────────────────────────────────────── -->
+      <section class="card finance" id="grafico-section"
+        style="max-width:800px;width:100%;position:relative;margin:0 auto;display:none;">
+        <h3 style="margin-bottom:14px;">Andamento Probabilistico Portafoglio</h3>
+        <!-- Pulsante fullscreen premium -->
+        <button id="btn-fullscreen" onclick="toggleFullscreen()" title="Apri a schermo intero" aria-label="Fullscreen">
+          <svg id="fs-icon-expand" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9" />
+            <polyline points="9 21 3 21 3 15" />
+            <line x1="21" y1="3" x2="14" y2="10" />
+            <line x1="3" y1="21" x2="10" y2="14" />
+          </svg>
+          <svg id="fs-icon-compress" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+            <polyline points="4 14 10 14 10 20" />
+            <polyline points="20 10 14 10 14 4" />
+            <line x1="10" y1="14" x2="3" y2="21" />
+            <line x1="21" y1="3" x2="14" y2="10" />
+          </svg>
+          <span id="fs-label">FULLSCREEN</span>
+        </button>
+        <div id="grafico-wrapper"
+          style="position:relative; background:var(--card-bg);border-radius:8px;padding:14px;border:1px solid rgba(37,99,235,0.18);">
+          <canvas id="grafico" height="130"></canvas>
+        </div>
+      </section>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="script.js"></script>
-<script src="../../js/navbar.js"></script>
-<script src="../../js/main.js"></script>
-<script src="../../js/footer.js"></script>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+  <script src="../../js/navbar.js"></script>
+  <script src="../../js/main.js"></script>
+  <script src="../../js/footer.js"></script>
 </body>
+
 </html>

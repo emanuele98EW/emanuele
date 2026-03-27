@@ -13,10 +13,10 @@ function fmt(n) {
 }
 
 function calcola() {
-  const fv = parseFloat(document.getElementById('obiettivo').value) || 0;
-  const pv = parseFloat(document.getElementById('capitale').value) || 0;
-  const r_annuo = parseFloat(document.getElementById('rendimento').value) || 0;
-  const anni = parseInt(document.getElementById('anni').value) || 0;
+  const fv = parseItaNumber(document.getElementById('obiettivo').value) || 0;
+  const pv = parseItaNumber(document.getElementById('capitale').value) || 0;
+  const r_annuo = parseItaNumber(document.getElementById('rendimento').value) || 0;
+  const anni = Math.round(parseItaNumber(document.getElementById('anni').value)) || 0;
 
   if (fv <= 0 || anni <= 0) return;
 
@@ -37,7 +37,7 @@ function calcola() {
     // Inversione per trovare PMT
     let compoundFactor = Math.pow(1 + r_mese, n_mesi);
     pv_fv = pv * compoundFactor;
-    
+
     // Se il capitale iniziale cresce già oltre l'obiettivo
     if (pv_fv >= fv) {
       pmt = 0;
@@ -61,19 +61,18 @@ function calcola() {
   // Popola cards
   const cardsContainer = document.getElementById('cards-risultati');
   cardsContainer.innerHTML = `
-    <div class="card finance" style="padding:20px; text-align:center; border-top:3px solid #3b82f6; transform:scale(1.03); box-shadow:0 10px 25px rgba(59,130,246,0.15);">
-      <h3 style="font-size:0.95rem; color:#bfdbfe; margin-bottom:8px;">Risparmio Mensile Necessario</h3>
-      <p style="font-size:1.8rem; color:#fff; font-family:'Orbitron',sans-serif; text-shadow:0 0 15px rgba(59,130,246,0.8);">${fmt(pmt)}/m</p>
+    <div class="card finance" style="padding:20px; text-align:center; border-top:3px solid #10b981; transform:scale(1.03); box-shadow:0 10px 25px rgba(16,185,129,0.15);">
+      <h3 style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:8px;">Risparmio Supplementare per Target</h3>
+      <p style="font-size:1.8rem; color:var(--text-primary); font-family:'Orbitron',sans-serif; text-shadow:0 0 15px rgba(16,185,129,0.5);">${fmt(pmt)}/m</p>
     </div>
     <div class="card finance" style="padding:20px; text-align:center;">
-      <h3 style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:8px;">Capitale Totale Versato</h3>
-      <p style="font-size:1.4rem; color:#fff; font-family:'Orbitron',sans-serif;">${fmt(totaleInvestito)}</p>
-      <p style="font-size:0.75rem; color:#9ca3af; margin-top:4px;">(Incluso capitale iniziale)</p>
+      <h3 style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:8px;">Totale Versato</h3>
+      <p style="font-size:1.4rem; color:var(--text-primary); font-family:'Orbitron',sans-serif;">${fmt(totaleInvestito)}</p>
     </div>
     <div class="card finance" style="padding:20px; text-align:center;">
-      <h3 style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:8px;">Interessi Generati</h3>
-      <p style="font-size:1.4rem; color:#10b981; font-family:'Orbitron',sans-serif;">+ ${fmt(totaleInteressi)}</p>
-      <p style="font-size:0.75rem; color:#9ca3af; margin-top:4px;">Effetto composto in ${anni} anni</p>
+      <h3 style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:8px;">Interessi Maturati</h3>
+      <p style="font-size:1.4rem; color:var(--color-finance); font-family:'Orbitron',sans-serif;">${fmt(totaleInteressi)}</p>
+    </div>  <p style="font-size:0.75rem; color:#9ca3af; margin-top:4px;">Effetto composto in ${anni} anni</p>
     </div>
   `;
 
@@ -86,7 +85,7 @@ function disegnaGrafico(pv, versamenti, interessi) {
   if (savingsChart) { savingsChart.destroy(); }
 
   const canvasCtx = document.getElementById('grafico').getContext('2d');
-  
+
   savingsChart = new Chart(canvasCtx, {
     type: 'doughnut',
     data: {
@@ -106,6 +105,7 @@ function disegnaGrafico(pv, versamenti, interessi) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      cutout: '65%',
       animation: { duration: 800, easing: 'easeOutQuart' },
       plugins: {
         legend: {
@@ -120,7 +120,7 @@ function disegnaGrafico(pv, versamenti, interessi) {
           bodyColor: '#e2e8f0',
           padding: 12,
           callbacks: {
-            label: function(context) {
+            label: function (context) {
               let value = context.parsed;
               let total = context.dataset.data.reduce((a, b) => a + b, 0);
               let percentage = ((value / total) * 100).toFixed(1) + '%';
@@ -138,44 +138,52 @@ let _fsActive = false;
 let _fsScrollY = 0;
 
 function toggleFullscreen() {
-  const section   = document.getElementById('grafico-section');
-  const backdrop  = document.getElementById('fs-backdrop');
-  const iconExp   = document.getElementById('fs-icon-expand');
+  const section = document.getElementById('grafico-section');
+  const backdrop = document.getElementById('fs-backdrop');
+  const iconExp = document.getElementById('fs-icon-expand');
   const iconCompr = document.getElementById('fs-icon-compress');
-  const label     = document.getElementById('fs-label');
-  const canvas    = document.getElementById('grafico');
+  const label = document.getElementById('fs-label');
+  const canvas = document.getElementById('grafico');
 
   if (!_fsActive) {
     _fsScrollY = window.scrollY;
-    _fsActive  = true;
+    _fsActive = true;
     backdrop.style.display = 'block';
     section.classList.add('is-fullscreen');
     document.body.style.overflow = 'hidden';
-    iconExp.style.display   = 'none';
+    iconExp.style.display = 'none';
     iconCompr.style.display = 'block';
-    label.textContent       = 'ESCI';
+    label.textContent = 'ESCI';
 
-    requestAnimationFrame(() => {
-      if (savingsChart) {
+    if (savingsChart) {
+      canvas.style.width = '0px';
+      canvas.style.height = '0px';
+      setTimeout(() => {
+        canvas.style.width = '';
+        canvas.style.height = '';
         savingsChart.resize();
-      }
-    });
+      }, 10);
+    }
     document.addEventListener('keydown', _onFsKeydown);
   } else {
     _fsActive = false;
     backdrop.style.display = 'none';
     section.classList.remove('is-fullscreen');
     document.body.style.overflow = '';
-    iconExp.style.display   = 'block';
+    iconExp.style.display = 'block';
     iconCompr.style.display = 'none';
-    label.textContent       = 'FULLSCREEN';
+    label.textContent = 'FULLSCREEN';
 
-    requestAnimationFrame(() => {
-      if (savingsChart) {
+    if (savingsChart) {
+      canvas.style.width = '0px';
+      canvas.style.height = '0px';
+      setTimeout(() => {
+        canvas.style.width = '';
+        canvas.style.height = '';
         savingsChart.resize();
-      }
-      window.scrollTo({ top: _fsScrollY, behavior: 'instant' });
-    });
+        window.scrollTo({ top: _fsScrollY, behavior: 'instant' });
+      }, 10);
+    }
     document.removeEventListener('keydown', _onFsKeydown);
   }
 }

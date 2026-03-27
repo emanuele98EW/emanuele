@@ -10,6 +10,28 @@
         (function () { var p = localStorage.getItem("themePref"); if (p === "light") { document.documentElement.classList.add("light-mode") } else if (!p) { try { var d = JSON.parse(localStorage.getItem("themeData")); if (d) { var n = Date.now(); if (n >= d.sunrise && n < d.sunset) document.documentElement.classList.add("light-mode") } } catch (e) { } } })();
     </script>
     <link rel="stylesheet" href="../../../css/style.css">
+    <style>
+        /* Ottimizzazione immagini e video per la modalità notte */
+        html:not(.light-mode) .media-scuro-fix {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 8px;
+            filter: brightness(1.1) contrast(1.05);
+        }
+        html:not(.light-mode) .video-scuro-fix {
+            mix-blend-mode: screen !important; /* Rende la parte chiara del video visibile, utile per animazioni nere o invertite */
+            filter: invert(1) hue-rotate(180deg) brightness(1.2) contrast(1.1) !important;
+        }
+        /* Regola se il video ha sfondo bianco - lo rimuoviamo con blend */
+        html:not(.light-mode) .video-bg-white-fix {
+            mix-blend-mode: normal !important; /* disabilita il multiply su sfondo scuro che lo rende nero */
+            filter: brightness(1.15) contrast(1.1) !important;
+        }
+        html:not(.light-mode) .img-chiara {
+            filter: brightness(1.2) contrast(1.1) drop-shadow(0 0 10px rgba(255,255,255,0.1));
+            background: rgba(255, 255, 255, 0.85); /* Sfondo chiaro per leggerezza */
+            padding: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -32,11 +54,14 @@
 
             <div class="card personal" style="max-width: 900px; width: 100%; text-align: left; padding: 40px;">
 
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
-                    <span style="background: var(--color-personal-glow); color: var(--color-personal); padding: 6px 12px; border-radius: 4px; font-weight: bold; border: 1px solid var(--color-personal);">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                    <span
+                        style="background: var(--color-personal-glow); color: var(--color-personal); padding: 6px 12px; border-radius: 4px; font-weight: bold; border: 1px solid var(--color-personal);">
                         Laurea Magistrale in Ingegneria Energetica
                     </span>
-                    <span style="color: var(--text-secondary); font-size: 1rem;">Anno: 2023 &nbsp;|&nbsp; Voto: 110/110</span>
+                    <span style="color: var(--text-secondary); font-size: 1rem;">Anno: 2023 &nbsp;|&nbsp; Voto:
+                        110/110</span>
                 </div>
 
                 <h2 style="color: var(--color-personal); margin-bottom: 25px; font-size: 2rem; line-height: 1.3;">
@@ -55,9 +80,12 @@
                 </div>
 
                 <!-- VIDEO SEZIONE -->
-                <div style="width: 100%; display: flex; justify-content: center; margin-bottom: 35px; position: relative;">
-                    <div style="position: absolute; width: 280px; height: 280px; background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, rgba(201,168,76,0) 70%); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;"></div>
-                    <video autoplay loop muted playsinline
+                <div
+                    style="width: 100%; display: flex; justify-content: center; margin-bottom: 35px; position: relative;">
+                    <div
+                        style="position: absolute; width: 280px; height: 280px; background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, rgba(201,168,76,0) 70%); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                    </div>
+                    <video autoplay loop muted playsinline class="video-bg-white-fix"
                         style="height: 300px; max-width: 100%; border-radius: 8px; mix-blend-mode: multiply; filter: contrast(1.1) brightness(1.05); z-index: 2; position: relative;">
                         <source src="assets/video.mp4" type="video/mp4">
                         Il tuo browser non supporta il tag video.
@@ -74,8 +102,10 @@
                 </p>
 
                 <h3 class="cv-section-title">Obiettivi Principali</h3>
-                <ul style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.7; margin-left: 20px; margin-bottom: 30px;">
-                    <li>Dimensionamento accurato di un impianto fotovoltaico per applicazioni residenziali e terziarie.</li>
+                <ul
+                    style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.7; margin-left: 20px; margin-bottom: 30px;">
+                    <li>Dimensionamento accurato di un impianto fotovoltaico per applicazioni residenziali e terziarie.
+                    </li>
                     <li>Analisi dei flussi di energia e dei profili di carico per la stima dell'autoconsumo.</li>
                     <li>Valutazione tecnico-economica delle configurazioni di Autoconsumo Collettivo (AUC).</li>
                     <li>Rispetto stringente delle normative CEI vigenti per la connessione in Bassa Tensione.</li>
@@ -83,64 +113,96 @@
 
                 <h3 class="cv-section-title">Competenze e Tecnologie Applicate</h3>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
-                    <span style="font-size: 0.9rem; color: var(--text-primary); background: rgba(201, 168, 76, 0.06); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(201, 168, 76, 0.2);">Progettazione Impiantistica Elettrica</span>
-                    <span style="font-size: 0.9rem; color: var(--text-primary); background: rgba(201, 168, 76, 0.06); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(201, 168, 76, 0.2);">Modellazione Profili di Consumo</span>
-                    <span style="font-size: 0.9rem; color: var(--text-primary); background: rgba(201, 168, 76, 0.06); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(201, 168, 76, 0.2);">Normativa CEI</span>
-                    <span style="font-size: 0.9rem; color: var(--text-primary); background: rgba(201, 168, 76, 0.06); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(201, 168, 76, 0.2);">Analisi Finanziaria (VAN, TIR)</span>
-                    <span style="font-size: 0.9rem; color: var(--text-primary); background: rgba(201, 168, 76, 0.06); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(201, 168, 76, 0.2);">Transizione Energetica</span>
+                    <span
+                        style="font-size: 0.9rem; color: var(--text-primary); background: rgba(201, 168, 76, 0.06); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(201, 168, 76, 0.2);">Progettazione
+                        Impiantistica Elettrica</span>
+                    <span
+                        style="font-size: 0.9rem; color: var(--text-primary); background: rgba(201, 168, 76, 0.06); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(201, 168, 76, 0.2);">Modellazione
+                        Profili di Consumo</span>
+                    <span
+                        style="font-size: 0.9rem; color: var(--text-primary); background: rgba(201, 168, 76, 0.06); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(201, 168, 76, 0.2);">Normativa
+                        CEI</span>
+                    <span
+                        style="font-size: 0.9rem; color: var(--text-primary); background: rgba(201, 168, 76, 0.06); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(201, 168, 76, 0.2);">Analisi
+                        Finanziaria (VAN, TIR)</span>
+                    <span
+                        style="font-size: 0.9rem; color: var(--text-primary); background: rgba(201, 168, 76, 0.06); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(201, 168, 76, 0.2);">Transizione
+                        Energetica</span>
                 </div>
 
                 <!-- CONCLUSIONI E GRAFICI -->
-                <div class="card personal" style="max-width: 900px; width: 100%; text-align: left; padding: 40px; margin-top: 40px;">
+                <div class="card personal"
+                    style="max-width: 900px; width: 100%; text-align: left; padding: 40px; margin-top: 40px;">
 
                     <h3 class="cv-section-title">Cos'è l'Autoconsumo Collettivo?</h3>
                     <p style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.7; margin-bottom: 30px;">
-                        L'<strong style="color: var(--color-personal);">Autoconsumo Collettivo (AUC)</strong> è un modello energetico che permette a più
-                        soggetti (es. condomini) trovantisi nello stesso edificio, di unire le forze per produrre, consumare e condividere
-                        virtualmente energia proveniente da un impianto rinnovabile comune, ad esempio fotovoltaico. L'energia condivisa
-                        viene incentivata dal GSE, trasformando i consumatori in <em>prosumer</em> e riducendo significativamente le
+                        L'<strong style="color: var(--color-personal);">Autoconsumo Collettivo (AUC)</strong> è un
+                        modello energetico che permette a più
+                        soggetti (es. condomini) trovantisi nello stesso edificio, di unire le forze per produrre,
+                        consumare e condividere
+                        virtualmente energia proveniente da un impianto rinnovabile comune, ad esempio fotovoltaico.
+                        L'energia condivisa
+                        viene incentivata dal GSE, trasformando i consumatori in <em>prosumer</em> e riducendo
+                        significativamente le
                         bollette, promuovendo inoltre l'indipendenza energetica e la riduzione delle emissioni.
                     </p>
 
                     <h3 class="cv-section-title" style="margin-bottom: 25px;">Bilancio Energetico e Performance</h3>
                     <div style="text-align: center; margin-bottom: 30px;">
-                        <img src="assets/PR_magistrale.png" alt="Performance Ratio Mensile"
+                        <img src="assets/PR_magistrale.png" alt="Performance Ratio Mensile" class="img-chiara"
                             style="max-width: 100%; border-radius: 8px; border: 1px solid var(--color-personal-glow);">
-                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 10px; opacity: 0.7;">Andamento del Performance Ratio.</p>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 10px; opacity: 0.7;">
+                            Andamento del Performance Ratio.</p>
                     </div>
 
-                    <h3 class="cv-section-title" style="margin-bottom: 25px;">Convenienza Economica (Con e Senza Accumulo)</h3>
+                    <h3 class="cv-section-title" style="margin-bottom: 25px;">Convenienza Economica (Con e Senza
+                        Accumulo)</h3>
                     <div style="display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;">
                         <div style="flex: 1; min-width: 300px; text-align: center;">
-                            <img src="assets/ROI_senza_accumulo.png" alt="Ritorno Economico senza Accumulo"
+                            <img src="assets/ROI_senza_accumulo.png" alt="Ritorno Economico senza Accumulo" class="img-chiara"
                                 style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(201, 168, 76, 0.25);">
-                            <p style="color: var(--color-personal); font-size: 0.9rem; margin-top: 10px;">Flusso di cassa cumulato a 20 anni <b>senza</b> sistemi di accumulo.</p>
+                            <p style="color: var(--color-personal); font-size: 0.9rem; margin-top: 10px;">Flusso di
+                                cassa cumulato a 20 anni <b>senza</b> sistemi di accumulo.</p>
                         </div>
                         <div style="flex: 1; min-width: 300px; text-align: center;">
-                            <img src="assets/ROI_con_accumulo.png" alt="Ritorno Economico con Accumulo"
+                            <img src="assets/ROI_con_accumulo.png" alt="Ritorno Economico con Accumulo" class="img-chiara"
                                 style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(14, 165, 233, 0.25);">
-                            <p style="color: #38bdf8; font-size: 0.9rem; margin-top: 10px;">Flusso di cassa cumulato a 20 anni <b>con</b> sistemi di accumulo.</p>
+                            <p style="color: #38bdf8; font-size: 0.9rem; margin-top: 10px;">Flusso di cassa cumulato a
+                                20 anni <b>con</b> sistemi di accumulo.</p>
                         </div>
                     </div>
 
                     <h3 class="cv-section-title">Conclusioni e Risultati del Progetto</h3>
-                    <ul style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.7; margin-left: 20px; list-style-type: disc;">
-                        <li><strong style="color: var(--color-personal);">Integrazione Condominiale:</strong> Per l'impianto condominiale nello schema AUC si
-                            è operata una scelta progettuale di moduli complanari al tetto (non inclinati ulteriormente) per
-                            <strong>massimizzare la potenza installata</strong> sulla superficie disponibile, ottenendo un
-                            <em>Performance Ratio (PR) medio annuale di 0.727</em>, un valore molto buono al netto degli ombreggiamenti.
+                    <ul
+                        style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.7; margin-left: 20px; list-style-type: disc;">
+                        <li><strong style="color: var(--color-personal);">Integrazione Condominiale:</strong> Per
+                            l'impianto condominiale nello schema AUC si
+                            è operata una scelta progettuale di moduli complanari al tetto (non inclinati ulteriormente)
+                            per
+                            <strong>massimizzare la potenza installata</strong> sulla superficie disponibile, ottenendo
+                            un
+                            <em>Performance Ratio (PR) medio annuale di 0.727</em>, un valore molto buono al netto degli
+                            ombreggiamenti.
                         </li>
-                        <li><strong style="color: var(--color-personal);">Convenienza Economica:</strong> L'investimento fotovoltaico è risultato estremamente
-                            vantaggioso. La valutazione economica in vari scenari di costo energia (2021 e 2022) ha dimostrato tempi
-                            di ritorno (Payback Time) compresi tra i <strong>4.0 e 6.1 anni</strong>, con un ritorno economico
+                        <li><strong style="color: var(--color-personal);">Convenienza Economica:</strong> L'investimento
+                            fotovoltaico è risultato estremamente
+                            vantaggioso. La valutazione economica in vari scenari di costo energia (2021 e 2022) ha
+                            dimostrato tempi
+                            di ritorno (Payback Time) compresi tra i <strong>4.0 e 6.1 anni</strong>, con un ritorno
+                            economico
                             percentuale (ROI) finale tra il <strong>126% e il 201%</strong>.
                         </li>
-                        <li><strong style="color: var(--color-personal);">Vantaggi dell'Accumulo (Batterie):</strong> Un risultato chiave è l'impatto dei
-                            sistemi di accumulo. Nonostante un costo d'investimento iniziale superiore del 23.7%, l'accumulo garantisce
-                            un ricavo economico a lungo termine <strong>superiore del 144%</strong> rispetto al caso senza batterie.
+                        <li><strong style="color: var(--color-personal);">Vantaggi dell'Accumulo (Batterie):</strong> Un
+                            risultato chiave è l'impatto dei
+                            sistemi di accumulo. Nonostante un costo d'investimento iniziale superiore del 23.7%,
+                            l'accumulo garantisce
+                            un ricavo economico a lungo termine <strong>superiore del 144%</strong> rispetto al caso
+                            senza batterie.
                         </li>
-                        <li><strong style="color: var(--color-personal);">Dinamica di Condivisione:</strong> L'accumulo permette infatti di coprire i picchi
-                            di fabbisogno condominiale nelle <em>ore serali</em>, massimizzando drasticamente la quantità di energia
+                        <li><strong style="color: var(--color-personal);">Dinamica di Condivisione:</strong> L'accumulo
+                            permette infatti di coprire i picchi
+                            di fabbisogno condominiale nelle <em>ore serali</em>, massimizzando drasticamente la
+                            quantità di energia
                             "condivisa" col GSE e massimizzando gli incentivi associati all'Autoconsumo Collettivo.
                         </li>
                     </ul>

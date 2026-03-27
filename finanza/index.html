@@ -14,9 +14,9 @@
     rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <style>
-    --hero-rgb: 16,
-    185,
-    129;
+    :root {
+      --hero-rgb: 16, 185, 129;
+    }
 
     /* ══ SHARED PAGE STYLES (same language as home) ══════ */
     .main {
@@ -1149,7 +1149,7 @@
         for (const a of assets) {
           try {
             const url = `https://query1.finance.yahoo.com/v8/finance/chart/${a.sym}?interval=1d&range=2d`;
-            const r = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);
+            const r = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
             const d = await r.json();
             const meta = d.chart?.result?.[0]?.meta;
             if (!meta) throw new Error();
