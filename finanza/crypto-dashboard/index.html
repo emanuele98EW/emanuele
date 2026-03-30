@@ -1,34 +1,96 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Crypto Dashboard | Emanuele Zanella</title>
-  <meta name="description" content="Dashboard crypto con analisi on-chain e dati storici.">
-  <script>
-(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
-</script>
-    <link rel="stylesheet" href="../../css/style.css">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crypto Dashboard | Emanuele Zanella</title>
+  <script>(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .tool-wrap{max-width:800px;width:100%;margin:0 auto 30px;padding:0 16px;box-sizing:border-box}
+    .crypto-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    .crypto-card{padding:clamp(15px,4vw,20px);border-radius:10px;background:var(--card-bg);border:1px solid var(--border-color,rgba(255,255,255,.08));display:flex;flex-direction:column;gap:8px;transition:border-color .3s}
+    .crypto-card:hover{border-color:var(--color-finance)}
+    .cc-top{display:flex;justify-content:space-between;align-items:center}
+    .cc-name{font-size:.85rem;font-weight:600;color:var(--text-primary)}
+    .cc-symbol{font-family:'Orbitron',sans-serif;font-size:.7rem;color:var(--text-secondary);letter-spacing:1px}
+    .cc-price{font-family:'Orbitron',sans-serif;font-size:clamp(1.2rem,4vw,1.5rem);color:#fff;font-weight:700}
+    .cc-change{font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:700}
+    .cc-up{color:#10b981}
+    .cc-down{color:#ef4444}
+    html.light-mode .cc-price{color:#1e293b}
+    html.light-mode .cc-up{color:#047857}
+    html.light-mode .cc-down{color:#b91c1c}
+    .cc-extra{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-secondary)}
+    .loading{text-align:center;color:var(--text-secondary);padding:30px;font-size:.85rem}
+    .dom-card{text-align:center;padding:clamp(20px,5vw,30px)}
+    .dom-card h3{font-size:clamp(.9rem,3vw,1.1rem);margin-bottom:8px}
+    .dom-card p{font-size:clamp(1.5rem,5vw,2rem);font-family:'Orbitron',sans-serif;color:#f59e0b;text-shadow:0 0 15px rgba(245,158,11,.6)}
+    #dom-bar{height:8px;border-radius:4px;background:rgba(255,255,255,.06);margin-top:10px;overflow:hidden}
+    #dom-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#f59e0b,#10b981);transition:width .5s}
+    @media(max-width:500px){.crypto-grid{grid-template-columns:1fr}}
+  </style>
 </head>
 <body>
-    <div class="layout">
+  <div class="layout">
     <header id="main-navbar"></header>
-        <main class="main">
-            <h2 style="color: var(--color-finance); text-align: center; margin-bottom: 30px;">
-                ₿ Crypto Dashboard</h2>
-            <section class="card finance"
-                style="max-width: 800px; width: 100%; margin-bottom: 30px; text-align: center; padding: 40px 20px;">
-                <h3 style="margin-bottom: 20px; font-size: 1.5rem; color: #10b981;">Analisi Crypto Avanzata</h3>
-                <p style="color: #cbd5e1; font-size: 1.1rem; line-height: 1.6; max-width: 600px; margin: 0 auto;">
-                    Dashboard avanzata con grafici storici, analisi on-chain, dominance di mercato
-                    e indicatori tecnici per le principali criptovalute.
-                </p>
-                <div style="margin-top: 30px; font-size: 3rem; opacity: 0.5;">🚧</div>
-            </section>
-        </main>
-    </div>
-    <script src="../../js/navbar.js"></script>
-  <script src="../../js/main.js"></script>
-  <script src="../../js/footer.js"></script>
+    <main class="main">
+      <p style="text-align:center;margin-bottom:10px"><a href="../index.html" style="color:var(--color-finance);text-decoration:none;font-size:.85rem;font-family:'Orbitron',sans-serif;letter-spacing:1px">← Torna a Finanza</a></p>
+      <h2 style="color:var(--color-finance);text-align:center;margin-bottom:30px;font-size:clamp(1.5rem,5vw,2rem)">🪙 Crypto Dashboard</h2>
+      <p style="text-align:center;max-width:700px;margin:0 auto 30px;color:var(--text-secondary);font-size:.9rem;padding:0 15px">Prezzi in tempo reale delle principali criptovalute e dominance BTC. Dati aggiornati da <strong style="color:var(--color-finance)">CoinGecko API</strong>.</p>
+
+      <div class="card finance tool-wrap dom-card">
+        <h3 style="color:#fcd34d">BTC Dominance</h3>
+        <p id="dom-val">—</p>
+        <div id="dom-bar"><div id="dom-fill" style="width:0"></div></div>
+      </div>
+
+      <section class="tool-wrap" style="padding:0">
+        <div id="crypto-container" class="crypto-grid"><div class="loading">⏳ Caricamento dati da CoinGecko...</div></div>
+      </section>
+    </main>
+  </div>
+  <script>
+    const COINS=['bitcoin','ethereum','solana','binancecoin','ripple','cardano','polkadot','avalanche-2','chainlink','dogecoin','litecoin','uniswap'];
+    const SYMBOLS={bitcoin:'BTC',ethereum:'ETH',solana:'SOL',binancecoin:'BNB',ripple:'XRP',cardano:'ADA',polkadot:'DOT','avalanche-2':'AVAX',chainlink:'LINK',dogecoin:'DOGE',litecoin:'LTC',uniswap:'UNI'};
+    const NAMES={bitcoin:'Bitcoin',ethereum:'Ethereum',solana:'Solana',binancecoin:'BNB',ripple:'XRP',cardano:'Cardano',polkadot:'Polkadot','avalanche-2':'Avalanche',chainlink:'Chainlink',dogecoin:'Dogecoin',litecoin:'Litecoin',uniswap:'Uniswap'};
+
+    function fP(n){if(n>=1)return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});return '$'+n.toFixed(4)}
+    function fMC(n){if(n>=1e12)return '$'+(n/1e12).toFixed(2)+'T';if(n>=1e9)return '$'+(n/1e9).toFixed(1)+'B';if(n>=1e6)return '$'+(n/1e6).toFixed(0)+'M';return '$'+n.toFixed(0)}
+
+    async function load(){
+      try{
+        const [priceRes,globalRes]=await Promise.all([
+          fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${COINS.join(',')}&order=market_cap_desc&sparkline=false`),
+          fetch('https://api.coingecko.com/api/v3/global')
+        ]);
+        const coins=await priceRes.json();
+        const global=await globalRes.json();
+
+        // Dominance
+        const dom=global.data.market_cap_percentage.btc;
+        document.getElementById('dom-val').innerText=dom.toFixed(1)+'%';
+        document.getElementById('dom-fill').style.width=dom+'%';
+
+        // Cards
+        const container=document.getElementById('crypto-container');
+        container.innerHTML='';
+        coins.forEach(c=>{
+          const ch=c.price_change_percentage_24h||0;
+          const cls=ch>=0?'cc-up':'cc-down';
+          const sign=ch>=0?'+':'';
+          const card=document.createElement('div');
+          card.className='crypto-card';
+          card.innerHTML=`<div class="cc-top"><span class="cc-name">${NAMES[c.id]||c.name}</span><span class="cc-symbol">${SYMBOLS[c.id]||c.symbol.toUpperCase()}</span></div><div class="cc-price">${fP(c.current_price)}</div><div class="cc-change ${cls}">${sign}${ch.toFixed(2)}% (24h)</div><div class="cc-extra"><span>MCap: ${fMC(c.market_cap)}</span><span>Vol: ${fMC(c.total_volume)}</span></div>`;
+          container.appendChild(card);
+        });
+      }catch(e){
+        document.getElementById('crypto-container').innerHTML='<div class="loading" style="color:#ef4444">❌ Errore caricamento dati. Riprova più tardi.</div>';
+      }
+    }
+    document.addEventListener('DOMContentLoaded',load);
+  </script>
+  <script src="../../js/navbar.js"></script><script src="../../js/main.js"></script><script src="../../js/footer.js"></script>
 </body>
 </html>

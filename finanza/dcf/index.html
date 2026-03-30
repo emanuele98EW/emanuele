@@ -1,34 +1,89 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>DCF Model | Emanuele Zanella</title>
-  <meta name="description" content="Modello DCF per stimare il valore intrinseco di un'azione.">
-  <script>
-(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
-</script>
-    <link rel="stylesheet" href="../../css/style.css">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DCF Model | Emanuele Zanella</title>
+  <script>(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .tool-wrap{max-width:800px;width:100%;margin:0 auto 30px;padding:0 16px;box-sizing:border-box}
+    .responsive-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+    .input-label{display:flex;flex-direction:column;gap:7px;font-size:.85rem}
+    .input-label input{padding:10px;background:var(--card-bg);border:1px solid var(--color-finance);color:var(--text-primary);border-radius:4px;font-family:'Orbitron',sans-serif;width:100%;box-sizing:border-box}
+    .btn-calcola{margin-top:20px;padding:12px 28px;background:rgba(37,99,235,.15);border:1px solid var(--color-finance);color:var(--color-finance);border-radius:4px;cursor:pointer;font-weight:bold;font-family:'Orbitron',sans-serif;font-size:.9rem;transition:all .3s;letter-spacing:1px;width:100%;text-align:center}
+    .btn-calcola:hover{background:rgba(37,99,235,.3);box-shadow:0 0 18px rgba(37,99,235,.45)}
+    .cards-row{display:flex;flex-wrap:wrap;gap:20px;margin-bottom:30px}
+    .card-result{flex:1 1 200px;padding:clamp(15px,4vw,20px);text-align:center}
+    .card-result h3{font-size:clamp(.9rem,3vw,1.1rem);margin-bottom:8px}
+    .card-result p{font-size:clamp(1.4rem,5vw,1.8rem);color:#fff}
+    @media(max-width:600px){.responsive-grid{grid-template-columns:1fr}}
+    .table-container{width:100%;overflow-x:auto;border-radius:8px;border:1px solid var(--border-color,rgba(255,255,255,.08))}
+    .dcf-table{width:100%;border-collapse:collapse}
+    .dcf-table th,.dcf-table td{padding:10px 12px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.04));text-align:right;white-space:nowrap;font-size:.82rem}
+    .dcf-table th{background:rgba(37,99,235,.06);font-family:'Orbitron',sans-serif;font-size:.7rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px}
+    .dcf-table th:first-child,.dcf-table td:first-child{text-align:left}
+  </style>
 </head>
 <body>
-    <div class="layout">
+  <div class="layout">
     <header id="main-navbar"></header>
-        <main class="main">
-            <h2 style="color: var(--color-finance); text-align: center; margin-bottom: 30px;">
-                💹 DCF Model</h2>
-            <section class="card finance"
-                style="max-width: 800px; width: 100%; margin-bottom: 30px; text-align: center; padding: 40px 20px;">
-                <h3 style="margin-bottom: 20px; font-size: 1.5rem; color: #10b981;">Discounted Cash Flow</h3>
-                <p style="color: #cbd5e1; font-size: 1.1rem; line-height: 1.6; max-width: 600px; margin: 0 auto;">
-                    Stima il valore intrinseco di un'azione scontando i flussi di cassa futuri attesi.
-                    Include terminale growth rate e WACC personalizzabile.
-                </p>
-                <div style="margin-top: 30px; font-size: 3rem; opacity: 0.5;">🚧</div>
-            </section>
-        </main>
-    </div>
-    <script src="../../js/navbar.js"></script>
-  <script src="../../js/main.js"></script>
-  <script src="../../js/footer.js"></script>
+    <main class="main">
+      <p style="text-align:center;margin-bottom:10px"><a href="../index.html" style="color:var(--color-finance);text-decoration:none;font-size:.85rem;font-family:'Orbitron',sans-serif;letter-spacing:1px">← Torna a Finanza</a></p>
+      <h2 style="color:var(--color-finance);text-align:center;margin-bottom:30px;font-size:clamp(1.5rem,5vw,2rem)">💰 DCF Model</h2>
+      <p style="text-align:center;max-width:700px;margin:0 auto 30px;color:var(--text-secondary);font-size:.9rem;padding:0 15px">Calcola il <strong style="color:var(--color-finance)">valore intrinseco</strong> di un'azienda attraverso il metodo dei flussi di cassa scontati (Discounted Cash Flow).</p>
+      <section class="card finance tool-wrap" style="padding:clamp(20px,5vw,30px)">
+        <h3 style="margin-bottom:18px">Parametri DCF</h3>
+        <div class="responsive-grid">
+          <label class="input-label">FCF attuale ($M)<input id="fcf" type="text" inputmode="numeric" value="1.000"></label>
+          <label class="input-label">Crescita FCF (%)<input id="growth" type="text" inputmode="numeric" value="10"></label>
+          <label class="input-label">WACC / Sconto (%)<input id="wacc" type="text" inputmode="numeric" value="9"></label>
+          <label class="input-label">Crescita terminale (%)<input id="tg" type="text" inputmode="numeric" value="2,5"></label>
+          <label class="input-label">Anni proiezione<input id="years" type="text" inputmode="numeric" value="10"></label>
+          <label class="input-label">Azioni in miliardi<input id="shares" type="text" inputmode="numeric" value="1"></label>
+        </div>
+        <button class="btn-calcola" onclick="calcola()">▶ Calcola Valore Intrinseco</button>
+      </section>
+      <section class="cards-row tool-wrap">
+        <div class="card finance card-result" style="border-top-color:#10b981"><h3 style="color:#6ee7b7">Enterprise Value</h3><p id="res-ev" style="text-shadow:0 0 15px rgba(16,185,129,.6)">—</p><span style="font-size:.7rem;color:#999">Valore totale dell'azienda</span></div>
+        <div class="card finance card-result" style="border-top-color:#3b82f6"><h3 style="color:#93c5fd">Fair Value / Azione</h3><p id="res-fv" style="text-shadow:0 0 15px rgba(59,130,246,.6)">—</p><span style="font-size:.7rem;color:#999">Valore intrinseco per azione</span></div>
+      </section>
+      <section class="card finance tool-wrap" style="padding:clamp(20px,5vw,30px)">
+        <h3 style="margin-bottom:14px">Dettaglio Flussi Scontati</h3>
+        <div class="table-container"><table class="dcf-table"><thead><tr><th>Anno</th><th>FCF Proiettato</th><th>FCF Scontato</th></tr></thead><tbody id="dcf-tbody"></tbody></table></div>
+      </section>
+    </main>
+  </div>
+  <script>
+    function p(v){return parseFloat((v||'0').replace(/\./g,'').replace(',','.'))||0}
+    function fM(n){if(Math.abs(n)>=1e6)return (n/1e6).toFixed(1)+'T $';if(Math.abs(n)>=1e3)return (n/1e3).toFixed(1)+'B $';return n.toFixed(0)+'M $'}
+    function calcola(){
+      const fcf=p(document.getElementById('fcf').value),g=p(document.getElementById('growth').value)/100,wacc=p(document.getElementById('wacc').value)/100,tg=p(document.getElementById('tg').value)/100,y=parseInt(p(document.getElementById('years').value)),sh=p(document.getElementById('shares').value);
+      if(wacc<=tg){document.getElementById('res-ev').innerText='WACC ≤ TG!';return}
+      let sumPV=0,tb=document.getElementById('dcf-tbody');tb.innerHTML='';
+      let cfList=[];
+      for(let i=1;i<=y;i++){
+        const cf=fcf*Math.pow(1+g,i);
+        const pv=cf/Math.pow(1+wacc,i);
+        sumPV+=pv;cfList.push({yr:i,cf,pv});
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td style="color:var(--text-primary)"><strong>${i}</strong></td><td style="color:var(--text-secondary)">${fM(cf)}</td><td style="color:#10b981;font-weight:bold">${fM(pv)}</td>`;
+        tb.appendChild(tr);
+      }
+      const lastCF=fcf*Math.pow(1+g,y);
+      const tv=lastCF*(1+tg)/(wacc-tg);
+      const pvTV=tv/Math.pow(1+wacc,y);
+      sumPV+=pvTV;
+      const trTV=document.createElement('tr');
+      trTV.innerHTML=`<td style="color:var(--text-primary)"><strong>TV</strong></td><td style="color:var(--text-secondary)">${fM(tv)}</td><td style="color:#f59e0b;font-weight:bold">${fM(pvTV)}</td>`;
+      tb.appendChild(trTV);
+      document.getElementById('res-ev').innerText=fM(sumPV);
+      const fvPerShare=sh>0?sumPV/sh:0;
+      document.getElementById('res-fv').innerText='$'+fvPerShare.toFixed(2);
+    }
+    document.addEventListener('DOMContentLoaded',()=>setTimeout(calcola,100));
+  </script>
+  <script src="../../js/navbar.js"></script><script src="../../js/main.js"></script><script src="../../js/footer.js"></script>
 </body>
 </html>

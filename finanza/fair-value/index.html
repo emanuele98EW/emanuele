@@ -1,34 +1,77 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Fair Value Calculator | Emanuele Zanella</title>
-  <meta name="description" content="Calcola il fair value di un titolo basandoti sui multipli di valutazione.">
-  <script>
-(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
-</script>
-    <link rel="stylesheet" href="../../css/style.css">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fair Value Calculator | Emanuele Zanella</title>
+  <script>(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .tool-wrap{max-width:800px;width:100%;margin:0 auto 30px;padding:0 16px;box-sizing:border-box}
+    .responsive-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+    .input-label{display:flex;flex-direction:column;gap:7px;font-size:.85rem}
+    .input-label input{padding:10px;background:var(--card-bg);border:1px solid var(--color-finance);color:var(--text-primary);border-radius:4px;font-family:'Orbitron',sans-serif;width:100%;box-sizing:border-box}
+    .btn-calcola{margin-top:20px;padding:12px 28px;background:rgba(37,99,235,.15);border:1px solid var(--color-finance);color:var(--color-finance);border-radius:4px;cursor:pointer;font-weight:bold;font-family:'Orbitron',sans-serif;font-size:.9rem;transition:all .3s;letter-spacing:1px;width:100%;text-align:center}
+    .btn-calcola:hover{background:rgba(37,99,235,.3);box-shadow:0 0 18px rgba(37,99,235,.45)}
+    .cards-row{display:flex;flex-wrap:wrap;gap:20px;margin-bottom:30px}
+    .card-result{flex:1 1 200px;padding:clamp(15px,4vw,20px);text-align:center}
+    .card-result h3{font-size:clamp(.9rem,3vw,1.1rem);margin-bottom:8px}
+    .card-result p{font-size:clamp(1.4rem,5vw,1.8rem);color:#fff}
+    @media(max-width:600px){.responsive-grid{grid-template-columns:1fr}}
+    .verdict{margin-top:20px;padding:15px;border-radius:8px;text-align:center;font-family:'Orbitron',sans-serif;font-size:clamp(.9rem,3vw,1.1rem);letter-spacing:1px}
+    .verdict.buy{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.35);color:#10b981}
+    .verdict.sell{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.35);color:#ef4444}
+    .verdict.hold{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35);color:#f59e0b}
+    html.light-mode .verdict.buy{color:#047857}
+    html.light-mode .verdict.sell{color:#b91c1c}
+    html.light-mode .verdict.hold{color:#b45309}
+  </style>
 </head>
 <body>
-    <div class="layout">
+  <div class="layout">
     <header id="main-navbar"></header>
-        <main class="main">
-            <h2 style="color: var(--color-finance); text-align: center; margin-bottom: 30px;">
-                📐 Fair Value Calculator</h2>
-            <section class="card finance"
-                style="max-width: 800px; width: 100%; margin-bottom: 30px; text-align: center; padding: 40px 20px;">
-                <h3 style="margin-bottom: 20px; font-size: 1.5rem; color: #10b981;">Valutazione a Multipli</h3>
-                <p style="color: #cbd5e1; font-size: 1.1rem; line-height: 1.6; max-width: 600px; margin: 0 auto;">
-                    Stima il fair value basandoti su multipli di valutazione come P/E, P/S, EV/EBITDA
-                    e confronta con il prezzo corrente di mercato.
-                </p>
-                <div style="margin-top: 30px; font-size: 3rem; opacity: 0.5;">🚧</div>
-            </section>
-        </main>
-    </div>
-    <script src="../../js/navbar.js"></script>
-  <script src="../../js/main.js"></script>
-  <script src="../../js/footer.js"></script>
+    <main class="main">
+      <p style="text-align:center;margin-bottom:10px"><a href="../index.html" style="color:var(--color-finance);text-decoration:none;font-size:.85rem;font-family:'Orbitron',sans-serif;letter-spacing:1px">← Torna a Finanza</a></p>
+      <h2 style="color:var(--color-finance);text-align:center;margin-bottom:30px;font-size:clamp(1.5rem,5vw,2rem)">📐 Fair Value Calculator</h2>
+      <p style="text-align:center;max-width:700px;margin:0 auto 30px;color:var(--text-secondary);font-size:.9rem;padding:0 15px">Stima il <strong style="color:var(--color-finance)">fair value</strong> di un titolo basandoti su EPS, crescita attesa e multiplo P/E equo. Confronta con il prezzo attuale per capire se è sopravvalutato o sottovalutato.</p>
+      <section class="card finance tool-wrap" style="padding:clamp(20px,5vw,30px)">
+        <h3 style="margin-bottom:18px">Parametri</h3>
+        <div class="responsive-grid">
+          <label class="input-label">EPS attuale ($)<input id="eps" type="text" inputmode="numeric" value="5,50"></label>
+          <label class="input-label">Crescita EPS annua (%)<input id="growth" type="text" inputmode="numeric" value="12"></label>
+          <label class="input-label">P/E equo<input id="pe" type="text" inputmode="numeric" value="18"></label>
+          <label class="input-label">Anni proiezione<input id="years" type="text" inputmode="numeric" value="5"></label>
+          <label class="input-label">Tasso di sconto (%)<input id="disc" type="text" inputmode="numeric" value="10"></label>
+          <label class="input-label">Prezzo attuale ($)<input id="price" type="text" inputmode="numeric" value="85"></label>
+        </div>
+        <button class="btn-calcola" onclick="calcola()">▶ Calcola Fair Value</button>
+      </section>
+      <section class="cards-row tool-wrap">
+        <div class="card finance card-result" style="border-top-color:#3b82f6"><h3 style="color:#93c5fd">Fair Value</h3><p id="res-fv" style="text-shadow:0 0 15px rgba(59,130,246,.6)">—</p><span style="font-size:.7rem;color:#999">Valore intrinseco stimato</span></div>
+        <div class="card finance card-result" style="border-top-color:#f59e0b"><h3 style="color:#fcd34d">Margine di Sicurezza</h3><p id="res-mos" style="text-shadow:0 0 15px rgba(245,158,11,.6)">—</p><span style="font-size:.7rem;color:#999">Sconto / Premio attuale</span></div>
+      </section>
+      <div class="tool-wrap"><div id="verdict"></div></div>
+    </main>
+  </div>
+  <script>
+    function pv(v){return parseFloat((v||'0').replace(/\./g,'').replace(',','.'))||0}
+    function calcola(){
+      const eps=pv(document.getElementById('eps').value),g=pv(document.getElementById('growth').value)/100,pe=pv(document.getElementById('pe').value),y=parseInt(pv(document.getElementById('years').value)),d=pv(document.getElementById('disc').value)/100,price=pv(document.getElementById('price').value);
+      const futureEPS=eps*Math.pow(1+g,y);
+      const futurePrice=futureEPS*pe;
+      const fairValue=futurePrice/Math.pow(1+d,y);
+      document.getElementById('res-fv').innerText='$'+fairValue.toFixed(2);
+      const mos=((fairValue-price)/fairValue*100);
+      const mosSign=mos>0?'+':'';
+      document.getElementById('res-mos').innerText=mosSign+mos.toFixed(1)+'%';
+      const vd=document.getElementById('verdict');
+      if(mos>20){vd.className='verdict buy';vd.innerHTML='✅ SOTTOVALUTATO — Margine di sicurezza ampio'}
+      else if(mos>0){vd.className='verdict hold';vd.innerHTML='⚠️ PREZZO EQUO — Margine limitato'}
+      else{vd.className='verdict sell';vd.innerHTML='🔴 SOPRAVVALUTATO — Prezzo superiore al fair value'}
+    }
+    document.addEventListener('DOMContentLoaded',()=>setTimeout(calcola,100));
+  </script>
+  <script src="../../js/navbar.js"></script><script src="../../js/main.js"></script><script src="../../js/footer.js"></script>
 </body>
 </html>

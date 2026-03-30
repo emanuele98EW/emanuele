@@ -1,34 +1,73 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Rebalancing Tool | Emanuele Zanella</title>
-  <meta name="description" content="Rebalancing Tool: ribilancia il tuo portafoglio verso l'allocation ideale.">
-  <script>
-(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
-</script>
-    <link rel="stylesheet" href="../../css/style.css">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rebalancing Tool | Emanuele Zanella</title>
+  <script>(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .tool-wrap{max-width:800px;width:100%;margin:0 auto 30px;padding:0 16px;box-sizing:border-box}
+    .responsive-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+    .input-label{display:flex;flex-direction:column;gap:7px;font-size:.85rem}
+    .input-label input{padding:10px;background:var(--card-bg);border:1px solid var(--color-finance);color:var(--text-primary);border-radius:4px;font-family:'Orbitron',sans-serif;width:100%;box-sizing:border-box}
+    .btn-calcola{margin-top:20px;padding:12px 28px;background:rgba(37,99,235,.15);border:1px solid var(--color-finance);color:var(--color-finance);border-radius:4px;cursor:pointer;font-weight:bold;font-family:'Orbitron',sans-serif;font-size:.9rem;transition:all .3s;letter-spacing:1px;width:100%;text-align:center}
+    .btn-calcola:hover{background:rgba(37,99,235,.3);box-shadow:0 0 18px rgba(37,99,235,.45)}
+    .btn-add{display:flex;align-items:center;gap:8px;padding:9px 18px;margin-top:12px;background:rgba(37,99,235,.08);border:1px dashed rgba(37,99,235,.4);color:var(--color-finance);border-radius:6px;cursor:pointer;font-family:'Orbitron',sans-serif;font-size:.75rem;letter-spacing:1px;transition:all .25s;width:fit-content}
+    .btn-add:hover{background:rgba(37,99,235,.18);border-style:solid}
+    .btn-remove{background:transparent;border:1px solid rgba(239,68,68,.45);color:#f87171;border-radius:4px;padding:4px 10px;cursor:pointer;font-size:.7rem;font-family:'Orbitron',sans-serif;transition:all .2s}
+    .btn-remove:hover{background:rgba(239,68,68,.15)}
+    .reb-row{display:grid;grid-template-columns:1fr 90px 70px 50px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border-color,rgba(255,255,255,.06))}
+    @media(max-width:600px){.responsive-grid{grid-template-columns:1fr}.reb-row{grid-template-columns:1fr 80px 60px 40px;gap:6px;font-size:.8rem}}
+    .res-table{width:100%;border-collapse:collapse;margin-top:15px}
+    .res-table th,.res-table td{padding:10px 12px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.04));text-align:right;white-space:nowrap;font-size:.82rem}
+    .res-table th{background:rgba(37,99,235,.06);font-family:'Orbitron',sans-serif;font-size:.7rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px}
+    .res-table th:first-child,.res-table td:first-child{text-align:left}
+    .buy-cell{color:#6ee7b7}
+    .sell-cell{color:#fca5a5}
+    html.light-mode .buy-cell{color:#047857}
+    html.light-mode .sell-cell{color:#b91c1c}
+    .table-container{width:100%;overflow-x:auto;border-radius:8px;border:1px solid var(--border-color,rgba(255,255,255,.08))}
+  </style>
 </head>
 <body>
-    <div class="layout">
+  <div class="layout">
     <header id="main-navbar"></header>
-        <main class="main">
-            <h2 style="color: var(--color-finance); text-align: center; margin-bottom: 30px;">
-                ⚖️ Rebalancing Tool</h2>
-            <section class="card finance"
-                style="max-width: 800px; width: 100%; margin-bottom: 30px; text-align: center; padding: 40px 20px;">
-                <h3 style="margin-bottom: 20px; font-size: 1.5rem; color: #10b981;">Ribilanciamento Portafoglio</h3>
-                <p style="color: #cbd5e1; font-size: 1.1rem; line-height: 1.6; max-width: 600px; margin: 0 auto;">
-                    Calcola esattamente quanto comprare e vendere di ogni asset per riportare
-                    il tuo portafoglio alla tua asset allocation ideale.
-                </p>
-                <div style="margin-top: 30px; font-size: 3rem; opacity: 0.5;">🚧</div>
-            </section>
-        </main>
-    </div>
-    <script src="../../js/navbar.js"></script>
-  <script src="../../js/main.js"></script>
-  <script src="../../js/footer.js"></script>
+    <main class="main">
+      <p style="text-align:center;margin-bottom:10px"><a href="../index.html" style="color:var(--color-finance);text-decoration:none;font-size:.85rem;font-family:'Orbitron',sans-serif;letter-spacing:1px">← Torna a Finanza</a></p>
+      <h2 style="color:var(--color-finance);text-align:center;margin-bottom:30px;font-size:clamp(1.5rem,5vw,2rem)">⚖️ Rebalancing Tool</h2>
+      <p style="text-align:center;max-width:700px;margin:0 auto 30px;color:var(--text-secondary);font-size:.9rem;padding:0 15px">Inserisci i tuoi asset con valore attuale e percentuale target ideale. Il tool calcolerà quanto <strong style="color:#10b981">comprare</strong> o <strong style="color:#ef4444">vendere</strong> per raggiungere l'allocation desiderata.</p>
+      <section class="card finance tool-wrap" style="padding:clamp(20px,5vw,30px)">
+        <h3 style="margin-bottom:14px">Asset e Target</h3>
+        <div style="display:grid;grid-template-columns:1fr 90px 70px 50px;gap:8px;padding:4px 0;font-size:.7rem;color:var(--text-secondary);font-family:'Orbitron',sans-serif;letter-spacing:1px;text-transform:uppercase">
+          <span>Asset</span><span style="text-align:right">Attuale €</span><span style="text-align:right">Target %</span><span></span>
+        </div>
+        <div id="reb-list"></div>
+        <button class="btn-add" onclick="addRow()">＋ Aggiungi Asset</button>
+        <button class="btn-calcola" onclick="calcola()">▶ Calcola Ribilanciamento</button>
+      </section>
+      <section class="card finance tool-wrap" style="padding:clamp(20px,5vw,30px)">
+        <h3 style="margin-bottom:14px">Risultato Ribilanciamento</h3>
+        <div class="table-container"><table class="res-table" id="res-table"><thead><tr><th>Asset</th><th>Attuale</th><th>Target</th><th>Differenza</th><th>Azione</th></tr></thead><tbody id="res-tbody"></tbody></table></div>
+      </section>
+    </main>
+  </div>
+  <script>
+    let rid=0;
+    function addRow(n,v,t){rid++;const d=document.createElement('div');d.className='reb-row';d.id='r'+rid;d.innerHTML=`<input type="text" placeholder="Nome" value="${n||''}" style="padding:8px;background:var(--card-bg);border:1px solid var(--color-finance);color:var(--text-primary);border-radius:4px;font-size:.85rem"><input type="text" inputmode="numeric" placeholder="€" value="${v||''}" class="format-currency" style="padding:8px;background:var(--card-bg);border:1px solid var(--color-finance);color:var(--text-primary);border-radius:4px;font-size:.85rem;text-align:right"><input type="text" inputmode="numeric" placeholder="%" value="${t||''}" style="padding:8px;background:var(--card-bg);border:1px solid var(--color-finance);color:var(--text-primary);border-radius:4px;font-size:.85rem;text-align:right"><button class="btn-remove" onclick="this.parentElement.remove()">✕</button>`;document.getElementById('reb-list').appendChild(d)}
+    addRow('ETF Azionario','6.000','60');addRow('ETF Obbligazionario','2.500','30');addRow('Oro','1.500','10');
+    function parseCur(v){return parseFloat((v||'0').replace(/\./g,'').replace(',','.'))||0}
+    function fmtEur(n){return new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n)}
+    function calcola(){
+      const rows=document.querySelectorAll('.reb-row');let items=[];
+      rows.forEach(r=>{const i=r.querySelectorAll('input');items.push({name:i[0].value||'?',val:parseCur(i[1].value),target:parseFloat(i[2].value)||0})});
+      const tot=items.reduce((s,i)=>s+i.val,0);if(!tot)return;
+      const tb=document.getElementById('res-tbody');tb.innerHTML='';
+      items.forEach(it=>{const ideal=tot*it.target/100;const diff=ideal-it.val;const tr=document.createElement('tr');const cls=diff>=0?'buy-cell':'sell-cell';const action=diff>=0?'Comprare':'Vendere';const sign=diff>0?'+':'';tr.innerHTML=`<td style="color:var(--text-primary)"><strong>${it.name}</strong></td><td style="color:var(--text-secondary)">${fmtEur(it.val)}</td><td style="color:var(--text-secondary)">${fmtEur(ideal)}</td><td class="${cls}" style="font-weight:bold">${sign}${fmtEur(diff)}</td><td class="${cls}" style="font-weight:bold">${action}</td>`;tb.appendChild(tr)});
+    }
+    document.addEventListener('DOMContentLoaded',()=>setTimeout(calcola,100));
+  </script>
+  <script src="../../js/navbar.js"></script><script src="../../js/main.js"></script><script src="../../js/footer.js"></script>
 </body>
 </html>
