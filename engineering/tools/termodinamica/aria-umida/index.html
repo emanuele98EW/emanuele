@@ -141,11 +141,11 @@
     }
     .result-chip:hover { border-color:rgba(16,185,129,.45); transform:translateY(-2px); }
     @keyframes chipIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-    .chip-key  { font-family:'Orbitron',sans-serif; font-size:.57rem; color:#444; letter-spacing:1.5px; text-transform:uppercase; }
-    .chip-name { font-family:'Orbitron',sans-serif; font-size:.7rem; color:#888; }
-    .chip-val  { font-family:'Orbitron',sans-serif; font-size:1.1rem; color:#e2e8f0; text-shadow:0 0 10px rgba(16,185,129,.4); }
+    .chip-key  { font-family:'Orbitron',sans-serif; font-size:.57rem; color:var(--text-secondary); opacity:0.8; letter-spacing:1.5px; text-transform:uppercase; }
+    .chip-name { font-family:'Orbitron',sans-serif; font-size:.7rem; color:var(--text-secondary); }
+    .chip-val  { font-family:'Orbitron',sans-serif; font-size:1.1rem; color:var(--text-primary); text-shadow:0 0 10px rgba(16,185,129,.2); }
     .chip-unit { font-family:'Orbitron',sans-serif; font-size:.6rem; color:var(--color-engineering); }
-    .chip-na   { color:#444; }
+    .chip-na   { color:var(--text-secondary); opacity:0.6; }
 
     /* ── Diagramma psicrometrico ── */
     .chart-card { display:none; }
@@ -155,7 +155,7 @@
     .legend-item { display:flex; align-items:center; gap:6px; font-family:'Orbitron',sans-serif; font-size:.6rem; color:#666; }
     .legend-dot  { width:10px; height:10px; border-radius:50%; }
     .chart-container {
-      position:relative; background:rgba(0,0,0,.35);
+      position:relative; background:var(--card-bg, rgba(255,255,255,.03));
       border:1px solid rgba(16,185,129,.15); border-radius:8px; padding:14px;
     }
     #psych-canvas { width:100% !important; }
@@ -744,18 +744,18 @@ function buildPsychChart() {
       scales: {
         x: {
           type: 'linear', min: -10, max: 55,
-          title: { display:true, text:'T  [°C]', color:'#555', font:{family:"'Orbitron',sans-serif",size:9} },
-          ticks: { color:'#555', font:{family:"'Orbitron',sans-serif",size:8}, maxTicksLimit:14 },
-          grid: { color:'rgba(255,255,255,0.04)' }
+          title: { display:true, text:'T  [°C]', color:'#888', font:{family:"'Orbitron',sans-serif",size:9} },
+          ticks: { color:'#888', font:{family:"'Orbitron',sans-serif",size:8}, maxTicksLimit:14 },
+          grid: { color:'rgba(128,128,128,0.15)' }
         },
         y: {
           type: 'linear', min: 0, max: 0.035,
-          title: { display:true, text:'W  [kg H₂O / kg aria secca]', color:'#555', font:{family:"'Orbitron',sans-serif",size:9} },
+          title: { display:true, text:'W  [kg H₂O / kg aria secca]', color:'#888', font:{family:"'Orbitron',sans-serif",size:9} },
           ticks: {
-            color:'#555', font:{family:"'Orbitron',sans-serif",size:8}, maxTicksLimit:10,
+            color:'#888', font:{family:"'Orbitron',sans-serif",size:8}, maxTicksLimit:10,
             callback: v => v.toFixed(3)
           },
-          grid: { color:'rgba(255,255,255,0.04)' }
+          grid: { color:'rgba(128,128,128,0.15)' }
         }
       }
     }

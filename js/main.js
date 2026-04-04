@@ -351,6 +351,7 @@ window.parseItaNumber = function(valString) {
 };
 
 // Formattazione in tempo reale usando la delegazione eventi per supportare input dinamici
+// Formattazione in tempo reale usando la delegazione eventi per supportare input dinamici
 document.addEventListener('input', function(e) {
   if (e.target.classList.contains('format-currency')) {
     let raw = e.target.value.replace(/[^0-9,]/g, '');
@@ -365,3 +366,411 @@ document.addEventListener('input', function(e) {
     e.target.value = parts.join(',');
   }
 });
+
+// ==========================================
+// DYNAMIC SECTION BACKGROUNDS (VANTA JS)
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+  const path = window.location.pathname.toLowerCase();
+  let vantaType = null;
+  
+  if (path.includes('/finanza')) {
+    vantaType = 'finance_chart';
+  } else if (path.includes('/engineering') || path.includes('/termodinamica') || path.includes('/termotecnica') || path.includes('/piping') || path.includes('/dimensionamenti') || path.includes('/energia') || path.includes('/fluidodinamica')) {
+    vantaType = 'engineering_city';
+  }
+
+  // Se la pagina ha un'animazione nativa hardcoded, ignora
+  if (vantaType && !document.getElementById('vanta-bg') && !document.getElementById('ambient-particles')) {
+    
+    // Assicurarsi che '.layout' stia sopra
+    const layoutWrapper = document.querySelector('.layout');
+    if (layoutWrapper) {
+      layoutWrapper.style.position = 'relative';
+      layoutWrapper.style.zIndex = '1';
+    }
+
+    // Disabilita Glassmorphism e aumenta opacita' card per migliorare la leggibilita'
+    const styleOverride = document.createElement("style");
+    styleOverride.innerHTML = `
+       .card, .nav-card, .widget-card, .formula-wrapper, .fin-tab, 
+       .dim-list, .accordion-list, .search-wrap .search-box, .search-results,
+       .tool-panel, .results-panel, .result-card, .note-block {
+          backdrop-filter: blur(8px) !important;
+          -webkit-backdrop-filter: blur(8px) !important;
+          background: rgba(17, 24, 39, 0.92) !important; /* Molto scuro (92%) per far intravedere l'animazione */
+          box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+       }
+       html.light-mode .card, html.light-mode .nav-card, html.light-mode .widget-card, html.light-mode .formula-wrapper, html.light-mode .fin-tab,
+       html.light-mode .dim-list, html.light-mode .accordion-list, html.light-mode .search-wrap .search-box, html.light-mode .search-results,
+       html.light-mode .tool-panel, html.light-mode .results-panel, html.light-mode .result-card, html.light-mode .note-block {
+          background: rgba(255, 255, 255, 0.94) !important; /* Bianco molto solido per light mode */
+          box-shadow: 0 10px 30px rgba(44, 62, 80, 0.1) !important;
+       }
+    `;
+    document.head.appendChild(styleOverride);
+
+    const vD = document.createElement('div');
+    vD.id = 'vanta-bg';
+    vD.style.cssText = 'position: fixed; z-index: 0; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1.5s ease;';
+    document.body.prepend(vD);
+
+    setTimeout(() => {
+      if (!document.body.contains(vD)) return;
+      if (vantaType === 'finance_chart') {
+        initFinanceChart(vD);
+        // Ritardo leggero per permettere il rendering prima del fade-in
+        setTimeout(() => vD.style.opacity = '0.9', 50);
+      } else if (vantaType === 'engineering_city') {
+        initEngineeringCity(vD);
+        setTimeout(() => vD.style.opacity = '0.9', 50);
+      }
+    }, 10000); // Carica dopo 10 secondi esatti
+  }
+});
+
+function loadScript(src, callback) {
+  const s = document.createElement('script');
+  s.src = src;
+  s.onload = callback;
+  document.body.appendChild(s);
+}
+
+function initFinanceChart(container) {
+    const canvas = document.createElement('canvas');
+    canvas.style.position = 'absolute';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    container.appendChild(canvas);
+    
+    const ctx = canvas.getContext('2d');
+    let w, h;
+    function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const numPoints = 22;
+    const points = [];
+    for(let i=0; i<numPoints; i++) {
+        points.push({
+            offset: (Math.random() - 0.5) * 0.25,
+            phase: Math.random() * Math.PI * 2,
+            speed: 0.003 + Math.random() * 0.006 // Velocità molto morbida e rilassata
+        });
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, w, h);
+        const lMode = document.documentElement.classList.contains('light-mode');
+        
+        // Colori tenui che ricordano un grafico finanziario high-tech
+        const rgbBase = lMode ? '40, 114, 161' : '16, 185, 129';
+        
+        const lineColor = `rgba(${rgbBase}, 0.45)`;
+        const fillColorTop = `rgba(${rgbBase}, 0.12)`;
+        const fillColorBot = `rgba(${rgbBase}, 0.0)`;
+        const stemColor = `rgba(${rgbBase}, 0.08)`;
+        const dotColor = `rgba(${rgbBase}, 0.8)`;
+        const shadowColor = `rgba(${rgbBase}, 0.3)`;
+
+        const stepX = w / (numPoints - 1);
+        const screenPoints = [];
+        
+        for(let i = 0; i < numPoints; i++) {
+            const p = points[i];
+            const prog = i / (numPoints - 1);
+            const trend = Math.pow(prog, 1.4); // Salita morbida verso destra
+            
+            p.phase += p.speed;
+            const wave = Math.sin(p.phase) * 0.12; 
+            
+            let val = trend + p.offset + wave;
+            if (val < 0) val = 0.05;
+            if (val > 1) val = 0.95;
+            
+            const yMax = h * 0.85; 
+            const yMin = h * 0.25; 
+            
+            const py = yMax - val * (yMax - yMin);
+            screenPoints.push({ x: i * stepX, y: py });
+        }
+
+        // Fill background area
+        ctx.beginPath();
+        ctx.moveTo(0, h);
+        ctx.lineTo(screenPoints[0].x, screenPoints[0].y);
+        for(let i=1; i<numPoints; i++) {
+            ctx.lineTo(screenPoints[i].x, screenPoints[i].y);
+        }
+        ctx.lineTo(w, h);
+        ctx.closePath();
+        
+        const grad = ctx.createLinearGradient(0, 0, 0, h);
+        grad.addColorStop(0, fillColorTop);
+        grad.addColorStop(1, fillColorBot);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // Vertical Stems
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = stemColor;
+        ctx.beginPath();
+        screenPoints.forEach(p => { 
+            ctx.moveTo(p.x, p.y); 
+            ctx.lineTo(p.x, h); 
+        });
+        ctx.stroke();
+
+        // Trend Line
+        ctx.beginPath();
+        ctx.moveTo(screenPoints[0].x, screenPoints[0].y);
+        for(let i=1; i<numPoints; i++) {
+            ctx.lineTo(screenPoints[i].x, screenPoints[i].y);
+        }
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = 2.5;
+        ctx.lineJoin = 'round';
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = shadowColor;
+        ctx.stroke();
+
+        // Glowing Dots
+        ctx.fillStyle = dotColor;
+        ctx.shadowBlur = 5;
+        screenPoints.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
+            ctx.fill();
+        });
+        
+        ctx.shadowBlur = 0;
+        requestAnimationFrame(draw);
+    }
+    draw();
+}
+
+function initEngineeringCity(container) {
+    const canvas = document.createElement('canvas');
+    canvas.style.position = 'absolute';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    container.appendChild(canvas);
+    
+    const ctx = canvas.getContext('2d');
+    let w, h;
+    let structures = [];
+
+    function createBuilding(bh, bw, speed) {
+        let lines = [];
+        let dots = [];
+        let yTop = h - bh;
+        lines.push({x1: 0, y1: h, x2: 0, y2: yTop});
+        lines.push({x1: 0, y1: yTop, x2: bw, y2: yTop});
+        lines.push({x1: bw, y1: yTop, x2: bw, y2: h});
+        dots.push({x: 0, y: yTop});
+        dots.push({x: bw, y: yTop});
+        
+        let floors = Math.floor(bh / 24);
+        let bays = Math.floor(bw / 24) || 1;
+        let floorH = bh / floors;
+        let bayW = bw / bays;
+        
+        for(let i=0; i<floors; i++) {
+           let y1 = h - i*floorH;
+           let y2 = h - (i+1)*floorH;
+           for(let j=0; j<bays; j++) {
+               let x1 = j*bayW;
+               let x2 = (j+1)*bayW;
+               lines.push({x1: x1, y1: y2, x2: x2, y2: y2});
+               if(Math.random() > 0.4) lines.push({x1: x1, y1: y1, x2: x2, y2: y2});
+               else if (Math.random() > 0.6) lines.push({x1: x2, y1: y1, x2: x1, y2: y2});
+               if(Math.random() > 0.7) dots.push({x: x1, y: y2});
+           }
+        }
+        return {lines, dots, speed, w: bw};
+    }
+
+    function createCrane(ch, speed) {
+        let lines = [];
+        let dots = [];
+        let yTop = h - ch;
+        let mw = 14; 
+        
+        lines.push({x1: -mw/2, y1: h, x2: -mw/2, y2: yTop});
+        lines.push({x1: mw/2, y1: h, x2: mw/2, y2: yTop});
+        for(let y=h; y>yTop; y-=15) lines.push({x1: -mw/2, y1: y, x2: mw/2, y2: y-15});
+        
+        let jL = 140, jR = 60; 
+        lines.push({x1: -jL, y1: yTop, x2: jR, y2: yTop});
+        lines.push({x1: -jL, y1: yTop-12, x2: jR, y2: yTop-12});
+        dots.push({x: -jL, y: yTop});
+        dots.push({x: jR, y: yTop});
+        
+        for(let x=-jL; x<jR; x+=15) lines.push({x1: x, y1: yTop, x2: x+15, y2: yTop-12});
+        
+        let pY = yTop - 40;
+        lines.push({x1: -mw/2, y1: yTop-12, x2: 0, y2: pY});
+        lines.push({x1: mw/2, y1: yTop-12, x2: 0, y2: pY});
+        lines.push({x1: 0, y1: pY, x2: -jL*0.8, y2: yTop-12});
+        lines.push({x1: 0, y1: pY, x2: jR*0.8, y2: yTop-12});
+        
+        let hk = -jL*0.6;
+        let hy = yTop + 50;
+        lines.push({x1: hk, y1: yTop, x2: hk, y2: hy});
+        dots.push({x: hk, y: hy});
+        
+        return {lines, dots, speed, w: jL + jR + 40, rx: jL}; // rx is left offset for positioning
+    }
+
+    function buildCity() {
+        structures = [];
+        let x = -100;
+        // Background layer (slower, darker)
+        while(x < w + 400) {
+            let bw = 50 + Math.random() * 60;
+            let extH = h * 0.15 + Math.random() * h * 0.35;
+            structures.push({ struct: createBuilding(extH, bw, 0.35), x: x });
+            x += bw + Math.random() * 25;
+        }
+        
+        // Foreground layer (faster, brighter)
+        x = -50;
+        while(x < w + 400) {
+            let bw = 80 + Math.random() * 80;
+            let extH = h * 0.3 + Math.random() * h * 0.35;
+            
+            if (Math.random() < 0.25) {
+                let crane = createCrane(extH + 120, 1.0);
+                structures.push({ struct: crane, x: x + crane.rx });
+                x += 40; // Spacing after crane base
+            }
+            
+            structures.push({ struct: createBuilding(extH, bw, 1.0), x: x });
+            x += bw + 20 + Math.random() * 40;
+        }
+    }
+
+    function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+        buildCity();
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    let t = 0;
+    function draw() {
+        ctx.clearRect(0, 0, w, h);
+        const lMode = document.documentElement.classList.contains('light-mode');
+        
+        // Colori oro engineering
+        const rgbBase = lMode ? '160, 130, 50' : '201, 168, 76';
+        const lineGlow = lMode ? 0.08 : 0.12;
+        
+        ctx.lineWidth = 1;
+        ctx.lineJoin = 'round';
+        
+        t += 1;
+        
+        structures.forEach(s => {
+            // Parallax scroll
+            s.x -= 0.15 * s.struct.speed;
+            
+            // Loop seamlessly
+            if (s.x < -s.struct.w - 150) {
+                 let maxLayerX = 0;
+                 structures.forEach(other => {
+                     if (other.struct.speed === s.struct.speed && other.x > maxLayerX) {
+                         maxLayerX = other.x + other.struct.w;
+                     }
+                 });
+                 s.x = Math.max(w + 50, maxLayerX + 15 + Math.random() * 30);
+            }
+
+            ctx.beginPath();
+            s.struct.lines.forEach(l => {
+                ctx.moveTo(s.x + l.x1, l.y1);
+                ctx.lineTo(s.x + l.x2, l.y2);
+            });
+            
+            // Respirazione luminosa individuale
+            let wave = (Math.sin(t * 0.01 + s.x * 0.01) + 1) / 2; 
+            let baseAlpha = lMode ? 0.20 : 0.15;
+            let alpha = (baseAlpha + wave * 0.2) * s.struct.speed;
+            
+            ctx.strokeStyle = `rgba(${rgbBase}, ${alpha})`;
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = `rgba(${rgbBase}, ${lineGlow})`;
+            ctx.stroke();
+            
+            s.struct.dots.forEach(d => {
+                ctx.beginPath();
+                ctx.arc(s.x + d.x, d.y, 2.5, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${rgbBase}, ${(0.4 + wave*0.4) * s.struct.speed})`;
+                ctx.shadowBlur = 10;
+                ctx.fill();
+            });
+        });
+        
+        ctx.shadowBlur = 0;
+        requestAnimationFrame(draw);
+    }
+    draw();
+}
+
+// ═══════════════════════════════════════════════════════════
+// GLOBAL SCROLL REVEAL (Fade-in-up effect)
+// ═══════════════════════════════════════════════════════════
+const initScrollReveal = () => {
+    const revealStyle = document.createElement('style');
+    revealStyle.innerHTML = `
+        .reveal-hidden {
+            opacity: 0;
+            transform: translateY(35px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            will-change: opacity, transform;
+        }
+        .reveal-visible {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+    `;
+    document.head.appendChild(revealStyle);
+
+    const revealSelectors = '.card, .tool-panel, .results-panel, .dim-item, .accordion-item, .formula-wrapper, .note-block, .tos-banner, h2, h3, .fin-tab';
+    const elements = document.querySelectorAll(revealSelectors);
+    
+    if(elements.length === 0) return;
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('reveal-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        rootMargin: "0px 0px -20px 0px",
+        threshold: 0.05
+    });
+
+    const wHeight = window.innerHeight;
+    elements.forEach((el, index) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top > wHeight - 10) {
+            el.classList.add('reveal-hidden');
+            // Ritardo a cascata leggerissimo per elementi paralleli
+            el.style.transitionDelay = `${(index % 3) * 0.08}s`; 
+            revealObserver.observe(el);
+        }
+    });
+};
+
+initScrollReveal();

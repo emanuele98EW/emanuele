@@ -13,8 +13,10 @@
 </head>
 
 <body>
+<!-- VANTA WAVES BACKGROUND -->
+<div id="vanta-bg" style="position: fixed; z-index: 0; inset: 0; pointer-events: none;"></div>
 
-    <div class="layout">
+    <div class="layout" style="position: relative; z-index: 1;">
 
         <header id="main-navbar"></header>
 
@@ -156,6 +158,39 @@
     <script src="../../../js/navbar.js"></script>
     <script src="../../../js/main.js"></script>
     <script src="../../../js/footer.js"></script>
+
+    <!-- VANTA WAVES SCRIPT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const isLight = document.documentElement.classList.contains('light-mode');
+        const waveEffect = VANTA.WAVES({
+          el: "#vanta-bg",
+          mouseControls: true,
+          touchControls: true,
+          gyroControls: false,
+          minHeight: 200.00,
+          minWidth: 200.00,
+          scale: 1.00,
+          scaleMobile: 1.00,
+          color: isLight ? 0xcaf0f8 : 0x11082f,
+          shininess: 30.00,
+          waveHeight: 12.00,
+          waveSpeed: 0.60,
+          zoom: 0.9
+        });
+
+        const observer = new MutationObserver(() => {
+          if(document.documentElement.classList.contains('light-mode')) {
+            waveEffect.setOptions({ color: 0xcaf0f8 });
+          } else {
+            waveEffect.setOptions({ color: 0x11082f });
+          }
+        });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+      });
+    </script>
 </body>
 
 </html>

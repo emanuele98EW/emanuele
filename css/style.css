@@ -34,27 +34,28 @@
 html.light-mode,
 body.light-mode {
   /* Light Theme Colors */
-  --bg-color: #74a5c4;
+  --bg-color: #F9F7F2;
   --text-primary: #1e293b;
   --text-secondary: #475569;
-  --accent-cyan: #0284c7;
-  --accent-cyan-hover: #0369a1;
-  --nav-bg: rgba(241, 245, 249, 0.85);
+  --accent-cyan: #2872A1;
+  --accent-cyan-hover: #1d557a;
+  --nav-bg: rgba(249, 247, 242, 0.85);
 
-  --color-finance: #1B2E6B;
-  --color-finance-glow: rgba(27, 46, 107, 0.3);
-  --color-engineering: #1B2E6B;
-  --color-engineering-glow: rgba(27, 46, 107, 0.3);
-  --color-personal: #1B2E6B;
-  --color-personal-glow: rgba(27, 46, 107, 0.3);
-  --color-contact: #1B2E6B;
-  --color-contact-glow: rgba(27, 46, 107, 0.3);
+  --color-finance: #2872A1;
+  --color-finance-glow: rgba(40, 114, 161, 0.3);
+  --color-engineering: #a88732;
+  /* Oro attenuato (più scuro per risaltare sul bianco) */
+  --color-engineering-glow: rgba(168, 135, 50, 0.3);
+  --color-personal: #2872A1;
+  --color-personal-glow: rgba(40, 114, 161, 0.3);
+  --color-contact: #2872A1;
+  --color-contact-glow: rgba(40, 114, 161, 0.3);
 
-  --card-bg: rgba(255, 255, 255, 0.92);
-  --card-border: rgba(14, 165, 233, 0.2);
-  --border-color: rgba(27, 46, 107, 0.18);
-  --glass-blur: blur(12px);
-  --shadow-base: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --card-border: rgba(40, 114, 161, 0.25);
+  --border-color: rgba(40, 114, 161, 0.2);
+  --glass-blur: blur(16px);
+  --shadow-base: 0 4px 20px rgba(0, 0, 0, 0.05);
 
   background: var(--bg-color) !important;
   color: var(--text-primary) !important;
@@ -126,15 +127,15 @@ h4,
   letter-spacing: 0.5px;
 }
 
-/* CYBERPUNK BACKGROUND GRID (Optional subtle effect) */
+/* CYBERPUNK BACKGROUND GRID (Slightly softer) */
 body::before {
   content: "";
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 30px 30px;
+    linear-gradient(rgba(0, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 40px 40px;
   pointer-events: none;
   z-index: -1;
 }
@@ -148,7 +149,8 @@ body::before {
 
 .main {
   flex: 1;
-  padding-bottom: 60px; /* Evita che l'ultima card tocchi il footer */
+  padding-bottom: 60px;
+  /* Evita che l'ultima card tocchi il footer */
 }
 
 
@@ -468,11 +470,13 @@ html.light-mode .menu-content .menu-link+.menu-link {
   font-size: 0.8rem;
   color: var(--color-engineering, #C9A84C);
   letter-spacing: 2px;
-  width: 82px;            /* Larghezza fissa per evitare tremolii */
+  width: 82px;
+  /* Larghezza fissa per evitare tremolii */
   min-width: 82px;
   text-align: right;
   opacity: 0.85;
-  font-variant-numeric: tabular-nums; /* Numeri tutti della stessa larghezza! */
+  font-variant-numeric: tabular-nums;
+  /* Numeri tutti della stessa larghezza! */
 }
 
 html.light-mode .digital-clock {
@@ -711,13 +715,30 @@ html.light-mode .theme-toggle-btn:hover {
 
 /* ========== LIGHT MODE ========== */
 body.light-mode::before {
-  background-image:
-    linear-gradient(rgba(14, 165, 233, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(14, 165, 233, 0.05) 1px, transparent 1px) !important;
+  background-image: none !important;
+  /* Rimossa griglia su tema chiaro per maggiore pulizia */
 }
 
+/* Navbar logo adjustments */
 body.light-mode .navbar-logo img {
-  filter: drop-shadow(0 0 8px rgba(14, 165, 233, 0.3)) !important;
+  filter: drop-shadow(0 0 8px rgba(40, 114, 161, 0.3)) !important;
+}
+
+body.light-mode .navbar-name,
+body.light-mode .page-title,
+body.light-mode .hero-title,
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3 {
+  color: #2872A1 !important;
+}
+
+body.light-mode p,
+body.light-mode .hero-desc,
+body.light-mode .nc-desc,
+body.light-mode .cv-body,
+body.light-mode .timeline-desc {
+  color: #000000 !important;
 }
 
 /* Let the general variables handle color assignments for cards and timeline now, 
@@ -728,24 +749,25 @@ body.light-mode .hero-logo {
 }
 
 body.light-mode .card {
-  background: rgba(255, 255, 255, 0.7) !important;
-  border-color: rgba(14, 165, 233, 0.3) !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(15px) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
   border-style: solid !important;
   border-width: 1px !important;
   border-top-width: 3px !important;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08) !important;
-  color: #334155 !important;
+  box-shadow: 0 8px 24px rgba(44, 62, 80, 0.06) !important;
+  color: #1e293b !important;
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    border-color 0.4s ease !important;
+    box-shadow 0.4s ease, border-color 0.4s ease !important;
 }
 
 body.light-mode .card::before {
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.35), transparent) !important;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.9), transparent) !important;
 }
 
 body.light-mode .card h3 {
   text-shadow: none !important;
+  color: #2872A1 !important;
 }
 
 body.light-mode .card.finance {
@@ -753,7 +775,7 @@ body.light-mode .card.finance {
 }
 
 body.light-mode .card.engineering {
-  border-top-color: var(--color-engineering) !important;
+  border-top-color: var(--color-engineering) !important; /* Questo oro attenuato sta benissimo sul bianco */
 }
 
 body.light-mode .card.personal {
@@ -787,13 +809,12 @@ body.light-mode .contact-email {
   box-shadow: 0 0 15px rgba(2, 132, 199, 0.2) !important;
 }
 
-/* Light mode hover – effetto marcato con lift + glow + scale */
+/* Light mode hover – elegante con shadow delicata */
 body.light-mode .card:hover {
-  transform: translateY(-12px) scale(1.02) !important;
-  border-color: #1B2E6B !important;
-  box-shadow: 0 20px 40px rgba(27, 46, 107, 0.4),
-    0 0 30px rgba(27, 46, 107, 0.25),
-    0 8px 16px rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(-8px) scale(1.01) !important;
+  border-color: #2872A1 !important;
+  box-shadow: 0 16px 36px rgba(40, 114, 161, 0.15),
+    0 4px 10px rgba(0, 0, 0, 0.05) !important;
 }
 
 body.light-mode .card.finance:hover,
@@ -1501,13 +1522,16 @@ body.light-mode .skill-label {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 60px; /* In grandito da 38px a 60px per dare più respiro sopra e sotto */
-  overflow: hidden; /* Cops the empty top/bottom space of the 100px image */
+  height: 60px;
+  /* In grandito da 38px a 60px per dare più respiro sopra e sotto */
+  overflow: hidden;
+  /* Cops the empty top/bottom space of the 100px image */
 }
 
 .footer-logo-img {
   height: 100px;
-  min-height: 100px; /* Prevents flexbox from shrinking it back down */
+  min-height: 100px;
+  /* Prevents flexbox from shrinking it back down */
   width: auto;
   object-fit: contain;
 }
@@ -2229,22 +2253,41 @@ html.light-mode .cursor-follower.active {
    PRINT / PDF BROCHURE MODE
    ============================== */
 @media print {
+
   /* Hide elements useless for PDF */
-  #main-navbar, .site-footer, .theme-toggle-btn, .global-fs-btn, canvas, video, .ambient-bg, .splash-overlay, .hamburger-menu {
+  #main-navbar,
+  .site-footer,
+  .theme-toggle-btn,
+  .global-fs-btn,
+  canvas,
+  video,
+  .ambient-bg,
+  .splash-overlay,
+  .hamburger-menu {
     display: none !important;
   }
-  
+
   /* Reset colors to black and white for sharp printing */
-  body, .layout, .main, html.light-mode body {
+  body,
+  .layout,
+  .main,
+  html.light-mode body {
     background: #ffffff !important;
     color: #000000 !important;
     min-height: auto !important;
     padding: 0 !important;
     margin: 0 !important;
   }
-  
+
   /* Remove blur and heavy card borders */
-  .card, .nav-card, .widget-card, .dim-item, .home-hero, .page-hero, .contact-inline, .side-widget {
+  .card,
+  .nav-card,
+  .widget-card,
+  .dim-item,
+  .home-hero,
+  .page-hero,
+  .contact-inline,
+  .side-widget {
     background: transparent !important;
     border: 1px solid #d1d5db !important;
     box-shadow: none !important;
@@ -2255,12 +2298,31 @@ html.light-mode .cursor-follower.active {
   }
 
   /* Crisp headings */
-  h1, h2, h3, h4, .hero-name, .hero-title, .wc-title, .dim-title, .nc-title, .cv-role, .cv-company, .edu-title {
+  h1,
+  h2,
+  h3,
+  h4,
+  .hero-name,
+  .hero-title,
+  .wc-title,
+  .dim-title,
+  .nc-title,
+  .cv-role,
+  .cv-company,
+  .edu-title {
     color: #0f172a !important;
     text-shadow: none !important;
   }
-  
-  p, span, div, .dim-desc, .nc-desc, .hero-role, .hero-desc, .cv-body, .cv-date {
+
+  p,
+  span,
+  div,
+  .dim-desc,
+  .nc-desc,
+  .hero-role,
+  .hero-desc,
+  .cv-body,
+  .cv-date {
     color: #334155 !important;
   }
 }

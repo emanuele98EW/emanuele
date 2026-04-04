@@ -10,7 +10,8 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
   <style>
     .main { padding-top: 0 !important; }
@@ -186,7 +187,10 @@
   </style>
 </head>
 <body>
-<div class="layout">
+<!-- AMBIENT PARTICLE NETWORK CANVAS -->
+<canvas id="ambient-particles" style="position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0;"></canvas>
+
+<div class="layout" style="position: relative; z-index: 1;">
   <header id="main-navbar"></header>
   <main class="main" style="padding:0 16px;">
 
@@ -281,7 +285,7 @@
       <!-- DESTRA: NASA APOD -->
       <div class="col-right">
         <div class="widget-card">
-          <p class="wc-title">NASA APOD 🚀</p>
+          <p class="wc-title">NASA APOD <i class="fa-solid fa-rocket" style="margin-left:5px;"></i></p>
           <div id="nasa-content">
             <div style="height:130px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:.76rem;">Caricamento…</div>
           </div>
@@ -301,12 +305,12 @@ async function fetchWeather() {
   try {
     const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=44.4949&longitude=11.3426&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Europe%2FRome&forecast_days=3");
     const d = await r.json();
-    const desc = {0:"Soleggiato ☀️",1:"Poco nuvolo 🌤️",2:"Nuvoloso ⛅",3:"Coperto ☁️",45:"Nebbia 🌫️",48:"Nebbia 🌫️",51:"Pioggerella 🌦️",53:"Pioggerella 🌦️",55:"Pioggerella 🌦️",61:"Pioggia 🌧️",63:"Pioggia 🌧️",65:"Pioggia forte 🌧️",71:"Neve ❄️",73:"Neve ❄️",75:"Neve ❄️",95:"Temporale 🌩️"};
+    const desc = {0:"Soleggiato <i class='fa-solid fa-sun'></i>",1:"Poco nuvolo <i class='fa-solid fa-cloud-sun'></i>",2:"Nuvoloso <i class='fa-solid fa-cloud'></i>",3:"Coperto <i class='fa-solid fa-cloud'></i>",45:"Nebbia <i class='fa-solid fa-smog'></i>",48:"Nebbia <i class='fa-solid fa-smog'></i>",51:"Pioggerella <i class='fa-solid fa-cloud-rain'></i>",53:"Pioggerella <i class='fa-solid fa-cloud-rain'></i>",55:"Pioggerella <i class='fa-solid fa-cloud-rain'></i>",61:"Pioggia <i class='fa-solid fa-cloud-showers-heavy'></i>",63:"Pioggia <i class='fa-solid fa-cloud-showers-heavy'></i>",65:"Pioggia forte <i class='fa-solid fa-cloud-showers-water'></i>",71:"Neve <i class='fa-regular fa-snowflake'></i>",73:"Neve <i class='fa-regular fa-snowflake'></i>",75:"Neve <i class='fa-regular fa-snowflake'></i>",95:"Temporale <i class='fa-solid fa-cloud-bolt'></i>"};
     const days = ["Oggi","Domani","Dopodomani"];
     let html = "";
     for (let i=0;i<3;i++) {
       const max=Math.round(d.daily.temperature_2m_max[i]), min=Math.round(d.daily.temperature_2m_min[i]);
-      html += `<div class="weather-row"><span class="weather-day">${days[i]}</span><span class="weather-icon">${desc[d.daily.weathercode[i]]||"Misto ☁️"}</span><span class="weather-temps"><span class="temp-max">${max}°</span><span style="color:var(--text-secondary);opacity:.4;margin:0 2px;">/</span><span class="temp-min">${min}°</span></span></div>`;
+      html += `<div class="weather-row"><span class="weather-day">${days[i]}</span><span class="weather-icon">${desc[d.daily.weathercode[i]]||"Misto <i class='fa-solid fa-cloud'></i>"}</span><span class="weather-temps"><span class="temp-max">${max}°</span><span style="color:var(--text-secondary);opacity:.4;margin:0 2px;">/</span><span class="temp-min">${min}°</span></span></div>`;
     }
     document.getElementById('weather-content').innerHTML = html;
   } catch(e) {
@@ -391,6 +395,125 @@ if (heroTrail) {
     requestAnimationFrame(drawTrail);
   }
   drawTrail();
+}
+
+// ==========================================
+// AMBIENT PARTICLE NETWORK (Rete Neurale)
+// ==========================================
+const ambientCanvas = document.getElementById('ambient-particles');
+if (ambientCanvas) {
+  const ctxA = ambientCanvas.getContext('2d');
+  let cw, ch;
+  let particlesArray = [];
+  
+  // Riduciamo le particelle su schermi molto piccoli per fluidità
+  const numParticles = window.innerWidth < 700 ? 40 : 80;
+
+  function setAmbientCanvasSize() {
+    cw = window.innerWidth;
+    ch = window.innerHeight;
+    ambientCanvas.width = cw;
+    ambientCanvas.height = ch;
+  }
+  setAmbientCanvasSize();
+  window.addEventListener('resize', setAmbientCanvasSize);
+
+  let mousePos = { x: null, y: null };
+  window.addEventListener('mousemove', e => {
+    mousePos.x = e.clientX;
+    mousePos.y = e.clientY;
+  });
+  window.addEventListener('mouseout', () => {
+    mousePos.x = null;
+    mousePos.y = null;
+  });
+
+  class NodeParticle {
+    constructor() {
+      this.x = Math.random() * cw;
+      this.y = Math.random() * ch;
+      this.vx = (Math.random() - 0.5) * 0.6; // Movimento fluido e lento
+      this.vy = (Math.random() - 0.5) * 0.6;
+      this.size = Math.random() * 1.5 + 0.5;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      
+      // Bounce borders elastico
+      if (this.x < 0 || this.x > cw) this.vx *= -1;
+      if (this.y < 0 || this.y > ch) this.vy *= -1;
+
+      // Leggera repulsione dal mouse (effeto "spostamento dati")
+      if (mousePos.x && mousePos.y) {
+         let dx = mousePos.x - this.x;
+         let dy = mousePos.y - this.y;
+         let distance = Math.sqrt(dx * dx + dy * dy);
+         if (distance < 120) {
+             this.x -= dx * 0.012;
+             this.y -= dy * 0.012;
+         }
+      }
+    }
+    draw(colorStr) {
+      ctxA.beginPath();
+      ctxA.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctxA.fillStyle = colorStr;
+      ctxA.fill();
+    }
+  }
+
+  for (let i = 0; i < numParticles; i++) {
+    particlesArray.push(new NodeParticle());
+  }
+
+  function connectParticles(isLightMode) {
+    const maxDistance = 140; // Distanza massima di connessione dei nodi
+    
+    // Colori legati al tema per coerenza grafica:
+    // Ciano (Dark) = 0, 255, 255 | Azzurro Acciaio (Light) = 40, 114, 161
+    let rgbLine = isLightMode ? '40, 114, 161' : '0, 255, 255'; 
+
+    for (let a = 0; a < particlesArray.length; a++) {
+      for (let b = a; b < particlesArray.length; b++) {
+        let dx = particlesArray[a].x - particlesArray[b].x;
+        let dy = particlesArray[a].y - particlesArray[b].y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < maxDistance) {
+          // Più vicini = linea più marcata
+          let opacity = 1 - (distance / maxDistance);
+          ctxA.beginPath();
+          ctxA.strokeStyle = `rgba(${rgbLine}, ${opacity * 0.35})`;
+          ctxA.lineWidth = 0.8;
+          ctxA.moveTo(particlesArray[a].x, particlesArray[a].y);
+          ctxA.lineTo(particlesArray[b].x, particlesArray[b].y);
+          ctxA.stroke();
+        }
+      }
+    }
+  }
+
+  function animateAmbient() {
+    ctxA.clearRect(0, 0, cw, ch);
+    const isLightMode = document.documentElement.classList.contains('light-mode');
+    
+    // Colore nodi
+    const dotColor = isLightMode ? 'rgba(40, 114, 161, 0.7)' : 'rgba(0, 255, 255, 0.7)';
+
+    for (let i = 0; i < particlesArray.length; i++) {
+      particlesArray[i].update();
+      particlesArray[i].draw(dotColor);
+    }
+    
+    // Disegna connessioni
+    connectParticles(isLightMode);
+    
+    requestAnimationFrame(animateAmbient);
+  }
+  
+  // Avvia ciclo animazione
+  animateAmbient();
 }
 </script>
 </body>

@@ -7,7 +7,8 @@
   <script>(function(){var p=localStorage.getItem('themePref');if(p==='light'){document.documentElement.classList.add('light-mode')}else if(!p){try{var d=JSON.parse(localStorage.getItem('themeData'));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add('light-mode')}}catch(e){}}})();</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -214,7 +215,7 @@
 
         <!-- ISS -->
         <div class="widget-card" id="iss-card">
-          <p class="wc-title">ISS Live 🛰️</p>
+          <p class="wc-title">ISS Live <i class="fa-solid fa-satellite" style="margin-left: 5px;"></i></p>
           <div id="iss-map"></div>
           <div id="iss-stats">
             <div style="text-align:center;color:var(--text-secondary);font-size:.76rem;">Caricamento…</div>
@@ -223,7 +224,7 @@
 
         <!-- NEO -->
         <div class="widget-card">
-          <p class="wc-title">Asteroidi Oggi ☄️</p>
+          <p class="wc-title">Asteroidi Oggi <i class="fa-solid fa-meteor" style="margin-left: 5px;"></i></p>
           <div id="neo-content">
             <div style="text-align:center;color:var(--text-secondary);font-size:.76rem;padding:8px 0;">Caricamento…</div>
           </div>

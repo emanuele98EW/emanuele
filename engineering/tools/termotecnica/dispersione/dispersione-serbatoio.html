@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dispersione Termica Serbatoio | Emanuele Zanella</title>
+    <script>(function(){var p=localStorage.getItem('themePref');if(p==='light'){document.documentElement.classList.add('light-mode')}else if(!p){try{var d=JSON.parse(localStorage.getItem('themeData'));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add('light-mode')}}catch(e){}}})();</script>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        :root{--eng:var(--color-engineering,#c8a03c);--eng-rgb:var(--color-engineering-rgb,200,160,60)}
+        .tw{max-width:880px;margin:0 auto}
+        .card{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:14px;padding:24px 28px;margin-bottom:20px}
+        .ct{font-size:.75rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--eng);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.07))}
+        .ig{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+        .grp{display:flex;flex-direction:column;gap:5px}
+        .grp label{font-size:.78rem;color:var(--text-secondary);font-weight:500;display:flex;align-items:center;gap:4px}
+        .ir{display:flex;align-items:stretch;border:1px solid var(--border-color,rgba(255,255,255,.12));border-radius:8px;overflow:hidden;background:var(--input-bg,rgba(255,255,255,.04));transition:border-color .2s}
+        .ir:focus-within{border-color:var(--eng)}
+        .ir input,.ir select{flex:1;border:none;background:transparent;padding:9px 12px;font-size:.88rem;color:var(--text-primary);outline:none;width:100%;min-width:0}
+        .ir select{cursor:pointer;color-scheme:dark}
+        html.light-mode .ir select{color-scheme:light}
+        .ir select option{background:#1e1e1e;color:#f0f0f0}
+        html.light-mode .ir select option{background:#fff;color:#111}
+        .ir .un{padding:9px 10px;font-size:.75rem;color:var(--text-secondary);background:var(--unit-bg,rgba(255,255,255,.06));border-left:1px solid var(--border-color,rgba(255,255,255,.08));white-space:nowrap;user-select:none;display:flex;align-items:center}
+        .hint{font-size:.7rem;color:var(--text-secondary);margin-top:3px;opacity:.8;line-height:1.4}
+        .hint em{color:var(--eng);font-style:normal}
+        .ii{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;border:1px solid var(--text-secondary);font-size:.6rem;color:var(--text-secondary);cursor:help;flex-shrink:0}
+        .btn{display:inline-flex;align-items:center;gap:8px;background:var(--eng);color:#fff;border:none;padding:11px 32px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:opacity .2s,transform .15s}
+        html.light-mode .btn{color:#1a1a1a}
+        .btn:hover{opacity:.88;transform:translateY(-1px)}
+        .rh{display:none}
+        .rs{animation:fu .3s ease}
+        @keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+        .rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;margin-bottom:14px}
+        .rb{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+        .rb.pri{border-color:var(--eng);background:rgba(var(--eng-rgb,200,160,60),.07)}
+        .rb.pos{border-color:rgba(80,200,120,.5);background:rgba(80,200,120,.07)}
+        .rb.info{border-color:rgba(100,160,240,.4);background:rgba(100,160,240,.06)}
+        .rl{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600}
+        .rv{font-size:1.25rem;font-weight:700;color:var(--text-primary);line-height:1.1}
+        .rb.pri .rv{color:var(--eng)}
+        .rb.pos .rv{color:#50c878}
+        .rb.info .rv{color:#64a0f0}
+        .ru{font-size:.76rem;color:var(--text-secondary)}
+        .fb{border-left:3px solid var(--eng);border-radius:0 8px 8px 0;padding:12px 16px;font-size:.79rem;color:var(--text-secondary);line-height:1.7;margin-top:14px}
+        .fb strong{color:var(--text-primary)}
+        .eb{background:rgba(220,60,60,.08);border:1px solid rgba(220,60,60,.3);border-radius:8px;padding:10px 14px;font-size:.82rem;color:#e05050;margin-bottom:16px;display:none}
+        /* Tabella strati */
+        .layer-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:8px}
+        .layer-table th{text-align:left;padding:8px 10px;font-size:.68rem;color:var(--text-secondary);font-weight:600;letter-spacing:.8px;text-transform:uppercase;border-bottom:1px solid var(--border-color,rgba(255,255,255,.08))}
+        .layer-table td{padding:8px 10px;color:var(--text-primary);border-bottom:1px solid var(--border-color,rgba(255,255,255,.05))}
+        .layer-table tr:last-child td{border-bottom:none}
+        .layer-table td.em{color:var(--eng);font-weight:700}
+        .layer-table td.sub{color:var(--text-secondary);font-size:.78rem}
+        /* Serbatoio SVG preview */
+        .tank-preview{display:flex;justify-content:center;margin:16px 0 8px}
+        /* Formula section */
+        .formula-section{margin-top:8px}
+        .formula-block{background:var(--card-bg,rgba(255,255,255,.03));border:1px solid var(--border-color,rgba(255,255,255,.07));border-radius:10px;padding:18px 22px;margin-bottom:14px}
+        .formula-title{font-size:.72rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--eng);margin-bottom:12px}
+        .formula-desc{font-size:.82rem;color:var(--text-secondary);line-height:1.7;margin-bottom:10px}
+        .formula-desc strong{color:var(--text-primary)}
+        .mjx-wrap{overflow-x:auto;padding:10px 0;text-align:center}
+        .param-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-top:8px}
+        .param-item{font-size:.78rem;color:var(--text-secondary);line-height:1.5;padding:4px 0;border-bottom:1px solid var(--border-color,rgba(255,255,255,.05))}
+        .param-item span{color:var(--text-primary);font-weight:500}
+        /* Tab */
+        .tab-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+        .tab-btn{padding:6px 14px;border-radius:6px;border:1px solid var(--border-color,rgba(255,255,255,.1));background:transparent;color:var(--text-secondary);font-size:.75rem;font-weight:600;letter-spacing:.6px;cursor:pointer;transition:all .15s}
+        .tab-btn.active{background:rgba(var(--eng-rgb,200,160,60),.12);border-color:var(--eng);color:var(--eng)}
+        .tab-pane{display:none}
+        .tab-pane.active{display:block}
+        /* Strati personalizzati */
+        .wall-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 28px;gap:8px;align-items:end;margin-bottom:8px}
+        .del-btn{background:rgba(220,60,60,.1);border:1px solid rgba(220,60,60,.25);border-radius:6px;color:#e05050;font-size:1rem;cursor:pointer;padding:0;height:36px;width:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
+        .del-btn:hover{background:rgba(220,60,60,.22)}
+        .add-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px dashed var(--border-color,rgba(255,255,255,.18));border-radius:7px;color:var(--text-secondary);font-size:.78rem;padding:7px 14px;cursor:pointer;transition:border-color .15s,color .15s}
+        .add-btn:hover{border-color:var(--eng);color:var(--eng)}
+        /* Geometry toggle */
+        .geom-tabs{display:flex;gap:0;margin-bottom:16px;border-radius:8px;overflow:hidden;border:1px solid var(--border-color,rgba(255,255,255,.1));width:fit-content}
+        .geom-tab{padding:7px 18px;font-size:.78rem;font-weight:600;color:var(--text-secondary);background:transparent;border:none;cursor:pointer;transition:background .15s,color .15s}
+        .geom-tab.active{background:rgba(var(--eng-rgb,200,160,60),.12);color:var(--eng)}
+        @media(max-width:580px){.card{padding:18px 14px}.wall-row{grid-template-columns:1fr 1fr}}
+    </style>
+</head>
+<body>
+<div class="layout"><header id="main-navbar"></header><main class="main"><div class="tw">
+
+    <h2 style="color:var(--eng);text-align:center;margin-bottom:10px;font-size:2rem;">Dispersione Termica Serbatoio</h2>
+    <p style="text-align:center;margin-bottom:30px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+        <a href="../../index.html" style="color:var(--eng);text-decoration:none;">Tools</a>
+        <span style="margin:0 6px;">/</span>
+        <a href="../index.html" style="color:var(--eng);text-decoration:none;">Termotecnica</a>
+        <span style="margin:0 6px;">/</span>
+        <span style="color:var(--text-primary);">Dispersione Termica Serbatoio</span>
+    </p>
+
+    <!-- Intro -->
+    <div class="card" style="border-left:3px solid var(--eng);border-radius:0 14px 14px 14px;padding:14px 20px;margin-bottom:22px;">
+        <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.6;margin:0;">
+            Calcolo della <strong style="color:var(--text-primary);">dispersione termica</strong> attraverso la parete piana di un serbatoio coibentato.
+            Il modello calcola il coefficiente globale di trasmissione K in geometria <strong style="color:var(--text-primary);">piana</strong> (valida per pareti piatte o serbatoi di grande diametro),
+            la potenza termica dispersa, e — nel caso di applicazione di <strong style="color:var(--text-primary);">cavo scaldante (heat tracing)</strong> —
+            la lunghezza di cavo necessaria e il passo delle spire.
+        </p>
+    </div>
+
+    <!-- INPUT GEOMETRIA -->
+    <div class="card">
+        <div class="ct">Geometria serbatoio</div>
+        <div class="geom-tabs" style="margin-bottom:18px">
+            <button class="geom-tab active" onclick="setGeom('cylindrical',this)">Cilindrico verticale</button>
+            <button class="geom-tab" onclick="setGeom('rectangular',this)">Rettangolare / Piana</button>
+            <button class="geom-tab" onclick="setGeom('spherical',this)">Sferico</button>
+        </div>
+        <input type="hidden" id="geomType" value="cylindrical">
+
+        <!-- Cilindrico -->
+        <div id="geom_cylindrical" class="ig">
+            <div class="grp">
+                <label>Altezza totale H <span class="ii" title="Altezza del serbatoio cilindrico">i</span></label>
+                <div class="ir"><input type="number" id="cyl_H" value="6500" step="100" min="1"><span class="un">mm</span></div>
+                <div class="hint">Altezza mantello: <em>es. 6390 mm da scheda</em></div>
+            </div>
+            <div class="grp">
+                <label>Diametro esterno De</label>
+                <div class="ir"><input type="number" id="cyl_De" value="2500" step="50" min="100"><span class="un">mm</span></div>
+            </div>
+            <div class="grp">
+                <label>Superfici incluse</label>
+                <div class="ir">
+                    <select id="cyl_caps">
+                        <option value="top">Solo coperchio superiore</option>
+                        <option value="both">Entrambi i fondi</option>
+                        <option value="none">Solo mantello</option>
+                    </select>
+                </div>
+                <div class="hint">Il fondo inferiore è spesso escluso (su fondazione)</div>
+            </div>
+        </div>
+        <!-- Rettangolare -->
+        <div id="geom_rectangular" class="ig" style="display:none">
+            <div class="grp"><label>Larghezza</label><div class="ir"><input type="number" id="rec_W" value="2000" step="100" min="1"><span class="un">mm</span></div></div>
+            <div class="grp"><label>Lunghezza</label><div class="ir"><input type="number" id="rec_L" value="3000" step="100" min="1"><span class="un">mm</span></div></div>
+            <div class="grp"><label>Altezza</label><div class="ir"><input type="number" id="rec_H" value="2000" step="100" min="1"><span class="un">mm</span></div></div>
+        </div>
+        <!-- Sferico -->
+        <div id="geom_spherical" class="ig" style="display:none">
+            <div class="grp"><label>Diametro esterno</label><div class="ir"><input type="number" id="sph_D" value="2000" step="100" min="100"><span class="un">mm</span></div></div>
+        </div>
+    </div>
+
+    <!-- INPUT TEMPERATURE -->
+    <div class="card">
+        <div class="ct">Condizioni termiche</div>
+        <div class="ig">
+            <div class="grp">
+                <label>Temperatura interna T<sub>int</sub></label>
+                <div class="ir"><input type="number" id="Tint" value="25" step="5"><span class="un">°C</span></div>
+            </div>
+            <div class="grp">
+                <label>Temperatura esterna T<sub>est</sub></label>
+                <div class="ir"><input type="number" id="Test" value="-15" step="5"><span class="un">°C</span></div>
+            </div>
+            <div class="grp">
+                <label>Coeff. adduzione interno α<sub>i</sub> <span class="ii" title="Convezione naturale lato fluido">i</span></label>
+                <div class="ir"><input type="number" id="alpha_i" value="7" step="0.5" min="0.1"><span class="un">W/(m²·K)</span></div>
+                <div class="hint">Convezione naturale: <em>5–10 W/(m²·K)</em></div>
+            </div>
+            <div class="grp">
+                <label>Coeff. adduzione esterno α<sub>e</sub> <span class="ii" title="Convezione nat. + irraggiamento esterno">i</span></label>
+                <div class="ir"><input type="number" id="alpha_e" value="14" step="0.5" min="0.1"><span class="un">W/(m²·K)</span></div>
+                <div class="hint">Conv. nat. + irraggiamento: <em>12–20 W/(m²·K)</em></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INPUT PARETE -->
+    <div class="card">
+        <div class="ct">Stratigrafia parete</div>
+        <div style="font-size:.76rem;color:var(--text-secondary);margin-bottom:14px;line-height:1.5;">
+            Definisci gli strati della parete dall'interno verso l'esterno. La resistenza di adduzione interna ed esterna è aggiunta automaticamente.
+            Strati con λ = 0 o spessore = 0 vengono trascurati (come nel foglio di calcolo originale).
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 28px;gap:8px;align-items:end;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.07))">
+            <div style="font-size:.68rem;color:var(--text-secondary);font-weight:700;letter-spacing:.8px;text-transform:uppercase;">Strato</div>
+            <div style="font-size:.68rem;color:var(--text-secondary);font-weight:700;letter-spacing:.8px;text-transform:uppercase;">λ [W/(m·K)]</div>
+            <div style="font-size:.68rem;color:var(--text-secondary);font-weight:700;letter-spacing:.8px;text-transform:uppercase;">s [mm]</div>
+            <div style="font-size:.68rem;color:var(--text-secondary);font-weight:700;letter-spacing:.8px;text-transform:uppercase;">Note</div>
+            <div></div>
+        </div>
+        <div id="wallContainer"></div>
+        <button class="add-btn" onclick="addWallLayer()" style="margin-top:8px">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Aggiungi strato
+        </button>
+    </div>
+
+    <!-- INPUT CAVO SCALDANTE -->
+    <div class="card">
+        <div class="ct">Cavo scaldante (heat tracing)</div>
+        <div style="font-size:.76rem;color:var(--text-secondary);margin-bottom:14px;">
+            Opzionale. Se inserito, viene calcolata la lunghezza di cavo necessaria per compensare la dispersione termica (attorno al mantello cilindrico).
+        </div>
+        <div class="ig">
+            <div class="grp">
+                <label>Potenza specifica cavo <span class="ii" title="W/m alla temperatura di riferimento indicata in scheda">i</span></label>
+                <div class="ir"><input type="number" id="cablePower" value="20" step="5" min="0"><span class="un">W/m</span></div>
+                <div class="hint">Es. <em>20 W/m a 10°C</em></div>
+            </div>
+            <div class="grp">
+                <label>Include solo mantello?</label>
+                <div class="ir">
+                    <select id="cableOnlyMantle">
+                        <option value="1">Sì — solo mantello</option>
+                        <option value="0">No — intera superficie</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="eb" id="errorBox"></div>
+    <div style="display:flex;justify-content:center;margin-bottom:28px;">
+        <button class="btn" onclick="calculate()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/><path d="M9 15h3l8-8-3-3-8 8v3z"/></svg>
+            Calcola Dispersione Termica
+        </button>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="resultsSection" class="rh rs">
+        <div class="card">
+            <div class="ct">Risultati principali</div>
+            <div class="rg">
+                <div class="rb pri"><div class="rl">K globale</div><div class="rv" id="rK">—</div><div class="ru">W/(m²·K)</div></div>
+                <div class="rb pri"><div class="rl">Dispersione spec.</div><div class="rv" id="rQspec">—</div><div class="ru">W/m²</div></div>
+                <div class="rb pri"><div class="rl">Potenza dispersa</div><div class="rv" id="rPtot">—</div><div class="ru">kW</div></div>
+                <div class="rb"><div class="rl">ΔT</div><div class="rv" id="rDT">—</div><div class="ru">°C</div></div>
+                <div class="rb"><div class="rl">R tot. parete</div><div class="rv" id="rRtot">—</div><div class="ru">m²·K/W</div></div>
+                <div class="rb info"><div class="rl">Area laterale</div><div class="rv" id="rALat">—</div><div class="ru">m²</div></div>
+                <div class="rb info"><div class="rl">Area fondi</div><div class="rv" id="rACaps">—</div><div class="ru">m²</div></div>
+                <div class="rb info"><div class="rl">Area tot. disperdente</div><div class="rv" id="rAtot">—</div><div class="ru">m²</div></div>
+            </div>
+
+            <!-- Cavo scaldante (condizionale) -->
+            <div id="cableResults" style="display:none">
+                <div class="ct" style="margin-bottom:10px;margin-top:16px">Cavo scaldante</div>
+                <div class="rg">
+                    <div class="rb pos"><div class="rl">Potenza cavo richiesta</div><div class="rv" id="rCablePow">—</div><div class="ru">kW</div></div>
+                    <div class="rb pos"><div class="rl">Metri di cavo</div><div class="rv" id="rCableM">—</div><div class="ru">m</div></div>
+                    <div class="rb"><div class="rl">Numero spire</div><div class="rv" id="rCableSpire">—</div><div class="ru">spire</div></div>
+                    <div class="rb"><div class="rl">Passo tra spire</div><div class="rv" id="rCablePasso">—</div><div class="ru">mm</div></div>
+                </div>
+            </div>
+
+            <!-- Tabella strati K -->
+            <div style="margin-top:16px;overflow-x:auto">
+                <div class="ct" style="margin-bottom:10px">Stratigrafia e resistenze</div>
+                <table class="layer-table">
+                    <thead><tr><th>Strato</th><th>Riferimento</th><th>λ [W/(m·K)]</th><th>s [m]</th><th>R [m²·K/W]</th></tr></thead>
+                    <tbody id="rLayerTable"></tbody>
+                </table>
+            </div>
+
+            <div class="fb">
+                <strong>Nota:</strong> Il calcolo utilizza il modello a <strong>parete piana</strong> (geometria monodimensionale).
+                Per serbatoi con diametro/spessore isolante &gt; 10, l'errore introdotto rispetto alla geometria cilindrica è inferiore al 2%.
+                I coefficienti di adduzione interno ed esterno sono impostati dall'utente; valori tipici: α<sub>i</sub> = 5–10 W/(m²·K) convezione naturale, α<sub>e</sub> = 12–20 W/(m²·K) convezione nat. + irraggiamento.
+            </div>
+        </div>
+    </div>
+
+    <!-- FORMULE -->
+    <div class="card" style="margin-top:8px">
+        <div class="ct">Fondamenti teorici e formule</div>
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="showTab('f1',this)">Parete piana — K globale</button>
+            <button class="tab-btn" onclick="showTab('f2',this)">Geometria — superfici</button>
+            <button class="tab-btn" onclick="showTab('f3',this)">Cavo scaldante</button>
+            <button class="tab-btn" onclick="showTab('f4',this)">Note implementative</button>
+        </div>
+
+        <div id="f1" class="tab-pane active formula-section">
+            <div class="formula-block">
+                <div class="formula-title">Resistenza termica di parete piana multistrato</div>
+                <div class="formula-desc">
+                    Per geometria <strong>piana</strong>, la resistenza termica di uno strato omogeneo è semplicemente:
+                </div>
+                <div class="mjx-wrap">\[ R_i = \frac{s_i}{\lambda_i} \quad \left[\frac{\text{m}^2\text{·K}}{\text{W}}\right] \]</div>
+                <div class="formula-desc" style="margin-top:8px">
+                    Le resistenze di adduzione (convezione) ai due lati si aggiungono come resistenze in serie:
+                </div>
+                <div class="mjx-wrap">\[ R_{\alpha,i} = \frac{1}{\alpha_i}\,, \quad R_{\alpha,e} = \frac{1}{\alpha_e} \]</div>
+                <div class="formula-desc" style="margin-top:8px">La resistenza totale e il coefficiente globale K sono:</div>
+                <div class="mjx-wrap">\[ R_{tot} = \frac{1}{\alpha_i} + \sum_j \frac{s_j}{\lambda_j} + \frac{1}{\alpha_e} \]</div>
+                <div class="mjx-wrap">\[ K = \frac{1}{R_{tot}} \quad \left[\frac{\text{W}}{\text{m}^2\text{·K}}\right] \]</div>
+                <div class="param-list">
+                    <div class="param-item"><span>s<sub>j</sub></span> — spessore dello strato j [m]</div>
+                    <div class="param-item"><span>λ<sub>j</sub></span> — conducibilità termica [W/(m·K)]</div>
+                    <div class="param-item"><span>α<sub>i</sub></span> — coeff. adduzione interno [W/(m²·K)]</div>
+                    <div class="param-item"><span>α<sub>e</sub></span> — coeff. adduzione esterno [W/(m²·K)]</div>
+                </div>
+            </div>
+            <div class="formula-block">
+                <div class="formula-title">Flusso termico e potenza dispersa</div>
+                <div class="mjx-wrap">\[ q = K\cdot\Delta T = K\cdot(T_{int}-T_{est}) \quad \left[\frac{\text{W}}{\text{m}^2}\right] \]</div>
+                <div class="mjx-wrap">\[ P_{tot} = q\cdot A_{tot} = K\cdot\Delta T\cdot A_{tot} \quad [\text{W}] \]</div>
+                <div class="param-list">
+                    <div class="param-item"><span>ΔT</span> — differenza di temperatura tra interno ed esterno [K]</div>
+                    <div class="param-item"><span>A<sub>tot</sub></span> — superficie disperdente totale [m²]</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="f2" class="tab-pane formula-section">
+            <div class="formula-block">
+                <div class="formula-title">Serbatoio cilindrico verticale</div>
+                <div class="formula-desc">
+                    Per un serbatoio cilindrico di altezza H e diametro esterno D<sub>e</sub>:
+                </div>
+                <div class="mjx-wrap">\[ A_{laterale} = \pi\,D_e\,H \]</div>
+                <div class="mjx-wrap">\[ A_{fondo} = \frac{\pi\,D_e^2}{4} \quad \text{(per ciascun fondo)} \]</div>
+                <div class="mjx-wrap">\[ A_{tot} = A_{laterale} + n_{fondi}\cdot A_{fondo} \]</div>
+                <div class="formula-desc" style="margin-top:8px">
+                    dove n<sub>fondi</sub> = 0, 1 o 2 a seconda delle superfici incluse nel calcolo.
+                    Il fondo inferiore è spesso escluso perché poggia su fondazione o anello di supporto non coibentato.
+                </div>
+            </div>
+            <div class="formula-block">
+                <div class="formula-title">Serbatoio rettangolare</div>
+                <div class="mjx-wrap">\[ A_{tot} = 2\,(W\cdot L + W\cdot H + L\cdot H) \]</div>
+                <div class="formula-desc">(somma delle sei facce. Può essere ridotta escludendo il fondo.)</div>
+            </div>
+            <div class="formula-block">
+                <div class="formula-title">Serbatoio sferico</div>
+                <div class="mjx-wrap">\[ A_{tot} = 4\pi\,r^2 = \pi\,D_e^2 \]</div>
+            </div>
+        </div>
+
+        <div id="f3" class="tab-pane formula-section">
+            <div class="formula-block">
+                <div class="formula-title">Dimensionamento cavo scaldante</div>
+                <div class="formula-desc">
+                    Il cavo scaldante deve fornire almeno la stessa potenza termica che il serbatoio disperde. I parametri di dimensionamento sono:
+                </div>
+                <div class="mjx-wrap">\[ L_{cavo} = \frac{P_{dispersa}\;[\text{W}]}{p_{cavo}\;[\text{W/m}]} \quad [\text{m}] \]</div>
+                <div class="formula-desc" style="margin-top:8px">
+                    Il cavo viene avvolto a spirale attorno al mantello cilindrico. Dato il diametro esterno del serbatoio D<sub>e</sub>,
+                    la <strong>circonferenza</strong> di ciascuna spira vale π·D<sub>e</sub> e il numero di spire è:
+                </div>
+                <div class="mjx-wrap">\[ n_{spire} = \frac{L_{cavo}}{\pi\,D_e} \]</div>
+                <div class="formula-desc" style="margin-top:8px">Il <strong>passo</strong> (interasse tra spire) è:</div>
+                <div class="mjx-wrap">\[ p_{spire} = \frac{H}{n_{spire}} \quad [\text{m}] \]</div>
+                <div class="formula-desc" style="margin-top:8px">
+                    <strong>Verifica:</strong> il passo deve essere tale da garantire una distribuzione uniforme del calore.
+                    Valori tipici: 200–500 mm. Un passo eccessivo (> 600 mm) può creare zone fredde.
+                </div>
+                <div class="param-list">
+                    <div class="param-item"><span>p<sub>cavo</sub></span> — potenza specifica del cavo [W/m] (dalla scheda tecnica)</div>
+                    <div class="param-item"><span>D<sub>e</sub></span> — diametro esterno del serbatoio (fuori isolante) [m]</div>
+                    <div class="param-item"><span>H</span> — altezza del mantello [m]</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="f4" class="tab-pane formula-section">
+            <div class="formula-block">
+                <div class="formula-title">Ipotesi del modello a parete piana</div>
+                <div class="formula-desc">
+                    La trattazione a <strong>parete piana</strong> è esatta per pareti verticali piatte e approssimata per la geometria cilindrica.
+                    Per un cilindro, la resistenza termica è in realtà:
+                </div>
+                <div class="mjx-wrap">\[ R_{cil} = \frac{\ln(r_e/r_i)}{2\pi\,\lambda\,L} \]</div>
+                <div class="formula-desc" style="margin-top:8px">
+                    Tuttavia, per isolamenti sottili rispetto al diametro (s/D &lt; 0.05), l'errore del modello piano è inferiore all'1%.
+                    Per serbatoi industriali tipici (D = 2–5 m, s<sub>iso</sub> = 25–100 mm) la semplificazione è accettabile.
+                    Nei casi di s/D significativo, il tool Dispersione Termica Tubazione implementa la geometria cilindrica esatta.
+                </div>
+            </div>
+            <div class="formula-block">
+                <div class="formula-title">Coefficiente di adduzione esterno — stima</div>
+                <div class="formula-desc">
+                    Il coefficiente α<sub>e</sub> combina convezione naturale e irraggiamento. Una stima pratica per superfici verticali in aria ferma:
+                </div>
+                <div class="mjx-wrap">\[ \alpha_e \approx \alpha_{conv} + \varepsilon\,\sigma\,(T_{se}^2+T_{amb}^2)(T_{se}+T_{amb}) \]</div>
+                <div class="formula-desc" style="margin-top:8px">
+                    Per superfici a temperatura ~ 0–50°C in aria a -15°C:
+                    α<sub>conv,nat</sub> ≈ 3–6 W/(m²·K), α<sub>irr</sub> ≈ 4–7 W/(m²·K), quindi α<sub>e</sub> ≈ 10–15 W/(m²·K).
+                    Il valore di default nel tool (14 W/(m²·K)) è conservativo e adeguato per progetto.
+                </div>
+            </div>
+            <div class="formula-block">
+                <div class="formula-title">Riferimento normativo / bibliografico</div>
+                <div class="formula-desc">
+                    Il metodo è coerente con <strong>UNI EN ISO 12241:2008</strong> (Isolamento termico per attrezzature degli edifici e installazioni industriali — regole di calcolo).
+                    I valori di conducibilità termica dei materiali isolanti sono forniti dal costruttore; valori di riferimento indicativi:
+                </div>
+                <div class="param-list">
+                    <div class="param-item"><span>Lana di roccia</span> — 0.035–0.040 W/(m·K)</div>
+                    <div class="param-item"><span>Lana di vetro</span> — 0.030–0.040 W/(m·K)</div>
+                    <div class="param-item"><span>Poliuretano espanso</span> — 0.022–0.028 W/(m·K)</div>
+                    <div class="param-item"><span>Polistirene ESP</span> — 0.033–0.040 W/(m·K)</div>
+                    <div class="param-item"><span>Aerogel</span> — 0.012–0.020 W/(m·K)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div></main></div>
+<script src="../../../../js/navbar.js"></script>
+<script src="../../../../js/main.js"></script>
+<script src="../../../../js/footer.js"></script>
+<script>
+// --- Wall layers ---
+let wLayerCount = 0;
+
+const WALL_PRESETS = [
+    {name:"Parete serbatoio (acciaio)", lambda:50, s:5, note:"trascurabile"},
+    {name:"Isolante lana minerale", lambda:0.039, s:25, note:""},
+    {name:"Finitura alluminio", lambda:160, s:1, note:"trascurabile"},
+];
+
+function addWallLayer(name="", lambda="", s="", note=""){
+    wLayerCount++;
+    const id = wLayerCount;
+    const cont = document.getElementById('wallContainer');
+    const div = document.createElement('div');
+    div.id = 'wlayer-'+id;
+    div.className = 'wall-row';
+    div.innerHTML = `
+        <div class="grp">
+            <div class="ir"><input type="text" id="wn_${id}" value="${name}" placeholder="Nome strato"></div>
+        </div>
+        <div class="grp">
+            <div class="ir"><input type="number" id="wl_${id}" value="${lambda}" step="0.001" min="0" placeholder="0 = trascura"><span class="un">W/(m·K)</span></div>
+        </div>
+        <div class="grp">
+            <div class="ir"><input type="number" id="ws_${id}" value="${s}" step="1" min="0" placeholder="mm"><span class="un">mm</span></div>
+        </div>
+        <div class="grp">
+            <div class="ir"><input type="text" id="wnote_${id}" value="${note}" placeholder="Note"></div>
+        </div>
+        <button class="del-btn" onclick="removeWLayer(${id})" title="Rimuovi">×</button>`;
+    cont.appendChild(div);
+}
+
+function removeWLayer(id){ const el=document.getElementById('wlayer-'+id); if(el) el.remove(); }
+
+function getWallLayers(){
+    const layers=[];
+    document.querySelectorAll('[id^="wlayer-"]').forEach(div=>{
+        const id=div.id.split('-')[1];
+        const name=document.getElementById('wn_'+id).value||'—';
+        const lambda=parseFloat(document.getElementById('wl_'+id).value)||0;
+        const s=parseFloat(document.getElementById('ws_'+id).value)||0;
+        const note=document.getElementById('wnote_'+id).value||'';
+        layers.push({name, lambda, s, note});
+    });
+    return layers;
+}
+
+function setGeom(type, btn){
+    document.querySelectorAll('.geom-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('geomType').value = type;
+    ['cylindrical','rectangular','spherical'].forEach(t=>{
+        document.getElementById('geom_'+t).style.display = t===type?'grid':'none';
+    });
+}
+
+function showTab(id, btn){
+    document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    if(window.MathJax) setTimeout(()=>MathJax.typesetPromise(),100);
+}
+
+function showErr(m){ const e=document.getElementById("errorBox");e.textContent="⚠ "+m;e.style.display="block";document.getElementById("resultsSection").classList.add("rh"); }
+function hideErr(){ document.getElementById("errorBox").style.display="none"; }
+
+function calcArea(){
+    const geom = document.getElementById('geomType').value;
+    let aLat=0, aCaps=0;
+    if(geom==='cylindrical'){
+        const H=parseFloat(document.getElementById('cyl_H').value)/1000;
+        const De=parseFloat(document.getElementById('cyl_De').value)/1000;
+        const caps=document.getElementById('cyl_caps').value;
+        aLat = Math.PI*De*H;
+        const aFondo = Math.PI*De*De/4;
+        if(caps==='both') aCaps=2*aFondo;
+        else if(caps==='top') aCaps=aFondo;
+        else aCaps=0;
+    } else if(geom==='rectangular'){
+        const W=parseFloat(document.getElementById('rec_W').value)/1000;
+        const RL=parseFloat(document.getElementById('rec_L').value)/1000;
+        const H=parseFloat(document.getElementById('rec_H').value)/1000;
+        aLat=2*(W*H+RL*H);
+        aCaps=2*(W*RL);
+    } else {
+        const D=parseFloat(document.getElementById('sph_D').value)/1000;
+        aLat=Math.PI*D*D;
+        aCaps=0;
+    }
+    return {aLat, aCaps};
+}
+
+function calculate(){
+    const Tint=parseFloat(document.getElementById('Tint').value);
+    const Test=parseFloat(document.getElementById('Test').value);
+    const ai=parseFloat(document.getElementById('alpha_i').value);
+    const ae=parseFloat(document.getElementById('alpha_e').value);
+    const layers=getWallLayers();
+    const cablePow=parseFloat(document.getElementById('cablePower').value)||0;
+    const onlyMantle=document.getElementById('cableOnlyMantle').value==='1';
+
+    if(isNaN(Tint)||isNaN(Test)||isNaN(ai)||isNaN(ae)){ showErr("Inserisci tutti i dati di temperatura e coefficienti."); return; }
+    if(layers.length===0){ showErr("Aggiungi almeno uno strato di parete."); return; }
+    hideErr();
+
+    const dT = Tint - Test;
+
+    // Resistenze
+    const R_ai = 1/ai;
+    const R_ae = 1/ae;
+    let R_wall = 0;
+    const layerDetails=[];
+    for(const l of layers){
+        let R=0;
+        if(l.lambda>0 && l.s>0) R=(l.s/1000)/l.lambda;
+        layerDetails.push({...l, R});
+        R_wall += R;
+    }
+    const Rtot = R_ai + R_wall + R_ae;
+    const K = 1/Rtot;
+    const q = K*dT; // W/m²
+    const {aLat, aCaps} = calcArea();
+    const Atot = aLat+aCaps;
+    const Ptot_W = q*Atot;
+    const Ptot_kW = Ptot_W/1000;
+
+    // Cavo scaldante
+    let cableResults=null;
+    if(cablePow>0 && Ptot_W>0){
+        const Pcavo_W = onlyMantle ? q*aLat : Ptot_W;
+        const mCavo = Pcavo_W/cablePow;
+        const geom=document.getElementById('geomType').value;
+        let nSpire=0, passo_mm=0;
+        if(geom==='cylindrical'){
+            const De=parseFloat(document.getElementById('cyl_De').value)/1000;
+            const H=parseFloat(document.getElementById('cyl_H').value)/1000;
+            const circ=Math.PI*De;
+            nSpire=mCavo/circ;
+            passo_mm=(H/nSpire)*1000;
+        }
+        cableResults={Pcavo_kW: Pcavo_W/1000, mCavo, nSpire, passo_mm};
+    }
+
+    // Popola risultati
+    document.getElementById('rK').textContent = K.toFixed(4);
+    document.getElementById('rQspec').textContent = q.toFixed(2);
+    document.getElementById('rPtot').textContent = Ptot_kW.toFixed(3);
+    document.getElementById('rDT').textContent = dT.toFixed(1);
+    document.getElementById('rRtot').textContent = Rtot.toFixed(4);
+    document.getElementById('rALat').textContent = aLat.toFixed(3);
+    document.getElementById('rACaps').textContent = aCaps.toFixed(3);
+    document.getElementById('rAtot').textContent = Atot.toFixed(3);
+
+    const cableDiv = document.getElementById('cableResults');
+    if(cableResults){
+        document.getElementById('rCablePow').textContent = cableResults.Pcavo_kW.toFixed(3);
+        document.getElementById('rCableM').textContent = cableResults.mCavo.toFixed(1);
+        document.getElementById('rCableSpire').textContent = cableResults.nSpire.toFixed(2);
+        document.getElementById('rCablePasso').textContent = cableResults.passo_mm>0 ? cableResults.passo_mm.toFixed(1) : '—';
+        cableDiv.style.display='block';
+    } else {
+        cableDiv.style.display='none';
+    }
+
+    // Tabella strati
+    const tbody=document.getElementById('rLayerTable');
+    tbody.innerHTML='';
+    const rows=[
+        {name:'Adduzione interna', ref:'conv. nat.', lambda:'—', s:'—', R: R_ai},
+        ...layerDetails.map(l=>({name:l.name||'—', ref:l.note, lambda:l.lambda>0?l.lambda:'trascurato', s:l.s>0?l.s:'trascurato', R:l.R})),
+        {name:'Adduzione esterna', ref:'conv.+irr.', lambda:'—', s:'—', R: R_ae},
+    ];
+    rows.forEach(r=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td class="em">${r.name}</td><td class="sub">${r.ref}</td><td>${r.lambda}</td><td>${r.s}</td><td>${r.R.toFixed(5)}</td>`;
+        tbody.appendChild(tr);
+    });
+    const trTot=document.createElement('tr');
+    trTot.innerHTML=`<td class="em" colspan="4" style="text-align:right;font-size:.75rem;letter-spacing:.8px;text-transform:uppercase">R tot</td><td class="em">${Rtot.toFixed(5)}</td>`;
+    tbody.appendChild(trTot);
+
+    document.getElementById('resultsSection').classList.remove('rh');
+    document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'});
+    if(window.MathJax) MathJax.typesetPromise();
+}
+
+// Init presets
+WALL_PRESETS.forEach(p=>addWallLayer(p.name, p.lambda, p.s, p.note));
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{ if(window.MathJax) setTimeout(()=>MathJax.typesetPromise(),100); });
+});
+</script>
+<script src="../../../../js/main.js"></script>
+</body>
+</html>

@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dimensionamenti Metano | Emanuele Zanella</title>
-    <meta name="description" content="Dimensionamento tubazioni gas metano: perdite di carico, velocità, portata e progettazione.">
+    <title>Termotecnica | Emanuele Zanella</title>
+    <meta name="description" content="Strumenti per la termotecnica: dispersione termica, serbatoi e tubazioni.">
     <script>
 (function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
     </script>
-    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../../css/style.css">
     <style>
         .accordion-list {
             display: flex;
@@ -86,38 +86,25 @@
         <main class="main">
 
             <h2 style="color: var(--color-engineering); text-align: center; margin-bottom: 10px; font-size: 2rem;">
-                Dimensionamenti Metano
+                Termotecnica
             </h2>
             <p style="text-align: center; margin-bottom: 30px; font-size: 0.9rem; color: var(--text-secondary); letter-spacing: 1px;">
-                <a href="../../index.html" style="color: var(--color-engineering); text-decoration: none;">Tools</a>
+                <a href="../index.html" style="color: var(--color-engineering); text-decoration: none;">Tools</a>
                 <span style="margin: 0 6px;">/</span>
-                <a href="../index.html" style="color: var(--color-engineering); text-decoration: none;">Dimensionamenti</a>
-                <span style="margin: 0 6px;">/</span>
-                <span style="color: var(--text-primary);">Metano</span>
+                <span style="color: var(--text-primary);">Termotecnica</span>
             </p>
 
             <div class="accordion-list">
 
-                <!-- 1. Progettazione tubazioni -->
+                <!-- 1. Dispersione Termica -->
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
                         <div class="accordion-icon">+</div>
-                        <span class="accordion-title">Progettazione di tubazioni</span>
+                        <span class="accordion-title">Dispersione Termica</span>
                     </div>
                     <div class="accordion-body">
-                        <a class="accordion-sub" href="progettazione/metano-perdita-pressione.html">Perdita di pressione nella tubazione</a>
-                    </div>
-                </div>
-
-                <!-- 2. Componentistica -->
-                <div class="accordion-item">
-                    <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <div class="accordion-icon">+</div>
-                        <span class="accordion-title">Componenti & Apparecchiature</span>
-                    </div>
-                    <div class="accordion-body">
-                        <a class="accordion-sub" href="progettazione/metano-contatore-fiscale.html">Verifica contatore fiscale</a>
-                        <a class="accordion-sub" href="progettazione/metano-convertitore-portata.html">Convertitore di portata</a>
+                        <a class="accordion-sub" href="dispersione/dispersione-tubazione.html">Dispersione Termica Tubazione</a>
+                        <a class="accordion-sub" href="dispersione/dispersione-serbatoio.html">Dispersione Termica Serbatoio</a>
                     </div>
                 </div>
 
@@ -126,9 +113,9 @@
         </main>
     </div>
 
-    <script src="../../../../js/navbar.js"></script>
-    <script src="../../../../js/main.js"></script>
-    <script src="../../../../js/footer.js"></script>
+    <script src="../../../js/navbar.js"></script>
+    <script src="../../../js/main.js"></script>
+    <script src="../../../js/footer.js"></script>
     <script>
     function toggleAccordion(header) {
         const icon = header.querySelector('.accordion-icon');

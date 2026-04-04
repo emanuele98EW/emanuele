@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dispersione Termica Tubazione | Emanuele Zanella</title>
+    <script>(function(){var p=localStorage.getItem('themePref');if(p==='light'){document.documentElement.classList.add('light-mode')}else if(!p){try{var d=JSON.parse(localStorage.getItem('themeData'));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add('light-mode')}}catch(e){}}})();</script>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <!-- MathJax for LaTeX rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        :root{--eng:var(--color-engineering,#c8a03c);--eng-rgb:var(--color-engineering-rgb,200,160,60)}
+        .tw{max-width:880px;margin:0 auto}
+        .card{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:14px;padding:24px 28px;margin-bottom:20px}
+        .ct{font-size:.75rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--eng);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.07))}
+        .ig{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+        .ig3{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+        .grp{display:flex;flex-direction:column;gap:5px}
+        .grp label{font-size:.78rem;color:var(--text-secondary);font-weight:500;display:flex;align-items:center;gap:4px}
+        .ir{display:flex;align-items:stretch;border:1px solid var(--border-color,rgba(255,255,255,.12));border-radius:8px;overflow:hidden;background:var(--input-bg,rgba(255,255,255,.04));transition:border-color .2s}
+        .ir:focus-within{border-color:var(--eng)}
+        .ir input,.ir select{flex:1;border:none;background:transparent;padding:9px 12px;font-size:.88rem;color:var(--text-primary);outline:none;width:100%;min-width:0}
+        .ir select{cursor:pointer;color-scheme:dark}
+        html.light-mode .ir select{color-scheme:light}
+        .ir select option{background:#1e1e1e;color:#f0f0f0}
+        html.light-mode .ir select option{background:#fff;color:#111}
+        .ir .un{padding:9px 10px;font-size:.75rem;color:var(--text-secondary);background:var(--unit-bg,rgba(255,255,255,.06));border-left:1px solid var(--border-color,rgba(255,255,255,.08));white-space:nowrap;user-select:none;display:flex;align-items:center}
+        .hint{font-size:.7rem;color:var(--text-secondary);margin-top:3px;opacity:.8;line-height:1.4}
+        .hint em{color:var(--eng);font-style:normal}
+        .ii{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;border:1px solid var(--text-secondary);font-size:.6rem;color:var(--text-secondary);cursor:help;flex-shrink:0}
+        .btn{display:inline-flex;align-items:center;gap:8px;background:var(--eng);color:#fff;border:none;padding:11px 32px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:opacity .2s,transform .15s}
+        html.light-mode .btn{color:#1a1a1a}
+        .btn:hover{opacity:.88;transform:translateY(-1px)}
+        .rh{display:none}
+        .rs{animation:fu .3s ease}
+        @keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+        .rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;margin-bottom:14px}
+        .rb{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+        .rb.pri{border-color:var(--eng);background:rgba(var(--eng-rgb,200,160,60),.07)}
+        .rb.pos{border-color:rgba(80,200,120,.5);background:rgba(80,200,120,.07)}
+        .rb.warn{border-color:rgba(220,140,60,.5);background:rgba(220,140,60,.07)}
+        .rl{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600}
+        .rv{font-size:1.25rem;font-weight:700;color:var(--text-primary);line-height:1.1}
+        .rb.pri .rv{color:var(--eng)}
+        .rb.pos .rv{color:#50c878}
+        .rb.warn .rv{color:#dc8c3c}
+        .ru{font-size:.76rem;color:var(--text-secondary)}
+        .fb{border-left:3px solid var(--eng);border-radius:0 8px 8px 0;padding:12px 16px;font-size:.79rem;color:var(--text-secondary);line-height:1.7;margin-top:14px}
+        .fb strong{color:var(--text-primary)}
+        .eb{background:rgba(220,60,60,.08);border:1px solid rgba(220,60,60,.3);border-radius:8px;padding:10px 14px;font-size:.82rem;color:#e05050;margin-bottom:16px;display:none}
+        /* Tabella circuiti */
+        .res-table{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:8px;overflow-x:auto;display:block}
+        .res-table th{text-align:left;padding:8px 10px;font-size:.68rem;color:var(--text-secondary);font-weight:600;letter-spacing:.8px;text-transform:uppercase;border-bottom:1px solid var(--border-color,rgba(255,255,255,.08));white-space:nowrap}
+        .res-table td{padding:7px 10px;color:var(--text-primary);border-bottom:1px solid var(--border-color,rgba(255,255,255,.05));white-space:nowrap}
+        .res-table tr:last-child td{border-bottom:none}
+        .res-table td.em{color:var(--eng);font-weight:700}
+        .res-table td.warn{color:#dc8c3c}
+        .res-table td.ok{color:#50c878}
+        /* Formula section */
+        .formula-section{margin-top:8px}
+        .formula-block{background:var(--card-bg,rgba(255,255,255,.03));border:1px solid var(--border-color,rgba(255,255,255,.07));border-radius:10px;padding:18px 22px;margin-bottom:14px}
+        .formula-title{font-size:.72rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--eng);margin-bottom:12px}
+        .formula-desc{font-size:.82rem;color:var(--text-secondary);line-height:1.7;margin-bottom:10px}
+        .formula-desc strong{color:var(--text-primary)}
+        .mjx-wrap{overflow-x:auto;padding:10px 0;text-align:center}
+        .param-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-top:8px}
+        .param-item{font-size:.78rem;color:var(--text-secondary);line-height:1.5;padding:4px 0;border-bottom:1px solid var(--border-color,rgba(255,255,255,.05))}
+        .param-item span{color:var(--text-primary);font-weight:500}
+        /* Tab nav per formule */
+        .tab-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+        .tab-btn{padding:6px 14px;border-radius:6px;border:1px solid var(--border-color,rgba(255,255,255,.1));background:transparent;color:var(--text-secondary);font-size:.75rem;font-weight:600;letter-spacing:.6px;cursor:pointer;transition:all .15s}
+        .tab-btn.active{background:rgba(var(--eng-rgb,200,160,60),.12);border-color:var(--eng);color:var(--eng)}
+        .tab-pane{display:none}
+        .tab-pane.active{display:block}
+        /* Strati isolante */
+        .layer-row{display:grid;grid-template-columns:1fr 1fr 1fr 28px;gap:8px;align-items:end;margin-bottom:8px}
+        .layer-row .grp{margin-bottom:0}
+        .del-btn{background:rgba(220,60,60,.1);border:1px solid rgba(220,60,60,.25);border-radius:6px;color:#e05050;font-size:1rem;cursor:pointer;padding:0;height:36px;width:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
+        .del-btn:hover{background:rgba(220,60,60,.22)}
+        .add-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px dashed var(--border-color,rgba(255,255,255,.18));border-radius:7px;color:var(--text-secondary);font-size:.78rem;padding:7px 14px;cursor:pointer;transition:border-color .15s,color .15s}
+        .add-btn:hover{border-color:var(--eng);color:var(--eng)}
+        @media(max-width:580px){.card{padding:18px 14px}.layer-row{grid-template-columns:1fr 1fr;}.layer-row .del-btn{display:none}}
+    </style>
+</head>
+<body>
+<div class="layout"><header id="main-navbar"></header><main class="main"><div class="tw">
+
+    <h2 style="color:var(--eng);text-align:center;margin-bottom:10px;font-size:2rem;">Dispersione Termica Tubazione</h2>
+    <p style="text-align:center;margin-bottom:30px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+        <a href="../../index.html" style="color:var(--eng);text-decoration:none;">Tools</a>
+        <span style="margin:0 6px;">/</span>
+        <a href="../index.html" style="color:var(--eng);text-decoration:none;">Termotecnica</a>
+        <span style="margin:0 6px;">/</span>
+        <span style="color:var(--text-primary);">Dispersione Termica Tubazione</span>
+    </p>
+
+    <!-- Intro -->
+    <div class="card" style="border-left:3px solid var(--eng);border-radius:0 14px 14px 14px;padding:14px 20px;margin-bottom:22px;">
+        <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.6;margin:0;">
+            Calcolo della <strong style="color:var(--text-primary);">dispersione termica lineare</strong> di una tubazione coibentata in ambiente esterno freddo.
+            Il modello calcola le resistenze termiche di ogni strato (tubo, isolante, rivestimento), il coefficiente globale di trasmissione,
+            la temperatura della superficie esterna e la <strong style="color:var(--text-primary);">potenza dispersa per metro</strong> e totale.
+            Basato sulla geometria cilindrica con convezione + irraggiamento all'esterno.
+        </p>
+    </div>
+
+    <!-- INPUT -->
+    <div class="card">
+        <div class="ct">Fluido e condizioni operative</div>
+        <div class="ig">
+            <div class="grp">
+                <label>Tipo fluido</label>
+                <div class="ir">
+                    <select id="fluidType" onchange="onFluidChange()">
+                        <option value="water">Acqua</option>
+                        <option value="gas">Gas (aria/vapore)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="grp">
+                <label>Portata massica <span class="ii" title="Portata del fluido in tubazione">i</span></label>
+                <div class="ir"><input type="number" id="massFlow" value="8500" step="100" min="1"><span class="un">kg/h</span></div>
+                <div class="hint">Tipico acqua: <em>1 000 – 100 000 kg/h</em></div>
+            </div>
+            <div class="grp">
+                <label>Temperatura fluido</label>
+                <div class="ir"><input type="number" id="tf" value="25" step="5"><span class="un">°C</span></div>
+            </div>
+            <div class="grp">
+                <label>Temperatura ambiente esterna</label>
+                <div class="ir"><input type="number" id="tamb" value="-15" step="5"><span class="un">°C</span></div>
+            </div>
+            <div class="grp">
+                <label>Lunghezza tubazione</label>
+                <div class="ir"><input type="number" id="length" value="1000" step="10" min="1"><span class="un">m</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="ct">Geometria tubazione</div>
+        <div class="ig">
+            <div class="grp">
+                <label>DN nominale</label>
+                <div class="ir">
+                    <select id="dnSelect" onchange="onDNSelect()">
+                        <option value="">— seleziona —</option>
+                        <option value="15|21.3|17.1">DN 15</option>
+                        <option value="20|26.9|22.3">DN 20</option>
+                        <option value="25|33.7|27.3">DN 25</option>
+                        <option value="32|42.4|36.0">DN 32</option>
+                        <option value="40|48.3|40.9">DN 40</option>
+                        <option value="50|60.3|52.5">DN 50</option>
+                        <option value="65|76.1|66.0">DN 65</option>
+                        <option value="80|88.9|77.9">DN 80</option>
+                        <option value="100|114.3|102.3">DN 100</option>
+                        <option value="125|139.7|128.2">DN 125</option>
+                        <option value="150|168.3|154.1">DN 150</option>
+                        <option value="200|219.1|206.0">DN 200</option>
+                        <option value="250|273.0|257.4">DN 250</option>
+                        <option value="300|323.9|307.1">DN 300</option>
+                        <option value="custom">Personalizzato</option>
+                    </select>
+                </div>
+            </div>
+            <div class="grp">
+                <label>Diametro esterno tubo (de)</label>
+                <div class="ir"><input type="number" id="de" value="48.3" step="0.1" min="1"><span class="un">mm</span></div>
+            </div>
+            <div class="grp">
+                <label>Diametro interno tubo (di)</label>
+                <div class="ir"><input type="number" id="di" value="40.9" step="0.1" min="1"><span class="un">mm</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="ct">Strati di coibentazione</div>
+        <div id="layerContainer"></div>
+        <button class="add-btn" onclick="addLayer()" style="margin-top:4px">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Aggiungi strato
+        </button>
+        <div style="margin-top:20px">
+            <div class="ct" style="margin-bottom:12px">Rivestimento esterno</div>
+            <div class="ig">
+                <div class="grp">
+                    <label>Spessore rivestimento</label>
+                    <div class="ir"><input type="number" id="sr" value="1" step="0.5" min="0"><span class="un">mm</span></div>
+                </div>
+                <div class="grp">
+                    <label>λ rivestimento</label>
+                    <div class="ir">
+                        <select id="lambdaRSel" onchange="onLambdaRChange()">
+                            <option value="730">Alluminio — 730 kJ/(m·h·K)</option>
+                            <option value="200">Acciaio inox — 200 kJ/(m·h·K)</option>
+                            <option value="custom">Personalizzato</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grp" id="lambdaRCustomGrp" style="display:none">
+                    <label>λ rivestimento (personaliz.)</label>
+                    <div class="ir"><input type="number" id="lambdaRCustom" value="730" step="1"><span class="un">kJ/(m·h·K)</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="eb" id="errorBox"></div>
+
+    <div style="display:flex;justify-content:center;margin-bottom:28px;">
+        <button class="btn" onclick="calculate()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/><path d="M9 15h3l8-8-3-3-8 8v3z"/></svg>
+            Calcola Dispersione Termica
+        </button>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="resultsSection" class="rh rs">
+        <div class="card">
+            <div class="ct">Risultati principali</div>
+            <div class="rg">
+                <div class="rb pri"><div class="rl">Potenza dispersa</div><div class="rv" id="rPdis">—</div><div class="ru">kW (totale)</div></div>
+                <div class="rb pri"><div class="rl">Dispersione lineare</div><div class="rv" id="rQlin">—</div><div class="ru">W/m</div></div>
+                <div class="rb"><div class="rl">T sup. esterna</div><div class="rv" id="rTse">—</div><div class="ru">°C</div></div>
+                <div class="rb"><div class="rl">T sup. interna</div><div class="rv" id="rTsi">—</div><div class="ru">°C</div></div>
+                <div class="rb"><div class="rl">R tot. lineare</div><div class="rv" id="rRtot">—</div><div class="ru">m·h·K/kJ</div></div>
+                <div class="rb"><div class="rl">Coeff. est. conv.+irr.</div><div class="rv" id="rAlfaEst">—</div><div class="ru">kJ/(m²·h·K)</div></div>
+                <div class="rb"><div class="rl">Velocità fluido</div><div class="rv" id="rVel">—</div><div class="ru">m/s</div></div>
+                <div class="rb"><div class="rl">ΔT fluido (su L)</div><div class="rv" id="rDtFluido">—</div><div class="ru">°C</div></div>
+                <div class="rb"><div class="rl">T uscita fluido</div><div class="rv" id="rTout">—</div><div class="ru">°C</div></div>
+            </div>
+
+            <div style="margin-top:16px">
+                <div class="ct" style="margin-bottom:10px">Dettaglio resistenze termiche</div>
+                <div style="overflow-x:auto">
+                    <table class="res-table">
+                        <thead><tr><th>Strato</th><th>de_est (mm)</th><th>s (mm)</th><th>λ (kJ/m·h·K)</th><th>R_lin (m·h·K/kJ)</th></tr></thead>
+                        <tbody id="rTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="fb">
+                <strong>Nota:</strong> La dispersione è calcolata per convezione naturale + irraggiamento in aria ferma a <span id="fbTamb">—</span>°C.
+                Il coefficiente esterno α<sub>est</sub> è iterato fino a convergenza con la temperatura di superficie esterna.
+                Per condizioni ventose, il coefficiente di convezione esterna può essere significativamente più alto.
+            </div>
+        </div>
+    </div>
+
+    <!-- FORMULE -->
+    <div class="card" style="margin-top:8px">
+        <div class="ct">Fondamenti teorici e formule</div>
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="showTab('t1',this)">Resistenze termiche</button>
+            <button class="tab-btn" onclick="showTab('t2',this)">Convezione interna</button>
+            <button class="tab-btn" onclick="showTab('t3',this)">Convezione + irraggiamento esterno</button>
+            <button class="tab-btn" onclick="showTab('t4',this)">Bilancio energetico</button>
+        </div>
+
+        <div id="t1" class="tab-pane active formula-section">
+            <div class="formula-block">
+                <div class="formula-title">Resistenza termica di uno strato cilindrico</div>
+                <div class="formula-desc">
+                    Per geometria <strong>cilindrica</strong> la resistenza termica lineare (per unità di lunghezza) di uno strato è:
+                </div>
+                <div class="mjx-wrap">\[ R_i = \frac{\ln(d_{e,i}/d_{i,i})}{2\pi\,\lambda_i} \quad \left[\frac{\text{m·h·K}}{\text{kJ}}\right] \]</div>
+                <div class="param-list">
+                    <div class="param-item"><span>d<sub>e,i</sub></span> — diametro esterno dello strato i [m]</div>
+                    <div class="param-item"><span>d<sub>i,i</sub></span> — diametro interno dello strato i [m]</div>
+                    <div class="param-item"><span>λ<sub>i</sub></span> — conducibilità termica del materiale [kJ/(m·h·K)]</div>
+                </div>
+            </div>
+            <div class="formula-block">
+                <div class="formula-title">Resistenza totale e flusso termico lineare</div>
+                <div class="formula-desc">
+                    Le resistenze si sommano in serie. La resistenza totale comprende adduzione interna, strati solidi e adduzione esterna:
+                </div>
+                <div class="mjx-wrap">\[ R_{tot} = R_{\alpha,int} + R_{tubo} + \sum_j R_{isolante,j} + R_{rivest} + R_{\alpha,est} \]</div>
+                <div class="mjx-wrap">\[ Q_{lin} = \frac{T_f - T_{amb}}{R_{tot}} \quad \left[\frac{\text{kJ}}{\text{h·m}}\right] \]</div>
+                <div class="param-list">
+                    <div class="param-item"><span>R<sub>α,int</sub></span> = 1/(α<sub>int</sub>·π·d<sub>i,tubo</sub>) — resistenza adduzione interna</div>
+                    <div class="param-item"><span>R<sub>α,est</sub></span> = 1/(α<sub>est</sub>·π·d<sub>e,rivest</sub>) — resistenza adduzione esterna</div>
+                    <div class="param-item"><span>T<sub>f</sub></span> — temperatura media del fluido [°C]</div>
+                    <div class="param-item"><span>T<sub>amb</sub></span> — temperatura ambiente esterna [°C]</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="t2" class="tab-pane formula-section">
+            <div class="formula-block">
+                <div class="formula-title">Coefficiente di adduzione interno (convezione forzata)</div>
+                <div class="formula-desc">
+                    Per flusso in regime <strong>turbolento</strong> (Re &gt; 10 000) si usa la correlazione di <strong>Dittus-Boelter</strong>:
+                </div>
+                <div class="mjx-wrap">\[ Nu = 0.023\,Re^{0.8}\,Pr^{0.4} \]</div>
+                <div class="mjx-wrap">\[ \alpha_{int} = \frac{Nu\cdot\lambda_{fluido}}{d_{i,tubo}} \]</div>
+                <div class="formula-desc" style="margin-top:10px">
+                    Nell'approccio semplificato del foglio di calcolo si usa invece la correlazione empirica diretta:
+                </div>
+                <div class="mjx-wrap">\[ \alpha_{int} = \frac{3600\,\lambda_{fl}}{d_i}\left(0.023\,\left(\frac{\rho v d_i}{\mu}\right)^{0.8}\Pr^{0.4}\right) \quad \left[\frac{\text{kJ}}{\text{m}^2\text{h·K}}\right] \]</div>
+                <div class="formula-desc" style="margin-top:10px">
+                    Per moto <strong>laminare</strong> (Re &lt; 2300) si usa Nu = 3.66 (Graetz — calore uniforme alla parete).
+                </div>
+                <div class="param-list">
+                    <div class="param-item"><span>Re</span> = ρ·v·d<sub>i</sub>/μ — numero di Reynolds</div>
+                    <div class="param-item"><span>Pr</span> = c<sub>p</sub>·μ/λ<sub>fl</sub> — numero di Prandtl</div>
+                    <div class="param-item"><span>v</span> — velocità media del fluido [m/s]</div>
+                    <div class="param-item"><span>ρ</span> — densità del fluido [kg/m³]</div>
+                    <div class="param-item"><span>μ</span> — viscosità dinamica [Pa·s]</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="t3" class="tab-pane formula-section">
+            <div class="formula-block">
+                <div class="formula-title">Coefficiente esterno combinato (convezione naturale + irraggiamento)</div>
+                <div class="formula-desc">
+                    Il coefficiente esterno totale è la somma del contributo convettivo e di quello radiativo. Il calcolo è <strong>iterativo</strong>: si assume T<sub>se</sub>, si calcola α<sub>est</sub>, si ricalcola T<sub>se</sub> fino a convergenza.
+                </div>
+                <div class="formula-desc" style="margin-top:8px">
+                    <strong>Contributo radiativo</strong> (corpo grigio in cavità grande):
+                </div>
+                <div class="mjx-wrap">\[ \alpha_{irr} = \varepsilon\,\sigma\,\bigl(T_{se}^2 + T_{amb}^2\bigr)\bigl(T_{se} + T_{amb}\bigr) \]</div>
+                <div class="formula-desc" style="margin-top:8px">
+                    Dove σ = 5.67×10⁻⁸ W/(m²·K⁴) e ε ≈ 0.9 (lamiera verniciata/alluminio ossidato). Nell'implementazione, il coefficiente combinato viene approssimato come:
+                </div>
+                <div class="mjx-wrap">\[ \alpha_{est} = C_{irr}\cdot\bigl(T_{se}^2 + T_{amb}^2\bigr)\cdot(T_{se}+T_{amb}) + \alpha_{conv,nat} \]</div>
+                <div class="formula-desc" style="margin-top:8px">
+                    con <strong>C<sub>irr</sub> = 4.5376 kJ/(m²·h·K⁴)</strong> (pari a ε·σ·3600 in unità kJ).
+                    La convezione naturale esterna per cilindro orizzontale vale tipicamente:
+                </div>
+                <div class="mjx-wrap">\[ \alpha_{conv,nat} \approx 5\text{–}10 \; \frac{\text{W}}{\text{m}^2\text{K}} \]</div>
+                <div class="formula-desc">
+                    Nel modello, il coefficiente convettivo è ottenuto per differenza: α<sub>conv,nat</sub> = α<sub>est</sub> − α<sub>irr</sub>, scelto in modo che il bilancio sia soddisfatto.
+                </div>
+            </div>
+            <div class="formula-block">
+                <div class="formula-title">Temperatura della superficie esterna</div>
+                <div class="formula-desc">Dalla partizione del salto termico totale sulla resistenza esterna:</div>
+                <div class="mjx-wrap">\[ T_{se} = T_{amb} + Q_{lin}\cdot R_{\alpha,est} = T_{amb} + \frac{Q_{lin}}{\alpha_{est}\cdot\pi\cdot d_{e,rivest}} \]</div>
+            </div>
+        </div>
+
+        <div id="t4" class="tab-pane formula-section">
+            <div class="formula-block">
+                <div class="formula-title">Bilancio energetico sul fluido</div>
+                <div class="formula-desc">
+                    La dispersione totale lungo la tubazione di lunghezza L determina il raffreddamento del fluido:
+                </div>
+                <div class="mjx-wrap">\[ P_{dis} = Q_{lin}\cdot L \quad [\text{kW}] \]</div>
+                <div class="mjx-wrap">\[ \dot{Q} = \dot{m}\,c_p\,\Delta T \;\Rightarrow\; \Delta T_{fluido} = \frac{P_{dis}}{\dot{m}\,c_p} \]</div>
+                <div class="mjx-wrap">\[ T_{uscita} = T_{fluido} - \Delta T_{fluido} \]</div>
+                <div class="param-list">
+                    <div class="param-item"><span>ṁ</span> — portata massica [kg/s]</div>
+                    <div class="param-item"><span>c<sub>p</sub></span> — calore specifico a pressione costante [kJ/(kg·K)]</div>
+                    <div class="param-item"><span>ΔT<sub>fluido</sub></span> — abbassamento di temperatura del fluido lungo L</div>
+                    <div class="param-item"><span>L</span> — lunghezza totale della tubazione [m]</div>
+                </div>
+            </div>
+            <div class="formula-block">
+                <div class="formula-title">Proprietà fisiche acqua (correlazioni utilizzate)</div>
+                <div class="formula-desc">
+                    Densità e viscosità dell'acqua in funzione della temperatura (correlazioni semplificate):
+                </div>
+                <div class="mjx-wrap">\[ \rho(T) = 1000 - 0.0025\,(T-4)^2 - 1.2\times10^{-6}(T-4)^4 \quad [\text{kg/m}^3] \]</div>
+                <div class="mjx-wrap">\[ \mu(T) = 0.001\,e^{-0.025\,(T-20)} \quad [\text{Pa·s}] \]</div>
+                <div class="mjx-wrap">\[ \lambda_{fl}(T) = 0.558 + 0.0016\,(T-20) \quad [\text{W/(m·K)}] \]</div>
+            </div>
+        </div>
+    </div>
+
+</div></main></div>
+<script src="../../../../js/navbar.js"></script>
+<script src="../../../../js/main.js"></script>
+<script src="../../../../js/footer.js"></script>
+<script>
+// --- Dati materiali isolanti ---
+const INSULANTS = [
+    {name:"Lana minerale — 0.039 W/(m·K)", lambda: 0.1404},   // in kJ/(m·h·K)
+    {name:"Lana di vetro — 0.035 W/(m·K)", lambda: 0.1260},
+    {name:"Poliuretano espanso — 0.027 W/(m·K)", lambda: 0.0972},
+    {name:"Polistirene — 0.040 W/(m·K)", lambda: 0.1440},
+    {name:"Aerogel — 0.015 W/(m·K)", lambda: 0.0540},
+    {name:"Personalizzato", lambda: null},
+];
+
+let layerCount = 0;
+
+function addLayer(si=25, matIdx=0){
+    layerCount++;
+    const id = layerCount;
+    const container = document.getElementById('layerContainer');
+    const div = document.createElement('div');
+    div.id = 'layer-' + id;
+    div.style.marginBottom = '14px';
+    let opts = INSULANTS.map((m,i)=>`<option value="${i}" ${i===matIdx?'selected':''}>${m.name}</option>`).join('');
+    div.innerHTML = `
+        <div style="font-size:.72rem;color:var(--text-secondary);font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px;">Isolante ${id}</div>
+        <div class="layer-row">
+            <div class="grp">
+                <label>Spessore</label>
+                <div class="ir"><input type="number" id="si_${id}" value="${si}" step="5" min="1"><span class="un">mm</span></div>
+            </div>
+            <div class="grp">
+                <label>Materiale</label>
+                <div class="ir"><select id="mat_${id}" onchange="onMatChange(${id})">${opts}</select></div>
+            </div>
+            <div class="grp" id="customLambdaGrp_${id}" style="display:${matIdx===INSULANTS.length-1?'flex':'none'}">
+                <label>λ personalizzato</label>
+                <div class="ir"><input type="number" id="lambdaCustom_${id}" value="0.14" step="0.001" min="0.001"><span class="un">kJ/(m·h·K)</span></div>
+            </div>
+            <button class="del-btn" onclick="removeLayer(${id})" title="Rimuovi strato">×</button>
+        </div>`;
+    container.appendChild(div);
+}
+
+function removeLayer(id){ const el=document.getElementById('layer-'+id); if(el) el.remove(); }
+
+function onMatChange(id){
+    const sel = document.getElementById('mat_'+id);
+    const grp = document.getElementById('customLambdaGrp_'+id);
+    grp.style.display = sel.value == (INSULANTS.length-1) ? 'flex' : 'none';
+}
+
+function getLayers(){
+    const layers=[];
+    document.querySelectorAll('[id^="layer-"]').forEach(div=>{
+        const id = div.id.split('-')[1];
+        const si = parseFloat(document.getElementById('si_'+id).value)||0;
+        const matIdx = parseInt(document.getElementById('mat_'+id).value);
+        let lambda = INSULANTS[matIdx].lambda;
+        if(lambda===null) lambda = parseFloat(document.getElementById('lambdaCustom_'+id).value)||0.14;
+        layers.push({si, lambda});
+    });
+    return layers;
+}
+
+function onDNSelect(){
+    const v = document.getElementById('dnSelect').value;
+    if(!v || v==='custom') return;
+    const parts = v.split('|');
+    document.getElementById('de').value = parts[1];
+    document.getElementById('di').value = parts[2];
+}
+
+function onLambdaRChange(){
+    const sel = document.getElementById('lambdaRSel');
+    document.getElementById('lambdaRCustomGrp').style.display = sel.value==='custom'?'flex':'none';
+}
+
+function onFluidChange(){/* future: toggle gas/water props */}
+
+function showTab(id, btn){
+    document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+}
+
+function showErr(m){ const e=document.getElementById("errorBox");e.textContent="⚠ "+m;e.style.display="block";document.getElementById("resultsSection").classList.add("rh"); }
+function hideErr(){ document.getElementById("errorBox").style.display="none"; }
+
+// Proprietà fisiche acqua
+function rhoWater(T){ return 1000-0.0025*Math.pow(T-4,2)-0.0000012*Math.pow(T-4,4); }
+function muWater(T){ return 0.001*Math.exp(-0.025*(T-20)); }
+function lambdaWater(T){ return 0.558+0.0016*(T-20); } // W/(m·K)
+function cpWater(){ return 4.1868; } // kJ/(kg·K)
+
+// Coefficiente adduzione interno (Dittus-Boelter semplificato → kJ/(m²·h·K))
+function alphaInt(G_kgh, di_m, tf, isGas){
+    if(isGas) return 50*3.6; // valore tipico gas [kJ/(m²·h·K)]
+    const rho=rhoWater(tf), mu=muWater(tf), lf=lambdaWater(tf), cp=cpWater();
+    const A=Math.PI*di_m*di_m/4;
+    const v=(G_kgh/3600/rho)/A;
+    const Re=rho*v*di_m/mu;
+    const Pr=cp*1000*mu/lf; // cp in J/(kg·K)
+    let Nu;
+    if(Re<2300) Nu=3.66;
+    else if(Re<10000) Nu=0.023*Math.pow(Re,0.8)*Math.pow(Pr,0.4);
+    else Nu=0.023*Math.pow(Re,0.8)*Math.pow(Pr,0.4);
+    return Nu*lf/di_m*3.6; // W/(m·K)/m * 3600 s/h / 1000 → kJ/(m²·h·K)
+    // più semplicemente: alpha [W/(m²·K)] * 3.6 = kJ/(m²·h·K)
+}
+function velocita(G_kgh, di_m, tf, isGas){
+    if(isGas) return (G_kgh/3600/1.2)/(Math.PI*di_m*di_m/4);
+    const rho=rhoWater(tf);
+    return (G_kgh/3600/rho)/(Math.PI*di_m*di_m/4);
+}
+
+// Resistenza lineare cilindrica [m·h·K/kJ]
+function Rcyl(de, di, lambda){ return Math.log(de/di)/(2*Math.PI*lambda); }
+
+// Coefficiente esterno iterativo (conv.nat + irraggiamento)
+// Iterazione su Tse: dato Q_lin = (Tf-Tamb)/Rtot
+// Rtot dipende da alfa_est che dipende da Tse = Tamb + Q_lin*R_alfa_est
+function calcExtCoeff(Tse_K, Tamb_K){
+    const Cirr = 4.5376; // kJ/(m²·h·K⁴) ≈ ε·σ·3600
+    // Componente radiativa
+    const a = Cirr*(Tse_K*Tse_K+Tamb_K*Tamb_K)*(Tse_K+Tamb_K)/1e9; // normalizzato
+    // Convezione naturale approssimata (Churchill-Chu semplificato per cilindro)
+    const dT = Math.abs(Tse_K-Tamb_K);
+    const alphaConv = 3.6*(1.42*Math.pow(dT/0.05, 0.25)); // approx kJ/(m²·h·K)
+    return Cirr*(Math.pow(Tse_K,2)+Math.pow(Tamb_K,2))*(Tse_K+Tamb_K);
+}
+
+function calculate(){
+    const G = parseFloat(document.getElementById('massFlow').value);
+    const tf = parseFloat(document.getElementById('tf').value);
+    const tamb = parseFloat(document.getElementById('tamb').value);
+    const L = parseFloat(document.getElementById('length').value);
+    const de_mm = parseFloat(document.getElementById('de').value);
+    const di_mm = parseFloat(document.getElementById('di').value);
+    const sr_mm = parseFloat(document.getElementById('sr').value)||1;
+    const isGas = document.getElementById('fluidType').value==='gas';
+
+    const lambdaTubo = 200; 
+
+    let lambdaR;
+    const rSel = document.getElementById('lambdaRSel').value;
+    if(rSel==='custom') lambdaR = parseFloat(document.getElementById('lambdaRCustom').value);
+    else lambdaR = parseFloat(rSel);
+
+    const layers = getLayers();
+    if(!G||!tf||!tamb||!L||!de_mm||!di_mm){ showErr("Compila tutti i campi obbligatori."); return; }
+    if(layers.length===0){ showErr("Aggiungi almeno uno strato di isolante."); return; }
+    hideErr();
+
+    // 1. Dati geometrici di base
+    const st_mm = (de_mm - di_mm) / 2;
+    let sum_si_mm = 0;
+    let Ri_planar = 0;
+    for (const lay of layers) {
+        sum_si_mm += lay.si;
+        Ri_planar += lay.si / lay.lambda / 1000;
+    }
+
+    // 2. Resistenza piana equivalente (Metodo Excel)
+    const Rt_planar = st_mm / lambdaTubo / 1000;
+    const Rr_planar = sr_mm / lambdaR / 1000;
+    const Rtot_planar = Rt_planar + Ri_planar + Rr_planar;
+
+    const total_s_mm = st_mm + sum_si_mm + sr_mm;
+    const lambdatot = total_s_mm / Rtot_planar / 1000; // Equiv. conduttività globale
+
+    const de_tot_mm = di_mm + 2 * total_s_mm;
+    const de_tot_m = de_tot_mm / 1000;
+    const di_m = di_mm / 1000;
+
+    // 3. Velocità e Alfa interna (Metodo Excel)
+    const v = velocita(G, di_m, tf, isGas);
+    const alfa_i = 4.1868 * (300 + 1800 * Math.sqrt(v)); 
+    const R_int_excel = 1 / (alfa_i * (di_m/2)); // Nel def del calore trasmesso di excel manca pi
+
+    // 4. Iterazione su Alfa Esterno (Metodo Excel)
+    let Tse = tamb + (tf - tamb) * 0.05;
+    let alfa_est = 15;
+    let Q_lin = 0; // kJ/(h*m)
+    let R_ext_excel = 0;
+    let R_wall_excel = (1 / lambdatot) * Math.log( de_tot_mm / di_mm ); // Resistenza cilindrica con lambda_eq
+    const Cirr = 5.672 * 0.8;
+
+    for(let iter=0; iter<100; iter++){
+        const dTse = Math.max(0.01, Tse - tamb);
+        
+        // Convezione (5.9 empirico Excel)
+        const alfa_conv = 5.9 * Math.pow( dTse / de_tot_m, 0.25 );
+        
+        // Irraggiamento
+        const term_Tse = Math.pow( (273 + Tse)/100, 4 );
+        const term_Tamb = Math.pow( (273 + tamb)/100, 4 );
+        const a_val = (term_Tse - term_Tamb) / dTse;
+        const alfa_irr = Cirr * a_val;
+        
+        alfa_est = alfa_conv + alfa_irr;
+        
+        R_ext_excel = 1 / (alfa_est * (de_tot_m/2));
+        
+        // Qa Excel (kJ/h/m)
+        Q_lin = 2 * Math.PI * (tf - tamb) / (R_int_excel + R_ext_excel + R_wall_excel);
+        
+        const Tse_new = tamb + Q_lin / (alfa_est * Math.PI * de_tot_m);
+        if(Math.abs(Tse_new - Tse) < 0.001) { Tse = Tse_new; break; }
+        Tse = Tse_new;
+    }
+
+    // 5. Risultati Finali
+    const Tsi = tf - Q_lin / (alfa_i * Math.PI * di_m);
+    const P_kW = Q_lin * L / 3600; 
+    const cp = 4.1868; // (Calore spec. fluido 4.1868 assunto dal foglio)
+    const dtFluido = (P_kW * 3600) / (cp * G);
+    const Tout = tf - dtFluido;
+
+    // Resistenze fisiche lineari standard per display m·h·K/kJ (ricavate da excel)
+    const R_alpha_int_lin = R_int_excel / (2 * Math.PI);
+    const R_wall_lin = R_wall_excel / (2 * Math.PI);
+    const R_alpha_ext_lin = R_ext_excel / (2 * Math.PI);
+    const Rtot_fisica = R_alpha_int_lin + R_wall_lin + R_alpha_ext_lin;
+
+    // Velocità
+    // v calcolata sopra
+
+    // Visualizzazione risultati
+    document.getElementById('rPdis').textContent = P_kW.toFixed(2);
+    document.getElementById('rQlin').textContent = (Q_lin/3.6).toFixed(1);
+    document.getElementById('rTse').textContent = Tse.toFixed(2);
+    document.getElementById('rTsi').textContent = Tsi.toFixed(2);
+    document.getElementById('rRtot').textContent = Rtot_fisica.toFixed(4);
+    document.getElementById('rAlfaEst').textContent = alfa_est.toFixed(1);
+    document.getElementById('rVel').textContent = v.toFixed(3);
+    document.getElementById('rDtFluido').textContent = dtFluido.toFixed(4);
+    document.getElementById('rTout').textContent = Tout.toFixed(3);
+    document.getElementById('fbTamb').textContent = tamb;
+
+    // Tabella resistenze
+    const tbody = document.getElementById('rTableBody');
+    tbody.innerHTML = '';
+    const rows = [
+        {name:'Adduzione interna', de: di_mm, s:'—', lambda: alfa_i.toFixed(0)+' α', R: R_alpha_int_lin},
+        {name:'Set Pareti (tubo+isol+riv)', de: de_tot_mm.toFixed(1), s: total_s_mm.toFixed(1), lambda: 'λ_eq: '+lambdatot.toFixed(4), R: R_wall_lin},
+        {name:'Adduzione esterna', de: de_tot_mm.toFixed(1), s:'—', lambda: alfa_est.toFixed(1)+' α', R: R_alpha_ext_lin},
+    ];
+    rows.forEach(r=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td class="em">${r.name}</td><td>${r.de}</td><td>${r.s}</td><td>${r.lambda}</td><td>${r.R.toFixed(5)}</td>`;
+        tbody.appendChild(tr);
+    });
+    const trTot=document.createElement('tr');
+    trTot.innerHTML=`<td class="em" colspan="4" style="text-align:right;font-size:.75rem;letter-spacing:.8px;text-transform:uppercase;">R tot</td><td class="em">${Rtot_fisica.toFixed(5)}</td>`;
+    tbody.appendChild(trTot);
+
+    document.getElementById('resultsSection').classList.remove('rh');
+    document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'});
+
+    if(window.MathJax) MathJax.typesetPromise();
+}
+
+// Init
+addLayer(25, 0);
+// MathJax typesets on tab change
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{ if(window.MathJax) setTimeout(()=>MathJax.typesetPromise(),100); });
+});
+</script>
+<script src="../../../../js/main.js"></script>
+</body>
+</html>

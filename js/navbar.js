@@ -153,69 +153,7 @@
   }
 
   // Splash Screen Transition Logic for entering "Personale" section
-  document.addEventListener('click', (e) => {
-    const link = e.target.closest('a');
-    if (!link) return;
-
-    const href = link.getAttribute('href');
-    if (!href) return;
-
-    // Seleziona click diretti verso "personale" (e bloccalo solo se NON siamo già dentro 'personale')
-    // per non tediare l'utente con il video ad ogni sub-pagina.
-    if (activeSection !== 'personale' && href.includes('personale/') && !href.startsWith('#')) {
-      e.preventDefault(); // Blocca transizione immediata
-      
-      let overlay = document.getElementById('splash-overlay');
-      if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'splash-overlay';
-        overlay.className = 'splash-overlay';
-        overlay.innerHTML = `
-          <video id="splash-video" class="splash-video" playsinline>
-            <source src="${basePath}assets/VIDEO1.mp4" type="video/mp4">
-          </video>
-        `;
-        document.body.appendChild(overlay);
-      }
-
-      const video = document.getElementById('splash-video');
-      video.currentTime = 0; // Reset
-      
-      // Delay brevissimo per permettere al DOM di renderizzare, poi fa il fade-in
-      requestAnimationFrame(() => {
-        overlay.classList.add('active');
-      });
-
-      // Appena l'overlay diventa visibile, fai partire il video
-      setTimeout(() => {
-        video.play().catch(err => {
-          console.warn("Autoplay block (iOS/Safari) o errore:", err);
-          window.location.href = href; // Fallback di sicurezza
-        });
-      }, 300);
-
-      // Naviga appena termina
-      video.onended = () => {
-        window.location.href = href;
-      };
-
-      // Failsafe in caso di video rotto / lunghissimo / click dell'utente per saltare
-      let triggered = false;
-      const goNext = () => {
-        if (!triggered) {
-          triggered = true;
-          window.location.href = href;
-        }
-      };
-      
-      overlay.addEventListener('click', goNext);
-
-      video.addEventListener('loadedmetadata', () => {
-        setTimeout(goNext, (video.duration * 1000) + 1500);
-      });
-      setTimeout(goNext, 8500);
-    }
-  });
+  // Disabilitata su richiesta dell'utente per evitare il video cliccando sui link di personale.
 
   // ==========================================
   // PWA (Progressive Web App) INITIALIZATION
