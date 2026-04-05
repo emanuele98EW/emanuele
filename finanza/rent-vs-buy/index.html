@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 
 <head>
@@ -96,8 +96,8 @@
     }
 
     #grafico-section.is-fullscreen #grafico-wrapper canvas {
-      width: 100% !important;
-      height: 100% !important;
+      width: 100%;
+      height: 100%;
     }
 
     #grafico-section.is-fullscreen #btn-fullscreen {
@@ -231,7 +231,7 @@
           Torna alla Finanza
         </a>
         <h2 style="color:var(--color-finance); text-align:center; text-shadow:0 0 15px rgba(201,168,76,0.3);">
-          ⚖️ Rent vs. Buy Calculator
+          âš–ï¸ Rent vs. Buy Calculator
         </h2>
         <p style="text-align:center; color:var(--text-secondary); font-size:0.9rem; margin-top:8px;">
           Conviene comprare o andare in affitto? Questo simulatore confronta il patrimonio netto nel tempo, assumendo il
@@ -335,7 +335,7 @@
         </button>
         <div id="grafico-wrapper"
           style="position:relative; background:var(--card-bg);border-radius:8px;padding:14px;border:1px solid rgba(37,99,235,0.18);">
-          <canvas id="grafico" height="150"></canvas>
+          <canvas id="grafico"></canvas>
         </div>
       </section>
 
@@ -348,7 +348,7 @@
         </style>
         <details class="formula-details">
           <summary style="font-size:1.05rem; font-weight:600; color:var(--text-primary); cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center;">
-            <span>📐 Logica di Calcolo & Formule Applicate</span>
+            <span>ðŸ“ Logica di Calcolo & Formule Applicate</span>
             <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
@@ -366,7 +366,7 @@
             <h4 style="color:#f59e0b; margin-top:16px; margin-bottom:6px;">Scenario Affitto (Tenant)</h4>
             <ul style="padding-left:20px;">
               <li style="margin-bottom:6px;"><strong>Capitale Iniziale:</strong> Il capitale salvato omettendo l'<em>Anticipo</em> (Down Payment) per l'acquisto viene istantaneamente investito nel mercato finanziario.</li>
-              <li style="margin-bottom:6px;"><strong>Cashflow Differenziale:</strong> Ogni mese viene calcolato il delta: <code style="background:rgba(128,128,128,0.15); padding:2px 6px; border-radius:4px; font-family:'Orbitron', monospace; color:var(--text-primary); font-size:0.8rem;">(Costi Acquirente - Canone d'Affitto)</code>. Se il delta è positivo, l'extra liquidità viene automaticamente caricata nell'investimento. Se il delta è negativo (l'affitto supera la rata + costi), l'affittuario <em>preleva dal capitale investito</em> per sostenere i maggiori costi e comparare con le mele con le mele.</li>
+              <li style="margin-bottom:6px;"><strong>Cashflow Differenziale:</strong> Ogni mese viene calcolato il delta: <code style="background:rgba(128,128,128,0.15); padding:2px 6px; border-radius:4px; font-family:'Orbitron', monospace; color:var(--text-primary); font-size:0.8rem;">(Costi Acquirente - Canone d'Affitto)</code>. Se il delta Ã¨ positivo, l'extra liquiditÃ  viene automaticamente caricata nell'investimento. Se il delta Ã¨ negativo (l'affitto supera la rata + costi), l'affittuario <em>preleva dal capitale investito</em> per sostenere i maggiori costi e comparare con le mele con le mele.</li>
               <li><strong>Patrimonio Netto:</strong> Corrisponde unicamente alla dimensione istantanea del <em>Portafoglio d'Investimento</em> (Soggetta a crescita composta al tasso di rendimento).</li>
             </ul>
           </div>

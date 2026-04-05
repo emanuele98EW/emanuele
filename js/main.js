@@ -425,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initEngineeringCity(vD);
         setTimeout(() => vD.style.opacity = '0.9', 50);
       }
-    }, 10000); // Carica dopo 10 secondi esatti
+    }, 5000); // Carica dopo 5 secondi esatti
   }
 });
 

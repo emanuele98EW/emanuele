@@ -25,7 +25,7 @@
   --color-contact: #C9A84C;
   --color-contact-glow: rgba(201, 168, 76, 0.5);
 
-  --card-bg: rgba(2, 6, 23, 0.5);
+  --card-bg: rgba(2, 6, 23, 0.85);
   --card-border: rgba(255, 255, 255, 0.1);
   --glass-blur: blur(12px);
   --shadow-base: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -51,7 +51,7 @@ body.light-mode {
   --color-contact: #2872A1;
   --color-contact-glow: rgba(40, 114, 161, 0.3);
 
-  --card-bg: rgba(255, 255, 255, 0.7);
+  --card-bg: rgba(255, 255, 255, 0.90);
   --card-border: rgba(40, 114, 161, 0.25);
   --border-color: rgba(40, 114, 161, 0.2);
   --glass-blur: blur(16px);
@@ -497,10 +497,6 @@ html.light-mode .digital-clock {
   cursor: pointer;
   flex-shrink: 0;
   transition: background 0.2s, border-color 0.2s, transform 0.2s;
-  /* SEMPRE VISIBILE */
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
 }
 
 .theme-toggle-btn:hover {
@@ -674,12 +670,15 @@ html.light-mode .theme-toggle-btn:hover {
   }
 
   /* Theme toggle mobile: più grande, più facile da toccare */
+  .menu:not(.open) .theme-toggle-btn {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
   .theme-toggle-btn {
     width: 44px !important;
     height: 44px !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
   }
 
   .theme-video {
@@ -775,7 +774,8 @@ body.light-mode .card.finance {
 }
 
 body.light-mode .card.engineering {
-  border-top-color: var(--color-engineering) !important; /* Questo oro attenuato sta benissimo sul bianco */
+  border-top-color: var(--color-engineering) !important;
+  /* Questo oro attenuato sta benissimo sul bianco */
 }
 
 body.light-mode .card.personal {

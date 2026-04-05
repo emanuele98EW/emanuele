@@ -21,13 +21,16 @@
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 14px;
     }
+
     .input-label {
       display: flex;
       flex-direction: column;
       gap: 7px;
       font-size: 0.85rem;
     }
-    .input-label input, .input-label select {
+
+    .input-label input,
+    .input-label select {
       padding: 10px;
       background: var(--card-bg);
       border: 1px solid var(--color-finance);
@@ -36,6 +39,7 @@
       font-family: 'Orbitron', sans-serif;
       width: 100%;
     }
+
     .btn-calcola {
       margin-top: 20px;
       padding: 12px 28px;
@@ -52,10 +56,12 @@
       width: 100%;
       text-align: center;
     }
+
     .btn-calcola:hover {
       background: rgba(37, 99, 235, 0.3);
       box-shadow: 0 0 18px rgba(37, 99, 235, 0.45);
     }
+
     .cards-row {
       display: flex;
       flex-wrap: wrap;
@@ -63,31 +69,45 @@
       justify-content: space-between;
       margin-bottom: 30px;
     }
+
     .card-result {
       flex: 1 1 200px;
       padding: clamp(15px, 4vw, 20px);
       text-align: center;
     }
+
     .card-result h3 {
       font-size: clamp(0.9rem, 3vw, 1.1rem);
       margin-bottom: 8px;
     }
+
     .card-result p {
       font-size: clamp(1.4rem, 5vw, 1.8rem);
       color: #fff;
     }
+
     /* Mobile responsive tweaks */
     @media(max-width: 700px) {
-        .card.finance { padding: clamp(15px, 4vw, 25px) !important; }
-        #grafico-wrapper { min-height: 250px; padding: 10px !important; }
-        .responsive-grid { grid-template-columns: 1fr; }
+      .card.finance {
+        padding: clamp(15px, 4vw, 25px) !important;
+      }
+
+      #grafico-wrapper {
+        min-height: 250px;
+        padding: 10px !important;
+      }
+
+      .responsive-grid {
+        grid-template-columns: 1fr;
+      }
     }
-    
+
     .allocation-slider-container {
       display: flex;
       align-items: center;
       gap: 10px;
     }
+
     .allocation-slider-container input[type="range"] {
       flex: 1;
       -webkit-appearance: none;
@@ -97,6 +117,7 @@
       outline: none;
       border-radius: 2px;
     }
+
     .allocation-slider-container input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
@@ -106,13 +127,14 @@
       background: var(--color-finance);
       cursor: pointer;
     }
+
     .allocation-val {
       font-family: 'Orbitron', sans-serif;
       font-size: 0.8rem;
       min-width: 45px;
       text-align: right;
     }
-    
+
     /* Table styles */
     .table-container {
       width: 100%;
@@ -121,17 +143,21 @@
       border-radius: 8px;
       border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
     }
+
     .crisi-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.8rem;
       text-align: right;
     }
-    .crisi-table th, .crisi-table td {
+
+    .crisi-table th,
+    .crisi-table td {
       padding: 10px 12px;
       border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.04));
       white-space: nowrap;
     }
+
     .crisi-table th {
       background: rgba(37, 99, 235, 0.06);
       font-family: 'Orbitron', sans-serif;
@@ -140,30 +166,52 @@
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    .crisi-table th:first-child, .crisi-table td:first-child {
+
+    .crisi-table th:first-child,
+    .crisi-table td:first-child {
       text-align: left;
     }
-    
+
     /* Dynamic row colors (Night Mode defaults) */
     .row-loss {
-      background-color: rgba(239, 68, 68, 0.05); /* Soft Red */
+      background-color: rgba(239, 68, 68, 0.05);
+      /* Soft Red */
     }
+
     .row-profit {
-      background-color: rgba(16, 185, 129, 0.05); /* Soft Green */
+      background-color: rgba(16, 185, 129, 0.05);
+      /* Soft Green */
     }
-    .row-loss td { color: #fca5a5; }
-    .row-profit td { color: #6ee7b7; }
-    
+
+    .row-loss td {
+      color: #fca5a5;
+    }
+
+    .row-profit td {
+      color: #6ee7b7;
+    }
+
     /* Light Mode Overrides */
     html.light-mode .row-loss {
-      background-color: rgba(220, 38, 38, 0.08); /* Stronger Red for light mode */
+      background-color: rgba(220, 38, 38, 0.08);
+      /* Stronger Red for light mode */
     }
+
     html.light-mode .row-profit {
-      background-color: rgba(16, 185, 129, 0.08); /* Stronger Green for light mode */
+      background-color: rgba(16, 185, 129, 0.08);
+      /* Stronger Green for light mode */
     }
-    html.light-mode .row-loss td { color: #b91c1c; } /* Dark Red */
-    html.light-mode .row-profit td { color: #047857; } /* Dark Green */
-    
+
+    html.light-mode .row-loss td {
+      color: #b91c1c;
+    }
+
+    /* Dark Red */
+    html.light-mode .row-profit td {
+      color: #047857;
+    }
+
+    /* Dark Green */
   </style>
 </head>
 
@@ -173,13 +221,18 @@
 
     <main class="main">
       <p style="text-align:center; margin-bottom: 10px;">
-        <a href="../index.html" style="color: var(--color-finance); text-decoration: none; font-size: 0.85rem; font-family: 'Orbitron', sans-serif; letter-spacing: 1px;">← Torna a Finanza</a>
+        <a href="../index.html"
+          style="color: var(--color-finance); text-decoration: none; font-size: 0.85rem; font-family: 'Orbitron', sans-serif; letter-spacing: 1px;">â†
+          Torna a Finanza</a>
       </p>
       <h2 style="color:var(--color-finance);text-align:center;margin-bottom:30px; font-size: clamp(1.5rem, 5vw, 2rem);">
-        💥 Simulatore Crisi Storiche
+        ðŸ’¥ Simulatore Crisi Storiche
       </h2>
-      <p style="text-align:center; max-width: 700px; margin: 0 auto 30px; color: var(--text-secondary); font-size: 0.9rem; padding: 0 15px;">
-        Scopri come reagisce un portafoglio investito <strong style="color:var(--color-finance)">esattamente sul picco</strong> prima di una grande crisi, e osserva i tempi di recupero e l'effetto di un PAC mensile continuato durante i crolli.
+      <p
+        style="text-align:center; max-width: 700px; margin: 0 auto 30px; color: var(--text-secondary); font-size: 0.9rem; padding: 0 15px;">
+        Scopri come reagisce un portafoglio investito <strong style="color:var(--color-finance)">esattamente sul
+          picco</strong> prima di una grande crisi, e osserva i tempi di recupero e l'effetto di un PAC mensile
+        continuato durante i crolli.
       </p>
 
       <!-- PARAMETRI BASE -->
@@ -188,105 +241,110 @@
 
         <div class="responsive-grid" style="margin-bottom: 20px;">
           <label class="input-label">
-            Capitale iniziale al picco (€)
+            Capitale iniziale al picco (â‚¬)
             <input id="capitale" type="text" inputmode="numeric" class="format-currency" value="10.000">
           </label>
           <label class="input-label">
-            PAC Mensile aggiuntivo (€)
+            PAC Mensile aggiuntivo (â‚¬)
             <input id="pac" type="text" inputmode="numeric" class="format-currency" value="500">
           </label>
         </div>
-        
+
         <label class="input-label" style="max-width: 300px; margin-bottom: 25px;">
-            Scegli lo scenario Storico
-            <select id="crisi-selector" style="cursor: pointer;">
-                <option value="2008" selected>Crisi Subprime (2007-2018)</option>
-                <option value="2000">Bolla Dot-Com (1999-2010)</option>
-                <option value="1929">Grande Depressione (1928-1945)</option>
-            </select>
+          Scegli lo scenario Storico
+          <select id="crisi-selector" style="cursor: pointer;">
+            <option value="2008" selected>Crisi Subprime (2007-2018)</option>
+            <option value="2000">Bolla Dot-Com (1999-2010)</option>
+            <option value="1929">Grande Depressione (1928-1945)</option>
+          </select>
         </label>
 
         <hr style="border:none; border-top: 1px solid rgba(37, 99, 235, 0.18); margin: 20px 0;">
         <h3 style="margin-bottom:18px;">Asset Allocation</h3>
-        <p style="font-size: 0.75rem; color: #999; margin-bottom: 15px;">Le percentuali si autoregolano per mantenere il totale al 100%.</p>
+        <p style="font-size: 0.75rem; color: #999; margin-bottom: 15px;">Le percentuali si autoregolano per mantenere il
+          totale al 100%.</p>
 
         <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
-            <div class="input-label">
-                <span>Azioni (S&P 500)</span>
-                <div class="allocation-slider-container">
-                    <input type="range" id="alloc-azioni" min="0" max="100" value="60">
-                    <span class="allocation-val" id="val-azioni">60%</span>
-                </div>
+          <div class="input-label">
+            <span>Azioni (S&P 500)</span>
+            <div class="allocation-slider-container">
+              <input type="range" id="alloc-azioni" min="0" max="100" value="60">
+              <span class="allocation-val" id="val-azioni">60%</span>
             </div>
-            <div class="input-label">
-                <span>Obbligazioni (Treasury USA)</span>
-                <div class="allocation-slider-container">
-                    <input type="range" id="alloc-obbligazioni" min="0" max="100" value="40">
-                    <span class="allocation-val" id="val-obbligazioni">40%</span>
-                </div>
+          </div>
+          <div class="input-label">
+            <span>Obbligazioni (Treasury USA)</span>
+            <div class="allocation-slider-container">
+              <input type="range" id="alloc-obbligazioni" min="0" max="100" value="40">
+              <span class="allocation-val" id="val-obbligazioni">40%</span>
             </div>
-            <div class="input-label">
-                <span>Oro Storico</span>
-                <div class="allocation-slider-container">
-                    <input type="range" id="alloc-oro" min="0" max="100" value="0">
-                    <span class="allocation-val" id="val-oro">0%</span>
-                </div>
+          </div>
+          <div class="input-label">
+            <span>Oro Storico</span>
+            <div class="allocation-slider-container">
+              <input type="range" id="alloc-oro" min="0" max="100" value="0">
+              <span class="allocation-val" id="val-oro">0%</span>
             </div>
+          </div>
         </div>
 
-        <button class="btn-calcola" onclick="calcolaCrisi()">▶ Simula Crollo e Recupero</button>
+        <button class="btn-calcola" onclick="calcolaCrisi()">â–¶ Simula Crollo e Recupero</button>
       </section>
 
       <!-- RISULTATI (Visualizzati dopo il calcolo) -->
       <section class="cards-row" style="max-width:800px; width:100%; margin: 0 auto 30px;">
         <div class="card finance card-result" style="border-top-color: #ef4444;">
           <h3 style="color:#fca5a5;">Max Drawdown</h3>
-          <p id="res-drawdown" style="text-shadow:0 0 15px rgba(239, 68, 68, 0.6);">—</p>
+          <p id="res-drawdown" style="text-shadow:0 0 15px rgba(239, 68, 68, 0.6);">â€”</p>
           <span style="font-size: 0.7rem; color: #999;">Perdita massima dal picco</span>
         </div>
         <div class="card finance card-result" style="border-top-color: #f59e0b;">
           <h3 style="color:#fcd34d;">Tempo di Recupero</h3>
-          <p id="res-recovery" style="text-shadow:0 0 15px rgba(245, 158, 11, 0.6);">—</p>
+          <p id="res-recovery" style="text-shadow:0 0 15px rgba(245, 158, 11, 0.6);">â€”</p>
           <span style="font-size: 0.7rem; color: #999;">Traguardo Break-Even</span>
         </div>
         <div class="card finance card-result" style="border-top-color: #10b981;">
           <h3 style="color:#6ee7b7;">Valore Finale</h3>
-          <p id="res-finale" style="text-shadow:0 0 15px rgba(16, 185, 129, 0.6);">—</p>
+          <p id="res-finale" style="text-shadow:0 0 15px rgba(16, 185, 129, 0.6);">â€”</p>
           <span style="font-size: 0.7rem; color: #999;">A fine periodo simulato</span>
         </div>
         <div class="card finance card-result" style="border-top-color: #3b82f6;">
           <h3 style="color:#93c5fd;">Rendimento Annuo</h3>
-          <p id="res-cagr" style="text-shadow:0 0 15px rgba(59, 130, 246, 0.6);">—</p>
+          <p id="res-cagr" style="text-shadow:0 0 15px rgba(59, 130, 246, 0.6);">â€”</p>
           <span style="font-size: 0.7rem; color: #999;">CAGR sul versato vivo</span>
         </div>
       </section>
 
       <!-- GRAFICO E TABELLA -->
-      <section class="card finance" id="grafico-section" style="max-width:800px;width:100%;position:relative;margin:0 auto 30px;">
+      <section class="card finance" id="grafico-section"
+        style="max-width:800px;width:100%;position:relative;margin:0 auto 30px;">
         <h3 style="margin-bottom:14px; font-size: clamp(1rem, 4vw, 1.2rem);">Andamento del Portafoglio nel Tempo</h3>
         <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.4;">
-            Il grafico mostra l'evoluzione del "Portafoglio da Simulazione" in comparazione alla sola "Somma Versata" (incluso l'eventuale PAC cumulato), utile per capire il momento preciso in cui l'investimento supera le perdite.
+          Il grafico mostra l'evoluzione del "Portafoglio da Simulazione" in comparazione alla sola "Somma Versata"
+          (incluso l'eventuale PAC cumulato), utile per capire il momento preciso in cui l'investimento supera le
+          perdite.
         </p>
-        <div id="grafico-wrapper" style="background:var(--card-bg);border-radius:8px;padding:14px;border:1px solid rgba(37,99,235,0.18);">
-          <canvas id="grafico" height="250"></canvas>
+        <div id="grafico-wrapper"
+          style="background:var(--card-bg);border-radius:8px;padding:14px;border:1px solid rgba(37,99,235,0.18);">
+          <canvas id="grafico"></canvas>
         </div>
-        
+
         <!-- Tabella Risultati Dettagliati -->
         <div class="table-container">
-            <table class="crisi-table" id="crisi-table-id">
-                <thead>
-                    <tr>
-                        <th>Anno</th>
-                        <th>Versato Vivo</th>
-                        <th>Valore Portafoglio</th>
-                        <th>P/L Assoluto</th>
-                        <th>P/L %</th>
-                    </tr>
-                </thead>
-                <tbody id="crisi-tbody">
-                    <!-- Popolato in javascript -->
-                </tbody>
-            </table>
+          <table class="crisi-table" id="crisi-table-id">
+            <thead>
+              <tr>
+                <th>Anno</th>
+                <th>Versato Vivo</th>
+                <th>Valore Portafoglio</th>
+                <th>P/L Assoluto</th>
+                <th>P/L %</th>
+              </tr>
+            </thead>
+            <tbody id="crisi-tbody">
+              <!-- Popolato in javascript -->
+            </tbody>
+          </table>
         </div>
       </section>
 

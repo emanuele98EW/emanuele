@@ -55,8 +55,9 @@
   ]);
 
   const engineeringGroup = navGroup('engineering', `${basePath}engineering/index.html`, 'INGEGNERIA', [
-    ['engineering/appunti/index.html', 'Appunti', 'engineering'],
     ['engineering/tools/index.html', 'Tools', 'engineering'],
+    ['engineering/tools/convertitore-unita.html', 'Convertitore', 'engineering'],
+    ['engineering/appunti/index.html', 'Tabelle', 'engineering'],
   ]);
 
   const personaleGroup = navGroup('personale', `${basePath}personale/index.html`, 'PERSONALE', [

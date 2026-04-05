@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://emanuele98ew.github.io/emanuele/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>
+
+  <!-- FINANZA -->
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/index.html</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/interesse/index.html</loc><priority>0.8</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/montecarlo/index.html</loc><priority>0.8</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/fire/index.html</loc><priority>0.8</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/mutui/index.html</loc><priority>0.8</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/mutuo/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/ammortamento/index.html</loc><priority>0.8</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/rent-vs-buy/index.html</loc><priority>0.8</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/target-savings/index.html</loc><priority>0.8</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/ter/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/crisi/index.html</loc><priority>0.8</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/dcf/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/fair-value/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/correlazione/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/portafoglio/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/rebalancing/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/finanza/crypto-dashboard/index.html</loc><priority>0.6</priority></url>
+
+  <!-- ENGINEERING -->
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/index.html</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/index.html</loc><priority>0.9</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/convertitore-unita.html</loc><priority>0.8</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/condizioni-utilizzo.html</loc><priority>0.3</priority></url>
+
+  <!-- Dimensionamenti -->
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/acqua/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/acqua/progettazione/acqua-dim-perdita-pressione.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/acqua/progettazione/acqua-dim-velocita.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/acqua/progettazione/acqua-perdita-pressione.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/acqua/progettazione/acqua-portata-acqua.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/acqua/progettazione/acqua-spessore-isolamento.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/acqua/progettazione/acqua-velocita-acqua.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/acqua/vasi-espansione/calcolo-volume-vaso.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/aria/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/aria/progettazione/aria-dim-perdita-pressione.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/aria/progettazione/aria-dim-velocita.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/aria/progettazione/aria-perdita-pressione.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/aria/progettazione/aria-portata.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/aria/progettazione/aria-velocita.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/vapore/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/vapore/progettazione/dim-perdita-pressione.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/vapore/progettazione/dim-sfiato.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/vapore/progettazione/dim-velocita.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/vapore/progettazione/perdita-pressione.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/vapore/progettazione/portata-vapore.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/vapore/progettazione/spessore-isolamento.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/vapore/progettazione/velocita-vapore.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/vapore/condensa/aria-riscaldamento.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/vapore/condensa/liquido-batch.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/vapore/condensa/liquido-continuo.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/vapore/condensa/perdita-radiante.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/vapore/condensa/punto-stallo.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/vapore/condensa/tubazione-avviamento.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/vapore/costo/costo-energia.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/vapore/costo/costo-vapore.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/condensa/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/condensa/analisi-economica/scambiatore-calore.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/condensa/analisi-economica/sistema-aperto.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/condensa/analisi-economica/sistema-chiuso.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/condensa/analisi-economica/vapore-flash.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/condensa/tubazioni/linea-uscita-pompa.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/condensa/tubazioni/recupero-perdita-pressione.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/condensa/tubazioni/recupero-velocita.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/condensa/tubazioni/tra-apparecchiatura-scaricatore.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/metano/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/metano/progettazione/metano-contatore-fiscale.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/metano/progettazione/metano-convertitore-portata.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dimensionamenti/metano/progettazione/metano-perdita-pressione.html</loc><priority>0.6</priority></url>
+
+  <!-- Piping -->
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/fittings/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/fittings/cap/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/fittings/curva-45/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/fittings/curva-90/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/fittings/riduzione-concentrica/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/fittings/riduzione-eccentrica/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/fittings/tee-ridotto/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/fittings/tee-uguale/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/flange/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/flange/asme/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/flange/asme/weldneck/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/flange/en/en_flange_index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/tubazioni/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/tubazioni/isolamento_termico/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/tubazioni/isolamento_termico/spessore_isolante/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/tubazioni/isolamento_termico/temperatura_superficiale/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/tubazioni/Spessore_Peso_metro/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/tubazioni/Spessore_Peso_metro/ASME/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/tubazioni/Spessore_Peso_metro/EN/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/tubazioni/Spessore_Peso_metro/INOX/inox_index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/tubazioni/Spessore_Peso_metro/POLIETILENE/pe_index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/tubazioni/strutturale/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/tubazioni/strutturale/pressione_ammissibile/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/tubazioni/strutturale/spessore_minimo/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/piping/valvole/index.html</loc><priority>0.6</priority></url>
+
+  <!-- Termodinamica & Energia -->
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/termodinamica/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/termodinamica/aria-umida/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/termodinamica/proprieta-fluido/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/termodinamica/saturazione/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/termodinamica/vapore/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/termodinamica/vapore/vapore_saturo_pressione.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/termodinamica/vapore/vapore_saturo_temperatura.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/termodinamica/vapore/vapore_surriscaldato.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/termotecnica/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/termotecnica/dispersione/dispersione-serbatoio.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/termotecnica/dispersione/dispersione-tubazione.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dispersione/dispersione-serbatoio.html</loc><priority>0.5</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/dispersione/dispersione-tubazione.html</loc><priority>0.5</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/energy/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/energy/Turbogas/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/energy/Turbogas/T_compressione_espansione/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/fluidodinamica/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/tools/stress/index.html</loc><priority>0.6</priority></url>
+
+  <!-- Appunti -->
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/appunti/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/appunti/fluidodinamica/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/appunti/fluidodinamica/combustione/index.html</loc><priority>0.5</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/appunti/fluidodinamica/conservazione-energia/index.html</loc><priority>0.5</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/appunti/fluidodinamica/conservazione-massa/index.html</loc><priority>0.5</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/appunti/fluidodinamica/gas-perfetti/index.html</loc><priority>0.5</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/appunti/piping/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/appunti/sistemi-energetici/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/appunti/sistemi-energetici/turbogas/index.html</loc><priority>0.5</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/appunti/stress-analysis/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/appunti/termodinamica/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/appunti/termodinamica/vapore/index.html</loc><priority>0.5</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/appunti/termodinamica/vapore/pressione/index.html</loc><priority>0.5</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/appunti/termodinamica/vapore/surriscaldato/index.html</loc><priority>0.5</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/engineering/appunti/termodinamica/vapore/temperatura/index.html</loc><priority>0.5</priority></url>
+
+  <!-- PERSONALE -->
+  <url><loc>https://emanuele98ew.github.io/emanuele/personale/index.html</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/personale/accademico/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/personale/progetti/index.html</loc><priority>0.6</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/personale/progetti/magistrale/index.html</loc><priority>0.5</priority></url>
+  <url><loc>https://emanuele98ew.github.io/emanuele/personale/progetti/triennale/index.html</loc><priority>0.5</priority></url>
+</urlset>
