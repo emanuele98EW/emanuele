@@ -7,6 +7,47 @@
   padding: 0;
 }
 
+/* ══════════════════════════════════════════════════════
+   GLOBAL MOBILE OVERFLOW SAFETY LOCKS
+   ══════════════════════════════════════════════════════ */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Constraint Universale per schede e contenitori */
+.layout, .main, section, .card, .container, .cards {
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+/* Immagini e Media: nessuna fuoriuscita */
+img, video, canvas, iframe, picture, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Gestione Overflow per Tabelle e Dati (interno alla scheda) */
+table, .fin-table {
+  max-width: none; /* La tabella può essere larga quanto vuole */
+  min-width: 100%;
+}
+.table-container, .data-container, div[style*="overflow-x: auto"], div[style*="overflow-x:auto"] {
+  display: block !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* Padding Responsivo su Mobile (< 480px) */
+@media (max-width: 480px) {
+  .card, .container, section.card {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    border-radius: 8px !important; /* Spesso utile smussare meno i bordi su schermi minuscoli */
+  }
+}
+
 :root {
   /* Default Dark Theme Colors */
   --bg-color: #050814;

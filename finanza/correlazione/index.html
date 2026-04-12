@@ -12,12 +12,34 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../css/style.css">
   <style>
-    .tool-wrap{max-width:800px;width:100%;margin:0 auto 30px;padding:0 16px;box-sizing:border-box}
-    .corr-table-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border-color,rgba(255,255,255,.08))}
-    .corr-table{width:100%;border-collapse:collapse;text-align:center}
-    .corr-table th,.corr-table td{padding:clamp(6px,2vw,12px);font-size:clamp(.65rem,2.5vw,.82rem);border:1px solid var(--border-color,rgba(255,255,255,.06));white-space:nowrap}
+    .tool-wrap{max-width:800px;width:calc(100% - 32px);margin:0 auto 30px;padding:0 16px;box-sizing:border-box}
+    .corr-table-wrap{width:100%;max-width:100%;overflow-x:auto;border-radius:8px;border:1px solid var(--border-color,rgba(255,255,255,.08));-webkit-overflow-scrolling:touch;box-sizing:border-box}
+    .corr-table{width:100%;border-collapse:separate;border-spacing:0;text-align:center}
+    .corr-table th,.corr-table td{padding:clamp(6px,2vw,14px);font-size:clamp(.7rem,2.8vw,.85rem);border-bottom:1px solid var(--border-color,rgba(255,255,255,.06));border-right:1px solid var(--border-color,rgba(255,255,255,.06));white-space:nowrap}
     .corr-table th{background:rgba(37,99,235,.06);font-family:'Orbitron',sans-serif;color:var(--text-secondary);letter-spacing:.5px}
     .corr-table td{font-family:'Orbitron',sans-serif;font-weight:700}
+    /* Sticky first column */
+    .corr-table th:first-child {
+      position: sticky;
+      left: 0;
+      background: linear-gradient(rgba(37,99,235,.06), rgba(37,99,235,.06)), var(--card-bg, #050a18);
+      z-index: 2;
+      border-right: 1px solid rgba(37,99,235,.3);
+    }
+    .corr-table thead th {
+      border-bottom: 1px solid rgba(37,99,235,.3);
+    }
+    .swipe-hint { display: none; text-align: center; font-size: 0.75rem; color: var(--color-finance); margin-bottom: 10px; font-family: 'Orbitron', sans-serif; cursor: pointer; }
+    
+    @media(max-width: 700px) {
+      .layout { zoom: 0.75; }
+      .swipe-hint { display: block; animation: pulse 2s infinite; }
+      .card.finance.tool-wrap { padding: 16px 12px !important; margin-bottom: 20px !important; }
+      .card.finance.tool-wrap h3 { font-size: 1.2rem !important; margin-bottom: 12px !important; }
+      .corr-table th,.corr-table td { padding: 10px 8px !important; font-size: 0.85rem !important; }
+      .legenda-item { gap: 8px !important; flex-direction: column; align-items: flex-start !important; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    }
+    @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
   </style>
 </head>
 <body>
@@ -28,19 +50,20 @@
       <h2 style="color:var(--color-finance);text-align:center;margin-bottom:30px;font-size:clamp(1.5rem,5vw,2rem)">🔗 Correlazione Asset</h2>
       <p style="text-align:center;max-width:700px;margin:0 auto 30px;color:var(--text-secondary);font-size:.9rem;padding:0 15px">La matrice mostra la correlazione storica media tra le principali classi di asset. Valori vicini a <strong style="color:#10b981">+1</strong> indicano alta correlazione positiva, vicini a <strong style="color:#ef4444">-1</strong> alta correlazione negativa (diversificazione).</p>
       <section class="card finance tool-wrap" style="padding:clamp(20px,5vw,30px)">
-        <h3 style="margin-bottom:18px">Matrice di Correlazione (Dati Storici Medi)</h3>
+        <h3 style="margin-bottom:14px">Matrice di Correlazione (Dati Storici Medi)</h3>
+        <p class="swipe-hint">👉 Scorri la tabella per vedere tutto</p>
         <div class="corr-table-wrap">
           <table class="corr-table" id="corr-matrix"></table>
         </div>
-        <p style="font-size:.72rem;color:var(--text-secondary);margin-top:12px;text-align:center">Fonte: Dati storici approssimati (1970-2023). Le correlazioni possono variare significativamente in periodi di crisi.</p>
+        <p style="font-size:.72rem;color:var(--text-secondary);margin-top:12px;text-align:center;padding:0 10px;">Fonte: Dati storici approssimati (1970-2023). Le correlazioni possono variare significativamente in periodi di crisi.</p>
       </section>
       <section class="card finance tool-wrap" style="padding:clamp(20px,5vw,30px)">
         <h3 style="margin-bottom:14px">Legenda Interpretativa</h3>
-        <div style="display:flex;flex-direction:column;gap:8px;font-size:.85rem">
-          <div style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:18px;border-radius:3px;background:#10b981;flex-shrink:0"></span><span style="color:var(--text-primary)"><strong>+0.7 / +1.0</strong> — Alta correlazione: si muovono insieme</span></div>
-          <div style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:18px;border-radius:3px;background:#f59e0b;flex-shrink:0"></span><span style="color:var(--text-primary)"><strong>+0.3 / +0.6</strong> — Correlazione moderata</span></div>
-          <div style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:18px;border-radius:3px;background:#6b7280;flex-shrink:0"></span><span style="color:var(--text-primary)"><strong>-0.2 / +0.2</strong> — Quasi indipendenti</span></div>
-          <div style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:18px;border-radius:3px;background:#ef4444;flex-shrink:0"></span><span style="color:var(--text-primary)"><strong>-0.3 / -1.0</strong> — Correlazione negativa: ottima diversificazione</span></div>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:clamp(.75rem, 3vw, .85rem)">
+          <div class="legenda-item" style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:12px;border-radius:2px;background:#10b981;flex-shrink:0;"></span><span style="color:var(--text-primary);line-height:1.4"><strong>+0.7 / +1.0</strong> — Alta correlazione (si muovono insieme)</span></div>
+          <div class="legenda-item" style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:12px;border-radius:2px;background:#f59e0b;flex-shrink:0;"></span><span style="color:var(--text-primary);line-height:1.4"><strong>+0.3 / +0.6</strong> — Correlazione moderata</span></div>
+          <div class="legenda-item" style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:12px;border-radius:2px;background:#6b7280;flex-shrink:0;"></span><span style="color:var(--text-primary);line-height:1.4"><strong>-0.2 / +0.2</strong> — Quasi indipendenti</span></div>
+          <div class="legenda-item" style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:12px;border-radius:2px;background:#ef4444;flex-shrink:0;"></span><span style="color:var(--text-primary);line-height:1.4"><strong>-0.3 / -1.0</strong> — Correlazione negativa (diversificazione)</span></div>
         </div>
       </section>
     </main>

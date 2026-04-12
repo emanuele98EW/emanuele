@@ -238,45 +238,66 @@ function toggleFullscreen() {
   const canvas = document.getElementById('grafico');
 
   if (!_fsActive) {
+    // Entra in fullscreen
     _fsScrollY = window.scrollY;
     _fsActive = true;
+
     backdrop.style.display = 'block';
+    backdrop.style.pointerEvents = 'none'; // Don't intercept chart interactions
     section.classList.add('is-fullscreen');
     document.body.style.overflow = 'hidden';
+
+    // Raise .layout above the backdrop stacking context
+    const layout = document.querySelector('.layout');
+    if (layout) layout.style.zIndex = '10000';
+
+    // Hide footer and background overlays to prevent z-index conflicts
+    const footer = document.getElementById('site-footer');
+    const vantaBg = document.getElementById('vanta-bg');
+    if (footer) footer.style.display = 'none';
+    if (vantaBg) vantaBg.style.display = 'none';
+
     iconExp.style.display = 'none';
     iconCompr.style.display = 'block';
     label.textContent = 'ESCI';
 
     if (montecarloChart) {
-      canvas.style.width = '0px';
-      canvas.style.height = '0px';
       setTimeout(() => {
-        canvas.style.width = '';
-        canvas.style.height = '';
         montecarloChart.resize();
         montecarloChart.update('none');
-      }, 10);
+      }, 50);
     }
     document.addEventListener('keydown', _onFsKeydown);
+
   } else {
+    // Esci da fullscreen
     _fsActive = false;
+
     backdrop.style.display = 'none';
+    backdrop.style.pointerEvents = '';
     section.classList.remove('is-fullscreen');
     document.body.style.overflow = '';
+
+    // Restore .layout z-index to original value (set by main.js)
+    const layout = document.querySelector('.layout');
+    if (layout) layout.style.zIndex = '1';
+
+    // Restore footer and background overlays
+    const footer = document.getElementById('site-footer');
+    const vantaBg = document.getElementById('vanta-bg');
+    if (footer) footer.style.display = '';
+    if (vantaBg) vantaBg.style.display = '';
+
     iconExp.style.display = 'block';
     iconCompr.style.display = 'none';
     label.textContent = 'FULLSCREEN';
 
     if (montecarloChart) {
-      canvas.style.width = '0px';
-      canvas.style.height = '0px';
       setTimeout(() => {
-        canvas.style.width = '';
-        canvas.style.height = '';
         montecarloChart.resize();
         montecarloChart.update('none');
         window.scrollTo({ top: _fsScrollY, behavior: 'instant' });
-      }, 10);
+      }, 50);
     }
     document.removeEventListener('keydown', _onFsKeydown);
   }

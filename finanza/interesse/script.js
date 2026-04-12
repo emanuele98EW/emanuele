@@ -443,10 +443,13 @@ function disegnaGrafico(anni, baseArr, extraArrs, totaleArr, extras, annotations
         legend: {
           position: 'bottom',
           labels: {
-            color: '#ccc',
-            font: { family: "'Orbitron', sans-serif", size: 9 },
-            boxWidth: 14,
-            padding: 14,
+            color: document.documentElement.classList.contains('light-mode') ? '#334155' : '#cbd5e1',
+            font: { family: "'Orbitron', sans-serif", size: 11, weight: '600' },
+            boxWidth: 16,
+            boxHeight: 10,
+            padding: 20,
+            usePointStyle: true,
+            pointStyleWidth: 14,
           }
         },
         tooltip: {
@@ -467,21 +470,21 @@ function disegnaGrafico(anni, baseArr, extraArrs, totaleArr, extras, annotations
       scales: {
         x: {
           ticks: {
-            color: '#666',
-            font: { family: "'Orbitron', sans-serif", size: 8 },
+            color: document.documentElement.classList.contains('light-mode') ? '#475569' : '#94a3b8',
+            font: { family: "'Orbitron', sans-serif", size: 10 },
             maxTicksLimit: 12,
             maxRotation: 0,
           },
-          grid: { color: 'rgba(255,255,255,0.04)' }
+          grid: { color: document.documentElement.classList.contains('light-mode') ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.04)' }
         },
         y: {
           ticks: {
-            color: '#666',
-            font: { family: "'Orbitron', sans-serif", size: 8 },
+            color: document.documentElement.classList.contains('light-mode') ? '#475569' : '#94a3b8',
+            font: { family: "'Orbitron', sans-serif", size: 10 },
             callback: v => fmtShort(v),
             maxTicksLimit: 8,
           },
-          grid: { color: 'rgba(255,255,255,0.04)' }
+          grid: { color: document.documentElement.classList.contains('light-mode') ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.04)' }
         }
       }
     }
@@ -506,22 +509,29 @@ function toggleFullscreen() {
     _fsActive = true;
 
     backdrop.style.display = 'block';
+    backdrop.style.pointerEvents = 'none'; // Don't intercept chart interactions
     section.classList.add('is-fullscreen');
     document.body.style.overflow = 'hidden';
+
+    // Raise .layout above the backdrop stacking context
+    const layout = document.querySelector('.layout');
+    if (layout) layout.style.zIndex = '10000';
+
+    // Hide footer and background overlays to prevent z-index conflicts
+    const footer = document.getElementById('site-footer');
+    const vantaBg = document.getElementById('vanta-bg');
+    if (footer) footer.style.display = 'none';
+    if (vantaBg) vantaBg.style.display = 'none';
 
     iconExp.style.display = 'none';
     iconCompr.style.display = 'block';
     label.textContent = 'ESCI';
 
     if (graficoChart) {
-      canvas.style.width = '0px';
-      canvas.style.height = '0px';
       setTimeout(() => {
-        canvas.style.width = '';
-        canvas.style.height = '';
         graficoChart.resize();
         graficoChart.update('none');
-      }, 10);
+      }, 50);
     }
     document.addEventListener('keydown', _onFsKeydown);
 
@@ -530,23 +540,30 @@ function toggleFullscreen() {
     _fsActive = false;
 
     backdrop.style.display = 'none';
+    backdrop.style.pointerEvents = '';
     section.classList.remove('is-fullscreen');
     document.body.style.overflow = '';
+
+    // Restore .layout z-index to original value (set by main.js)
+    const layout = document.querySelector('.layout');
+    if (layout) layout.style.zIndex = '1';
+
+    // Restore footer and background overlays
+    const footer = document.getElementById('site-footer');
+    const vantaBg = document.getElementById('vanta-bg');
+    if (footer) footer.style.display = '';
+    if (vantaBg) vantaBg.style.display = '';
 
     iconExp.style.display = 'block';
     iconCompr.style.display = 'none';
     label.textContent = 'FULLSCREEN';
 
     if (graficoChart) {
-      canvas.style.width = '0px';
-      canvas.style.height = '0px';
       setTimeout(() => {
-        canvas.style.width = '';
-        canvas.style.height = '';
         graficoChart.resize();
         graficoChart.update('none');
         window.scrollTo({ top: _fsScrollY, behavior: 'instant' });
-      }, 10);
+      }, 50);
     }
     document.removeEventListener('keydown', _onFsKeydown);
   }

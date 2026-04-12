@@ -393,18 +393,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // Disabilita Glassmorphism e aumenta opacita' card per migliorare la leggibilita'
     const styleOverride = document.createElement("style");
     styleOverride.innerHTML = `
-       .card, .nav-card, .widget-card, .formula-wrapper, .fin-tab, 
+       .card:not(.is-fullscreen):not(#grafico-section), .nav-card, .widget-card, .formula-wrapper, .fin-tab, 
        .dim-list, .accordion-list, .search-wrap .search-box, .search-results,
        .tool-panel, .results-panel, .result-card, .note-block {
           backdrop-filter: blur(8px) !important;
           -webkit-backdrop-filter: blur(8px) !important;
-          background: rgba(17, 24, 39, 0.92) !important; /* Molto scuro (92%) per far intravedere l'animazione */
+          background: rgba(17, 24, 39, 0.92) !important;
           box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
        }
-       html.light-mode .card, html.light-mode .nav-card, html.light-mode .widget-card, html.light-mode .formula-wrapper, html.light-mode .fin-tab,
+       /* Chart sections: solid bg, NO blur (prevents canvas rasterization) */
+       #grafico-section, .card.is-fullscreen {
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+          background: rgba(17, 24, 39, 0.96) !important;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+       }
+       html.light-mode .card:not(.is-fullscreen):not(#grafico-section), html.light-mode .nav-card, html.light-mode .widget-card, html.light-mode .formula-wrapper, html.light-mode .fin-tab,
        html.light-mode .dim-list, html.light-mode .accordion-list, html.light-mode .search-wrap .search-box, html.light-mode .search-results,
        html.light-mode .tool-panel, html.light-mode .results-panel, html.light-mode .result-card, html.light-mode .note-block {
-          background: rgba(255, 255, 255, 0.94) !important; /* Bianco molto solido per light mode */
+          background: rgba(255, 255, 255, 0.94) !important;
+          box-shadow: 0 10px 30px rgba(44, 62, 80, 0.1) !important;
+       }
+       html.light-mode #grafico-section, html.light-mode .card.is-fullscreen {
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+          background: rgba(255, 255, 255, 0.98) !important;
           box-shadow: 0 10px 30px rgba(44, 62, 80, 0.1) !important;
        }
     `;

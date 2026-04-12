@@ -17,36 +17,39 @@
         .tool-wrap { max-width: 860px; margin: 0 auto; padding-bottom: 40px; }
         .tool-panel { background:var(--bg-secondary,rgba(255,255,255,0.04));border:1px solid var(--border-color,rgba(255,255,255,0.1));border-radius:12px;padding:24px;margin-top:24px; }
         
-        .converter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; position: relative; }
-        @media(max-width: 640px) { .converter-grid { grid-template-columns: 1fr; gap: 40px; } }
+        .converter-grid { display: flex; align-items: stretch; justify-content: center; gap: 24px; position: relative; }
+        .converter-column { flex: 1; min-width: 0; }
+        @media(max-width: 640px) { .converter-grid { flex-direction: column; gap: 16px; align-items: stretch; } }
         
         .field-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
         .field-label { font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
         .field-input, .field-select {
-            width: 100%; background: #1a1f2e; border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 12px 14px; font-size: 1.05rem; color: #e8d88a; outline: none; transition: border-color 0.2s;
+            width: 100%; background: #1a1f2e; border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 12px 14px; font-size: 1.05rem; color: #e8d88a; outline: none; transition: border-color 0.2s; min-height: 52px;
         }
         .light-mode .field-input, .light-mode .field-select { background:#f5f5f0; border-color:rgba(0,0,0,0.2); color:#3a3000; }
         .field-input:focus, .field-select:focus { border-color: var(--color-engineering); }
         
         .swap-btn-wrap { 
-            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-            display: flex; justify-content: center; align-items: center; z-index: 10;
+            display: flex; justify-content: center; align-items: center; padding-top: 16px; flex-shrink: 0;
         }
         @media(max-width: 640px) { 
-            .swap-btn-wrap { top: 48%; } /* approximate center in mobile */
+            .swap-btn-wrap { padding-top: 0; transform: rotate(90deg); margin: 4px 0; }
         }
         .swap-btn {
-            background: rgba(var(--color-engineering-rgb,200,160,60),0.15); border: 1px solid rgba(var(--color-engineering-rgb,200,160,60),0.4); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: var(--color-engineering); cursor: pointer; transition: transform 0.2s, background 0.2s; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            background: rgba(var(--color-engineering-rgb,200,160,60),0.15); border: 1px solid rgba(var(--color-engineering-rgb,200,160,60),0.4); border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; color: var(--color-engineering); cursor: pointer; transition: transform 0.2s, background 0.2s; font-size: 1.15rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             backdrop-filter: blur(4px);
         }
-        .light-mode .swap-btn { background: #fff; border-color: rgba(0,0,0,0.1); }
+        .light-mode .swap-btn { background: #fff; border-color: rgba(0,0,0,0.15); }
         .swap-btn:hover { background: rgba(var(--color-engineering-rgb,200,160,60),0.25); transform: rotate(180deg); }
+        @media(max-width: 640px) {
+            .swap-btn:hover { transform: rotate(270deg); } /* Keeps logic intact based on mobile rotated start */
+        }
         
         .result-box {
-            background: rgba(var(--color-engineering-rgb,200,160,60),0.06); border: 1px solid rgba(var(--color-engineering-rgb,200,160,60),0.3); border-radius: 12px; padding: 24px 16px; text-align: center; margin-top: 10px; min-height: 110px; display: flex; flex-direction: column; justify-content: center;
+            width: 100%; background: rgba(var(--color-engineering-rgb,200,160,60),0.08); border: 1px solid var(--color-engineering); border-radius: 8px; padding: 12px 14px; min-height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 8px;
         }
-        .result-val { font-size: 2.2rem; font-weight: 700; color: var(--color-engineering); font-family: 'Orbitron', sans-serif; word-break: break-word; line-height: 1.1; margin-bottom: 4px; }
-        .result-unit-lbl { font-size: 0.9rem; color: var(--text-secondary); font-weight: 600; }
+        .result-val { font-size: 1.05rem; font-weight: 600; color: var(--color-engineering); font-family: 'Plus Jakarta Sans', monospace; word-break: break-all; line-height: 1.2; text-align: left; flex: 1; }
+        .result-unit-lbl { font-size: 0.95rem; color: var(--text-secondary); font-weight: 600; white-space: nowrap; }
         .formula-box { margin-top: 24px; font-size: 0.85rem; color: var(--text-secondary); background: var(--bg-card, rgba(255,255,255,0.03)); padding: 14px; border-radius: 8px; text-align: center; border: 1px dashed rgba(255,255,255,0.1); display: flex; justify-content: center; align-items: center; gap: 8px; }
         .formula-box i { color: var(--color-engineering); }
     </style>
@@ -81,7 +84,7 @@
             </div>
 
             <div class="converter-grid">
-                <div>
+                <div class="converter-column">
                     <div class="field-group">
                         <span class="field-label">Da</span>
                         <select class="field-select" id="unita-da" onchange="convert()"></select>
@@ -96,13 +99,13 @@
                     <button class="swap-btn" onclick="swapUnits()" title="Inverti unità"><i class="fa-solid fa-right-left"></i></button>
                 </div>
                 
-                <div>
+                <div class="converter-column">
                     <div class="field-group">
                         <span class="field-label">A</span>
                         <select class="field-select" id="unita-a" onchange="convert()"></select>
                     </div>
                     <div class="field-group">
-                        <span class="field-label" style="opacity:0;">Risultato</span>
+                        <span class="field-label">Risultato</span>
                         <div class="result-box">
                             <div class="result-val" id="risultato">1</div>
                             <div class="result-unit-lbl" id="risultato-unit">m</div>

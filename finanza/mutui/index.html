@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 
 <head>
@@ -156,6 +156,7 @@
         .card.finance { padding: 20px 16px !important; }
         #grafico-wrapper { min-height: 250px; padding: 8px !important; }
         .responsive-grid { grid-template-columns: 1fr !important; }
+        #btn-fullscreen { display: none !important; }
     }
 
     .input-label {
@@ -263,7 +264,7 @@
           <span id="fs-label">FULLSCREEN</span>
         </button>
         <div id="grafico-wrapper"
-          style="position:relative; background:var(--card-bg);border-radius:8px;padding:14px;border:1px solid rgba(37,99,235,0.18);">
+          style="position:relative; height:700px; background:var(--card-bg);border-radius:8px;padding:14px;border:1px solid rgba(37,99,235,0.18);">
           <canvas id="grafico"></canvas>
         </div>
       </section>

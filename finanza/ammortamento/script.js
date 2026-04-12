@@ -185,7 +185,6 @@ function toggleFullscreen() {
   const iconExp = document.getElementById('fs-icon-expand');
   const iconCompr = document.getElementById('fs-icon-compress');
   const label = document.getElementById('fs-label');
-  const canvas = document.getElementById('grafico');
 
   if (!_fsActive) {
     _fsScrollY = window.scrollY;
@@ -195,17 +194,13 @@ function toggleFullscreen() {
     document.body.style.overflow = 'hidden';
     iconExp.style.display = 'none';
     iconCompr.style.display = 'block';
-    label.textContent = 'ESCI';
+    if(label) label.textContent = 'ESCI';
 
     if (ammChart) {
-      canvas.style.width = '0px';
-      canvas.style.height = '0px';
       setTimeout(() => {
-        canvas.style.width = '';
-        canvas.style.height = '';
         ammChart.resize();
         ammChart.update('none');
-      }, 10);
+      }, 150);
     }
     document.addEventListener('keydown', _onFsKeydown);
   } else {
@@ -215,18 +210,14 @@ function toggleFullscreen() {
     document.body.style.overflow = '';
     iconExp.style.display = 'block';
     iconCompr.style.display = 'none';
-    label.textContent = 'FULLSCREEN';
+    if(label) label.textContent = 'FULLSCREEN';
 
     if (ammChart) {
-      canvas.style.width = '0px';
-      canvas.style.height = '0px';
       setTimeout(() => {
-        canvas.style.width = '';
-        canvas.style.height = '';
         ammChart.resize();
         ammChart.update('none');
         window.scrollTo({ top: _fsScrollY, behavior: 'instant' });
-      }, 10);
+      }, 150);
     }
     document.removeEventListener('keydown', _onFsKeydown);
   }

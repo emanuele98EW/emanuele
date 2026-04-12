@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 
 <head>
@@ -297,10 +297,10 @@
       z-index: 9999;
       display: flex;
       flex-direction: column;
-      padding: 24px 28px 20px;
+      padding: 20px 28px 16px;
       box-sizing: border-box;
       background: #050a18 !important;
-      overflow: hidden;
+      overflow: auto;
     }
 
     #grafico-section.is-fullscreen h3 {
@@ -317,11 +317,7 @@
       background: rgba(5, 10, 28, 0.95) !important;
       border-color: rgba(37, 99, 235, 0.3) !important;
       box-shadow: inset 0 0 80px rgba(37, 99, 235, 0.04);
-    }
-
-    #grafico-section.is-fullscreen #grafico-wrapper canvas {
-      width: 100%;
-      height: 100%;
+      position: relative; /* Essential for Chart.js */
     }
 
     #grafico-section.is-fullscreen #btn-fullscreen {
@@ -335,25 +331,9 @@
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 5, 0.6);
-      backdrop-filter: blur(3px);
       z-index: 9998;
     }
 
-    @keyframes fsPanelIn {
-      from {
-        opacity: 0;
-        transform: scale(0.97);
-      }
-
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    #grafico-section.is-fullscreen {
-      animation: fsPanelIn 0.28s cubic-bezier(.4, 0, .2, 1) forwards;
-    }
 
     /* ── Calcola button ──────────────────────────────────── */
     .btn-calcola {
@@ -389,8 +369,37 @@
 
     @media(max-width: 700px) {
         .card.finance { padding: 20px 16px !important; }
-        #grafico-wrapper { min-height: 250px; padding: 8px !important; }
+        #grafico-wrapper { height: 350px !important; min-height: 250px; padding: 8px !important; }
         .responsive-grid { grid-template-columns: 1fr !important; }
+
+        /* Stats chips: 2 per row on mobile */
+        #stats-extra { gap: 8px; margin-bottom: 20px; }
+        .stat-chip { min-width: 0; flex: 1 1 calc(50% - 8px); padding: 10px 12px; }
+        .stat-chip-label { font-size: 0.7rem; }
+        .stat-chip-val { font-size: 0.95rem; }
+
+        /* Extra investments: stack inputs */
+        .extra-inv-grid { grid-template-columns: 1fr 1fr !important; }
+        .extra-inv-title { font-size: 0.65rem; }
+
+        /* Annotations */
+        .annotation-row { grid-template-columns: 70px 1fr auto; gap: 6px; }
+
+        /* Section labels */
+        .section-lbl { font-size: 0.6rem; }
+        .hint { font-size: 0.65rem; }
+
+        /* Calcola button full-width on mobile */
+        .btn-calcola { width: 100%; padding: 14px 20px; font-size: 0.85rem; }
+
+        /* Hide fullscreen button on mobile */
+        #btn-fullscreen { display: none !important; }
+
+        /* Page title smaller */
+        h2 { font-size: 1.2rem !important; margin-bottom: 20px !important; }
+
+        /* Milestone cards */
+        .cards { gap: 14px; }
     }
   </style>
 </head>
@@ -524,7 +533,7 @@
           <span id="fs-label">FULLSCREEN</span>
         </button>
         <div id="grafico-wrapper"
-          style="background:var(--card-bg);border-radius:8px;padding:14px;border:1px solid rgba(37,99,235,0.18);">
+          style="position:relative; height:550px; background:var(--card-bg);border-radius:8px;padding:14px;border:1px solid rgba(37,99,235,0.18);">
           <canvas id="grafico"></canvas>
         </div>
       </section>

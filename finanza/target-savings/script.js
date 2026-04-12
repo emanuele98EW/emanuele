@@ -133,63 +133,6 @@ function disegnaGrafico(pv, versamenti, interessi) {
   });
 }
 
-// ── Fullscreen grafico ─────────────────────────────────────────
-let _fsActive = false;
-let _fsScrollY = 0;
-
-function toggleFullscreen() {
-  const section = document.getElementById('grafico-section');
-  const backdrop = document.getElementById('fs-backdrop');
-  const iconExp = document.getElementById('fs-icon-expand');
-  const iconCompr = document.getElementById('fs-icon-compress');
-  const label = document.getElementById('fs-label');
-  const canvas = document.getElementById('grafico');
-
-  if (!_fsActive) {
-    _fsScrollY = window.scrollY;
-    _fsActive = true;
-    backdrop.style.display = 'block';
-    section.classList.add('is-fullscreen');
-    document.body.style.overflow = 'hidden';
-    iconExp.style.display = 'none';
-    iconCompr.style.display = 'block';
-    label.textContent = 'ESCI';
-
-    if (savingsChart) {
-      canvas.style.width = '0px';
-      canvas.style.height = '0px';
-      setTimeout(() => {
-        canvas.style.width = '';
-        canvas.style.height = '';
-        savingsChart.resize();
-      }, 10);
-    }
-    document.addEventListener('keydown', _onFsKeydown);
-  } else {
-    _fsActive = false;
-    backdrop.style.display = 'none';
-    section.classList.remove('is-fullscreen');
-    document.body.style.overflow = '';
-    iconExp.style.display = 'block';
-    iconCompr.style.display = 'none';
-    label.textContent = 'FULLSCREEN';
-
-    if (savingsChart) {
-      canvas.style.width = '0px';
-      canvas.style.height = '0px';
-      setTimeout(() => {
-        canvas.style.width = '';
-        canvas.style.height = '';
-        savingsChart.resize();
-        window.scrollTo({ top: _fsScrollY, behavior: 'instant' });
-      }, 10);
-    }
-    document.removeEventListener('keydown', _onFsKeydown);
-  }
-}
-
-function _onFsKeydown(e) {
-  if (e.key === 'Escape') toggleFullscreen();
-}
+// Fullscreen rimosso
 
 document.addEventListener('DOMContentLoaded', () => { setTimeout(calcola, 300); });
