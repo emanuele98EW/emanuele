@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PWT7THK9HL"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-PWT7THK9HL');</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Verifica Contatore Fiscale Gas Metano — Calcolo Online</title>
+    <meta name="description" content="Verifica del contatore fiscale gas metano: portata massima teorica e portata minima alla pressione di esercizio. Calcolatore online.">
+    <script>
+(function(){var p=localStorage.getItem("themePref");if(p==="light"){document.documentElement.classList.add("light-mode")}else if(!p){try{var d=JSON.parse(localStorage.getItem("themeData"));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();
+    </script>
+    <link rel="stylesheet" href="../../../../../css/style.css">
+    <!-- KaTeX per formule LaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.getElementById('formulaSection'),{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+    <style>
+        /* ── Wrapper ── */
+        .tool-wrapper {
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        /* ── Card ── */
+        .card {
+            background: var(--card-bg, rgba(255,255,255,0.04));
+            border: 1px solid var(--border-color, rgba(255,255,255,0.09));
+            border-radius: 14px;
+            padding: 24px 28px;
+            margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: var(--color-engineering);
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.07));
+        }
+
+        /* ── Input grid ── */
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .input-group label {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .input-row {
+            display: flex;
+            align-items: stretch;
+            border: 1px solid var(--border-color, rgba(255,255,255,0.12));
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--input-bg, rgba(255,255,255,0.04));
+            transition: border-color 0.2s;
+        }
+        .input-row:focus-within { border-color: var(--color-engineering); }
+        .input-row input,
+        .input-row select {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 9px 12px;
+            font-size: 0.88rem;
+            color: var(--text-primary);
+            outline: none;
+            width: 100%;
+            min-width: 0;
+        }
+        .input-row select {
+            cursor: pointer;
+            color-scheme: dark;
+        }
+        html.light-mode .input-row select { color-scheme: light; }
+        .input-row select option { background: #1e1e1e; color: #f0f0f0; }
+        html.light-mode .input-row select option { background: #fff; color: #111; }
+        .input-row .unit {
+            padding: 9px 10px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: var(--unit-bg, rgba(255,255,255,0.06));
+            border-left: 1px solid var(--border-color, rgba(255,255,255,0.08));
+            white-space: nowrap;
+            user-select: none;
+            display: flex;
+            align-items: center;
+        }
+
+        /* ── Info tooltip icon ── */
+        .info-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 14px; height: 14px; border-radius: 50%;
+            border: 1px solid var(--text-secondary);
+            font-size: 0.6rem; color: var(--text-secondary);
+            cursor: help; flex-shrink: 0;
+        }
+
+        /* ── Bottone ── */
+        .btn-calc {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--color-engineering);
+            color: #fff;
+            border: none;
+            padding: 11px 32px;
+            border-radius: 8px;
+            font-size: 0.88rem; font-weight: 700;
+            cursor: pointer; letter-spacing: 0.5px;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+        html.light-mode .btn-calc { color: #1a1a1a; }
+        .btn-calc:hover { opacity: 0.88; transform: translateY(-1px); }
+        .btn-calc:active { transform: translateY(0); }
+
+        /* ── Risultati ── */
+        .results-hidden { display: none; }
+        .results-section { animation: fadeUp 0.3s ease; }
+        @keyframes fadeUp { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform:none; } }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        .result-box {
+            background: var(--card-bg, rgba(255,255,255,0.04));
+            border: 1px solid var(--border-color, rgba(255,255,255,0.09));
+            border-radius: 10px;
+            padding: 14px 16px;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .result-box.primary {
+            border-color: var(--color-engineering);
+            background: rgba(var(--color-engineering-rgb,200,160,60), 0.07);
+        }
+        .r-label {
+            font-size: 0.7rem; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--text-secondary); font-weight: 600;
+        }
+        .r-value {
+            font-size: 1.4rem; font-weight: 700;
+            color: var(--text-primary); line-height: 1.1;
+        }
+        .result-box.primary .r-value { color: var(--color-engineering); }
+        .r-unit { font-size: 0.76rem; color: var(--text-secondary); }
+
+        /* ── Verification badge ── */
+        .verify-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 20px; border-radius: 10px;
+            font-size: 0.92rem; font-weight: 700;
+            border: 2px solid;
+            margin: 12px 0;
+        }
+        .verify-ok {
+            background: rgba(80,200,120,0.10);
+            border-color: rgba(80,200,120,0.5);
+            color: #50c878;
+        }
+        .verify-fail {
+            background: rgba(220,80,60,0.10);
+            border-color: rgba(220,80,60,0.5);
+            color: #dc503c;
+        }
+
+        /* ── Section separator ── */
+        .section-label {
+            font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 1.2px; text-transform: uppercase;
+            color: var(--text-secondary);
+            margin: 20px 0 10px;
+        }
+
+        /* ── Error ── */
+        .error-box {
+            background: rgba(220,60,60,0.08);
+            border: 1px solid rgba(220,60,60,0.3);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.82rem;
+            color: #e05050;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        /* ── Formula box ── */
+        .formula-box {
+            background: transparent;
+            border-left: 3px solid var(--color-engineering);
+            border-radius: 0 8px 8px 0;
+            padding: 12px 16px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-top: 14px;
+        }
+        .formula-box strong { color: var(--text-primary); }
+
+        /* ── LaTeX formula section ── */
+        .formula-latex-card {
+            background: var(--card-bg, rgba(255,255,255,0.04));
+            border: 1px solid var(--border-color, rgba(255,255,255,0.09));
+            border-radius: 14px;
+            padding: 28px 28px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        .formula-latex-card h3 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: var(--color-engineering);
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.07));
+        }
+        .formula-block {
+            margin-bottom: 28px;
+        }
+        .formula-block:last-child {
+            margin-bottom: 0;
+        }
+        .formula-block h4 {
+            font-size: 0.82rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .formula-block p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin: 6px 0;
+        }
+        .formula-block .katex-display {
+            margin: 14px 0;
+        }
+
+        /* ── Meter diagram ── */
+        .meter-diagram {
+            margin: 0 0 22px;
+            display: flex;
+            justify-content: center;
+        }
+
+        @media (max-width: 580px) {
+            .card { padding: 18px 14px; }
+            .formula-latex-card { padding: 18px 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="layout">
+    <header id="main-navbar"></header>
+    <main class="main">
+    <div class="tool-wrapper">
+
+        <!-- Titolo e breadcrumb -->
+        <h2 style="color:var(--color-engineering);text-align:center;margin-bottom:10px;font-size:2rem;">
+            Verifica Contatore Fiscale
+        </h2>
+        <p style="text-align:center;margin-bottom:30px;font-size:0.9rem;color:var(--text-secondary);letter-spacing:1px;">
+            <a href="../../../index.html" style="color:var(--color-engineering);text-decoration:none;">Tools</a>
+            <span style="margin:0 6px;">/</span>
+            <a href="../../index.html" style="color:var(--color-engineering);text-decoration:none;">Dimensionamenti</a>
+            <span style="margin:0 6px;">/</span>
+            <a href="../index.html" style="color:var(--color-engineering);text-decoration:none;">Metano</a>
+            <span style="margin:0 6px;">/</span>
+            <span style="color:var(--text-primary);">Verifica Contatore Fiscale</span>
+        </p>
+
+        <!-- Schema visivo contatore -->
+        <div class="meter-diagram">
+            <svg width="500" height="100" viewBox="0 0 500 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Tubo ingresso -->
+                <rect x="20" y="40" width="130" height="20" rx="3"
+                    fill="rgba(var(--color-engineering-rgb,200,160,60),0.08)"
+                    stroke="var(--color-engineering)" stroke-width="1.2"/>
+                <!-- Tubo uscita -->
+                <rect x="350" y="40" width="130" height="20" rx="3"
+                    fill="rgba(var(--color-engineering-rgb,200,160,60),0.08)"
+                    stroke="var(--color-engineering)" stroke-width="1.2"/>
+                <!-- Corpo contatore -->
+                <rect x="148" y="18" width="204" height="64" rx="10"
+                    fill="rgba(var(--color-engineering-rgb,200,160,60),0.06)"
+                    stroke="var(--color-engineering)" stroke-width="1.8"/>
+                <!-- Display contatore -->
+                <rect x="195" y="30" width="110" height="22" rx="4"
+                    fill="rgba(var(--color-engineering-rgb,200,160,60),0.12)"
+                    stroke="var(--color-engineering)" stroke-width="0.8" opacity="0.7"/>
+                <text x="250" y="46" text-anchor="middle" font-size="9" fill="var(--color-engineering)" font-family="sans-serif" font-weight="600" opacity="0.8">mc/h</text>
+                <!-- Etichetta contatore -->
+                <text x="250" y="72" text-anchor="middle" font-size="10" fill="var(--text-secondary,#aaa)" font-family="sans-serif">Contatore Fiscale</text>
+                <!-- Freccia flusso -->
+                <line x1="50" y1="50" x2="140" y2="50" stroke="var(--color-engineering)" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>
+                <polygon points="140,47 148,50 140,53" fill="var(--color-engineering)" opacity="0.6"/>
+                <line x1="355" y1="50" x2="450" y2="50" stroke="var(--color-engineering)" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>
+                <polygon points="450,47 458,50 450,53" fill="var(--color-engineering)" opacity="0.6"/>
+                <!-- Label Q_ero -->
+                <text x="85" y="33" text-anchor="middle" font-size="10" fill="var(--color-engineering)" font-family="sans-serif" font-weight="600">Q<tspan font-size="7" baseline-shift="sub">ero</tspan></text>
+                <!-- Label P -->
+                <text x="420" y="33" text-anchor="middle" font-size="10" fill="var(--color-engineering)" font-family="sans-serif" font-weight="600">P</text>
+                <!-- Flangia sinistra -->
+                <rect x="144" y="34" width="8" height="32" rx="2" fill="var(--color-engineering)" opacity="0.4"/>
+                <!-- Flangia destra -->
+                <rect x="348" y="34" width="8" height="32" rx="2" fill="var(--color-engineering)" opacity="0.4"/>
+            </svg>
+        </div>
+
+        <!-- ── 1. DATI DI PROGETTO ── -->
+        <div class="card">
+            <div class="card-title">1 · Dati di progetto</div>
+            <div class="input-grid">
+
+                <div class="input-group">
+                    <label>Portata erogata Q<sub>ero</sub> <span class="info-icon" title="Portata massima erogata in condizioni standard (Smc/h)">i</span></label>
+                    <div class="input-row">
+                        <input type="number" id="qEro" value="3510" step="1" min="1">
+                        <span class="unit">Smc/h</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Portata minima Q<sub>min</sub> <span class="info-icon" title="Portata minima di esercizio in condizioni standard (Smc/h)">i</span></label>
+                    <div class="input-row">
+                        <input type="number" id="qMin" value="150" step="1" min="1">
+                        <span class="unit">Smc/h</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Pressione max di misura P<sub>max</sub> <span class="info-icon" title="Pressione massima relativa di misura in bar">i</span></label>
+                    <div class="input-row">
+                        <input type="number" id="pMax" value="75" step="0.1" min="0">
+                        <span class="unit">bar(g)</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Pressione min di misura P<sub>min</sub> <span class="info-icon" title="Pressione minima relativa di misura in bar">i</span></label>
+                    <div class="input-row">
+                        <input type="number" id="pMin" value="24" step="0.1" min="0">
+                        <span class="unit">bar(g)</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Pressione barometrica P<sub>b</sub></label>
+                    <div class="input-row">
+                        <input type="number" id="pBar" value="1" step="0.01" min="0.5">
+                        <span class="unit">bar</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── 2. DATI CONTATORE ── -->
+        <div class="card">
+            <div class="card-title">2 · Dati contatore</div>
+            <div class="input-grid">
+
+                <div class="input-group">
+                    <label>Q<sub>max</sub> contatore <span class="info-icon" title="Portata massima del contatore dalla targa (mc/h)">i</span></label>
+                    <div class="input-row">
+                        <input type="number" id="qMaxCont" value="160" step="1" min="1">
+                        <span class="unit">mc/h</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Rapporto contatore <span class="info-icon" title="Rapporto Qmax/Qmin del contatore (tipicamente 1:20, 1:30, 1:50, ecc.)">i</span></label>
+                    <div class="input-row">
+                        <select id="rapportoSel" onchange="onRapportoChange()">
+                            <option value="20" selected>1:20</option>
+                            <option value="30">1:30</option>
+                            <option value="50">1:50</option>
+                            <option value="80">1:80</option>
+                            <option value="100">1:100</option>
+                            <option value="160">1:160</option>
+                            <option value="custom">Personalizzato</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Rapporto (valore) <span class="info-icon" title="Valore numerico del rapporto. Modifica solo se 'Personalizzato'">i</span></label>
+                    <div class="input-row">
+                        <input type="number" id="rapportoVal" value="20" step="1" min="1" readonly>
+                        <span class="unit">—</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Error -->
+        <div class="error-box" id="errorBox"></div>
+
+        <!-- Calcola -->
+        <div style="display:flex;justify-content:center;margin-bottom:28px;">
+            <button class="btn-calc" onclick="calculate()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"/>
+                    <path d="M9 15h3l8-8-3-3-8 8v3z"/>
+                </svg>
+                Verifica Contatore
+            </button>
+        </div>
+
+        <!-- ── RISULTATI ── -->
+        <div id="resultsSection" class="results-hidden results-section">
+
+            <!-- 3. Portata massima teorica -->
+            <div class="card">
+                <div class="card-title">3 · Portata massima teorica Q<sub>maxt</sub></div>
+
+                <div class="results-grid">
+                    <div class="result-box">
+                        <div class="r-label">Q<sub>maxt</sub> a P<sub>min</sub></div>
+                        <div class="r-value" id="rQmaxtPmin">—</div>
+                        <div class="r-unit">mc/h</div>
+                    </div>
+                    <div class="result-box">
+                        <div class="r-label">Q<sub>maxt</sub> a P<sub>max</sub></div>
+                        <div class="r-value" id="rQmaxtPmax">—</div>
+                        <div class="r-unit">mc/h</div>
+                    </div>
+                </div>
+
+                <div class="formula-box">
+                    <strong>Formula:</strong> Q<sub>maxt</sub> = 1,05 × Q<sub>ero</sub> / (P + P<sub>b</sub>)<br>
+                    Dove 1,05 è il coefficiente di maggiorazione.
+                </div>
+            </div>
+
+            <!-- 4. Dati contatore calcolati -->
+            <div class="card">
+                <div class="card-title">4 · Contatore — Dati e portate minime</div>
+
+                <div class="section-label">Dati contatore</div>
+                <div class="results-grid">
+                    <div class="result-box">
+                        <div class="r-label">Q<sub>max</sub> contatore</div>
+                        <div class="r-value" id="rQmaxCont">—</div>
+                        <div class="r-unit">mc/h</div>
+                    </div>
+                    <div class="result-box">
+                        <div class="r-label">Rapporto</div>
+                        <div class="r-value" id="rRapporto">—</div>
+                        <div class="r-unit">—</div>
+                    </div>
+                    <div class="result-box">
+                        <div class="r-label">Q<sub>min</sub> contatore</div>
+                        <div class="r-value" id="rQminCont">—</div>
+                        <div class="r-unit">mc/h</div>
+                    </div>
+                </div>
+
+                <div class="section-label">Portata minima alla pressione di esercizio</div>
+                <div class="results-grid">
+                    <div class="result-box primary">
+                        <div class="r-label">Q<sub>min(p)</sub> a P<sub>min</sub></div>
+                        <div class="r-value" id="rQminPmin">—</div>
+                        <div class="r-unit">mc/h</div>
+                    </div>
+                    <div class="result-box">
+                        <div class="r-label">→ convertita</div>
+                        <div class="r-value" id="rQminPminSmc">—</div>
+                        <div class="r-unit">Smc/h</div>
+                    </div>
+                    <div class="result-box primary">
+                        <div class="r-label">Q<sub>min(p)</sub> a P<sub>max</sub></div>
+                        <div class="r-value" id="rQminPmax">—</div>
+                        <div class="r-unit">mc/h</div>
+                    </div>
+                    <div class="result-box">
+                        <div class="r-label">→ convertita</div>
+                        <div class="r-value" id="rQminPmaxSmc">—</div>
+                        <div class="r-unit">Smc/h</div>
+                    </div>
+                </div>
+
+                <div class="formula-box">
+                    <strong>Formula:</strong> Q<sub>min(p)</sub> = 1,32 × Q<sub>min contatore</sub> / √(P + P<sub>b</sub>)<br>
+                    Semplificazione con densità relativa d = 0,57392.
+                </div>
+            </div>
+
+            <!-- 5. Verifica -->
+            <div class="card">
+                <div class="card-title">5 · Esito verifica</div>
+                <div style="text-align:center;">
+                    <div id="verifyBadge" class="verify-badge verify-ok">
+                        <span id="verifyIcon">✓</span>
+                        <span id="verifyText">—</span>
+                    </div>
+                    <p id="verifyDesc" style="font-size:0.82rem; color:var(--text-secondary); margin-top:10px;"></p>
+                </div>
+
+                <div class="formula-box" style="margin-top:18px;">
+                    <strong>Condizione:</strong> MAX(Q<sub>min Pmin [Smc/h]</sub> ; Q<sub>min Pmax [Smc/h]</sub>) &lt; Q<sub>min progetto</sub><br>
+                    Se verificata → il contatore è idoneo. Altrimenti → cambiare taglia o rapporto contatore.
+                </div>
+            </div>
+
+        </div>
+        <!-- fine results -->
+
+        <!-- ── FORMULE IN LATEX ── -->
+        <div class="formula-latex-card" id="formulaSection">
+            <h3>Riferimenti — Formule utilizzate</h3>
+
+            <!-- Formula Qmaxt -->
+            <div class="formula-block">
+                <h4>Portata massima teorica</h4>
+                $$Q_{\text{maxt}} = 1{,}05 \times \frac{Q_{\text{ero}}}{P + P_b}$$
+                <p>dove:</p>
+                <p>$Q_{\text{maxt}}$ — portata massima teorica in m³/h;</p>
+                <p>$Q_{\text{ero}}$ — portata erogata in Smc/h;</p>
+                <p>$1{,}05$ — coefficiente di maggiorazione;</p>
+                <p>$P$ — pressione relativa di misura in bar (a seconda dei casi: $P_{\text{mis}}$ per gli impianti a pressione regolata, $P_{\min\,M}$ per gli impianti a pressione da metanodotto);</p>
+                <p>$P_b$ — pressione barometrica.</p>
+            </div>
+
+            <!-- Formula Qmin(p) generale -->
+            <div class="formula-block">
+                <h4>Portata minima alla pressione di esercizio (formula generale)</h4>
+                $$Q_{\min(p)} = \frac{Q_{\min}}{\sqrt{d \times (P + P_b)}}$$
+                <p>dove:</p>
+                <p>$Q_{\min(p)}$ — portata minima in m³/h alla pressione di esercizio "p";</p>
+                <p>$Q_{\min}$ — portata minima indicata sulla targa del contatore (metrologicamente approvata);</p>
+                <p>$d$ — densità relativa;</p>
+                <p>$P$ — pressione relativa di misura espressa in bar;</p>
+                <p>$P_b$ — pressione barometrica.</p>
+            </div>
+
+            <!-- Formula Qmin(p) semplificata -->
+            <div class="formula-block">
+                <h4>Portata minima alla pressione di esercizio (formula semplificata)</h4>
+                <p>Per semplicità, con una $d$ di $0{,}57392$ la formula diventa:</p>
+                $$Q_{\min(p)} = \frac{1{,}32 \times Q_{\min}}{\sqrt{P + P_b}}$$
+            </div>
+
+            <!-- Condizione di verifica -->
+            <div class="formula-block">
+                <h4>Condizione di verifica</h4>
+                $$\max\!\left(Q_{\min(P_{\min})}^{\text{[Smc/h]}}\,,\; Q_{\min(P_{\max})}^{\text{[Smc/h]}}\right) < Q_{\min,\,\text{progetto}}$$
+                <p>Se la portata minima massima del contatore (convertita in Smc/h) è inferiore alla portata minima di progetto, il contatore è idoneo.</p>
+            </div>
+        </div>
+
+    </div>
+    </main>
+</div>
+
+<script src="../../../../../js/navbar.js"></script>
+<script src="../../../../../js/main.js"></script>
+<script src="../../../../../js/footer.js"></script>
+<script>
+// ─────────────────────────────────────────────────────────────────
+//  RAPPORTO HANDLER
+// ─────────────────────────────────────────────────────────────────
+function onRapportoChange() {
+    const sel = document.getElementById('rapportoSel');
+    const inp = document.getElementById('rapportoVal');
+    if (sel.value === 'custom') {
+        inp.removeAttribute('readonly');
+        inp.focus();
+    } else {
+        inp.value = sel.value;
+        inp.setAttribute('readonly', '');
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  CALCOLO PRINCIPALE
+// ─────────────────────────────────────────────────────────────────
+function calculate() {
+    hideError();
+
+    const Qero   = parseFloat(document.getElementById('qEro').value);
+    const Qmin   = parseFloat(document.getElementById('qMin').value);
+    const Pmax   = parseFloat(document.getElementById('pMax').value);
+    const Pmin   = parseFloat(document.getElementById('pMin').value);
+    const Pb     = parseFloat(document.getElementById('pBar').value);
+    const QmaxC  = parseFloat(document.getElementById('qMaxCont').value);
+    const rapp   = parseFloat(document.getElementById('rapportoVal').value);
+
+    // Validazioni
+    if ([Qero, Qmin, Pmax, Pmin, Pb, QmaxC, rapp].some(v => isNaN(v) || v <= 0)) {
+        showError('Tutti i campi devono contenere valori numerici positivi.');
+        return;
+    }
+    if (Pmin > Pmax) {
+        showError('La pressione minima non può essere superiore alla pressione massima.');
+        return;
+    }
+
+    // ── Portata massima teorica ──
+    const QmaxtPmin = 1.05 * Qero / (Pmin + Pb);
+    const QmaxtPmax = 1.05 * Qero / (Pmax + Pb);
+
+    // ── Dati contatore ──
+    const QminCont = QmaxC / rapp;  // mc/h
+
+    // ── Portata minima alla pressione di esercizio ──
+    // Qmin(p) = 1.32 * QminCont / sqrt(P + Pb)   [mc/h]
+    const QminPmin_mch = 1.32 * QminCont / Math.sqrt(Pmin + Pb);
+    const QminPmax_mch = 1.32 * QminCont / Math.sqrt(Pmax + Pb);
+
+    // Conversione in Smc/h:  Qsmc = Qmch * (P + Pb)
+    const QminPmin_smc = QminPmin_mch * (Pmin + Pb);
+    const QminPmax_smc = QminPmax_mch * (Pmax + Pb);
+
+    // ── Verifica ──
+    const maxQminSmc = Math.max(QminPmin_smc, QminPmax_smc);
+    const isOk = maxQminSmc < Qmin;
+
+    // ── Display ──
+    document.getElementById('rQmaxtPmin').textContent = QmaxtPmin.toFixed(2);
+    document.getElementById('rQmaxtPmax').textContent = QmaxtPmax.toFixed(2);
+
+    document.getElementById('rQmaxCont').textContent = QmaxC.toFixed(0);
+    document.getElementById('rRapporto').textContent = '1:' + rapp;
+    document.getElementById('rQminCont').textContent = QminCont.toFixed(2);
+
+    document.getElementById('rQminPmin').textContent = QminPmin_mch.toFixed(4);
+    document.getElementById('rQminPminSmc').textContent = QminPmin_smc.toFixed(2);
+    document.getElementById('rQminPmax').textContent = QminPmax_mch.toFixed(4);
+    document.getElementById('rQminPmaxSmc').textContent = QminPmax_smc.toFixed(2);
+
+    const badge = document.getElementById('verifyBadge');
+    const icon  = document.getElementById('verifyIcon');
+    const text  = document.getElementById('verifyText');
+    const desc  = document.getElementById('verifyDesc');
+
+    if (isOk) {
+        badge.className = 'verify-badge verify-ok';
+        icon.textContent = '✓';
+        text.textContent = 'VERIFICA OK — Contatore idoneo';
+        desc.textContent = 'MAX(' + QminPmin_smc.toFixed(2) + ' ; ' + QminPmax_smc.toFixed(2) + ') = '
+            + maxQminSmc.toFixed(2) + ' Smc/h < ' + Qmin + ' Smc/h';
+    } else {
+        badge.className = 'verify-badge verify-fail';
+        icon.textContent = '✗';
+        text.textContent = 'VERIFICA NON SUPERATA — Cambiare contatore';
+        desc.textContent = 'MAX(' + QminPmin_smc.toFixed(2) + ' ; ' + QminPmax_smc.toFixed(2) + ') = '
+            + maxQminSmc.toFixed(2) + ' Smc/h ≥ ' + Qmin + ' Smc/h';
+    }
+
+    // Mostra risultati
+    const sec = document.getElementById('resultsSection');
+    sec.classList.remove('results-hidden');
+    sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function showError(msg) {
+    const el = document.getElementById('errorBox');
+    el.textContent = '⚠ ' + msg;
+    el.style.display = 'block';
+    document.getElementById('resultsSection').classList.add('results-hidden');
+}
+function hideError() {
+    document.getElementById('errorBox').style.display = 'none';
+}
+</script>
+</body>
+</html>

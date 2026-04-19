@@ -21,11 +21,16 @@
 
         /* ── Card ── */
         .card {
-            background: var(--card-bg, rgba(255,255,255,0.04));
+            background: var(--card-bg, rgba(18,18,24,0.85));
             border: 1px solid var(--border-color, rgba(255,255,255,0.09));
             border-radius: 14px;
             padding: 24px 28px;
             margin-bottom: 20px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        html.light-mode .card {
+            background: var(--card-bg, rgba(255,255,255,0.88));
         }
         .card-title {
             font-size: 0.75rem;
@@ -150,15 +155,25 @@
             margin-bottom: 18px;
         }
         .result-box {
-            background: var(--card-bg, rgba(255,255,255,0.04));
+            background: var(--card-bg, rgba(18,18,24,0.80));
             border: 1px solid var(--border-color, rgba(255,255,255,0.09));
             border-radius: 10px;
             padding: 14px 16px;
             display: flex; flex-direction: column; gap: 4px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        html.light-mode .result-box {
+            background: var(--card-bg, rgba(255,255,255,0.85));
         }
         .result-box.primary {
             border-color: var(--color-engineering);
-            background: rgba(var(--color-engineering-rgb,200,160,60), 0.07);
+            background: rgba(var(--color-engineering-rgb,200,160,60), 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        html.light-mode .result-box.primary {
+            background: rgba(var(--color-engineering-rgb,200,160,60), 0.10);
         }
         .r-label {
             font-size: 0.7rem; text-transform: uppercase;
@@ -205,7 +220,7 @@
 
         /* ── Formula box ── */
         .formula-box {
-            background: transparent;
+            background: rgba(18,18,24,0.70);
             border-left: 3px solid var(--color-engineering);
             border-radius: 0 8px 8px 0;
             padding: 12px 16px;
@@ -213,24 +228,31 @@
             color: var(--text-secondary);
             line-height: 1.7;
             margin-top: 14px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        html.light-mode .formula-box {
+            background: rgba(255,255,255,0.80);
         }
         .formula-box strong { color: var(--text-primary); }
 
         /* ── Warning ── */
         .warn-box {
-            background: rgba(240,150,40,0.08);
+            background: rgba(240,150,40,0.12);
             border: 1px solid rgba(240,150,40,0.25);
             border-radius: 8px;
             padding: 10px 14px;
             font-size: 0.79rem;
             color: var(--text-secondary);
             margin-top: 14px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         .warn-box strong { color: #f09628; }
 
         /* ── Error ── */
         .error-box {
-            background: rgba(220,60,60,0.08);
+            background: rgba(220,60,60,0.12);
             border: 1px solid rgba(220,60,60,0.3);
             border-radius: 8px;
             padding: 10px 14px;
@@ -238,6 +260,8 @@
             color: #e05050;
             margin-bottom: 16px;
             display: none;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         @media (max-width: 580px) {
