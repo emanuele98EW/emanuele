@@ -354,7 +354,7 @@ if (canvas3D) {
   draw3D();
 }
 
-let issMap=null, issMarker=null;
+let issMap=null, issMarker=null, issTileLayer=null;
 
 async function fetchISS() {
   try {
@@ -362,12 +362,18 @@ async function fetchISS() {
     if (!r.ok) throw new Error();
     const d = await r.json();
     const lat=d.latitude, lon=d.longitude, alt=Math.round(d.altitude), vel=Math.round(d.velocity);
+    const isLight = document.documentElement.classList.contains('light-mode');
+    const tileUrl = isLight 
+      ? 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+      : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+      
     if (!issMap) {
       issMap = L.map('iss-map',{zoomControl:false,attributionControl:false}).setView([lat,lon],2);
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19}).addTo(issMap);
+      issTileLayer = L.tileLayer(tileUrl,{maxZoom:19}).addTo(issMap);
       const ico = L.divIcon({html:'<span style="font-size:20px;text-shadow:0 0 8px rgba(250,204,21,.8);">🛰️</span>',className:'',iconSize:[20,20],iconAnchor:[10,10]});
       issMarker = L.marker([lat,lon],{icon:ico}).addTo(issMap);
     } else {
+      issTileLayer.setUrl(tileUrl);
       issMarker.setLatLng([lat,lon]);
       issMap.panTo([lat,lon],{animate:true,duration:1.5});
     }
@@ -377,6 +383,17 @@ async function fetchISS() {
     document.getElementById('iss-stats').innerHTML = "<span style='color:#ef4444;font-size:.74rem;'>API non disponibile</span>";
   }
 }
+
+// Aggiorna istantaneamente la mappa Leaflet al cambio di tema on-the-fly
+window.addEventListener('themeChanged', (e) => {
+  if (issTileLayer) {
+    const isLight = e.detail.isLightMode;
+    const tileUrl = isLight 
+      ? 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+      : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+    issTileLayer.setUrl(tileUrl);
+  }
+});
 
 async function fetchNEO() {
   const today = new Date().toISOString().split('T')[0];

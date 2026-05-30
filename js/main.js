@@ -188,6 +188,9 @@ function applyTheme(isLightMode, animateVideo = false) {
       }
     }
   }
+
+  // Dispatch custom event to notify scripts (e.g. dynamic charts, Leaflet map) about theme change
+  window.dispatchEvent(new CustomEvent('themeChanged', { detail: { isLightMode } }));
 }
 
 async function initTheme() {
@@ -787,3 +790,16 @@ const initScrollReveal = () => {
 };
 
 initScrollReveal();
+
+// ==========================================
+// AUTO-REFRESH ACTIVE TOOLS ON THEME CHANGE
+// ==========================================
+window.addEventListener('themeChanged', () => {
+  if (typeof window.calcola === 'function') {
+    try {
+      window.calcola();
+    } catch (e) {
+      console.warn("Ricalcolo automatico fallito su cambio tema:", e);
+    }
+  }
+});

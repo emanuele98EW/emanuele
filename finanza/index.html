@@ -1085,16 +1085,17 @@
             </div>
           </div>
 
-          <!-- Materie prime & Indici -->
-          <div class="widget-card" id="market-widget-card" style="padding-bottom:0;">
-            <p class="wc-title" style="color:#10b981; margin: 15px 17px;">Mercati 🌍</p>
-            <div id="market-content" style="margin:0 -1px;">
-              <!-- TradingView Widget injected here -->
-              <div style="text-align:center;color:var(--text-secondary);font-size:.76rem;padding:12px 0;">Caricamento...</div>
-            </div>
-          </div>
-
         </div>
+
+        <!-- FULL WIDTH WIDGET -->
+        <div class="widget-card" id="market-widget-card" style="grid-column: 1 / -1; padding-bottom:0; animation:fadeUp .45s ease .2s both;">
+          <p class="wc-title" style="color:#10b981; margin: 15px 17px;">Mercati 🌍</p>
+          <div id="market-content" style="margin:0 -1px;">
+            <!-- TradingView Widget injected here -->
+            <div style="text-align:center;color:var(--text-secondary);font-size:.76rem;padding:12px 0;">Caricamento...</div>
+          </div>
+        </div>
+
       </div>
 
     </main>
@@ -1176,24 +1177,65 @@
       script.async = true;
       script.innerHTML = JSON.stringify({
         "width": "100%",
-        "height": 380,
+        "height": 550,
         "symbolsGroups": [
           {
             "name": "Indici",
             "originalName": "Indices",
             "symbols": [
-              { "name": "FOREXCOM:SPXUSD", "displayName": "S&P 500" },
-              { "name": "FOREXCOM:NSXUSD", "displayName": "Nasdaq 100" },
-              { "name": "INDEX:FTSEMIB", "displayName": "FTSE MIB" }
+              { "name": "FOREXCOM:SPXUSD", "displayName": "S&P 500 Index" },
+              { "name": "MIL:FTSEMIB", "displayName": "FTSE MIB" },
+              { "name": "IG:NASDAQ", "displayName": "NASDAQ" },
+              { "name": "TVC:CAC40", "displayName": "CAC40" },
+              { "name": "TVC:IT10Y", "displayName": "BTP 10 Anni" },
+              { "name": "TVC:DXY", "displayName": "U.S Dollar Index" },
+              { "name": "TVC:VIX", "displayName": "Volatility Index" }
             ]
           },
           {
-            "name": "Materie Prime",
-            "originalName": "Commodities",
+            "name": "Futures & Materie Prime",
+            "originalName": "Futures",
             "symbols": [
-              { "name": "OANDA:XAUUSD", "displayName": "Oro (Gold)" },
-              { "name": "NYMEX:CL1!", "displayName": "Petrolio (WTI)" },
-              { "name": "OANDA:XAGUSD", "displayName": "Argento (Silver)" }
+              { "name": "CME_MINI:ES1!", "displayName": "S&P 500 Futures" },
+              { "name": "TVC:GOLD", "displayName": "Oro (Gold)" },
+              { "name": "TVC:USOIL", "displayName": "Petrolio (WTI)" },
+              { "name": "TVC:SILVER", "displayName": "Argento (Silver)" },
+              { "name": "TVC:NATGAS", "displayName": "Natural Gas" }
+            ]
+          },
+          {
+            "name": "Forex",
+            "originalName": "Forex",
+            "symbols": [
+              { "name": "FX:EURUSD", "displayName": "EUR to USD" }
+            ]
+          },
+          {
+            "name": "ETF",
+            "originalName": "ETF",
+            "symbols": [
+              { "name": "XETR:VWCE", "displayName": "FTSE All World" },
+              { "name": "XETR:IS3S", "displayName": "MSCI World Value" },
+              { "name": "XETR:EUNL", "displayName": "MSCI World" },
+              { "name": "XETR:IS3R", "displayName": "MSCI World Momentum" },
+              { "name": "MIL:EIMI", "displayName": "Emergenti (EIMI)" }
+            ]
+          },
+          {
+            "name": "Crypto",
+            "originalName": "Crypto",
+            "symbols": [
+              { "name": "BITSTAMP:BTCUSD", "displayName": "Bitcoin" },
+              { "name": "BITSTAMP:ETHUSD", "displayName": "Ethereum" },
+              { "name": "COINBASE:SOLUSD", "displayName": "Solana" }
+            ]
+          },
+          {
+            "name": "Azioni",
+            "originalName": "Azioni",
+            "symbols": [
+              { "name": "NASDAQ:NVDA", "displayName": "NVIDIA" },
+              { "name": "NYSE:TSM", "displayName": "Taiwan Semiconductor" }
             ]
           }
         ],

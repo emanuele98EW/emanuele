@@ -94,13 +94,17 @@
 
     /* Meteo */
     .weather-row {
-      display:flex; justify-content:space-between; align-items:center;
-      padding:6px 0; border-bottom:1px solid var(--border-color,rgba(255,255,255,0.06));
+      display:flex; align-items:center;
+      padding:10px 0; border-bottom:1px solid var(--border-color,rgba(255,255,255,0.06));
       font-size:0.81rem;
     }
     .weather-row:last-child { border-bottom:none; }
-    .weather-day { font-weight:600; color:var(--text-primary); min-width:80px; }
-    .weather-icon { flex:1; font-size:0.75rem; color:var(--text-secondary); padding-left:5px; }
+    .weather-day { font-weight:600; color:var(--text-primary); width:85px; flex-shrink:0; }
+    
+    .weather-info { flex:1; display:flex; flex-direction:column; gap:5px; }
+    .weather-text { color:var(--text-secondary); font-size:0.75rem; line-height:1; }
+    .weather-sub { display:flex; align-items:center; gap:8px; }
+    .weather-icon-only { font-size:0.85rem; color:var(--text-secondary); display:flex; align-items:center; }
     .weather-temps { display:flex; gap:3px; align-items:center; }
     .temp-max { color:#ef4444; font-weight:700; font-size:0.8rem; }
     .temp-min { color:#3b82f6; font-size:0.78rem; }
@@ -313,7 +317,26 @@ async function fetchWeather() {
     let html = "";
     for (let i=0;i<3;i++) {
       const max=Math.round(d.daily.temperature_2m_max[i]), min=Math.round(d.daily.temperature_2m_min[i]);
-      html += `<div class="weather-row"><span class="weather-day">${days[i]}</span><span class="weather-icon">${desc[d.daily.weathercode[i]]||"Misto <i class='fa-solid fa-cloud'></i>"}</span><span class="weather-temps"><span class="temp-max">${max}°</span><span style="color:var(--text-secondary);opacity:.4;margin:0 2px;">/</span><span class="temp-min">${min}°</span></span></div>`;
+      const descHtml = desc[d.daily.weathercode[i]] || "Misto <i class='fa-solid fa-cloud'></i>";
+      const parts = descHtml.split(" <i");
+      const textPart = parts[0];
+      const iconPart = "<i" + parts[1];
+      
+      html += `
+      <div class="weather-row">
+        <span class="weather-day">${days[i]}</span>
+        <div class="weather-info">
+          <span class="weather-text">${textPart}</span>
+          <div class="weather-sub">
+            <span class="weather-icon-only">${iconPart}</span>
+            <span class="weather-temps">
+              <span class="temp-max">${max}°</span>
+              <span style="color:var(--text-secondary);opacity:.4;margin:0 2px;">/</span>
+              <span class="temp-min">${min}°</span>
+            </span>
+          </div>
+        </div>
+      </div>`;
     }
     document.getElementById('weather-content').innerHTML = html;
   } catch(e) {

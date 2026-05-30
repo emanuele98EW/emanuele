@@ -2043,6 +2043,11 @@ html.light-mode select {
   border-color: rgba(27, 46, 107, 0.25) !important;
 }
 
+html.light-mode select option {
+  background: #ffffff !important;
+  color: #1e293b !important;
+}
+
 /* Light mode: footer styling */
 html.light-mode .footer-brand-text .footer-name {
   color: var(--color-engineering);
