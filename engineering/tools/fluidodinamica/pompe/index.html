@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PWT7THK9HL"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-PWT7THK9HL');</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calcolo Prestazioni e NPSH Pompe Centrifughe — Tool Online</title>
+    <meta name="description" content="Calcolatore online gratuito per pompe centrifughe. Calcola la potenza idraulica, elettrica assorbita, NPSH disponibile ed evita la cavitazione.">
+    <script>(function(){var p=localStorage.getItem('themePref');if(p==='light'){document.documentElement.classList.add('light-mode')}else if(!p){try{var d=JSON.parse(localStorage.getItem('themeData'));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();</script>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <!-- MathJax for LaTeX rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        :root{--eng:var(--color-engineering,#c8a03c);--eng-rgb:var(--color-engineering-rgb,200,160,60)}
+        .tw{max-width:920px;margin:0 auto}
+        .card{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:14px;padding:24px 28px;margin-bottom:20px}
+        .ct{font-size:.75rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--eng);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.07))}
+        .ig{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+        .grp{display:flex;flex-direction:column;gap:5px}
+        .grp label{font-size:.78rem;color:var(--text-secondary);font-weight:500;display:flex;align-items:center;gap:4px}
+        .ir{display:flex;align-items:stretch;border:1px solid var(--border-color,rgba(255,255,255,.12));border-radius:8px;overflow:hidden;background:var(--input-bg,rgba(255,255,255,.04));transition:border-color .2s}
+        .ir:focus-within{border-color:var(--eng)}
+        .ir input,.ir select{flex:1;border:none;background:transparent;padding:9px 12px;font-size:.88rem;color:var(--text-primary);outline:none;width:100%;min-width:0}
+        .ir select{cursor:pointer;color-scheme:dark}
+        html.light-mode .ir select{color-scheme:light}
+        .ir select option{background:#1e1e1e;color:#f0f0f0}
+        html.light-mode .ir select option{background:#fff;color:#111}
+        .ir .un{padding:9px 10px;font-size:.75rem;color:var(--text-secondary);background:var(--unit-bg,rgba(255,255,255,.06));border-left:1px solid var(--border-color,rgba(255,255,255,.08));white-space:nowrap;user-select:none;display:flex;align-items:center}
+        .un-select{padding:9px 10px;font-size:.75rem;color:var(--text-secondary);background:var(--unit-bg,rgba(255,255,255,.06));border:none;border-left:1px solid var(--border-color,rgba(255,255,255,.08));white-space:nowrap;cursor:pointer;outline:none;width:auto !important;flex:initial !important;color-scheme:dark}
+        html.light-mode .un-select{color-scheme:light}
+        .un-select option{background:#1e1e1e;color:#f0f0f0}
+        html.light-mode .un-select option{background:#fff;color:#111}
+        .hint{font-size:.7rem;color:var(--text-secondary);margin-top:3px;opacity:.8;line-height:1.4}
+        .btn{display:inline-flex;align-items:center;gap:8px;background:var(--eng);color:#fff;border:none;padding:11px 32px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:opacity .2s,transform .15s}
+        html.light-mode .btn{color:#1a1a1a}
+        .btn:hover{opacity:.88;transform:translateY(-1px)}
+        .rh{display:none}
+        .rs{animation:fu .3s ease}
+        @keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+        .rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:14px}
+        .rb{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+        .rb.pri{border-color:var(--eng);background:rgba(var(--eng-rgb,200,160,60),.07)}
+        .rb.pos{border-color:rgba(80,200,120,.5);background:rgba(80,200,120,.07)}
+        .rb.neg{border-color:rgba(220,60,60,.5);background:rgba(220,60,60,.07)}
+        .rl{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600}
+        .rv{font-size:1.25rem;font-weight:700;color:var(--text-primary);line-height:1.1}
+        .rb.pri .rv{color:var(--eng)}
+        .rb.pos .rv{color:#50c878}
+        .rb.neg .rv{color:#e05050}
+        .ru{font-size:.76rem;color:var(--text-secondary)}
+        .fb{border-left:3px solid var(--eng);border-radius:0 8px 8px 0;padding:12px 16px;font-size:.79rem;color:var(--text-secondary);line-height:1.7;margin-top:14px}
+        .fb strong{color:var(--text-primary)}
+        .eb{background:rgba(220,60,60,.08);border:1px solid rgba(220,60,60,.3);border-radius:8px;padding:10px 14px;font-size:.82rem;color:#e05050;margin-bottom:16px;display:none}
+        
+        /* Schema Pompa SVG */
+        .chart-container{margin:20px 0;padding:15px;background:var(--input-bg,rgba(255,255,255,0.02));border:1px solid var(--border-color,rgba(255,255,255,0.08));border-radius:10px;display:flex;flex-direction:column;align-items:center}
+        .chart-title{font-size:.75rem;font-weight:700;color:var(--text-primary);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+        .chart-svg{width:100%;max-width:440px;height:180px;background:transparent}
+        
+        /* Formule */
+        .formula-section{margin-top:8px}
+        .formula-block{background:var(--card-bg,rgba(255,255,255,.03));border:1px solid var(--border-color,rgba(255,255,255,.07));border-radius:10px;padding:18px 22px;margin-bottom:14px}
+        .formula-title{font-size:.72rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--eng);margin-bottom:12px}
+        .formula-desc{font-size:.82rem;color:var(--text-secondary);line-height:1.7;margin-bottom:10px}
+        .formula-desc strong{color:var(--text-primary)}
+        .mjx-wrap{overflow-x:auto;padding:10px 0;text-align:center}
+        .param-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-top:8px}
+        .param-item{font-size:.78rem;color:var(--text-secondary);line-height:1.5;padding:4px 0;border-bottom:1px solid var(--border-color,rgba(255,255,255,0.05))}
+        .param-item span{color:var(--text-primary);font-weight:500}
+        
+        /* Tab Nav */
+        .tab-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+        .tab-btn{padding:6px 14px;border-radius:6px;border:1px solid var(--border-color,rgba(255,255,255,.1));background:transparent;color:var(--text-secondary);font-size:.75rem;font-weight:600;letter-spacing:.6px;cursor:pointer;transition:all .15s}
+        .tab-btn.active{background:rgba(var(--eng-rgb,200,160,60),.12);border-color:var(--eng);color:var(--eng)}
+        .tab-pane{display:none}
+        .tab-pane.active{display:block}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <header id="main-navbar"></header>
+    <main class="main">
+        <div class="tw">
+            <h2 style="color:var(--eng);text-align:center;margin-bottom:10px;font-size:2rem;">Verifica Prestazioni e NPSH Pompe</h2>
+            <p style="text-align:center;margin-bottom:30px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+                <a href="../../index.html" style="color:var(--eng);text-decoration:none;">Tools</a>
+                <span style="margin:0 6px;">/</span>
+                <a href="../index.html" style="color:var(--eng);text-decoration:none;">Fluidodinamica</a>
+                <span style="margin:0 6px;">/</span>
+                <span style="color:var(--text-primary);">Pompe</span>
+            </p>
+
+            <!-- Intro -->
+            <div class="card" style="border-left:3px solid var(--eng);border-radius:0 14px 14px 14px;padding:14px 20px;margin-bottom:22px;">
+                <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.6;margin:0;">
+                    Questo tool permette di calcolare la <strong>Potenza Idraulica</strong>, la <strong>Potenza all'Albero</strong> e la <strong>Potenza Elettrica Assorbita</strong> di una pompa centrifuga operante con liquidi. Consente inoltre di verificare il <strong>NPSH disponibile (NPSH<sub>a</sub>)</strong> all'aspirazione per prevenire il fenomeno della cavitazione.
+                </p>
+            </div>
+
+            <!-- PRESTAZIONI IDRAULICHE -->
+            <div class="card">
+                <div class="ct">1. Parametri di Funzionamento</div>
+                <div class="ig">
+                    <div class="grp">
+                        <label>Portata (Q)</label>
+                        <div class="ir">
+                            <input type="number" id="flow" value="30" step="5" min="0.001" oninput="onInputsChanged()">
+                            <select id="unitFlow" class="un-select" onchange="onInputsChanged()">
+                                <option value="mc/h" selected>mc/h</option>
+                                <option value="mc/s">mc/s</option>
+                                <option value="l/min">l/min</option>
+                                <option value="kg/h">kg/h</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grp">
+                        <label>Prevalenza (H)</label>
+                        <div class="ir">
+                            <input type="number" id="head" value="45" step="5" min="0.01" oninput="onInputsChanged()">
+                            <select id="unitHead" class="un-select" onchange="onInputsChanged()">
+                                <option value="m" selected>m (H2O)</option>
+                                <option value="bar">bar</option>
+                                <option value="kPa">kPa</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grp">
+                        <label>Densità del Fluido (ρ)</label>
+                        <div class="ir">
+                            <input type="number" id="density" value="1000" step="10" min="1" oninput="onInputsChanged()">
+                            <span class="un">kg/m³</span>
+                        </div>
+                    </div>
+                    <div class="grp">
+                        <label>Rendimento Pompa (ηp)</label>
+                        <div class="ir">
+                            <input type="number" id="effPump" value="70" step="5" min="1" max="99" oninput="onInputsChanged()">
+                            <span class="un">%</span>
+                        </div>
+                    </div>
+                    <div class="grp">
+                        <label>Rendimento Motore (ηm)</label>
+                        <div class="ir">
+                            <input type="number" id="effMotor" value="90" step="2" min="1" max="99" oninput="onInputsChanged()">
+                            <span class="un">%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VERIFICA NPSH -->
+            <div class="card">
+                <div class="ct" style="color:#4dabf7;border-bottom-color:rgba(77,171,247,0.15)">2. Verifica Cavitazione e NPSH</div>
+                <div class="ig">
+                    <div class="grp">
+                        <label>Tipo di Installazione</label>
+                        <div class="ir">
+                            <select id="installType" onchange="onInstallTypeChanged()">
+                                <option value="under" selected>Sotto battente (battente positivo)</option>
+                                <option value="above">Sopra battente (in aspirazione)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grp">
+                        <label>Dislivello geometrico (Zs)</label>
+                        <div class="ir">
+                            <input type="number" id="zs" value="3.0" step="0.5" min="0" oninput="onInputsChanged()">
+                            <span class="un">m</span>
+                        </div>
+                        <div class="hint">Altezza verticale dal pelo libero all'asse girante.</div>
+                    </div>
+                    <div class="grp">
+                        <label>Pressione serbatoio (Ps)</label>
+                        <div class="ir">
+                            <input type="number" id="ps" value="1.013" step="0.1" min="0" oninput="onInputsChanged()">
+                            <select id="unitPs" class="un-select" onchange="onInputsChanged()">
+                                <option value="abs" selected>bar (assoluti)</option>
+                                <option value="rel">bar (relativi)</option>
+                            </select>
+                        </div>
+                        <div class="hint">Pressione sopra il liquido nel serbatoio (1.013 = atm).</div>
+                    </div>
+                    <div class="grp">
+                        <label>Tensione di vapore (Pv)</label>
+                        <div class="ir">
+                            <input type="number" id="pv" value="0.0234" step="0.01" min="0" oninput="onInputsChanged()">
+                            <span class="un">bar (assoluti)</span>
+                        </div>
+                        <div class="hint">Tensione di vapore del fluido (Acqua a 20°C = 0.0234 bar ass).</div>
+                    </div>
+                    <div class="grp">
+                        <label>Perdite linea aspiraz. (hf)</label>
+                        <div class="ir">
+                            <input type="number" id="hf" value="0.8" step="0.1" min="0" oninput="onInputsChanged()">
+                            <span class="un">m</span>
+                        </div>
+                        <div class="hint">Perdite di carico distribuite e concentrate nei tubi di aspirazione.</div>
+                    </div>
+                    <div class="grp">
+                        <label>NPSH richiesto (NPSHr)</label>
+                        <div class="ir">
+                            <input type="number" id="npshr" value="2.5" step="0.5" min="0" oninput="onInputsChanged()">
+                            <span class="un">m</span>
+                        </div>
+                        <div class="hint">Fornito dal catalogo del costruttore della pompa.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ERROR BOX -->
+            <div class="eb" id="errorBox"></div>
+
+            <div style="display:flex;justify-content:center;margin-bottom:28px;">
+                <button class="btn" onclick="calculate()">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    Calcola Prestazioni Pompa
+                </button>
+            </div>
+
+            <!-- RISULTATI -->
+            <div id="resultsSection" class="rh rs">
+                <div class="card">
+                    <div class="ct">Risultati di Calcolo</div>
+                    <div class="rg">
+                        <div class="rb pri"><div class="rl">Potenza Idraulica</div><div class="rv" id="rPhyd">—</div><div class="ru">kW (<span id="rPhydHp">—</span> HP)</div></div>
+                        <div class="rb pri"><div class="rl">Potenza all'Albero</div><div class="rv" id="rPshaft">—</div><div class="ru">kW (<span id="rPshaftHp">—</span> HP)</div></div>
+                        <div class="rb pri"><div class="rl">Potenza Assorbita (El)</div><div class="rv" id="rPel">—</div><div class="ru">kW (<span id="rPelHp">—</span> HP)</div></div>
+                        <div class="rb" id="cardNpsha"><div class="rl">NPSH Disponibile (NPSH<sub>a</sub>)</div><div class="rv" id="rNpsha">—</div><div class="ru">m (Margine: <span id="rNpshMargin">—</span> m)</div></div>
+                    </div>
+
+                    <!-- Schema Pompa dinamico -->
+                    <div class="chart-container">
+                        <div class="chart-title">Schema Installazione Pompa Centrifuga</div>
+                        <svg class="chart-svg" id="pumpSchemaSvg" viewBox="0 0 400 160"></svg>
+                    </div>
+
+                    <div class="fb" id="cavitAlert" style="border-left-width: 4px;">
+                        <strong>Stato Cavitazione:</strong> <span id="cavitText">Effettua il calcolo per verificare le condizioni di sicurezza all'aspirazione.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEORIA ED EQUAZIONI -->
+            <div class="card" style="margin-top:8px">
+                <div class="ct">Fondamenti Teorici e Formule</div>
+                <div class="tab-nav">
+                    <button class="tab-btn active" onclick="showTab('t1',this)">Potenze e Rendimenti</button>
+                    <button class="tab-btn" onclick="showTab('t2',this)">Cavitazione e NPSH</button>
+                </div>
+
+                <div id="t1" class="tab-pane active formula-section">
+                    <div class="formula-block">
+                        <div class="formula-title">Potenza Idraulica</div>
+                        <div class="formula-desc">
+                            Rappresenta l'energia netta trasferita al fluido per unità di tempo, ed è proporzionale alla portata volumetrica <em>Q</em>, alla prevalenza <em>H</em> e al peso specifico del liquido:
+                        </div>
+                        <div class="mjx-wrap">\[ P_{idr} = \rho \cdot g \cdot Q \cdot H \quad [\text{W}] \]</div>
+                        <div class="param-list">
+                            <div class="param-item"><span>ρ</span> — densità del fluido [kg/m³]</div>
+                            <div class="param-item"><span>g</span> — accelerazione di gravità [9.80665 m/s²]</div>
+                            <div class="param-item"><span>Q</span> — portata volumetrica [m³/s]</div>
+                            <div class="param-item"><span>H</span> — prevalenza della pompa [m]</div>
+                        </div>
+                    </div>
+                    <div class="formula-block">
+                        <div class="formula-title">Potenza all'Albero (Meccanica) e Potenza Elettrica</div>
+                        <div class="formula-desc">
+                            La potenza meccanica da fornire all'albero tiene conto del rendimento della pompa <em>η</em><sub>p</sub> (perdite volumetriche, idrauliche e meccaniche interne):
+                        </div>
+                        <div class="mjx-wrap">\[ P_{albero} = \frac{P_{idr}}{\eta_p} \quad [\text{kW}] \]</div>
+                        <div class="formula-desc">
+                            La potenza elettrica totale assorbita dal motore tiene conto del rendimento elettromeccanico del motore <em>η</em><sub>m</sub>:
+                        </div>
+                        <div class="mjx-wrap">\[ P_{el} = \frac{P_{albero}}{\eta_m} = \frac{P_{idr}}{\eta_p \cdot \eta_m} \quad [\text{kW}] \]</div>
+                    </div>
+                </div>
+
+                <div id="t2" class="tab-pane formula-section">
+                    <div class="formula-block">
+                        <div class="formula-title">Cavitazione e NPSH (Net Positive Suction Head)</div>
+                        <div class="formula-desc">
+                            La cavitazione si verifica se la pressione locale all'interno della pompa scende al di sotto della tensione di vapore del fluido, portando alla formazione di bolle di vapore che collassano violentemente provocando erosione, vibrazioni e calo di prestazioni.
+                        </div>
+                        <div class="formula-desc">
+                            Il <strong>NPSH disponibile (NPSH<sub>a</sub>)</strong> rappresenta il margine di pressione sopra la tensione di vapore all'ingresso della pompa:
+                        </div>
+                        <div class="mjx-wrap">\[ NPSH_a = \frac{P_s - P_v}{\rho \cdot g} \pm Z_s - h_f \quad [\text{m}] \]</div>
+                        <div class="param-list">
+                            <div class="param-item"><span><em>P</em><sub>s</sub></span> — pressione assoluta sul pelo libero del serbatoio [Pa]</div>
+                            <div class="param-item"><span><em>P</em><sub>v</sub></span> — tensione di vapore del fluido alla temperatura di esercizio [Pa]</div>
+                            <div class="param-item"><span><em>Z</em><sub>s</sub></span> — dislivello geometrico tra pelo libero e asse pompa (+ sotto battente, - sopra battente) [m]</div>
+                            <div class="param-item"><span><em>h</em><sub>f</sub></span> — perdite di carico totali nella condotta di aspirazione [m]</div>
+                        </div>
+                        <div class="formula-desc" style="margin-top:12px">
+                            Per evitare la cavitazione, il NPSH disponibile deve essere sempre superiore al <strong>NPSH richiesto (NPSH<sub>r</sub>)</strong> fornito dal produttore:
+                        </div>
+                        <div class="mjx-wrap">\[ NPSH_a > NPSH_r + 0.5\text{ m} \quad (\text{Margine di sicurezza tipico}) \]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="../../../../js/navbar.js"></script>
+<script src="../../../../js/main.js"></script>
+<script src="../../../../js/footer.js"></script>
+<script>
+    function drawPumpSchema(installType) {
+        const svg = document.getElementById('pumpSchemaSvg');
+        if (!svg) return;
+        svg.innerHTML = ''; // pulisci
+        
+        // Colori in base al tema
+        const isLight = document.documentElement.classList.contains('light-mode');
+        const colorLine = isLight ? '#333' : 'rgba(255,255,255,0.7)';
+        const colorFluid = '#4dabf7';
+        const colorGrid = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)';
+        
+        // Disegna la pompa (asse girante fisso a x=260, y=90)
+        const px = 260, py = 90;
+        
+        // 1. Linea di terra/riferimento
+        const refLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        refLine.setAttribute("x1", 20);
+        refLine.setAttribute("y1", py);
+        refLine.setAttribute("x2", 380);
+        refLine.setAttribute("y2", py);
+        refLine.setAttribute("stroke", colorGrid);
+        refLine.setAttribute("stroke-dasharray", "4,4");
+        svg.appendChild(refLine);
+        
+        // Testo "Asse Pompa"
+        const txtRef = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txtRef.setAttribute("x", 320);
+        txtRef.setAttribute("y", py - 6);
+        txtRef.setAttribute("fill", "var(--text-secondary)");
+        txtRef.setAttribute("font-size", "8px");
+        txtRef.textContent = "Asse Pompa";
+        svg.appendChild(txtRef);
+
+        let tankY, liquidY, labelZsY, arrowD;
+        if (installType === 'under') {
+            // Sotto battente (Serbatoio più in alto del piano pompa)
+            tankY = 30;
+            liquidY = 45;
+            labelZsY = 65;
+            // Quota Zs positiva
+            arrowD = `M 110,${py} L 110,${liquidY}`;
+        } else {
+            // Sopra battente (Serbatoio più in basso del piano pompa)
+            tankY = 100;
+            liquidY = 115;
+            labelZsY = 102;
+            // Quota Zs negativa
+            arrowD = `M 110,${py} L 110,${liquidY}`;
+        }
+
+        // Disegna Serbatoio di Aspirazione
+        const tank = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        tank.setAttribute("x", 40);
+        tank.setAttribute("y", tankY);
+        tank.setAttribute("width", 50);
+        tank.setAttribute("height", 50);
+        tank.setAttribute("fill", "none");
+        tank.setAttribute("stroke", colorLine);
+        tank.setAttribute("stroke-width", "2");
+        svg.appendChild(tank);
+
+        // Disegna Liquido nel serbatoio
+        const liquid = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        liquid.setAttribute("x", 41);
+        liquid.setAttribute("y", liquidY);
+        liquid.setAttribute("width", 48);
+        liquid.setAttribute("height", tankY + 49 - liquidY);
+        liquid.setAttribute("fill", colorFluid);
+        liquid.setAttribute("opacity", "0.35");
+        svg.appendChild(liquid);
+
+        // Linea del pelo libero del liquido
+        const levelLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        levelLine.setAttribute("x1", 41);
+        levelLine.setAttribute("y1", liquidY);
+        levelLine.setAttribute("x2", 89);
+        levelLine.setAttribute("y2", liquidY);
+        levelLine.setAttribute("stroke", colorFluid);
+        levelLine.setAttribute("stroke-width", "2");
+        svg.appendChild(levelLine);
+
+        // Disegna Tubazione di Aspirazione
+        const pipe = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        let pipePath;
+        if (installType === 'under') {
+            pipePath = `M 75,60 L 75,90 L ${px - 15},90`;
+        } else {
+            pipePath = `M 75,130 L 75,90 L ${px - 15},90`;
+        }
+        pipe.setAttribute("d", pipePath);
+        pipe.setAttribute("fill", "none");
+        pipe.setAttribute("stroke", colorLine);
+        pipe.setAttribute("stroke-width", "4");
+        pipe.setAttribute("stroke-linecap", "round");
+        svg.appendChild(pipe);
+
+        // Disegna Corpo Pompa (Cassa a chiocciola)
+        const pumpBody = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        pumpBody.setAttribute("cx", px);
+        pumpBody.setAttribute("cy", py);
+        pumpBody.setAttribute("r", "16");
+        pumpBody.setAttribute("fill", "var(--card-bg)");
+        pumpBody.setAttribute("stroke", "var(--eng)");
+        pumpBody.setAttribute("stroke-width", "2.5");
+        svg.appendChild(pumpBody);
+
+        // Disegna la girante (piccolo cerchio centrale e alette)
+        const pumpHub = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        pumpHub.setAttribute("cx", px);
+        pumpHub.setAttribute("cy", py);
+        pumpHub.setAttribute("r", "4");
+        pumpHub.setAttribute("fill", colorLine);
+        svg.appendChild(pumpHub);
+
+        // Alette
+        for (let a = 0; a < 360; a += 60) {
+            const rad = a * Math.PI / 180;
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", px + Math.cos(rad) * 4);
+            line.setAttribute("y1", py + Math.sin(rad) * 4);
+            line.setAttribute("x2", px + Math.cos(rad) * 14);
+            line.setAttribute("y2", py + Math.sin(rad) * 14);
+            line.setAttribute("stroke", "var(--eng)");
+            line.setAttribute("stroke-width", "1.5");
+            svg.appendChild(line);
+        }
+
+        // Tubo di mandata (verticale in uscita dalla pompa)
+        const deliveryPipe = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        deliveryPipe.setAttribute("x1", px + 10);
+        deliveryPipe.setAttribute("y1", py - 12);
+        deliveryPipe.setAttribute("x2", px + 10);
+        deliveryPipe.setAttribute("y2", py - 35);
+        deliveryPipe.setAttribute("stroke", colorLine);
+        deliveryPipe.setAttribute("stroke-width", "4");
+        svg.appendChild(deliveryPipe);
+
+        // Freccia direzione mandata
+        const arrDelivery = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        arrDelivery.setAttribute("d", `M ${px + 10},${py - 35} l -4,6 l 8,0 z`);
+        arrDelivery.setAttribute("fill", colorLine);
+        svg.appendChild(arrDelivery);
+
+        // Quota Zs (quota verticale da pelo libero ad asse pompa)
+        const zsLine = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        zsLine.setAttribute("d", arrowD);
+        zsLine.setAttribute("fill", "none");
+        zsLine.setAttribute("stroke", "var(--eng)");
+        zsLine.setAttribute("stroke-width", "1");
+        zsLine.setAttribute("marker-start", "url(#arrowhead)");
+        zsLine.setAttribute("marker-end", "url(#arrowhead)");
+        svg.appendChild(zsLine);
+
+        // Definizioni per i marker delle frecce di quota
+        let defs = svg.querySelector('defs');
+        if (!defs) {
+            defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+            const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+            marker.setAttribute("id", "arrowhead");
+            marker.setAttribute("viewBox", "0 0 10 10");
+            marker.setAttribute("refX", "5");
+            marker.setAttribute("refY", "5");
+            marker.setAttribute("markerWidth", "6");
+            marker.setAttribute("markerHeight", "6");
+            marker.setAttribute("orient", "auto-start-reverse");
+            
+            const markerPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            markerPath.setAttribute("d", "M 0 0 L 10 5 L 0 10 z");
+            markerPath.setAttribute("fill", "var(--eng)");
+            marker.appendChild(markerPath);
+            defs.appendChild(marker);
+            svg.appendChild(defs);
+        }
+
+        // Testo quota Zs
+        const txtZs = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txtZs.setAttribute("x", 118);
+        txtZs.setAttribute("y", labelZsY);
+        txtZs.setAttribute("fill", "var(--eng)");
+        txtZs.setAttribute("font-size", "10px");
+        txtZs.setAttribute("font-weight", "700");
+        txtZs.textContent = "Zs = " + Math.abs(parseFloat(document.getElementById('zs').value) || 0).toFixed(1) + " m";
+        svg.appendChild(txtZs);
+    }
+
+    function onInstallTypeChanged() {
+        const type = document.getElementById('installType').value;
+        const zsLabel = document.getElementById('zs');
+        
+        // Modifica i valori di default indicativi di Zs basati sul tipo
+        if (type === 'under') {
+            zsLabel.value = "3.0";
+        } else {
+            zsLabel.value = "2.0"; // tipicamente un'altezza di aspirazione positiva (in modulo)
+        }
+        onInputsChanged();
+    }
+
+    function onInputsChanged() {
+        hideErr();
+        // Rende dinamico lo schema grafico all'istante
+        const type = document.getElementById('installType').value;
+        drawPumpSchema(type);
+    }
+
+    function showErr(msg) {
+        const eb = document.getElementById('errorBox');
+        eb.innerHTML = '⚠ ' + msg;
+        eb.style.display = 'block';
+        document.getElementById('resultsSection').classList.add('rh');
+    }
+
+    function hideErr() {
+        document.getElementById('errorBox').style.display = 'none';
+    }
+
+    function showTab(id, btn) {
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        btn.classList.add('active');
+        if (window.MathJax) {
+            setTimeout(() => MathJax.typesetPromise(), 80);
+        }
+    }
+
+    function calculate() {
+        hideErr();
+
+        const flow = parseFloat(document.getElementById('flow').value);
+        const unitFlow = document.getElementById('unitFlow').value;
+        const head = parseFloat(document.getElementById('head').value);
+        const unitHead = document.getElementById('unitHead').value;
+        const density = parseFloat(document.getElementById('density').value);
+        const effPump = parseFloat(document.getElementById('effPump').value);
+        const effMotor = parseFloat(document.getElementById('effMotor').value);
+
+        const installType = document.getElementById('installType').value;
+        const zs = parseFloat(document.getElementById('zs').value);
+        const ps = parseFloat(document.getElementById('ps').value);
+        const unitPs = document.getElementById('unitPs').value;
+        const pv = parseFloat(document.getElementById('pv').value);
+        const hf = parseFloat(document.getElementById('hf').value);
+        const npshr = parseFloat(document.getElementById('npshr').value);
+
+        if (isNaN(flow) || isNaN(head) || isNaN(density) || isNaN(effPump) || isNaN(effMotor) ||
+            isNaN(zs) || isNaN(ps) || isNaN(pv) || isNaN(hf) || isNaN(npshr)) {
+            showErr("Tutti i campi devono essere compilati con valori numerici positivi.");
+            return;
+        }
+
+        const g = 9.80665;
+
+        // 1. Conversione Portata Q in m³/s
+        let q_m3s = 0;
+        if (unitFlow === 'mc/h') {
+            q_m3s = flow / 3600;
+        } else if (unitFlow === 'mc/s') {
+            q_m3s = flow;
+        } else if (unitFlow === 'l/min') {
+            q_m3s = flow / 60000;
+        } else if (unitFlow === 'kg/h') {
+            q_m3s = flow / (density * 3600);
+        }
+
+        // 2. Conversione Prevalenza H in metri di colonna liquida
+        let h_m = 0;
+        if (unitHead === 'm') {
+            h_m = head;
+        } else if (unitHead === 'bar') {
+            h_m = (head * 1e5) / (density * g);
+        } else if (unitHead === 'kPa') {
+            h_m = (head * 1e3) / (density * g);
+        }
+
+        // 3. Calcolo Potenza Idraulica (kW)
+        const p_hyd = (density * g * q_m3s * h_m) / 1000; // kW
+        
+        // 4. Calcolo Potenze all'albero ed elettrica (kW)
+        const p_shaft = p_hyd / (effPump / 100);
+        const p_el = p_shaft / (effMotor / 100);
+
+        // Conversione in HP (1 kW = 1.34102 HP)
+        const toHp = 1.34102;
+        const p_hyd_hp = p_hyd * toHp;
+        const p_shaft_hp = p_shaft * toHp;
+        const p_el_hp = p_el * toHp;
+
+        // 5. Calcolo NPSH disponibile (NPSHa)
+        // Converti Ps in bar assoluti
+        let ps_abs = ps;
+        if (unitPs === 'rel') {
+            ps_abs = ps + 1.01325; // aggiungi pressione atmosferica standard
+        }
+
+        // NPSHa = ((Ps - Pv) * 1e5) / (density * g) +/- Zs - hf
+        const z_sign = (installType === 'under') ? 1 : -1;
+        const npsha = (((ps_abs - pv) * 1e5) / (density * g)) + (z_sign * zs) - hf;
+
+        // Visualizzazione Risultati
+        document.getElementById('rPhyd').textContent = p_hyd.toFixed(3);
+        document.getElementById('rPhydHp').textContent = p_hyd_hp.toFixed(2);
+        
+        document.getElementById('rPshaft').textContent = p_shaft.toFixed(3);
+        document.getElementById('rPshaftHp').textContent = p_shaft_hp.toFixed(2);
+        
+        document.getElementById('rPel').textContent = p_el.toFixed(3);
+        document.getElementById('rPelHp').textContent = p_el_hp.toFixed(2);
+
+        document.getElementById('rNpsha').textContent = npsha.toFixed(2);
+        const margin = npsha - npshr;
+        document.getElementById('rNpshMargin').textContent = margin.toFixed(2);
+
+        // Alert Cavitazione e NPSH
+        const cardNpsha = document.getElementById('cardNpsha');
+        const cavitAlert = document.getElementById('cavitAlert');
+        const cavitText = document.getElementById('cavitText');
+
+        cardNpsha.classList.remove('pos', 'neg');
+        if (npsha < 0) {
+            cardNpsha.classList.add('neg');
+            cavitAlert.style.borderColor = '#e05050';
+            cavitAlert.style.background = 'rgba(220,60,60,0.07)';
+            cavitText.innerHTML = `<strong style="color:#e05050;">CRITICO: Cavitazione Inevitabile!</strong> Il NPSH disponibile è negativo (<strong>${npsha.toFixed(2)} m</strong>). Modificare geometricamente l'aspirazione o aumentare la pressione del serbatoio.`;
+        } else if (npsha < npshr) {
+            cardNpsha.classList.add('neg');
+            cavitAlert.style.borderColor = '#e05050';
+            cavitAlert.style.background = 'rgba(220,60,60,0.07)';
+            cavitText.innerHTML = `<strong style="color:#e05050;">Rischio Cavitazione Elevato!</strong> Il NPSH disponibile (<strong>${npsha.toFixed(2)} m</strong>) è inferiore a quello richiesto dalla pompa (<strong>${npshr.toFixed(2)} m</strong>). Pericolo di erosione interna ed instabilità!`;
+        } else if (npsha < npshr + 0.5) {
+            cardNpsha.classList.add('pri'); // colore engineering per warning
+            cavitAlert.style.borderColor = 'var(--eng)';
+            cavitAlert.style.background = 'rgba(var(--eng-rgb),0.07)';
+            cavitText.innerHTML = `<strong style="color:var(--eng);">Margine di sicurezza ridotto!</strong> Il NPSH disponibile (<strong>${npsha.toFixed(2)} m</strong>) supera quello richiesto, ma il margine è inferiore a <strong>0.5 m</strong>. Fluttuazioni di portata o perdite extra potrebbero causare cavitazione transitoria.`;
+        } else {
+            cardNpsha.classList.add('pos');
+            cavitAlert.style.borderColor = '#50c878';
+            cavitAlert.style.background = 'rgba(80,200,120,0.07)';
+            cavitText.innerHTML = `<strong style="color:#50c878;">Condizioni di Esercizio Sicure!</strong> Il NPSH disponibile (<strong>${npsha.toFixed(2)} m</strong>) supera quello richiesto di <strong>${margin.toFixed(2)} m</strong>, offrendo un margine di sicurezza ottimale (maggiore di <strong>0.5 m</strong>).`;
+        }
+
+        // Ridisegna schema grafico con valori finali aggiornati
+        drawPumpSchema(installType);
+
+        document.getElementById('resultsSection').classList.remove('rh');
+        document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'});
+    }
+
+    // Inizializzazione schema grafico al caricamento
+    window.onload = function() {
+        drawPumpSchema('under');
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PWT7THK9HL"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-PWT7THK9HL');</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calcolo Scambiatore di Calore Metodo DTML — Tool Online</title>
+    <meta name="description" content="Calcolatore online gratuito per scambiatori di calore con il Metodo DTML (LMTD). Calcola area, potenza, temperature e visualizza i profili termici.">
+    <script>(function(){var p=localStorage.getItem('themePref');if(p==='light'){document.documentElement.classList.add('light-mode')}else if(!p){try{var d=JSON.parse(localStorage.getItem('themeData'));if(d){var n=Date.now();if(n>=d.sunrise&&n<d.sunset)document.documentElement.classList.add("light-mode")}}catch(e){}}})();</script>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <!-- MathJax for LaTeX rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        :root{--eng:var(--color-engineering,#c8a03c);--eng-rgb:var(--color-engineering-rgb,200,160,60)}
+        .tw{max-width:920px;margin:0 auto}
+        .card{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:14px;padding:24px 28px;margin-bottom:20px}
+        .ct{font-size:.75rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--eng);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border-color,rgba(255,255,255,.07))}
+        .ig{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+        .grp{display:flex;flex-direction:column;gap:5px}
+        .grp label{font-size:.78rem;color:var(--text-secondary);font-weight:500;display:flex;align-items:center;gap:4px}
+        .ir{display:flex;align-items:stretch;border:1px solid var(--border-color,rgba(255,255,255,.12));border-radius:8px;overflow:hidden;background:var(--input-bg,rgba(255,255,255,.04));transition:border-color .2s}
+        .ir:focus-within{border-color:var(--eng)}
+        .ir input,.ir select{flex:1;border:none;background:transparent;padding:9px 12px;font-size:.88rem;color:var(--text-primary);outline:none;width:100%;min-width:0}
+        .ir select{cursor:pointer;color-scheme:dark}
+        html.light-mode .ir select{color-scheme:light}
+        .ir select option{background:#1e1e1e;color:#f0f0f0}
+        html.light-mode .ir select option{background:#fff;color:#111}
+        .ir .un{padding:9px 10px;font-size:.75rem;color:var(--text-secondary);background:var(--unit-bg,rgba(255,255,255,.06));border-left:1px solid var(--border-color,rgba(255,255,255,.08));white-space:nowrap;user-select:none;display:flex;align-items:center}
+        .un-select{padding:9px 10px;font-size:.75rem;color:var(--text-secondary);background:var(--unit-bg,rgba(255,255,255,.06));border:none;border-left:1px solid var(--border-color,rgba(255,255,255,.08));white-space:nowrap;cursor:pointer;outline:none;width:auto !important;flex:initial !important;color-scheme:dark}
+        html.light-mode .un-select{color-scheme:light}
+        .un-select option{background:#1e1e1e;color:#f0f0f0}
+        html.light-mode .un-select option{background:#fff;color:#111}
+        .hint{font-size:.7rem;color:var(--text-secondary);margin-top:3px;opacity:.8;line-height:1.4}
+        .hint em{color:var(--eng);font-style:normal}
+        .btn{display:inline-flex;align-items:center;gap:8px;background:var(--eng);color:#fff;border:none;padding:11px 32px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:opacity .2s,transform .15s}
+        html.light-mode .btn{color:#1a1a1a}
+        .btn:hover{opacity:.88;transform:translateY(-1px)}
+        .btn-balance{background:rgba(var(--eng-rgb,200,160,60),.08);border:1px solid var(--border-color,rgba(255,255,255,.12));color:var(--text-primary);padding:8px 12px;border-radius:6px;font-size:0.78rem;font-weight:500;cursor:pointer;transition:all 0.15s;text-align:left;display:block;width:100%;margin-top:4px}
+        .btn-balance:hover{background:var(--eng);color:#fff;border-color:var(--eng)}
+        html.light-mode .btn-balance:hover{color:#1a1a1a}
+        .btn-balance strong{color:var(--eng)}
+        .btn-balance:hover strong{color:#fff}
+        html.light-mode .btn-balance:hover strong{color:#1a1a1a}
+        .rh{display:none}
+        .rs{animation:fu .3s ease}
+        @keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+        .rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:14px}
+        .rb{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.09));border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+        .rb.pri{border-color:var(--eng);background:rgba(var(--eng-rgb,200,160,60),.07)}
+        .rb.pos{border-color:rgba(80,200,120,.5);background:rgba(80,200,120,.07)}
+        .rl{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600}
+        .rv{font-size:1.25rem;font-weight:700;color:var(--text-primary);line-height:1.1}
+        .rb.pri .rv{color:var(--eng)}
+        .rb.pos .rv{color:#50c878}
+        .ru{font-size:.76rem;color:var(--text-secondary)}
+        .fb{border-left:3px solid var(--eng);border-radius:0 8px 8px 0;padding:12px 16px;font-size:.79rem;color:var(--text-secondary);line-height:1.7;margin-top:14px}
+        .fb strong{color:var(--text-primary)}
+        .eb{background:rgba(220,60,60,.08);border:1px solid rgba(220,60,60,.3);border-radius:8px;padding:10px 14px;font-size:.82rem;color:#e05050;margin-bottom:16px;display:none}
+        
+        /* Grafico del profilo di temperatura */
+        .chart-container{margin:20px 0;padding:15px;background:var(--input-bg,rgba(255,255,255,0.02));border:1px solid var(--border-color,rgba(255,255,255,0.08));border-radius:10px;display:flex;flex-direction:column;align-items:center}
+        .chart-title{font-size:.75rem;font-weight:700;color:var(--text-primary);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+        .chart-svg{width:100%;max-width:640px;height:240px;background:transparent}
+        
+        /* Formule */
+        .formula-section{margin-top:8px}
+        .formula-block{background:var(--card-bg,rgba(255,255,255,.03));border:1px solid var(--border-color,rgba(255,255,255,.07));border-radius:10px;padding:18px 22px;margin-bottom:14px}
+        .formula-title{font-size:.72rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--eng);margin-bottom:12px}
+        .formula-desc{font-size:.82rem;color:var(--text-secondary);line-height:1.7;margin-bottom:10px}
+        .formula-desc strong{color:var(--text-primary)}
+        .mjx-wrap{overflow-x:auto;padding:10px 0;text-align:center}
+        .param-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-top:8px}
+        .param-item{font-size:.78rem;color:var(--text-secondary);line-height:1.5;padding:4px 0;border-bottom:1px solid var(--border-color,rgba(255,255,255,0.05))}
+        .param-item span{color:var(--text-primary);font-weight:500}
+        
+        /* Tab Nav */
+        .tab-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+        .tab-btn{padding:6px 14px;border-radius:6px;border:1px solid var(--border-color,rgba(255,255,255,.1));background:transparent;color:var(--text-secondary);font-size:.75rem;font-weight:600;letter-spacing:.6px;cursor:pointer;transition:all .15s}
+        .tab-btn.active{background:rgba(var(--eng-rgb,200,160,60),.12);border-color:var(--eng);color:var(--eng)}
+        .tab-pane{display:none}
+        .tab-pane.active{display:block}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <header id="main-navbar"></header>
+    <main class="main">
+        <div class="tw">
+            <h2 style="color:var(--eng);text-align:center;margin-bottom:10px;font-size:2rem;">Metodo DTML — Scambiatori</h2>
+            <p style="text-align:center;margin-bottom:30px;font-size:.9rem;color:var(--text-secondary);letter-spacing:1px;">
+                <a href="../../index.html" style="color:var(--eng);text-decoration:none;">Tools</a>
+                <span style="margin:0 6px;">/</span>
+                <a href="../index.html" style="color:var(--eng);text-decoration:none;">Fluidodinamica</a>
+                <span style="margin:0 6px;">/</span>
+                <span style="color:var(--text-primary);">Scambiatori (DTML)</span>
+            </p>
+
+            <!-- Intro -->
+            <div class="card" style="border-left:3px solid var(--eng);border-radius:0 14px 14px 14px;padding:14px 20px;margin-bottom:22px;">
+                <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.6;margin:0;">
+                    Il tool calcola le prestazioni termiche di uno scambiatore di calore bifilare (equicorrente o controcorrente) mediante il <strong style="color:var(--text-primary);">Metodo della Differenza Temperatura Media Logaritmica (DTML)</strong>. 
+                    Puoi determinare l'<strong>Area di scambio (A)</strong> o il coefficiente globale di scambio (<strong>U</strong>) a partire dalle portate e temperature dei fluidi.
+                </p>
+            </div>
+
+            <!-- OPZIONI DI CONFIGURAZIONE -->
+            <div class="card">
+                <div class="ct">Configurazione Scambiatore</div>
+                <div class="ig">
+                    <div class="grp">
+                        <label>Configurazione Flussi</label>
+                        <div class="ir">
+                            <select id="configFlow" onchange="onInputsChanged()">
+                                <option value="counter">Controcorrente (Raccomandato)</option>
+                                <option value="co">Equicorrente (Parallelo)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grp">
+                        <label>Variabile Incognita (da calcolare)</label>
+                        <div class="ir">
+                            <select id="unknownVar" onchange="onUnknownChanged()">
+                                <option value="area">Area di scambio (A)</option>
+                                <option value="u">Coefficiente globale (U)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DATI FLUIDO CALDO -->
+            <div class="card">
+                <div class="ct" style="color:#ff6b6b;border-bottom-color:rgba(255,107,107,0.15)">Fluido Caldo (Hot Fluid)</div>
+                <div class="ig">
+                    <div class="grp">
+                        <label>Temperatura Ingresso (Th,in)</label>
+                        <div class="ir">
+                            <input type="number" id="thIn" value="90" step="1" oninput="onInputsChanged()">
+                            <span class="un">°C</span>
+                        </div>
+                    </div>
+                    <div class="grp" id="grpThOut">
+                        <label>Temperatura Uscita (Th,out)</label>
+                        <div class="ir">
+                            <input type="number" id="thOut" value="60" step="1" oninput="onInputsChanged()">
+                            <span class="un">°C</span>
+                        </div>
+                    </div>
+                    <div class="grp">
+                        <label>Portata (mh)</label>
+                        <div class="ir">
+                            <input type="number" id="flowH" value="1000" step="50" min="0.001" oninput="onInputsChanged()">
+                            <select id="unitFlowH" class="un-select" onchange="onUnitChanged('H')">
+                                <option value="kg/h" selected>kg/h</option>
+                                <option value="kg/s">kg/s</option>
+                                <option value="mc/h">mc/h</option>
+                                <option value="mc/s">mc/s</option>
+                                <option value="smc/h">smc/h</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grp" id="grpDensityH" style="display:none">
+                        <label id="lblDensityH">Densità (ρh)</label>
+                        <div class="ir">
+                            <input type="number" id="densityH" value="1000" step="1" min="0.001" oninput="onInputsChanged()">
+                            <span class="un" id="unDensityH">kg/m³</span>
+                        </div>
+                    </div>
+                    <div class="grp">
+                        <label>Calore Specifico (cph)</label>
+                        <div class="ir">
+                            <select id="presetCpH" onchange="onPresetCpChange('H')">
+                                <option value="4.186" selected>Acqua (4.186 kJ/kgK)</option>
+                                <option value="1.005">Aria (1.005 kJ/kgK)</option>
+                                <option value="1.900">Vapore (1.900 kJ/kgK)</option>
+                                <option value="custom">Personalizzato</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grp" id="grpCustomCpH" style="display:none">
+                        <label>cph Personalizzato</label>
+                        <div class="ir">
+                            <input type="number" id="cpH" value="4.186" step="0.001" min="0.1" oninput="onInputsChanged()">
+                            <span class="un">kJ/(kg·K)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DATI FLUIDO FREDDO -->
+            <div class="card">
+                <div class="ct" style="color:#4dabf7;border-bottom-color:rgba(77,171,247,0.15)">Fluido Freddo (Cold Fluid)</div>
+                <div class="ig">
+                    <div class="grp">
+                        <label>Temperatura Ingresso (Tc,in)</label>
+                        <div class="ir">
+                            <input type="number" id="tcIn" value="20" step="1" oninput="onInputsChanged()">
+                            <span class="un">°C</span>
+                        </div>
+                    </div>
+                    <div class="grp" id="grpTcOut">
+                        <label>Temperatura Uscita (Tc,out)</label>
+                        <div class="ir">
+                            <input type="number" id="tcOut" value="50" step="1" oninput="onInputsChanged()">
+                            <span class="un">°C</span>
+                        </div>
+                    </div>
+                    <div class="grp">
+                        <label>Portata (mc)</label>
+                        <div class="ir">
+                            <input type="number" id="flowC" value="1000" step="50" min="0.001" oninput="onInputsChanged()">
+                            <select id="unitFlowC" class="un-select" onchange="onUnitChanged('C')">
+                                <option value="kg/h" selected>kg/h</option>
+                                <option value="kg/s">kg/s</option>
+                                <option value="mc/h">mc/h</option>
+                                <option value="mc/s">mc/s</option>
+                                <option value="smc/h">smc/h</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grp" id="grpDensityC" style="display:none">
+                        <label id="lblDensityC">Densità (ρc)</label>
+                        <div class="ir">
+                            <input type="number" id="densityC" value="1000" step="1" min="0.001" oninput="onInputsChanged()">
+                            <span class="un" id="unDensityC">kg/m³</span>
+                        </div>
+                    </div>
+                    <div class="grp">
+                        <label>Calore Specifico (cpc)</label>
+                        <div class="ir">
+                            <select id="presetCpC" onchange="onPresetCpChange('C')">
+                                <option value="4.186" selected>Acqua (4.186 kJ/kgK)</option>
+                                <option value="1.005">Aria (1.005 kJ/kgK)</option>
+                                <option value="1.900">Vapore (1.900 kJ/kgK)</option>
+                                <option value="custom">Personalizzato</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grp" id="grpCustomCpC" style="display:none">
+                        <label>cpc Personalizzato</label>
+                        <div class="ir">
+                            <input type="number" id="cpC" value="4.186" step="0.001" min="0.1" oninput="onInputsChanged()">
+                            <span class="un">kJ/(kg·K)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PARAMETRI SCAMBIATORE -->
+            <div class="card">
+                <div class="ct">Parametri di Scambio</div>
+                <div class="ig">
+                    <div class="grp" id="grpPresetU">
+                        <label>Tipo di Scambiatore</label>
+                        <div class="ir">
+                            <select id="presetU" onchange="onPresetUChange()">
+                                <option value="800" selected>Acqua - Acqua (tipico: 500 - 1500 W/m²K)</option>
+                                <option value="30">Gas - Acqua (tipico: 10 - 50 W/m²K)</option>
+                                <option value="120">Gas - Acqua Alettato (tipico: 50 - 250 W/m²K)</option>
+                                <option value="200">Olio - Acqua (tipico: 100 - 300 W/m²K)</option>
+                                <option value="1500">Condensatore di vapore (tipico: 1000 - 3000 W/m²K)</option>
+                                <option value="custom">Personalizzato</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grp" id="grpU">
+                        <label>Coeff. di Scambio Globale (U)</label>
+                        <div class="ir">
+                            <input type="number" id="coeffU" value="800" step="10" min="1" oninput="onUValueInput()">
+                            <span class="un">W/(m²·K)</span>
+                        </div>
+                    </div>
+                    <div class="grp" id="grpArea" style="display:none">
+                        <label>Area di Scambio (A)</label>
+                        <div class="ir">
+                            <input type="number" id="areaA" value="1.74" step="0.01" min="0.001" oninput="onInputsChanged()">
+                            <span class="un">m²</span>
+                        </div>
+                    </div>
+                    <div class="grp">
+                        <label>Potenza Scambiata (Q)</label>
+                        <div class="ir">
+                            <input type="number" id="powerQ" value="" step="0.1" placeholder="Calcolata da portate" oninput="onPowerInputOverride()">
+                            <span class="un">kW</span>
+                        </div>
+                        <div class="hint" id="powerHint">Viene calcolata automaticamente dalle portate se fornite.</div>
+                    </div>
+                </div>
+                
+                <!-- Diagnostica Potenze Termiche in Tempo Reale -->
+                <div style="margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--border-color, rgba(255,255,255,0.08)); display: flex; flex-wrap: wrap; gap: 20px 28px; font-size: 0.82rem;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="color:#ff6b6b;font-size:1.1rem;user-select:none;">🔥</span>
+                        <span style="color:var(--text-secondary);">Potenza rilasciata (Caldo):</span>
+                        <strong id="diagQHot" style="color:#ff6b6b; font-size:0.95rem; font-family:var(--font-mono, monospace);">—</strong>
+                        <span style="color:var(--text-secondary); font-size:0.75rem;">kW</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="color:#4dabf7;font-size:1.1rem;user-select:none;">❄</span>
+                        <span style="color:var(--text-secondary);">Potenza assorbita (Freddo):</span>
+                        <strong id="diagQCold" style="color:#4dabf7; font-size:0.95rem; font-family:var(--font-mono, monospace);">—</strong>
+                        <span style="color:var(--text-secondary); font-size:0.75rem;">kW</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ERROR BOX -->
+            <div class="eb" id="errorBox"></div>
+
+            <div style="display:flex;justify-content:center;margin-bottom:28px;">
+                <button class="btn" onclick="calculate()">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    Calcola Parametri Scambio
+                </button>
+            </div>
+
+            <!-- RISULTATI -->
+            <div id="resultsSection" class="rh rs">
+                <div class="card">
+                    <div class="rg">
+                        <div class="rb pri" id="resCardA"><div class="rl">Area di scambio (A)</div><div class="rv" id="rArea">—</div><div class="ru">m²</div></div>
+                        <div class="rb pri" id="resCardQ"><div class="rl">Potenza Termica (Q)</div><div class="rv" id="rPower">—</div><div class="ru">kW</div></div>
+                        <div class="rb pri" id="resCardU" style="display:none"><div class="rl">Coefficiente (U)</div><div class="rv" id="rU">—</div><div class="ru">W/(m²·K)</div></div>
+                        <div class="rb"><div class="rl">DTML (&Delta;<em>T</em><sub>ml</sub>)</div><div class="rv" id="rDtml">—</div><div class="ru">°C</div></div>
+                    </div>
+
+                    <!-- Grafico termico SVG -->
+                    <div class="chart-container">
+                        <div class="chart-title" id="chartTitle">Andamento Temperature nello Scambiatore</div>
+                        <svg class="chart-svg" id="thermalChartSvg" viewBox="0 0 600 240"></svg>
+                    </div>
+
+                    <div class="fb">
+                        <strong>Nota fisica:</strong> In configurazione <span id="rConfigLabel">controcorrente</span>, la temperatura di uscita del fluido freddo può teoricamente superare quella di uscita del fluido caldo (crossing termico), permettendo efficacie maggiori. In equicorrente ciò è termodinamicamente impossibile.
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEORIA ED EQUAZIONI -->
+            <div class="card" style="margin-top:8px">
+                <div class="ct">Fondamenti Teorici e Formule</div>
+                <div class="tab-nav">
+                    <button class="tab-btn active" onclick="showTab('t1',this)">Il Metodo DTML</button>
+                    <button class="tab-btn" onclick="showTab('t2',this)">Equicorrente vs Controcorrente</button>
+                </div>
+
+                <div id="t1" class="tab-pane active formula-section">
+                    <div class="formula-block">
+                        <div class="formula-title">Equazione fondamentale dello scambio termico</div>
+                        <div class="formula-desc">
+                            Il calore totale scambiato per unità di tempo in un elemento a superficie è proporzionale all'area <em>A</em>, al coefficiente globale <em>U</em> e ad una differenza media di temperatura opportuna:
+                        </div>
+                        <div class="mjx-wrap">\[ Q = U \cdot A \cdot \Delta T_{ml} \quad [\text{kW}] \]</div>
+                        <div class="formula-desc">
+                            La differenza media di temperatura non è una semplice media lineare, bensì la <strong>Differenza di Temperatura Media Logaritmica (DTML)</strong>, definita come:
+                        </div>
+                        <div class="mjx-wrap">\[ \Delta T_{ml} = \frac{\Delta T_1 - \Delta T_2}{\ln(\Delta T_1 / \Delta T_2)} \quad [^\circ\text{C}] \]</div>
+                        <div class="param-list">
+                            <div class="param-item"><span>Q</span> — potenza termica scambiata [kW]</div>
+                            <div class="param-item"><span>U</span> — coefficiente globale di trasmissione [W/(m²·K)]</div>
+                            <div class="param-item"><span>A</span> — area della superficie di scambio termico [m²]</div>
+                            <div class="param-item"><span>&Delta;<em>T</em><sub>1</sub>, &Delta;<em>T</em><sub>2</sub></span> — differenze di temperatura alle estremità dello scambiatore</div>
+                        </div>
+                    </div>
+                    <div class="formula-block">
+                        <div class="formula-title">Bilancio Energetico dei Fluidi</div>
+                        <div class="formula-desc">
+                            In condizioni stazionarie e trascurando le perdite termiche verso l'ambiente esterno, il calore ceduto dal fluido caldo deve essere uguale a quello acquistato dal fluido freddo:
+                        </div>
+                        <div class="mjx-wrap">\[ Q = \dot{m}_h \cdot c_{p,h} \cdot (T_{h,in} - T_{h,out}) = \dot{m}_c \cdot c_{p,c} \cdot (T_{c,out} - T_{c,in}) \]</div>
+                        <div class="param-list">
+                            <div class="param-item"><span><em>ṁ</em><sub>h</sub>, <em>ṁ</em><sub>c</sub></span> — portate massiche dei fluidi caldo e freddo [kg/s]</div>
+                            <div class="param-item"><span><em>c</em><sub>p,h</sub>, <em>c</em><sub>p,c</sub></span> — calori specifici a pressione costante [kJ/(kg·K)]</div>
+                            <div class="param-item"><span><em>T</em><sub>in</sub>, <em>T</em><sub>out</sub></span> — temperature di ingresso e uscita [°C]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="t2" class="tab-pane formula-section">
+                    <div class="formula-block">
+                        <div class="formula-title">Equicorrente (Flussi Paralleli)</div>
+                        <div class="formula-desc">
+                            I due fluidi entrano dalla stessa estremità dello scambiatore e si muovono nella stessa direzione.
+                        </div>
+                        <div class="mjx-wrap">\[ \Delta T_1 = T_{h,in} - T_{c,in} \]</div>
+                        <div class="mjx-wrap">\[ \Delta T_2 = T_{h,out} - T_{c,out} \]</div>
+                        <div class="formula-desc" style="margin-top:8px">
+                            In questa configurazione, <em>T</em><sub>c,out</sub> non può mai superare <em>T</em><sub>h,out</sub>. L'efficacia dello scambio è termodinamicamente limitata.
+                        </div>
+                    </div>
+                    <div class="formula-block">
+                        <div class="formula-title">Controcorrente</div>
+                        <div class="formula-desc">
+                            I due fluidi entrano da estremità opposte e scorrono in direzioni contrarie.
+                        </div>
+                        <div class="mjx-wrap">\[ \Delta T_1 = T_{h,in} - T_{c,out} \]</div>
+                        <div class="mjx-wrap">\[ \Delta T_2 = T_{h,out} - T_{c,in} \]</div>
+                        <div class="formula-desc" style="margin-top:8px">
+                            Questa configurazione è la più efficiente e permette di ottenere una temperatura di uscita del fluido freddo superiore a quella di uscita del fluido caldo (<em>T</em><sub>c,out</sub> &gt; <em>T</em><sub>h,out</sub>), massimizzando il recupero termico.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="../../../../js/navbar.js"></script>
+<script src="../../../../js/main.js"></script>
+<script src="../../../../js/footer.js"></script>
+<script>
+    let overrideQ = false;
+
+    function onPresetCpChange(fluidType) {
+        const preset = document.getElementById('presetCp' + fluidType).value;
+        const customGrp = document.getElementById('grpCustomCp' + fluidType);
+        const inputField = document.getElementById('cp' + fluidType);
+        
+        if (preset === 'custom') {
+            customGrp.style.display = 'flex';
+        } else {
+            customGrp.style.display = 'none';
+            inputField.value = preset;
+        }
+        onUnitChanged(fluidType);
+    }
+
+    function onUnitChanged(fluidType) {
+        const unit = document.getElementById('unitFlow' + fluidType).value;
+        const grpDensity = document.getElementById('grpDensity' + fluidType);
+        const densityInput = document.getElementById('density' + fluidType);
+        const lblDensity = document.getElementById('lblDensity' + fluidType);
+        const unDensity = document.getElementById('unDensity' + fluidType);
+        const presetCp = document.getElementById('presetCp' + fluidType).value;
+        
+        if (unit === 'mc/h' || unit === 'mc/s') {
+            grpDensity.style.display = 'flex';
+            lblDensity.textContent = 'Densità (ρ' + fluidType.toLowerCase() + ')';
+            unDensity.textContent = 'kg/m³';
+            if (presetCp === '1.005') {
+                densityInput.value = '1.2';
+            } else {
+                densityInput.value = '1000';
+            }
+        } else if (unit === 'smc/h') {
+            grpDensity.style.display = 'flex';
+            lblDensity.textContent = 'Densità Std (ρ0' + fluidType.toLowerCase() + ')';
+            unDensity.textContent = 'kg/Sm³';
+            densityInput.value = '1.2';
+        } else {
+            grpDensity.style.display = 'none';
+        }
+        onInputsChanged();
+    }
+
+    function getMassFlowInKgH(fluidType) {
+        const flowVal = parseFloat(document.getElementById('flow' + fluidType).value);
+        if (isNaN(flowVal)) return NaN;
+        
+        const unit = document.getElementById('unitFlow' + fluidType).value;
+        if (unit === 'kg/h') {
+            return flowVal;
+        } else if (unit === 'kg/s') {
+            return flowVal * 3600;
+        } else {
+            const density = parseFloat(document.getElementById('density' + fluidType).value);
+            if (isNaN(density) || density <= 0) return NaN;
+            if (unit === 'mc/h' || unit === 'smc/h') {
+                return flowVal * density;
+            } else if (unit === 'mc/s') {
+                return flowVal * density * 3600;
+            }
+        }
+        return NaN;
+    }
+
+    function onPresetUChange() {
+        const preset = document.getElementById('presetU').value;
+        if (preset !== 'custom') {
+            document.getElementById('coeffU').value = preset;
+        }
+        onInputsChanged();
+    }
+
+    function onUValueInput() {
+        document.getElementById('presetU').value = 'custom';
+        onInputsChanged();
+    }
+
+    function onUnknownChanged() {
+        const unknown = document.getElementById('unknownVar').value;
+        const grpU = document.getElementById('grpU');
+        const grpPresetU = document.getElementById('grpPresetU');
+        const grpArea = document.getElementById('grpArea');
+        const resCardA = document.getElementById('resCardA');
+        const resCardU = document.getElementById('resCardU');
+        
+        if (unknown === 'area') {
+            grpArea.style.display = 'none';
+            grpU.style.display = 'flex';
+            grpPresetU.style.display = 'flex';
+            resCardA.style.display = 'flex';
+            resCardU.style.display = 'none';
+        } else { // unknown === 'u'
+            grpArea.style.display = 'flex';
+            grpU.style.display = 'none';
+            grpPresetU.style.display = 'none';
+            resCardA.style.display = 'none';
+            resCardU.style.display = 'flex';
+        }
+        
+        onInputsChanged();
+    }
+
+    function onInputsChanged() {
+        // Calcolo real-time potenza caldo
+        const thIn = parseFloat(document.getElementById('thIn').value);
+        const thOut = parseFloat(document.getElementById('thOut').value);
+        const flowH = getMassFlowInKgH('H');
+        const cph = parseFloat(document.getElementById('cpH').value);
+        
+        let Q_hot = NaN;
+        if (!isNaN(thIn) && !isNaN(thOut) && !isNaN(flowH) && !isNaN(cph)) {
+            Q_hot = (flowH * cph * (thIn - thOut)) / 3600; // kW
+            if (Q_hot >= 0) {
+                document.getElementById('diagQHot').textContent = Q_hot.toFixed(2);
+            } else {
+                document.getElementById('diagQHot').textContent = '—';
+            }
+        } else {
+            document.getElementById('diagQHot').textContent = '—';
+        }
+
+        // Calcolo real-time potenza freddo
+        const tcIn = parseFloat(document.getElementById('tcIn').value);
+        const tcOut = parseFloat(document.getElementById('tcOut').value);
+        const flowC = getMassFlowInKgH('C');
+        const cpc = parseFloat(document.getElementById('cpC').value);
+        
+        let Q_cold = NaN;
+        if (!isNaN(tcIn) && !isNaN(tcOut) && !isNaN(flowC) && !isNaN(cpc)) {
+            Q_cold = (flowC * cpc * (tcOut - tcIn)) / 3600; // kW
+            if (Q_cold >= 0) {
+                document.getElementById('diagQCold').textContent = Q_cold.toFixed(2);
+            } else {
+                document.getElementById('diagQCold').textContent = '—';
+            }
+        } else {
+            document.getElementById('diagQCold').textContent = '—';
+        }
+
+        // Se non c'è l'override manuale della potenza, aggiorna il campo powerQ
+        if (!overrideQ) {
+            if (!isNaN(Q_hot) && Q_hot > 0) {
+                document.getElementById('powerQ').value = Q_hot.toFixed(2);
+            } else {
+                document.getElementById('powerQ').value = '';
+            }
+        }
+        hideErr();
+    }
+
+    function onPowerInputOverride() {
+        const powerInput = document.getElementById('powerQ');
+        if (powerInput.value.trim() !== '') {
+            overrideQ = true;
+            document.getElementById('powerHint').innerHTML = 'Inserimento manuale attivo. Portate e Cp dei fluidi non influenzeranno la potenza di scambio.';
+        } else {
+            overrideQ = false;
+            document.getElementById('powerHint').innerHTML = 'Viene calcolata automaticamente dalle portate se fornite.';
+            onInputsChanged();
+        }
+    }
+
+    function showErr(msg) {
+        const eb = document.getElementById('errorBox');
+        eb.innerHTML = '⚠ ' + msg;
+        eb.style.display = 'block';
+        document.getElementById('resultsSection').classList.add('rh');
+    }
+
+    function hideErr() {
+        document.getElementById('errorBox').style.display = 'none';
+    }
+
+    function showImbalanceError(thIn, thOut, tcIn, tcOut, Ch, Cc, cph, cpc, Q_hot, Q_cold) {
+        const eb = document.getElementById('errorBox');
+        
+        // Calcola i valori bilanciati
+        const tcOut_new = tcIn + (Q_hot * 1000) / Cc;
+        const thOut_new = thIn - (Q_cold * 1000) / Ch;
+        
+        const unitH = document.getElementById('unitFlowH').value;
+        const densityH = parseFloat(document.getElementById('densityH').value) || 1000;
+        const flowH_kg_h_new = (Q_cold * 1000 * 3.6) / (cph * (thIn - thOut));
+        const flowH_new = convertFromKgH(flowH_kg_h_new, unitH, densityH);
+        
+        const unitC = document.getElementById('unitFlowC').value;
+        const densityC = parseFloat(document.getElementById('densityC').value) || 1000;
+        const flowC_kg_h_new = (Q_hot * 1000 * 3.6) / (cpc * (tcOut - tcIn));
+        const flowC_new = convertFromKgH(flowC_kg_h_new, unitC, densityC);
+        
+        // Verifica se la regolazione termica causa incroci fisicamente impossibili (Seconda Legge)
+        const tcOutCrossover = (tcOut_new >= thIn);
+        const thOutCrossover = (thOut_new <= tcIn);
+        
+        let html = `
+            <div style="font-weight:700;margin-bottom:8px;font-size:0.86rem;color:#e05050;">⚠ Bilancio energetico non congruente (differenza > 5%)</div>
+            <div style="margin-bottom:12px;line-height:1.5;">
+                La potenza rilasciata dal fluido caldo (<strong>Q_caldo = ${Q_hot.toFixed(2)} kW</strong>) 
+                non coincide con quella assorbita dal fluido freddo (<strong>Q_freddo = ${Q_cold.toFixed(2)} kW</strong>).
+            </div>
+            <div style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:8px;">
+                Scegli una delle seguenti opzioni per bilanciare termicamente lo scambiatore:
+            </div>
+            <div style="display:grid;grid-template-columns:1fr;gap:6px;margin-top:4px;">
+        `;
+        
+        if (tcOutCrossover) {
+            html += `
+                <div style="font-size:0.75rem;color:rgba(255,255,255,0.25);padding:6px 10px;border:1px dashed rgba(255,255,255,0.05);border-radius:6px;background:rgba(0,0,0,0.15)">
+                    ❌ <strong>Ricalcola Tc,out a ${tcOut_new.toFixed(1)} °C</strong> — Non fisicamente possibile (supera Th,in = ${thIn} °C).
+                </div>
+            `;
+        } else {
+            html += `
+                <button class="btn-balance" onclick="balanceSystem('tcOut', ${tcOut_new.toFixed(2)})">
+                    Ricalcola Tc,out a <strong>${tcOut_new.toFixed(1)} °C</strong> (mantiene Q_caldo = ${Q_hot.toFixed(1)} kW)
+                </button>
+            `;
+        }
+        
+        if (thOutCrossover) {
+            html += `
+                <div style="font-size:0.75rem;color:rgba(255,255,255,0.25);padding:6px 10px;border:1px dashed rgba(255,255,255,0.05);border-radius:6px;background:rgba(0,0,0,0.15)">
+                    ❌ <strong>Ricalcola Th,out a ${thOut_new.toFixed(1)} °C</strong> — Non fisicamente possibile (scende sotto Tc,in = ${tcIn} °C).
+                </div>
+            `;
+        } else {
+            html += `
+                <button class="btn-balance" onclick="balanceSystem('thOut', ${thOut_new.toFixed(2)})">
+                    Ricalcola Th,out a <strong>${thOut_new.toFixed(1)} °C</strong> (mantiene Q_freddo = ${Q_cold.toFixed(1)} kW)
+                </button>
+            `;
+        }
+        
+        if (flowC_new > 0 && isFinite(flowC_new)) {
+            html += `
+                <button class="btn-balance" onclick="balanceSystem('flowC', ${flowC_new.toFixed(2)})">
+                    Ricalcola Portata Fredda mc a <strong>${flowC_new.toFixed(2)} ${unitC}</strong> (per assorbire ${Q_hot.toFixed(1)} kW)
+                </button>
+            `;
+        }
+        
+        if (flowH_new > 0 && isFinite(flowH_new)) {
+            html += `
+                <button class="btn-balance" onclick="balanceSystem('flowH', ${flowH_new.toFixed(2)})">
+                    Ricalcola Portata Calda mh a <strong>${flowH_new.toFixed(2)} ${unitH}</strong> (per cedere ${Q_cold.toFixed(1)} kW)
+                </button>
+            `;
+        }
+        
+        html += `</div>`;
+        
+        eb.innerHTML = html;
+        eb.style.display = 'block';
+        document.getElementById('resultsSection').classList.add('rh');
+    }
+    
+    function convertFromKgH(flowKgH, unit, density) {
+        if (unit === 'kg/h') return flowKgH;
+        if (unit === 'kg/s') return flowKgH / 3600;
+        if (unit === 'mc/h' || unit === 'smc/h') return flowKgH / density;
+        if (unit === 'mc/s') return flowKgH / (density * 3600);
+        return flowKgH;
+    }
+    
+    function balanceSystem(fieldId, value) {
+        document.getElementById(fieldId).value = value;
+        onInputsChanged();
+        calculate();
+    }
+
+    function showTab(id, btn) {
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        btn.classList.add('active');
+        if (window.MathJax) {
+            setTimeout(() => MathJax.typesetPromise(), 80);
+        }
+    }
+
+    function calculate() {
+        hideErr();
+
+        const unknown = document.getElementById('unknownVar').value;
+        const config = document.getElementById('configFlow').value;
+
+        // Input Generici
+        const thIn = parseFloat(document.getElementById('thIn').value);
+        const tcIn = parseFloat(document.getElementById('tcIn').value);
+        const flowH = getMassFlowInKgH('H');
+        const flowC = getMassFlowInKgH('C');
+        const cph = parseFloat(document.getElementById('cpH').value);
+        const cpc = parseFloat(document.getElementById('cpC').value);
+
+        if (isNaN(thIn) || isNaN(tcIn) || isNaN(flowH) || isNaN(flowC) || isNaN(cph) || isNaN(cpc)) {
+            showErr("Tutti i campi relativi a temperature d'ingresso, portate e calori specifici devono essere compilati (compresa la densità per le portate volumetriche).");
+            return;
+        }
+
+        if (thIn <= tcIn) {
+            showErr("La temperatura del fluido caldo all'ingresso deve essere superiore a quella del fluido freddo.");
+            return;
+        }
+
+        const Ch = (flowH * cph) / 3.6;
+        const Cc = (flowC * cpc) / 3.6;
+
+        let thOut, tcOut, Q_kW, U, A, dtml;
+
+        thOut = parseFloat(document.getElementById('thOut').value);
+        tcOut = parseFloat(document.getElementById('tcOut').value);
+
+        if (isNaN(thOut) || isNaN(tcOut)) {
+            showErr("Inserisci le temperature di uscita desiderate per effettuare il calcolo.");
+            return;
+        }
+
+        if (thOut >= thIn) {
+            showErr("La temperatura di uscita calda (Th,out) deve essere inferiore a quella di ingresso (Th,in).");
+            return;
+        }
+        if (tcOut <= tcIn) {
+            showErr("La temperatura di uscita fredda (Tc,out) deve essere superiore a quella di ingresso (Tc,in).");
+            return;
+        }
+
+        // Potenza Q
+        if (overrideQ) {
+            Q_kW = parseFloat(document.getElementById('powerQ').value);
+            if (isNaN(Q_kW) || Q_kW <= 0) {
+                showErr("Fornisci un valore valido per la Potenza Scambiata (Q).");
+                return;
+            }
+        } else {
+            const Q_hot = (Ch * (thIn - thOut)) / 1000; // kW
+            const Q_cold = (Cc * (tcOut - tcIn)) / 1000; // kW
+            if (Math.abs(Q_hot - Q_cold) / Math.max(Q_hot, 1) > 0.05) {
+                showImbalanceError(thIn, thOut, tcIn, tcOut, Ch, Cc, cph, cpc, Q_hot, Q_cold);
+                return;
+            }
+            Q_kW = Q_hot;
+        }
+
+        // Calcolo DTML
+        let dt1, dt2;
+        if (config === 'co') {
+            dt1 = thIn - tcIn;
+            dt2 = thOut - tcOut;
+        } else {
+            dt1 = thIn - tcOut;
+            dt2 = thOut - tcIn;
+        }
+
+        if (dt1 <= 0 || dt2 <= 0) {
+            showErr("Incrocio di temperature non consentito (differenza termica negativa o nulla alle estremità dello scambiatore). Verifica le temperature.");
+            return;
+        }
+
+        if (Math.abs(dt1 - dt2) < 1e-5) {
+            dtml = dt1;
+        } else {
+            dtml = (dt1 - dt2) / Math.log(dt1 / dt2);
+        }
+
+        // Calcolo incognita specifica
+        if (unknown === 'area') {
+            U = parseFloat(document.getElementById('coeffU').value);
+            if (isNaN(U) || U <= 0) {
+                showErr("Inserisci un valore positivo per il coefficiente globale di scambio (U).");
+                return;
+            }
+            A = (Q_kW * 1000) / (U * dtml); // m²
+        } else { // unknown === 'u'
+            A = parseFloat(document.getElementById('areaA').value);
+            if (isNaN(A) || A <= 0) {
+                showErr("Inserisci un valore positivo per l'Area di scambio (A).");
+                return;
+            }
+            U = (Q_kW * 1000) / (A * dtml); // W/(m²·K)
+        }
+
+        // Aggiorna Risultati a Video
+        document.getElementById('rArea').textContent = A.toFixed(3);
+        document.getElementById('rPower').textContent = Q_kW.toFixed(2);
+        document.getElementById('rU').textContent = U.toFixed(1);
+        document.getElementById('rDtml').textContent = dtml.toFixed(2);
+        document.getElementById('rConfigLabel').textContent = config === 'co' ? 'equicorrente' : 'controcorrente';
+
+        // Disegna Grafico
+        drawThermalProfile(thIn, thOut, tcIn, tcOut, config);
+
+        document.getElementById('resultsSection').classList.remove('rh');
+        document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'});
+    }
+
+    function drawThermalProfile(thIn, thOut, tcIn, tcOut, config) {
+        const svg = document.getElementById('thermalChartSvg');
+        svg.innerHTML = ''; // pulisci
+
+        // Margini e dimensioni
+        const w = 600, h = 240;
+        const padding = {top: 30, right: 50, bottom: 40, left: 60};
+
+        // Trova estremi termici per asse Y
+        const maxT = Math.max(thIn, thOut, tcIn, tcOut) + 5;
+        const minT = Math.min(thIn, thOut, tcIn, tcOut) - 5;
+        const rangeT = maxT - minT;
+
+        const getY = (t) => padding.top + (1 - (t - minT) / rangeT) * (h - padding.top - padding.bottom);
+        const getX = (x) => padding.left + x * (w - padding.left - padding.right);
+
+        // Disegna Assi e Griglia
+        const gridLines = 4;
+        for (let i = 0; i <= gridLines; i++) {
+            const val = minT + (i * rangeT) / gridLines;
+            const y = getY(val);
+            // Riga orizzontale
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", padding.left);
+            line.setAttribute("y1", y);
+            line.setAttribute("x2", w - padding.right);
+            line.setAttribute("y2", y);
+            line.setAttribute("stroke", "rgba(255,255,255,0.06)");
+            line.setAttribute("stroke-width", "1");
+            svg.appendChild(line);
+
+            // Testo etichetta Y
+            const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            text.setAttribute("x", padding.left - 10);
+            text.setAttribute("y", y + 4);
+            text.setAttribute("text-anchor", "end");
+            text.setAttribute("fill", "var(--text-secondary)");
+            text.setAttribute("font-size", "10px");
+            text.textContent = val.toFixed(0) + " °C";
+            svg.appendChild(text);
+        }
+
+        // Linee di bordo dello scambiatore
+        const leftBorder = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        leftBorder.setAttribute("x1", padding.left);
+        leftBorder.setAttribute("y1", padding.top);
+        leftBorder.setAttribute("x2", padding.left);
+        leftBorder.setAttribute("y2", h - padding.bottom);
+        leftBorder.setAttribute("stroke", "rgba(255,255,255,0.15)");
+        leftBorder.setAttribute("stroke-width", "1.5");
+        svg.appendChild(leftBorder);
+
+        const rightBorder = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        rightBorder.setAttribute("x1", w - padding.right);
+        rightBorder.setAttribute("y1", padding.top);
+        rightBorder.setAttribute("x2", w - padding.right);
+        rightBorder.setAttribute("y2", h - padding.bottom);
+        rightBorder.setAttribute("stroke", "rgba(255,255,255,0.15)");
+        rightBorder.setAttribute("stroke-width", "1.5");
+        svg.appendChild(rightBorder);
+
+        // Etichette asse X
+        const labelXStart = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        labelXStart.setAttribute("x", padding.left);
+        labelXStart.setAttribute("y", h - padding.bottom + 18);
+        labelXStart.setAttribute("text-anchor", "middle");
+        labelXStart.setAttribute("fill", "var(--text-secondary)");
+        labelXStart.setAttribute("font-size", "10px");
+        labelXStart.textContent = config === 'co' ? "Ingresso (x=0)" : "Ingresso Caldo / Uscita Fredda (x=0)";
+        svg.appendChild(labelXStart);
+
+        const labelXEnd = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        labelXEnd.setAttribute("x", w - padding.right);
+        labelXEnd.setAttribute("y", h - padding.bottom + 18);
+        labelXEnd.setAttribute("text-anchor", "middle");
+        labelXEnd.setAttribute("fill", "var(--text-secondary)");
+        labelXEnd.setAttribute("font-size", "10px");
+        labelXEnd.textContent = config === 'co' ? "Uscita (x=1)" : "Uscita Calda / Ingresso Freddo (x=1)";
+        svg.appendChild(labelXEnd);
+
+        // Genera punti delle curve
+        const steps = 30;
+        let R = 1;
+        if (Math.abs(thIn - thOut) > 1e-4) {
+            R = (tcOut - tcIn) / (thIn - thOut);
+        }
+        const ptsH = [];
+        const ptsC = [];
+
+        for (let i = 0; i <= steps; i++) {
+            const x = i / steps;
+            let th_x, tc_x;
+
+            if (config === 'co') {
+                const dt1 = thIn - tcIn;
+                const dt2 = thOut - tcOut;
+                if (Math.abs(dt1 - dt2) < 1e-4) {
+                    th_x = thIn - x * (thIn - thOut);
+                    tc_x = tcIn + x * (tcOut - tcIn);
+                } else {
+                    const dtx = dt1 * Math.pow(dt2 / dt1, x);
+                    tc_x = (R * thIn + tcIn - R * dtx) / (1 + R);
+                    th_x = tc_x + dtx;
+                }
+            } else { // controcorrente
+                const dt1 = thIn - tcOut;
+                const dt2 = thOut - tcIn;
+                if (Math.abs(R - 1) < 1e-4 || Math.abs(dt1 - dt2) < 1e-4) {
+                    th_x = thIn - x * (thIn - thOut);
+                    tc_x = tcOut - x * (tcOut - tcIn);
+                } else {
+                    const dtx = dt1 * Math.pow(dt2 / dt1, x);
+                    tc_x = (R * thIn - tcOut - R * dtx) / (R - 1);
+                    th_x = tc_x + dtx;
+                }
+            }
+            ptsH.push({x: getX(x), y: getY(th_x)});
+            ptsC.push({x: getX(x), y: getY(tc_x)});
+        }
+
+        // Funzione helper per creare stringa path SVG
+        const makePathD = (pts) => "M " + pts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" L ");
+
+        // Disegna percorso Fluido Caldo (Linea Rossa)
+        const pathH = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        pathH.setAttribute("d", makePathD(ptsH));
+        pathH.setAttribute("fill", "none");
+        pathH.setAttribute("stroke", "#ff6b6b");
+        pathH.setAttribute("stroke-width", "3");
+        pathH.setAttribute("stroke-linecap", "round");
+        svg.appendChild(pathH);
+
+        // Freccia di direzione caldo
+        const arrowH = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        arrowH.setAttribute("d", `M ${ptsH[15].x},${ptsH[15].y} l -8,-4 l 0,8 z`);
+        arrowH.setAttribute("fill", "#ff6b6b");
+        const angleH = Math.atan2(ptsH[16].y - ptsH[14].y, ptsH[16].x - ptsH[14].x) * (180 / Math.PI);
+        arrowH.setAttribute("transform", `rotate(${angleH} ${ptsH[15].x} ${ptsH[15].y})`);
+        svg.appendChild(arrowH);
+
+        // Disegna percorso Fluido Freddo (Linea Blu)
+        const pathC = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        pathC.setAttribute("d", makePathD(ptsC));
+        pathC.setAttribute("fill", "none");
+        pathC.setAttribute("stroke", "#4dabf7");
+        pathC.setAttribute("stroke-width", "3");
+        pathC.setAttribute("stroke-linecap", "round");
+        svg.appendChild(pathC);
+
+        // Freccia di direzione freddo
+        const arrowC = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        const midIdx = 15;
+        if (config === 'co') {
+            arrowC.setAttribute("d", `M ${ptsC[midIdx].x},${ptsC[midIdx].y} l -8,-4 l 0,8 z`);
+            const angleC = Math.atan2(ptsC[midIdx+1].y - ptsC[midIdx-1].y, ptsC[midIdx+1].x - ptsC[midIdx-1].x) * (180 / Math.PI);
+            arrowC.setAttribute("transform", `rotate(${angleC} ${ptsC[midIdx].x} ${ptsC[midIdx].y})`);
+        } else {
+            arrowC.setAttribute("d", `M ${ptsC[midIdx].x},${ptsC[midIdx].y} l -8,-4 l 0,8 z`);
+            const angleC = Math.atan2(ptsC[midIdx-1].y - ptsC[midIdx+1].y, ptsC[midIdx-1].x - ptsC[midIdx+1].x) * (180 / Math.PI);
+            arrowC.setAttribute("transform", `rotate(${angleC} ${ptsC[midIdx].x} ${ptsC[midIdx].y})`);
+        }
+        arrowC.setAttribute("fill", "#4dabf7");
+        svg.appendChild(arrowC);
+
+        // Etichette di temperatura sui nodi principali
+        const addTempMarker = (x, y, temp, align, color) => {
+            const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circle.setAttribute("cx", x);
+            circle.setAttribute("cy", y);
+            circle.setAttribute("r", "4");
+            circle.setAttribute("fill", color);
+            circle.setAttribute("stroke", "var(--bg-primary,#121212)");
+            circle.setAttribute("stroke-width", "1.5");
+            svg.appendChild(circle);
+
+            const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            text.setAttribute("x", align === "left" ? x - 8 : x + 8);
+            text.setAttribute("y", y + 4);
+            text.setAttribute("text-anchor", align === "left" ? "end" : "start");
+            text.setAttribute("fill", color);
+            text.setAttribute("font-size", "10px");
+            text.setAttribute("font-weight", "700");
+            text.textContent = temp.toFixed(1) + " °C";
+            svg.appendChild(text);
+        };
+
+        // Marcatori caldo
+        addTempMarker(ptsH[0].x, ptsH[0].y, thIn, "left", "#ff6b6b");
+        addTempMarker(ptsH[steps].x, ptsH[steps].y, thOut, "right", "#ff6b6b");
+
+        // Marcatori freddo
+        if (config === 'co') {
+            addTempMarker(ptsC[0].x, ptsC[0].y, tcIn, "left", "#4dabf7");
+            addTempMarker(ptsC[steps].x, ptsC[steps].y, tcOut, "right", "#4dabf7");
+        } else {
+            addTempMarker(ptsC[0].x, ptsC[0].y, tcOut, "left", "#4dabf7");
+            addTempMarker(ptsC[steps].x, ptsC[steps].y, tcIn, "right", "#4dabf7");
+        }
+    }
+</script>
+</body>
+</html>
